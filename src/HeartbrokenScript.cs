@@ -249,9 +249,10 @@ public class HeartbrokenScript : MonoBehaviour
 			base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, 100f, base.transform.parent.transform.position.z);
 		}
 		int num = 0;
-		foreach (WeaponScript x in this.Cursor.SnappedYandere.Weapons)
+		WeaponScript[] weapons = this.Cursor.SnappedYandere.Weapons;
+		for (int i = 0; i < weapons.Length; i++)
 		{
-			if (x != null)
+			if (weapons[i] != null)
 			{
 				num++;
 			}
@@ -289,7 +290,7 @@ public class HeartbrokenScript : MonoBehaviour
 				{
 					this.UpdateSubtitle();
 				}
-				this.Phase += ((this.Subtitle.color.a <= 0f) ? 2 : 1);
+				this.Phase += ((this.Subtitle.color.a > 0f) ? 1 : 2);
 			}
 			else if (this.Phase == 2)
 			{
@@ -355,7 +356,7 @@ public class HeartbrokenScript : MonoBehaviour
 			{
 				UILabel uilabel3 = this.Letters[this.ShakeID];
 				Vector3 vector = this.Origins[this.ShakeID];
-				uilabel3.transform.localPosition = new Vector3(vector.x + UnityEngine.Random.Range(-5f, 5f), vector.y + UnityEngine.Random.Range(-5f, 5f), uilabel3.transform.localPosition.z);
+				uilabel3.transform.localPosition = new Vector3(vector.x + Random.Range(-5f, 5f), vector.y + Random.Range(-5f, 5f), uilabel3.transform.localPosition.z);
 				this.ShakeID++;
 			}
 		}
@@ -363,7 +364,7 @@ public class HeartbrokenScript : MonoBehaviour
 		while (this.GrowID < 4)
 		{
 			UILabel uilabel4 = this.Options[this.GrowID];
-			uilabel4.transform.localScale = Vector3.Lerp(uilabel4.transform.localScale, (this.Cursor.Selected - 1 == this.GrowID) ? new Vector3(1f, 1f, 1f) : new Vector3(0.5f, 0.5f, 0.5f), Time.deltaTime * 10f);
+			uilabel4.transform.localScale = Vector3.Lerp(uilabel4.transform.localScale, (this.Cursor.Selected - 1 != this.GrowID) ? new Vector3(0.5f, 0.5f, 0.5f) : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			this.GrowID++;
 		}
 	}
@@ -403,8 +404,9 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Subtitle.text = this.NoticedLines[num];
 			this.Subtitle.GetComponent<AudioSource>().clip = this.NoticedClips[num];
 			this.Subtitle.GetComponent<AudioSource>().Play();
+			return;
 		}
-		else if (this.Headmaster)
+		if (this.Headmaster)
 		{
 			this.Subtitle.color = new Color(this.Subtitle.color.r, this.Subtitle.color.g, this.Subtitle.color.b, 1f);
 			this.Subtitle.text = this.NoticedLines[8];

@@ -27,12 +27,14 @@ public class ChemistScannerScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[1].mainTexture = this.DeadEyes;
 			base.enabled = false;
+			return;
 		}
-		else if (this.Student.Dying)
+		if (this.Student.Dying)
 		{
 			if (this.MyRenderer.materials[1].mainTexture != this.AlarmedEyes)
 			{
 				this.MyRenderer.materials[1].mainTexture = this.AlarmedEyes;
+				return;
 			}
 		}
 		else if (this.Student.Emetic || this.Student.Lethal || this.Student.Tranquil || this.Student.Headache)
@@ -40,6 +42,7 @@ public class ChemistScannerScript : MonoBehaviour
 			if (this.MyRenderer.materials[1].mainTexture != this.Textures[6])
 			{
 				this.MyRenderer.materials[1].mainTexture = this.Textures[6];
+				return;
 			}
 		}
 		else if (this.Student.Grudge)
@@ -47,6 +50,7 @@ public class ChemistScannerScript : MonoBehaviour
 			if (this.MyRenderer.materials[1].mainTexture != this.Textures[1])
 			{
 				this.MyRenderer.materials[1].mainTexture = this.Textures[1];
+				return;
 			}
 		}
 		else if (this.Student.LostTeacherTrust)
@@ -54,6 +58,7 @@ public class ChemistScannerScript : MonoBehaviour
 			if (this.MyRenderer.materials[1].mainTexture != this.SadEyes)
 			{
 				this.MyRenderer.materials[1].mainTexture = this.SadEyes;
+				return;
 			}
 		}
 		else if (this.Student.WitnessedMurder || this.Student.WitnessedCorpse)
@@ -61,6 +66,7 @@ public class ChemistScannerScript : MonoBehaviour
 			if (this.MyRenderer.materials[1].mainTexture != this.AlarmedEyes)
 			{
 				this.MyRenderer.materials[1].mainTexture = this.AlarmedEyes;
+				return;
 			}
 		}
 		else
@@ -70,7 +76,7 @@ public class ChemistScannerScript : MonoBehaviour
 			{
 				while (this.ID == this.PreviousID)
 				{
-					this.ID = UnityEngine.Random.Range(0, this.Textures.Length);
+					this.ID = Random.Range(0, this.Textures.Length);
 				}
 				this.MyRenderer.materials[1].mainTexture = this.Textures[this.ID];
 				this.PreviousID = this.ID;

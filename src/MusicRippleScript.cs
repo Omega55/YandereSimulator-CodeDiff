@@ -22,12 +22,10 @@ public class MusicRippleScript : MonoBehaviour
 			this.Frame++;
 			if (this.Frame == this.Sprite.Length)
 			{
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
+				return;
 			}
-			else
-			{
-				this.MyRenderer.material.mainTexture = this.Sprite[this.Frame];
-			}
+			this.MyRenderer.material.mainTexture = this.Sprite[this.Frame];
 		}
 	}
 }

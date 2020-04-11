@@ -111,6 +111,7 @@ public class SuitorBoostScript : MonoBehaviour
 						this.PromptBar.ClearButtons();
 						this.FadeOut = false;
 						this.Phase++;
+						return;
 					}
 				}
 			}
@@ -136,6 +137,7 @@ public class SuitorBoostScript : MonoBehaviour
 							{
 								this.PromptBar.Show = false;
 								this.Phase++;
+								return;
 							}
 						}
 					}
@@ -144,13 +146,12 @@ public class SuitorBoostScript : MonoBehaviour
 						if (this.TextBox.localScale.x > 0.1f)
 						{
 							this.TextBox.localScale = Vector3.Lerp(this.TextBox.localScale, Vector3.zero, Time.deltaTime * 10f);
+							return;
 						}
-						else
-						{
-							this.TextBox.gameObject.SetActive(false);
-							this.FadeOut = true;
-							this.Phase++;
-						}
+						this.TextBox.gameObject.SetActive(false);
+						this.FadeOut = true;
+						this.Phase++;
+						return;
 					}
 					else if (this.Phase == 5)
 					{

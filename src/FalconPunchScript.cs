@@ -66,23 +66,23 @@ public class FalconPunchScript : MonoBehaviour
 				if (component.StudentID > 1)
 				{
 					Debug.Log("A punch collided with a student and killed them.");
-					UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+					Object.Instantiate<GameObject>(this.FalconExplosion, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 					component.DeathType = DeathType.EasterEgg;
 					component.BecomeRagdoll();
 					Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
 					rigidbody.isKinematic = false;
-					Vector3 a = rigidbody.transform.position - component.Yandere.transform.position;
+					Vector3 vector = rigidbody.transform.position - component.Yandere.transform.position;
 					if (this.Falcon)
 					{
-						rigidbody.AddForce(a * this.Strength);
+						rigidbody.AddForce(vector * this.Strength);
 					}
 					else if (this.Bancho)
 					{
-						rigidbody.AddForce(a.x * this.Strength, 5000f, a.z * this.Strength);
+						rigidbody.AddForce(vector.x * this.Strength, 5000f, vector.z * this.Strength);
 					}
 					else
 					{
-						rigidbody.AddForce(a.x * this.Strength, 10000f, a.z * this.Strength);
+						rigidbody.AddForce(vector.x * this.Strength, 10000f, vector.z * this.Strength);
 					}
 				}
 			}
@@ -104,9 +104,9 @@ public class FalconPunchScript : MonoBehaviour
 			}
 			if (gameObject != null)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.FalconExplosion, base.transform.position + new Vector3(0f, 0f, 0f), Quaternion.identity);
-				UnityEngine.Object.Destroy(gameObject);
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Instantiate<GameObject>(this.FalconExplosion, base.transform.position + new Vector3(0f, 0f, 0f), Quaternion.identity);
+				Object.Destroy(gameObject);
+				Object.Destroy(base.gameObject);
 			}
 		}
 	}

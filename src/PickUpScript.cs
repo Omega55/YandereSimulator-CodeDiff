@@ -121,7 +121,7 @@ public class PickUpScript : MonoBehaviour
 		{
 			Physics.IgnoreCollision(this.Yandere.GetComponent<Collider>(), this.MyCollider);
 		}
-		if (this.Outline.Length > 0)
+		if (this.Outline.Length != 0)
 		{
 			this.OriginalColor = this.Outline[0].color;
 		}
@@ -224,7 +224,7 @@ public class PickUpScript : MonoBehaviour
 				{
 					this.Yandere.Incinerator.BodyParts++;
 				}
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
 			}
 		}
 		if (this.Yandere.PickUp != this && !this.MyRigidbody.isKinematic)
@@ -253,6 +253,7 @@ public class PickUpScript : MonoBehaviour
 				if (this.Yandere.StudentManager.Stop)
 				{
 					this.Drop();
+					return;
 				}
 			}
 			else
@@ -334,9 +335,10 @@ public class PickUpScript : MonoBehaviour
 		}
 		this.Yandere.PickUp = this;
 		this.Yandere.CarryAnimID = this.CarryAnimID;
-		foreach (OutlineScript outlineScript in this.Outline)
+		OutlineScript[] outline = this.Outline;
+		for (int i = 0; i < outline.Length; i++)
 		{
-			outlineScript.color = new Color(0f, 0f, 0f, 1f);
+			outline[i].color = new Color(0f, 0f, 0f, 1f);
 		}
 		if (this.BodyPart)
 		{
@@ -408,9 +410,10 @@ public class PickUpScript : MonoBehaviour
 			}
 		}
 		this.Prompt.Carried = false;
-		foreach (OutlineScript outlineScript in this.Outline)
+		OutlineScript[] outline = this.Outline;
+		for (int i = 0; i < outline.Length; i++)
 		{
-			outlineScript.color = ((!this.Evidence) ? this.OriginalColor : this.EvidenceColor);
+			outline[i].color = (this.Evidence ? this.EvidenceColor : this.OriginalColor);
 		}
 		base.transform.localScale = this.OriginalScale;
 		if (this.BodyPart)

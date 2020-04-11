@@ -11,33 +11,29 @@ public class BoneScript : MonoBehaviour
 
 	private void Start()
 	{
-		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, UnityEngine.Random.Range(0f, 360f), base.transform.eulerAngles.z);
+		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, Random.Range(0f, 360f), base.transform.eulerAngles.z);
 		this.Origin = base.transform.position.y;
-		base.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+		base.GetComponent<AudioSource>().pitch = Random.Range(0.9f, 1.1f);
 	}
 
 	private void Update()
 	{
-		if (!this.Drop)
-		{
-			if (base.transform.position.y < this.Origin + 2f - 0.0001f)
-			{
-				base.transform.position = new Vector3(base.transform.position.x, Mathf.Lerp(base.transform.position.y, this.Origin + 2f, Time.deltaTime * 10f), base.transform.position.z);
-			}
-			else
-			{
-				this.Drop = true;
-			}
-		}
-		else
+		if (this.Drop)
 		{
 			this.Height -= Time.deltaTime;
 			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + this.Height, base.transform.position.z);
 			if (base.transform.position.y < this.Origin - 2.155f)
 			{
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
 			}
+			return;
 		}
+		if (base.transform.position.y < this.Origin + 2f - 0.0001f)
+		{
+			base.transform.position = new Vector3(base.transform.position.x, Mathf.Lerp(base.transform.position.y, this.Origin + 2f, Time.deltaTime * 10f), base.transform.position.z);
+			return;
+		}
+		this.Drop = true;
 	}
 
 	private void OnTriggerEnter(Collider other)

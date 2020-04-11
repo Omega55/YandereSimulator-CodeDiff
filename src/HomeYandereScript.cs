@@ -167,14 +167,14 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyController.Move(Physics.gravity * 0.01f);
 				float axis = Input.GetAxis("Vertical");
 				float axis2 = Input.GetAxis("Horizontal");
-				Vector3 a = Camera.main.transform.TransformDirection(Vector3.forward);
-				a.y = 0f;
-				a = a.normalized;
-				Vector3 a2 = new Vector3(a.z, 0f, -a.x);
-				Vector3 vector = axis2 * a2 + axis * a;
-				if (vector != Vector3.zero)
+				Vector3 vector = Camera.main.transform.TransformDirection(Vector3.forward);
+				vector.y = 0f;
+				vector = vector.normalized;
+				Vector3 a = new Vector3(vector.z, 0f, -vector.x);
+				Vector3 vector2 = axis2 * a + axis * vector;
+				if (vector2 != Vector3.zero)
 				{
-					Quaternion b = Quaternion.LookRotation(vector);
+					Quaternion b = Quaternion.LookRotation(vector2);
 					base.transform.rotation = Quaternion.Lerp(base.transform.rotation, b, Time.deltaTime * 10f);
 				}
 				if (axis != 0f || axis2 != 0f)
@@ -312,21 +312,25 @@ public class HomeYandereScript : MonoBehaviour
 			this.Ponytail.localScale = new Vector3(1f, 1f, 1f);
 			this.HairR.localScale = new Vector3(1f, 1f, 1f);
 			this.HairL.localScale = new Vector3(1f, 1f, 1f);
+			return;
 		}
-		else if (this.Hairstyle == 2)
+		if (this.Hairstyle == 2)
 		{
 			this.PigtailR.gameObject.SetActive(true);
+			return;
 		}
-		else if (this.Hairstyle == 3)
+		if (this.Hairstyle == 3)
 		{
 			this.PigtailL.gameObject.SetActive(true);
+			return;
 		}
-		else if (this.Hairstyle == 4)
+		if (this.Hairstyle == 4)
 		{
 			this.PigtailR.gameObject.SetActive(true);
 			this.PigtailL.gameObject.SetActive(true);
+			return;
 		}
-		else if (this.Hairstyle == 5)
+		if (this.Hairstyle == 5)
 		{
 			this.PigtailR.gameObject.SetActive(true);
 			this.PigtailL.gameObject.SetActive(true);
@@ -334,15 +338,17 @@ public class HomeYandereScript : MonoBehaviour
 			this.Ponytail.localScale = new Vector3(1f, 1f, 1f);
 			this.HairR.localScale = new Vector3(1f, 1f, 1f);
 			this.HairL.localScale = new Vector3(1f, 1f, 1f);
+			return;
 		}
-		else if (this.Hairstyle == 6)
+		if (this.Hairstyle == 6)
 		{
 			this.PigtailR.gameObject.SetActive(true);
 			this.PigtailL.gameObject.SetActive(true);
 			this.PigtailR.transform.parent.transform.parent.transform.localScale = new Vector3(2f, 2f, 2f);
 			this.PigtailL.transform.parent.transform.parent.transform.localScale = new Vector3(2f, 2f, 2f);
+			return;
 		}
-		else if (this.Hairstyle == 7)
+		if (this.Hairstyle == 7)
 		{
 			this.Drills.gameObject.SetActive(true);
 		}
@@ -385,36 +391,40 @@ public class HomeYandereScript : MonoBehaviour
 				this.MyRenderer.materials[0].mainTexture = CustomUniform.texture;
 				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
 			}
+			CustomUniform = null;
 		}
 		else if (StudentGlobals.FemaleUniform == 2)
 		{
-			WWW CustomLong = new WWW("file:///" + Application.streamingAssetsPath + "/CustomLong.png");
-			yield return CustomLong;
-			if (CustomLong.error == null)
+			WWW CustomUniform = new WWW("file:///" + Application.streamingAssetsPath + "/CustomLong.png");
+			yield return CustomUniform;
+			if (CustomUniform.error == null)
 			{
-				this.MyRenderer.materials[0].mainTexture = CustomLong.texture;
-				this.MyRenderer.materials[1].mainTexture = CustomLong.texture;
+				this.MyRenderer.materials[0].mainTexture = CustomUniform.texture;
+				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
 			}
+			CustomUniform = null;
 		}
 		else if (StudentGlobals.FemaleUniform == 3)
 		{
-			WWW CustomSweater = new WWW("file:///" + Application.streamingAssetsPath + "/CustomSweater.png");
-			yield return CustomSweater;
-			if (CustomSweater.error == null)
+			WWW CustomUniform = new WWW("file:///" + Application.streamingAssetsPath + "/CustomSweater.png");
+			yield return CustomUniform;
+			if (CustomUniform.error == null)
 			{
-				this.MyRenderer.materials[0].mainTexture = CustomSweater.texture;
-				this.MyRenderer.materials[1].mainTexture = CustomSweater.texture;
+				this.MyRenderer.materials[0].mainTexture = CustomUniform.texture;
+				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
 			}
+			CustomUniform = null;
 		}
 		else if (StudentGlobals.FemaleUniform == 4 || StudentGlobals.FemaleUniform == 5)
 		{
-			WWW CustomBlazer = new WWW("file:///" + Application.streamingAssetsPath + "/CustomBlazer.png");
-			yield return CustomBlazer;
-			if (CustomBlazer.error == null)
+			WWW CustomUniform = new WWW("file:///" + Application.streamingAssetsPath + "/CustomBlazer.png");
+			yield return CustomUniform;
+			if (CustomUniform.error == null)
 			{
-				this.MyRenderer.materials[0].mainTexture = CustomBlazer.texture;
-				this.MyRenderer.materials[1].mainTexture = CustomBlazer.texture;
+				this.MyRenderer.materials[0].mainTexture = CustomUniform.texture;
+				this.MyRenderer.materials[1].mainTexture = CustomUniform.texture;
 			}
+			CustomUniform = null;
 		}
 		base.StartCoroutine(this.ApplyCustomFace());
 		yield break;

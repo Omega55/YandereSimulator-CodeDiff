@@ -263,8 +263,7 @@ public class TallLockerScript : MonoBehaviour
 							PickUpScript component;
 							if (this.RemovingClubAttire)
 							{
-								GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[(int)ClubGlobals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
-								component = gameObject.GetComponent<PickUpScript>();
+								component = Object.Instantiate<GameObject>(this.BloodyClubUniform[(int)ClubGlobals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity).GetComponent<PickUpScript>();
 								this.StudentManager.ChangingBooths[(int)ClubGlobals.Club].CannotChange = true;
 								this.StudentManager.ChangingBooths[(int)ClubGlobals.Club].CheckYandereClub();
 								this.Prompt.HideButton[1] = true;
@@ -274,8 +273,7 @@ public class TallLockerScript : MonoBehaviour
 							}
 							else
 							{
-								GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity);
-								component = gameObject2.GetComponent<PickUpScript>();
+								component = Object.Instantiate<GameObject>(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity).GetComponent<PickUpScript>();
 								this.Prompt.HideButton[this.Yandere.PreviousSchoolwear] = true;
 								this.Bloody[this.Yandere.PreviousSchoolwear] = true;
 							}
@@ -300,6 +298,7 @@ public class TallLockerScript : MonoBehaviour
 					}
 					this.UpdateSchoolwear();
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Timer > 3f)
@@ -320,26 +319,22 @@ public class TallLockerScript : MonoBehaviour
 		this.SteamCountdown = true;
 		if (this.YandereLocker)
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+			Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_stripping_00");
 			this.Yandere.Stripping = true;
 			this.Yandere.CanMove = false;
+			return;
 		}
-		else
-		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Student.transform.position + Vector3.up * 0.81f, Quaternion.identity);
-			gameObject.transform.parent = this.Student.transform;
-			this.Student.CharacterAnimation.CrossFade(this.Student.StripAnim);
-			this.Student.Pathfinding.canSearch = false;
-			this.Student.Pathfinding.canMove = false;
-		}
+		Object.Instantiate<GameObject>(this.SteamCloud, this.Student.transform.position + Vector3.up * 0.81f, Quaternion.identity).transform.parent = this.Student.transform;
+		this.Student.CharacterAnimation.CrossFade(this.Student.StripAnim);
+		this.Student.Pathfinding.canSearch = false;
+		this.Student.Pathfinding.canMove = false;
 	}
 
 	public void SpawnSteamNoSideEffects(StudentScript SteamStudent)
 	{
 		Debug.Log("Changing clothes, no strings attached.");
-		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, SteamStudent.transform.position + Vector3.up * 0.81f, Quaternion.identity);
-		gameObject.transform.parent = SteamStudent.transform;
+		Object.Instantiate<GameObject>(this.SteamCloud, SteamStudent.transform.position + Vector3.up * 0.81f, Quaternion.identity).transform.parent = SteamStudent.transform;
 		SteamStudent.CharacterAnimation.CrossFade(SteamStudent.StripAnim);
 		SteamStudent.Pathfinding.canSearch = false;
 		SteamStudent.Pathfinding.canMove = false;
@@ -352,7 +347,7 @@ public class TallLockerScript : MonoBehaviour
 	{
 		if (this.DropCleanUniform)
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.CleanUniform, this.Yandere.transform.position + Vector3.forward * -0.5f + Vector3.up, Quaternion.identity);
+			Object.Instantiate<GameObject>(this.CleanUniform, this.Yandere.transform.position + Vector3.forward * -0.5f + Vector3.up, Quaternion.identity);
 			this.DropCleanUniform = false;
 		}
 		if (!this.Bloody[1])
@@ -372,20 +367,19 @@ public class TallLockerScript : MonoBehaviour
 		this.Prompt.Label[3].text = "     Gym Uniform";
 		if (this.YandereLocker)
 		{
-			if (!this.Yandere.ClubAttire)
-			{
-				if (this.Yandere.Schoolwear > 0)
-				{
-					this.Prompt.Label[this.Yandere.Schoolwear].text = "     Towel";
-					if (this.Removed[this.Yandere.Schoolwear])
-					{
-						this.Schoolwear[this.Yandere.Schoolwear].SetActive(false);
-					}
-				}
-			}
-			else
+			if (this.Yandere.ClubAttire)
 			{
 				this.Prompt.Label[1].text = "     Towel";
+				return;
+			}
+			if (this.Yandere.Schoolwear > 0)
+			{
+				this.Prompt.Label[this.Yandere.Schoolwear].text = "     Towel";
+				if (this.Removed[this.Yandere.Schoolwear])
+				{
+					this.Schoolwear[this.Yandere.Schoolwear].SetActive(false);
+					return;
+				}
 			}
 		}
 		else if (this.Student != null && this.Student.Schoolwear > 0)
@@ -415,6 +409,7 @@ public class TallLockerScript : MonoBehaviour
 					{
 						Debug.Log("Don't hide Prompt 1!");
 						this.Prompt.HideButton[1] = false;
+						return;
 					}
 				}
 				else
@@ -430,6 +425,7 @@ public class TallLockerScript : MonoBehaviour
 					if (!this.Bloody[3])
 					{
 						this.Prompt.HideButton[3] = false;
+						return;
 					}
 				}
 			}

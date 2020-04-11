@@ -126,6 +126,7 @@ public class NotificationManagerScript : MonoBehaviour
 					this.DisplayNotification(NotificationType.ClassSoon);
 				}
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 2)
@@ -137,6 +138,7 @@ public class NotificationManagerScript : MonoBehaviour
 					this.DisplayNotification(NotificationType.ClassNow);
 				}
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 3)
@@ -148,6 +150,7 @@ public class NotificationManagerScript : MonoBehaviour
 					this.DisplayNotification(NotificationType.ClassSoon);
 				}
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 4 && this.Clock.HourTime > 13.5f)
@@ -164,17 +167,17 @@ public class NotificationManagerScript : MonoBehaviour
 	{
 		if (!this.Yandere.Egg)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Notification);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.Notification);
 			NotificationScript component = gameObject.GetComponent<NotificationScript>();
 			gameObject.transform.parent = this.NotificationParent;
 			gameObject.transform.localPosition = new Vector3(0f, 0.60275f + 0.049f * (float)this.NotificationsSpawned, 0f);
 			gameObject.transform.localEulerAngles = Vector3.zero;
 			component.NotificationManager = this;
 			string text;
-			bool flag = this.NotificationMessages.TryGetValue(Type, out text);
+			this.NotificationMessages.TryGetValue(Type, out text);
 			if (Type != NotificationType.Persona && Type != NotificationType.Custom)
 			{
-				string str = string.Empty;
+				string str = "";
 				if (Type == NotificationType.Topic || Type == NotificationType.Opinion)
 				{
 					str = this.TopicName;

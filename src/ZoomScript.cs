@@ -127,9 +127,9 @@ public class ZoomScript : MonoBehaviour
 			this.ShakeStrength = Mathf.Lerp(this.ShakeStrength, 1f - this.Yandere.Sanity * 0.01f, Time.deltaTime);
 			if (this.Timer > 0.1f + this.Yandere.Sanity * 0.01f)
 			{
-				this.Target.x = UnityEngine.Random.Range(-this.ShakeStrength, this.ShakeStrength);
+				this.Target.x = Random.Range(-this.ShakeStrength, this.ShakeStrength);
 				this.Target.y = base.transform.localPosition.y;
-				this.Target.z = UnityEngine.Random.Range(-this.ShakeStrength, this.ShakeStrength);
+				this.Target.z = Random.Range(-this.ShakeStrength, this.ShakeStrength);
 				this.Timer = 0f;
 			}
 		}
@@ -140,11 +140,9 @@ public class ZoomScript : MonoBehaviour
 		if (this.Yandere.RoofPush)
 		{
 			base.transform.position = new Vector3(Mathf.MoveTowards(base.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime * 10f), base.transform.position.y, Mathf.MoveTowards(base.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime * 10f));
+			return;
 		}
-		else
-		{
-			base.transform.localPosition = Vector3.MoveTowards(base.transform.localPosition, this.Target, Time.deltaTime * this.ShakeStrength * 0.1f);
-		}
+		base.transform.localPosition = Vector3.MoveTowards(base.transform.localPosition, this.Target, Time.deltaTime * this.ShakeStrength * 0.1f);
 	}
 
 	public void LateUpdate()
@@ -154,10 +152,8 @@ public class ZoomScript : MonoBehaviour
 		{
 			Vector3 lhs = this.Yandere.MainCamera.transform.TransformDirection(Vector3.forward);
 			base.transform.position = new Vector3(this.Yandere.transform.position.x + this.midOffset * Vector3.Dot(lhs, Vector3.forward), base.transform.position.y, this.Yandere.transform.position.z + this.midOffset * Vector3.Dot(lhs, -Vector3.right));
+			return;
 		}
-		else
-		{
-			base.transform.localPosition = new Vector3(0f, base.transform.localPosition.y, 0f);
-		}
+		base.transform.localPosition = new Vector3(0f, base.transform.localPosition.y, 0f);
 	}
 }

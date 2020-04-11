@@ -77,15 +77,14 @@ public class MemorialSceneScript : MonoBehaviour
 			{
 				num = StudentGlobals.MemorialStudent9;
 			}
-			string url = string.Concat(new string[]
+			WWW www = new WWW(string.Concat(new string[]
 			{
 				"file:///",
 				Application.streamingAssetsPath,
 				"/Portraits/Student_",
 				num.ToString(),
 				".png"
-			});
-			WWW www = new WWW(url);
+			}));
 			this.Portraits[i].mainTexture = www.texture;
 			this.MemorialStudents--;
 		}

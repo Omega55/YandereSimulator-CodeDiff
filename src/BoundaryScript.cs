@@ -30,11 +30,12 @@ public class BoundaryScript : MonoBehaviour
 			this.Label.color = color2;
 			base.GetComponent<AudioSource>().volume = this.Intensity / 5f * 0.1f;
 			Vector3 localPosition = this.Label.transform.localPosition;
-			localPosition.x = UnityEngine.Random.Range(-10f, 10f);
-			localPosition.y = UnityEngine.Random.Range(-10f, 10f);
+			localPosition.x = Random.Range(-10f, 10f);
+			localPosition.y = Random.Range(-10f, 10f);
 			this.Label.transform.localPosition = localPosition;
+			return;
 		}
-		else if (this.TextureCycle.enabled)
+		if (this.TextureCycle.enabled)
 		{
 			this.TextureCycle.gameObject.SetActive(false);
 			this.TextureCycle.Sprite.enabled = false;

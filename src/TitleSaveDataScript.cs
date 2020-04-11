@@ -50,26 +50,32 @@ public class TitleSaveDataScript : MonoBehaviour
 			if (PlayerGlobals.Kills == 0)
 			{
 				this.Blood.mainTexture = null;
+				return;
 			}
-			else if (PlayerGlobals.Kills > 0)
+			if (PlayerGlobals.Kills > 0)
 			{
 				this.Blood.mainTexture = this.Bloods[1];
+				return;
 			}
-			else if (PlayerGlobals.Kills > 5)
+			if (PlayerGlobals.Kills > 5)
 			{
 				this.Blood.mainTexture = this.Bloods[2];
+				return;
 			}
-			else if (PlayerGlobals.Kills > 10)
+			if (PlayerGlobals.Kills > 10)
 			{
 				this.Blood.mainTexture = this.Bloods[3];
+				return;
 			}
-			else if (PlayerGlobals.Kills > 15)
+			if (PlayerGlobals.Kills > 15)
 			{
 				this.Blood.mainTexture = this.Bloods[4];
+				return;
 			}
-			else if (PlayerGlobals.Kills > 20)
+			if (PlayerGlobals.Kills > 20)
 			{
 				this.Blood.mainTexture = this.Bloods[5];
+				return;
 			}
 		}
 		else

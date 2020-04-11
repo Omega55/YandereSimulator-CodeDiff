@@ -36,6 +36,7 @@ public class FindStudentLockerScript : MonoBehaviour
 				this.Prompt.Yandere.PromptBar.Label[1].text = "Cancel";
 				this.Prompt.Yandere.PromptBar.UpdateButtons();
 				this.Prompt.Yandere.PromptBar.Show = true;
+				return;
 			}
 		}
 		else if (this.Phase == 1)
@@ -43,6 +44,7 @@ public class FindStudentLockerScript : MonoBehaviour
 			if (this.TargetedStudent.Meeting)
 			{
 				this.Phase++;
+				return;
 			}
 		}
 		else if (!this.TargetedStudent.Meeting)

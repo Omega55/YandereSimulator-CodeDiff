@@ -54,31 +54,28 @@ public class BloodCleanerScript : MonoBehaviour
 				if (this.Pathfinding.target != null)
 				{
 					this.Distance = Vector3.Distance(base.transform.position, this.Pathfinding.target.position);
-					if (this.Distance < 1f)
-					{
-						this.Pathfinding.speed = 0f;
-						Transform child = this.BloodParent.GetChild(0);
-						if (child.GetComponent("BloodPoolScript") != null)
-						{
-							child.localScale = new Vector3(child.localScale.x - Time.deltaTime, child.localScale.y - Time.deltaTime, child.localScale.z);
-							this.Blood += Time.deltaTime;
-							if (this.Blood >= 100f)
-							{
-								this.Lens.SetActive(true);
-							}
-							if (child.transform.localScale.x < 0.1f)
-							{
-								UnityEngine.Object.Destroy(child.gameObject);
-							}
-						}
-						else
-						{
-							UnityEngine.Object.Destroy(child.gameObject);
-						}
-					}
-					else
+					if (this.Distance >= 1f)
 					{
 						this.Pathfinding.speed = 4f;
+						return;
+					}
+					this.Pathfinding.speed = 0f;
+					Transform child = this.BloodParent.GetChild(0);
+					if (!(child.GetComponent("BloodPoolScript") != null))
+					{
+						Object.Destroy(child.gameObject);
+						return;
+					}
+					child.localScale = new Vector3(child.localScale.x - Time.deltaTime, child.localScale.y - Time.deltaTime, child.localScale.z);
+					this.Blood += Time.deltaTime;
+					if (this.Blood >= 100f)
+					{
+						this.Lens.SetActive(true);
+					}
+					if (child.transform.localScale.x < 0.1f)
+					{
+						Object.Destroy(child.gameObject);
+						return;
 					}
 				}
 			}

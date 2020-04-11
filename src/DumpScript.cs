@@ -15,7 +15,7 @@ public class DumpScript : MonoBehaviour
 		if (this.Timer > 5f)
 		{
 			this.Incinerator.Corpses++;
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 public class StudentManagerScript : MonoBehaviour
@@ -695,13 +694,12 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (this.FridayPaintings.Length > 0)
+		if (this.FridayPaintings.Length != 0)
 		{
 			this.ID = 1;
 			while (this.ID < this.FridayPaintings.Length)
 			{
-				Renderer renderer = this.FridayPaintings[this.ID];
-				renderer.material.color = new Color(1f, 1f, 1f, 0f);
+				this.FridayPaintings[this.ID].material.color = new Color(1f, 1f, 1f, 0f);
 				this.ID++;
 			}
 		}
@@ -716,8 +714,7 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.Canvases.SetActive(false);
 		}
-		bool flag = this.ProblemID != -1;
-		if (flag)
+		if (this.ProblemID != -1)
 		{
 			if (this.ErrorLabel != null)
 			{
@@ -782,7 +779,7 @@ public class StudentManagerScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.ShowerLockers.List.Length)
 				{
-					Transform transform = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, this.ShowerLockers.List[this.ID].position + this.ShowerLockers.List[this.ID].forward * 0.5f, this.ShowerLockers.List[this.ID].rotation).transform;
+					Transform transform = Object.Instantiate<GameObject>(this.EmptyObject, this.ShowerLockers.List[this.ID].position + this.ShowerLockers.List[this.ID].forward * 0.5f, this.ShowerLockers.List[this.ID].rotation).transform;
 					transform.parent = this.ShowerLockers.transform;
 					transform.transform.eulerAngles = new Vector3(transform.transform.eulerAngles.x, transform.transform.eulerAngles.y + 180f, transform.transform.eulerAngles.z);
 					this.StrippingPositions[this.ID] = transform;
@@ -793,10 +790,10 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					if (this.HidingSpots.List[this.ID] == null)
 					{
-						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
+						GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f)), Quaternion.identity);
 						while (gameObject.transform.position.x < 2.5f && gameObject.transform.position.x > -2.5f && gameObject.transform.position.z > -2.5f && gameObject.transform.position.z < 2.5f)
 						{
-							gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
+							gameObject.transform.position = new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f));
 						}
 						gameObject.transform.parent = this.HidingSpots.transform;
 						this.HidingSpots.List[this.ID] = gameObject.transform;
@@ -850,7 +847,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
 			this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
 			this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
-			this.AllDoors = (UnityEngine.Object.FindSceneObjectsOfType(typeof(DoorScript)) as DoorScript[]);
+			this.AllDoors = (Object.FindSceneObjectsOfType(typeof(DoorScript)) as DoorScript[]);
 		}
 	}
 
@@ -979,15 +976,16 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (this.NewStudent != null)
 				{
-					UnityEngine.Object.Destroy(this.NewStudent);
+					Object.Destroy(this.NewStudent);
 				}
 				if (this.Randomize)
 				{
-					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((UnityEngine.Random.Range(0, 2) != 0) ? this.PortraitKun : this.PortraitChan, Vector3.zero, Quaternion.identity);
+					int num = Random.Range(0, 2);
+					this.NewStudent = Object.Instantiate<GameObject>((num == 0) ? this.PortraitChan : this.PortraitKun, Vector3.zero, Quaternion.identity);
 				}
 				else
 				{
-					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((this.JSON.Students[this.NPCsSpawned + 1].Gender != 0) ? this.PortraitKun : this.PortraitChan, Vector3.zero, Quaternion.identity);
+					this.NewStudent = Object.Instantiate<GameObject>((this.JSON.Students[this.NPCsSpawned + 1].Gender == 0) ? this.PortraitChan : this.PortraitKun, Vector3.zero, Quaternion.identity);
 				}
 				CosmeticScript component = this.NewStudent.GetComponent<CosmeticScript>();
 				component.StudentID = this.NPCsSpawned + 1;
@@ -1118,7 +1116,7 @@ public class StudentManagerScript : MonoBehaviour
 							{
 								GameObjectUtils.SetLayerRecursively(studentScript3.MyWeapon.gameObject, 13);
 							}
-							studentScript3.CharacterAnimation.CrossFade((((!studentScript3.Male) ? "f02_pinDown_0" : "pinDown_0") + this.ID).ToString());
+							studentScript3.CharacterAnimation.CrossFade(((studentScript3.Male ? "pinDown_0" : "f02_pinDown_0") + this.ID).ToString());
 							studentScript3.PinPhase++;
 							this.ID++;
 						}
@@ -1146,7 +1144,7 @@ public class StudentManagerScript : MonoBehaviour
 					while (this.ID < 5)
 					{
 						StudentScript studentScript4 = this.WitnessList[this.ID];
-						studentScript4.CharacterAnimation.CrossFade((((!studentScript4.Male) ? "f02_pinDownLoop_0" : "pinDownLoop_0") + this.ID).ToString());
+						studentScript4.CharacterAnimation.CrossFade(((studentScript4.Male ? "pinDownLoop_0" : "f02_pinDownLoop_0") + this.ID).ToString());
 						this.ID++;
 					}
 					this.PinningDown = false;
@@ -1236,7 +1234,7 @@ public class StudentManagerScript : MonoBehaviour
 					StudentScript studentScript8 = this.Students[this.ID];
 					if (studentScript8 != null && studentScript8.isActiveAndEnabled && studentScript8.DistanceToPlayer < 1f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, studentScript8.transform.position + Vector3.up, Quaternion.identity);
+						Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, studentScript8.transform.position + Vector3.up, Quaternion.identity);
 						studentScript8.SpawnAlarmDisc();
 						studentScript8.BecomeRagdoll();
 						studentScript8.DeathType = DeathType.EasterEgg;
@@ -1252,7 +1250,7 @@ public class StudentManagerScript : MonoBehaviour
 					StudentScript studentScript9 = this.Students[this.ID];
 					if (studentScript9 != null && studentScript9.isActiveAndEnabled && studentScript9.DistanceToPlayer < 5f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.Yandere.DarkHelix, studentScript9.transform.position + Vector3.up, Quaternion.identity);
+						Object.Instantiate<GameObject>(this.Yandere.DarkHelix, studentScript9.transform.position + Vector3.up, Quaternion.identity);
 						studentScript9.SpawnAlarmDisc();
 						studentScript9.BecomeRagdoll();
 						studentScript9.DeathType = DeathType.EasterEgg;
@@ -1288,27 +1286,27 @@ public class StudentManagerScript : MonoBehaviour
 			int num;
 			if (this.JSON.Students[spawnID].Name == "Random")
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
+				GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f)), Quaternion.identity);
 				while (gameObject.transform.position.x < 2.5f && gameObject.transform.position.x > -2.5f && gameObject.transform.position.z > -2.5f && gameObject.transform.position.z < 2.5f)
 				{
-					gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
+					gameObject.transform.position = new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f));
 				}
 				gameObject.transform.parent = this.HidingSpots.transform;
 				this.HidingSpots.List[spawnID] = gameObject.transform;
-				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
+				GameObject gameObject2 = Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
 				gameObject2.transform.parent = this.Patrols.transform;
 				this.Patrols.List[spawnID] = gameObject2.transform;
-				GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
+				GameObject gameObject3 = Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
 				gameObject3.transform.parent = this.CleaningSpots.transform;
 				this.CleaningSpots.List[spawnID] = gameObject3.transform;
-				num = ((!MissionModeGlobals.MissionMode || MissionModeGlobals.MissionTarget != spawnID) ? UnityEngine.Random.Range(0, 2) : 0);
+				num = ((MissionModeGlobals.MissionMode && MissionModeGlobals.MissionTarget == spawnID) ? 0 : Random.Range(0, 2));
 				this.FindUnoccupiedSeat();
 			}
 			else
 			{
 				num = this.JSON.Students[spawnID].Gender;
 			}
-			this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((num != 0) ? this.StudentKun : this.StudentChan, this.SpawnPositions[spawnID].position, Quaternion.identity);
+			this.NewStudent = Object.Instantiate<GameObject>((num == 0) ? this.StudentChan : this.StudentKun, this.SpawnPositions[spawnID].position, Quaternion.identity);
 			CosmeticScript component = this.NewStudent.GetComponent<CosmeticScript>();
 			component.LoveManager = this.LoveManager;
 			component.StudentManager = this;
@@ -1364,7 +1362,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (this.JSON.Students[spawnID].Persona == PersonaType.Protective || this.JSON.Students[spawnID].Hairstyle == "20" || this.JSON.Students[spawnID].Hairstyle == "21")
 			{
-				UnityEngine.Object.Destroy(studentScript);
+				Object.Destroy(studentScript);
 			}
 			if (num == 0)
 			{
@@ -1377,9 +1375,9 @@ public class StudentManagerScript : MonoBehaviour
 		this.ForceSpawn = false;
 		if (this.Students[10] != null || this.Students[11] != null)
 		{
-			UnityEngine.Object.Destroy(this.Students[10].gameObject);
-			UnityEngine.Object.Destroy(this.Students[11].gameObject);
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(this.Students[10].gameObject);
+			Object.Destroy(this.Students[11].gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -2013,7 +2011,7 @@ public class StudentManagerScript : MonoBehaviour
 					Debug.Log("A mind-broken slave committed suicide.");
 					studentScript.Broken.Subtitle.text = string.Empty;
 					studentScript.Broken.Done = true;
-					UnityEngine.Object.Destroy(studentScript.Broken);
+					Object.Destroy(studentScript.Broken);
 					studentScript.BecomeRagdoll();
 					studentScript.Slave = false;
 					studentScript.Suicide = true;
@@ -2395,24 +2393,29 @@ public class StudentManagerScript : MonoBehaviour
 		if (@class == 11)
 		{
 			this.SeatsTaken11[seat] = true;
+			return;
 		}
-		else if (@class == 12)
+		if (@class == 12)
 		{
 			this.SeatsTaken12[seat] = true;
+			return;
 		}
-		else if (@class == 21)
+		if (@class == 21)
 		{
 			this.SeatsTaken21[seat] = true;
+			return;
 		}
-		else if (@class == 22)
+		if (@class == 22)
 		{
 			this.SeatsTaken22[seat] = true;
+			return;
 		}
-		else if (@class == 31)
+		if (@class == 31)
 		{
 			this.SeatsTaken31[seat] = true;
+			return;
 		}
-		else if (@class == 32)
+		if (@class == 32)
 		{
 			this.SeatsTaken32[seat] = true;
 		}
@@ -2425,8 +2428,12 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.JSON.Students[this.SpawnID].Class = 11;
 			this.ID = 1;
-			while (this.ID < this.SeatsTaken11.Length && !this.SeatOccupied)
+			while (this.ID < this.SeatsTaken11.Length)
 			{
+				if (this.SeatOccupied)
+				{
+					break;
+				}
 				if (!this.SeatsTaken11[this.ID])
 				{
 					this.JSON.Students[this.SpawnID].Seat = this.ID;
@@ -2444,8 +2451,12 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.JSON.Students[this.SpawnID].Class = 12;
 			this.ID = 1;
-			while (this.ID < this.SeatsTaken12.Length && !this.SeatOccupied)
+			while (this.ID < this.SeatsTaken12.Length)
 			{
+				if (this.SeatOccupied)
+				{
+					break;
+				}
 				if (!this.SeatsTaken12[this.ID])
 				{
 					this.JSON.Students[this.SpawnID].Seat = this.ID;
@@ -2463,8 +2474,12 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.JSON.Students[this.SpawnID].Class = 21;
 			this.ID = 1;
-			while (this.ID < this.SeatsTaken21.Length && !this.SeatOccupied)
+			while (this.ID < this.SeatsTaken21.Length)
 			{
+				if (this.SeatOccupied)
+				{
+					break;
+				}
 				if (!this.SeatsTaken21[this.ID])
 				{
 					this.JSON.Students[this.SpawnID].Seat = this.ID;
@@ -2482,8 +2497,12 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.JSON.Students[this.SpawnID].Class = 22;
 			this.ID = 1;
-			while (this.ID < this.SeatsTaken22.Length && !this.SeatOccupied)
+			while (this.ID < this.SeatsTaken22.Length)
 			{
+				if (this.SeatOccupied)
+				{
+					break;
+				}
 				if (!this.SeatsTaken22[this.ID])
 				{
 					this.JSON.Students[this.SpawnID].Seat = this.ID;
@@ -2501,8 +2520,12 @@ public class StudentManagerScript : MonoBehaviour
 		{
 			this.JSON.Students[this.SpawnID].Class = 31;
 			this.ID = 1;
-			while (this.ID < this.SeatsTaken31.Length && !this.SeatOccupied)
+			while (this.ID < this.SeatsTaken31.Length)
 			{
+				if (this.SeatOccupied)
+				{
+					break;
+				}
 				if (!this.SeatsTaken31[this.ID])
 				{
 					this.JSON.Students[this.SpawnID].Seat = this.ID;
@@ -2638,17 +2661,11 @@ public class StudentManagerScript : MonoBehaviour
 		while (this.ID < this.Students.Length)
 		{
 			StudentScript studentScript = this.Students[this.ID];
-			if (studentScript != null && (float)StudentGlobals.GetStudentReputation(this.ID) < 33.33333f)
+			if (studentScript != null && (float)StudentGlobals.GetStudentReputation(this.ID) < 33.33333f && (this.ID != 36 || TaskGlobals.GetTaskStatus(36) != 3) && !studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && studentScript.Club != ClubType.Photography && studentScript.Club != ClubType.Delinquent && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
 			{
-				if (this.ID != 36 || TaskGlobals.GetTaskStatus(36) != 3)
-				{
-					if (!studentScript.Teacher && !studentScript.Slave && studentScript.Club != ClubType.Bully && studentScript.Club != ClubType.Council && studentScript.Club != ClubType.Photography && studentScript.Club != ClubType.Delinquent && (float)StudentGlobals.GetStudentReputation(this.ID) < this.LowestRep)
-					{
-						this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
-						this.VictimID = this.ID;
-						this.Bully = true;
-					}
-				}
+				this.LowestRep = (float)StudentGlobals.GetStudentReputation(this.ID);
+				this.VictimID = this.ID;
+				this.Bully = true;
 			}
 			this.ID++;
 		}
@@ -2725,13 +2742,11 @@ public class StudentManagerScript : MonoBehaviour
 			if (studentScript.gameObject.activeInHierarchy)
 			{
 				studentScript.gameObject.SetActive(false);
+				return;
 			}
-			else
-			{
-				studentScript.gameObject.SetActive(true);
-				this.UpdateOneAnimLayer(DisableID);
-				this.Students[DisableID].ReadPhase = 0;
-			}
+			studentScript.gameObject.SetActive(true);
+			this.UpdateOneAnimLayer(DisableID);
+			this.Students[DisableID].ReadPhase = 0;
 		}
 	}
 
@@ -2954,6 +2969,7 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				this.PracticeVocals.Play();
 				this.PracticeMusic.Play();
+				return;
 			}
 		}
 		else
@@ -3101,21 +3117,19 @@ public class StudentManagerScript : MonoBehaviour
 			Student.StudentManager.UpdateMe(Student.StudentID);
 			Student.CurrentDestination = Student.Destinations[Student.Phase];
 			Student.Pathfinding.target = Student.Destinations[Student.Phase];
+			return;
 		}
-		else
+		this.ID = 2;
+		while (this.ID < 8)
 		{
-			this.ID = 2;
-			while (this.ID < 8)
+			if (Vector3.Distance(Student.transform.position, this.DrinkingFountains[this.ID].transform.position) < Vector3.Distance(Student.transform.position, drinkingFountainScript.transform.position) && !this.DrinkingFountains[this.ID].Occupied)
 			{
-				if (Vector3.Distance(Student.transform.position, this.DrinkingFountains[this.ID].transform.position) < Vector3.Distance(Student.transform.position, drinkingFountainScript.transform.position) && !this.DrinkingFountains[this.ID].Occupied)
-				{
-					drinkingFountainScript = this.DrinkingFountains[this.ID];
-				}
-				this.ID++;
+				drinkingFountainScript = this.DrinkingFountains[this.ID];
 			}
-			Student.DrinkingFountain = drinkingFountainScript;
-			Student.DrinkingFountain.Occupied = true;
+			this.ID++;
 		}
+		Student.DrinkingFountain = drinkingFountainScript;
+		Student.DrinkingFountain.Occupied = true;
 	}
 
 	public void Save()
@@ -3255,52 +3269,26 @@ public class StudentManagerScript : MonoBehaviour
 		if (this.Police.BloodParent.childCount > 0)
 		{
 			this.ID = 0;
-			IEnumerator enumerator = this.Police.BloodParent.GetEnumerator();
-			try
+			foreach (object obj in this.Police.BloodParent)
 			{
-				while (enumerator.MoveNext())
+				Transform transform = (Transform)obj;
+				if (this.ID < 100)
 				{
-					object obj = enumerator.Current;
-					Transform transform = (Transform)obj;
-					if (this.ID < 100)
-					{
-						this.Blood[this.ID] = transform.gameObject.GetComponent<Collider>();
-						this.ID++;
-					}
-				}
-			}
-			finally
-			{
-				IDisposable disposable;
-				if ((disposable = (enumerator as IDisposable)) != null)
-				{
-					disposable.Dispose();
+					this.Blood[this.ID] = transform.gameObject.GetComponent<Collider>();
+					this.ID++;
 				}
 			}
 		}
 		if (this.Police.BloodParent.childCount > 0 || this.Police.LimbParent.childCount > 0)
 		{
 			this.ID = 0;
-			IEnumerator enumerator2 = this.Police.LimbParent.GetEnumerator();
-			try
+			foreach (object obj2 in this.Police.LimbParent)
 			{
-				while (enumerator2.MoveNext())
+				Transform transform2 = (Transform)obj2;
+				if (this.ID < 100)
 				{
-					object obj2 = enumerator2.Current;
-					Transform transform2 = (Transform)obj2;
-					if (this.ID < 100)
-					{
-						this.Limbs[this.ID] = transform2.gameObject.GetComponent<Collider>();
-						this.ID++;
-					}
-				}
-			}
-			finally
-			{
-				IDisposable disposable2;
-				if ((disposable2 = (enumerator2 as IDisposable)) != null)
-				{
-					disposable2.Dispose();
+					this.Limbs[this.ID] = transform2.gameObject.GetComponent<Collider>();
+					this.ID++;
 				}
 			}
 		}
@@ -3314,7 +3302,7 @@ public class StudentManagerScript : MonoBehaviour
 			if (studentScript != null && studentScript.CanSeeObject(studentScript.Yandere.gameObject, studentScript.Yandere.HeadPosition))
 			{
 				this.YandereVisible = true;
-				break;
+				return;
 			}
 		}
 	}

@@ -17,7 +17,7 @@ public class MythTreeScript : MonoBehaviour
 	{
 		if (SchemeGlobals.GetSchemeStage(2) > 2)
 		{
-			UnityEngine.Object.Destroy(this);
+			Object.Destroy(this);
 		}
 	}
 
@@ -32,6 +32,7 @@ public class MythTreeScript : MonoBehaviour
 				this.Jukebox.Dip = 0.5f;
 				this.Spoken = true;
 				this.MyAudio.Play();
+				return;
 			}
 		}
 		else if (!this.MyAudio.isPlaying)
@@ -39,7 +40,7 @@ public class MythTreeScript : MonoBehaviour
 			this.EventSubtitle.transform.localScale = Vector3.zero;
 			this.EventSubtitle.text = string.Empty;
 			this.Jukebox.Dip = 1f;
-			UnityEngine.Object.Destroy(this);
+			Object.Destroy(this);
 		}
 	}
 }

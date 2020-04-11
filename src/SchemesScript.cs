@@ -211,7 +211,7 @@ public class SchemesScript : MonoBehaviour
 			}
 			else
 			{
-				this.SchemeCostLabels[i].text = (SchemeGlobals.GetSchemeUnlocked(i) ? string.Empty : this.SchemeCosts[i].ToString());
+				this.SchemeCostLabels[i].text = ((!SchemeGlobals.GetSchemeUnlocked(i)) ? this.SchemeCosts[i].ToString() : string.Empty);
 				if (SchemeGlobals.GetSchemeStage(i) > SchemeGlobals.GetSchemePreviousStage(i))
 				{
 					SchemeGlobals.SetSchemePreviousStage(i, SchemeGlobals.GetSchemeStage(i));
@@ -232,7 +232,7 @@ public class SchemesScript : MonoBehaviour
 			if (!SchemeGlobals.GetSchemeUnlocked(this.ID))
 			{
 				this.Arrow.gameObject.SetActive(false);
-				this.PromptBar.Label[0].text = ((this.Inventory.PantyShots < this.SchemeCosts[this.ID]) ? string.Empty : "Purchase");
+				this.PromptBar.Label[0].text = ((this.Inventory.PantyShots >= this.SchemeCosts[this.ID]) ? "Purchase" : string.Empty);
 				this.PromptBar.UpdateButtons();
 			}
 			else if (SchemeGlobals.CurrentScheme == this.ID)
@@ -263,7 +263,7 @@ public class SchemesScript : MonoBehaviour
 		}
 		else
 		{
-			this.SchemeInstructions.text = (SchemeGlobals.GetSchemeUnlocked(this.ID) ? this.SchemeSteps[this.ID] : ("Skills Required:\n" + this.SchemeSkills[this.ID]));
+			this.SchemeInstructions.text = ((!SchemeGlobals.GetSchemeUnlocked(this.ID)) ? ("Skills Required:\n" + this.SchemeSkills[this.ID]) : this.SchemeSteps[this.ID]);
 		}
 		this.UpdatePantyCount();
 	}
@@ -279,26 +279,22 @@ public class SchemesScript : MonoBehaviour
 		{
 			'\n'
 		});
-		if (SchemeGlobals.CurrentScheme > 0)
-		{
-			if (SchemeGlobals.GetSchemeStage(SchemeGlobals.CurrentScheme) < 100)
-			{
-				this.HUDIcon.SetActive(true);
-				this.HUDInstructions.text = this.Steps[SchemeGlobals.GetSchemeStage(SchemeGlobals.CurrentScheme) - 1].ToString();
-			}
-			else
-			{
-				this.Arrow.gameObject.SetActive(false);
-				this.HUDIcon.gameObject.SetActive(false);
-				this.HUDInstructions.text = string.Empty;
-				SchemeGlobals.CurrentScheme = 0;
-			}
-		}
-		else
+		if (SchemeGlobals.CurrentScheme <= 0)
 		{
 			this.HUDIcon.SetActive(false);
 			this.HUDInstructions.text = string.Empty;
+			return;
 		}
+		if (SchemeGlobals.GetSchemeStage(SchemeGlobals.CurrentScheme) < 100)
+		{
+			this.HUDIcon.SetActive(true);
+			this.HUDInstructions.text = this.Steps[SchemeGlobals.GetSchemeStage(SchemeGlobals.CurrentScheme) - 1].ToString();
+			return;
+		}
+		this.Arrow.gameObject.SetActive(false);
+		this.HUDIcon.gameObject.SetActive(false);
+		this.HUDInstructions.text = string.Empty;
+		SchemeGlobals.CurrentScheme = 0;
 	}
 
 	public void UpdateSchemeDestinations()
@@ -321,20 +317,24 @@ public class SchemesScript : MonoBehaviour
 		if (SchemeGlobals.CurrentScheme == 1)
 		{
 			this.SchemeDestinations = this.Scheme1Destinations;
+			return;
 		}
-		else if (SchemeGlobals.CurrentScheme == 2)
+		if (SchemeGlobals.CurrentScheme == 2)
 		{
 			this.SchemeDestinations = this.Scheme2Destinations;
+			return;
 		}
-		else if (SchemeGlobals.CurrentScheme == 3)
+		if (SchemeGlobals.CurrentScheme == 3)
 		{
 			this.SchemeDestinations = this.Scheme3Destinations;
+			return;
 		}
-		else if (SchemeGlobals.CurrentScheme == 4)
+		if (SchemeGlobals.CurrentScheme == 4)
 		{
 			this.SchemeDestinations = this.Scheme4Destinations;
+			return;
 		}
-		else if (SchemeGlobals.CurrentScheme == 5)
+		if (SchemeGlobals.CurrentScheme == 5)
 		{
 			this.SchemeDestinations = this.Scheme5Destinations;
 		}

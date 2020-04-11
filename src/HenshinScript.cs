@@ -147,7 +147,9 @@ public class HenshinScript : MonoBehaviour
 	{
 		if (this.TransformingYandere && Input.GetKeyDown("="))
 		{
-			this.MyAudio.pitch += 1f;
+			AudioSource myAudio = this.MyAudio;
+			float pitch = myAudio.pitch;
+			myAudio.pitch = pitch + 1f;
 			Time.timeScale += 1f;
 		}
 		if (this.TransformingYandere || Vector3.Distance(this.Yandere.transform.position, this.TV.position) < 15f)
@@ -168,6 +170,7 @@ public class HenshinScript : MonoBehaviour
 					this.White.material.color = new Color(1f, 1f, 1f, 0f);
 					this.Timer = 0f;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 2)
@@ -201,6 +204,7 @@ public class HenshinScript : MonoBehaviour
 						this.Sparkles.Stop();
 						this.Timer = 0f;
 						this.Phase++;
+						return;
 					}
 				}
 			}
@@ -227,6 +231,7 @@ public class HenshinScript : MonoBehaviour
 						this.Miyuki.localPosition = new Vector3(0f, -0.795f, 2f);
 						this.Timer = 0f;
 						this.Phase++;
+						return;
 					}
 				}
 			}
@@ -277,6 +282,7 @@ public class HenshinScript : MonoBehaviour
 						this.SpinSparkles.Stop();
 						this.Timer = 0f;
 						this.Phase++;
+						return;
 					}
 				}
 			}
@@ -309,11 +315,10 @@ public class HenshinScript : MonoBehaviour
 							this.Yandere.Miyuki();
 							base.transform.parent.gameObject.SetActive(false);
 							Time.timeScale = 1f;
+							return;
 						}
-						else
-						{
-							this.Start();
-						}
+						this.Start();
+						return;
 					}
 				}
 			}

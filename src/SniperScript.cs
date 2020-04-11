@@ -20,7 +20,7 @@ public class SniperScript : MonoBehaviour
 			{
 				this.StudentManager.Students[11].BecomeRagdoll();
 			}
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

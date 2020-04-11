@@ -35,12 +35,14 @@ public class ActivateOsuScript : MonoBehaviour
 		if (this.Student == null)
 		{
 			this.Student = this.StudentManager.Students[this.PlayerID];
+			return;
 		}
-		else if (!this.Osu.activeInHierarchy)
+		if (!this.Osu.activeInHierarchy)
 		{
 			if (Vector3.Distance(base.transform.position, this.Student.transform.position) < 0.1f && this.Student.Routine && this.Student.CurrentDestination == this.Student.Destinations[this.Student.Phase] && this.Student.Actions[this.Student.Phase] == StudentActionType.Gaming)
 			{
 				this.ActivateOsu();
+				return;
 			}
 		}
 		else
@@ -66,9 +68,10 @@ public class ActivateOsuScript : MonoBehaviour
 	{
 		this.Osu.transform.parent.gameObject.SetActive(false);
 		this.Music.SetActive(false);
-		foreach (OsuScript osuScript in this.OsuScripts)
+		OsuScript[] osuScripts = this.OsuScripts;
+		for (int i = 0; i < osuScripts.Length; i++)
 		{
-			osuScript.Timer = 0f;
+			osuScripts[i].Timer = 0f;
 		}
 		this.Mouse.parent = base.transform.parent;
 		this.Mouse.transform.position = this.OriginalMousePosition;

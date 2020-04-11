@@ -41,6 +41,7 @@ public class MirrorScript : MonoBehaviour
 					this.ID = 0;
 				}
 				this.UpdatePersona();
+				return;
 			}
 		}
 		else if (this.Prompt.Circle[1].fillAmount == 0f && this.Prompt.Yandere.Health > 0)

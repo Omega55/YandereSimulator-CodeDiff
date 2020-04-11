@@ -37,7 +37,7 @@ public class DokiScript : MonoBehaviour
 			{
 				this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				this.Prompt.Circle[0].fillAmount = 1f;
-				UnityEngine.Object.Instantiate<GameObject>(this.TransformEffect, this.Yandere.Hips.position, Quaternion.identity);
+				Object.Instantiate<GameObject>(this.TransformEffect, this.Yandere.Hips.position, Quaternion.identity);
 				this.Yandere.MyRenderer.sharedMesh = this.Yandere.Uniforms[4];
 				this.Yandere.MyRenderer.materials[0].mainTexture = this.DokiTexture;
 				this.Yandere.MyRenderer.materials[1].mainTexture = this.DokiTexture;
@@ -67,6 +67,7 @@ public class DokiScript : MonoBehaviour
 				this.Yandere.MyRenderer.materials[2].mainTexture = this.DokiHair[this.ID];
 				this.Yandere.Hairstyle = 136 + this.ID;
 				this.Yandere.UpdateHair();
+				return;
 			}
 		}
 		else

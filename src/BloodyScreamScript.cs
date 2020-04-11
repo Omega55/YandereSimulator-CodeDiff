@@ -8,7 +8,7 @@ public class BloodyScreamScript : MonoBehaviour
 	private void Start()
 	{
 		AudioSource component = base.GetComponent<AudioSource>();
-		component.clip = this.Screams[UnityEngine.Random.Range(0, this.Screams.Length)];
+		component.clip = this.Screams[Random.Range(0, this.Screams.Length)];
 		component.Play();
 	}
 }

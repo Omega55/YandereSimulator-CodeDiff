@@ -29,14 +29,14 @@ public class InfoChanWindowScript : MonoBehaviour
 	{
 		if (this.Drop)
 		{
-			this.Rotation = Mathf.Lerp(this.Rotation, (!this.Drop) ? 0f : -90f, Time.deltaTime * 10f);
+			this.Rotation = Mathf.Lerp(this.Rotation, this.Drop ? -90f : 0f, Time.deltaTime * 10f);
 			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, this.Rotation, base.transform.localEulerAngles.z);
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 1f)
 			{
 				if ((float)this.Orders > 0f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.Drops[this.ItemsToDrop[this.Orders]], this.DropPoint.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.Drops[this.ItemsToDrop[this.Orders]], this.DropPoint.position, Quaternion.identity);
 					this.Timer = 0f;
 					this.Orders--;
 				}

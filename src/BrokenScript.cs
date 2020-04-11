@@ -69,7 +69,7 @@ public class BrokenScript : MonoBehaviour
 						this.Timer += Time.deltaTime;
 						if (this.VoiceClip == null)
 						{
-							this.Subtitle.text = string.Empty;
+							this.Subtitle.text = "";
 						}
 						if (this.Timer > 5f)
 						{
@@ -87,7 +87,7 @@ public class BrokenScript : MonoBehaviour
 					{
 						if (this.VoiceClip != null)
 						{
-							UnityEngine.Object.Destroy(this.VoiceClip);
+							Object.Destroy(this.VoiceClip);
 						}
 						this.Subtitle.text = "Do it.";
 						AudioClipPlayer.PlayAttached(this.DoIt, base.transform.position, base.transform, 1f, 5f, out this.VoiceClip, this.Yandere.transform.position.y);
@@ -99,7 +99,7 @@ public class BrokenScript : MonoBehaviour
 						AudioClipPlayer.PlayAttached(this.KillKillKill, base.transform.position, base.transform, 1f, 5f, out this.VoiceClip, this.Yandere.transform.position.y);
 					}
 					float num2 = Mathf.Abs((num - 5f) * 0.2f);
-					num2 = ((num2 <= 1f) ? num2 : 1f);
+					num2 = ((num2 > 1f) ? 1f : num2);
 					this.Subtitle.transform.localScale = new Vector3(num2, num2, num2);
 				}
 				else

@@ -39,7 +39,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	public readonly string[] HeadmasterSpeechText = new string[]
 	{
-		string.Empty,
+		"",
 		"Ahh...! It's...it's you!",
 		"No, that would be impossible...you must be...her daughter...",
 		"I'll tolerate you in my school, but not in my office.",
@@ -49,7 +49,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	public readonly string[] HeadmasterThreatText = new string[]
 	{
-		string.Empty,
+		"",
 		"Not another step!",
 		"You're up to no good! I know it!",
 		"I'm not going to let you harm me!",
@@ -59,7 +59,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	public readonly string[] HeadmasterBoxText = new string[]
 	{
-		string.Empty,
+		"",
 		"What...in...blazes are you doing?",
 		"Are you trying to re-enact something you saw in a video game?",
 		"Ugh, do you really think such a stupid ploy is going to work?",
@@ -304,6 +304,7 @@ public class HeadmasterScript : MonoBehaviour
 				this.MyAudio.clip = this.Crumple;
 				this.MyAudio.Play();
 				base.enabled = false;
+				return;
 			}
 		}
 		else
@@ -314,7 +315,7 @@ public class HeadmasterScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 10f);
+		this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, this.LookAtPlayer ? this.Yandere.Head.position : this.Default.position, Time.deltaTime * 10f);
 		this.Head.LookAt(this.LookAtTarget);
 	}
 
@@ -339,6 +340,7 @@ public class HeadmasterScript : MonoBehaviour
 			{
 				this.Tazer.SetActive(true);
 				this.Aiming = true;
+				return;
 			}
 		}
 		else if (this.MyAnimation["HeadmasterRaiseTazer"].time > this.MyAnimation["HeadmasterRaiseTazer"].length)
@@ -389,6 +391,7 @@ public class HeadmasterScript : MonoBehaviour
 				if (!this.Shooting)
 				{
 					this.Shoot();
+					return;
 				}
 			}
 			else if (this.Yandere.Armed)
@@ -396,6 +399,7 @@ public class HeadmasterScript : MonoBehaviour
 				if (!this.Shooting)
 				{
 					this.Shoot();
+					return;
 				}
 			}
 			else if ((this.Yandere.Carrying || this.Yandere.Dragging || (this.Yandere.PickUp != null && this.Yandere.PickUp.BodyPart)) && !this.Shooting)
@@ -416,8 +420,8 @@ public class HeadmasterScript : MonoBehaviour
 			this.Yandere.EmptyHands();
 			this.Yandere.CanMove = false;
 		}
-		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.TazerEffectTarget.position, Quaternion.identity);
-		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.Yandere.Spine[3].position, Quaternion.identity);
+		Object.Instantiate<GameObject>(this.LightningEffect, this.TazerEffectTarget.position, Quaternion.identity);
+		Object.Instantiate<GameObject>(this.LightningEffect, this.Yandere.Spine[3].position, Quaternion.identity);
 		this.MyAudio.clip = this.HeadmasterShockClip;
 		this.MyAudio.Play();
 		this.Yandere.CharacterAnimation.CrossFade("f02_swingB_00");

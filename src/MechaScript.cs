@@ -94,7 +94,7 @@ public class MechaScript : MonoBehaviour
 				{
 					if (this.Timer > 0f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[1].position, base.transform.rotation);
+						Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[1].position, base.transform.rotation);
 						this.ShotsFired++;
 					}
 				}
@@ -102,7 +102,7 @@ public class MechaScript : MonoBehaviour
 				{
 					if (this.Timer > 0.1f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[2].position, base.transform.rotation);
+						Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[2].position, base.transform.rotation);
 						this.ShotsFired++;
 					}
 				}
@@ -110,13 +110,13 @@ public class MechaScript : MonoBehaviour
 				{
 					if (this.Timer > 0.2f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[3].position, base.transform.rotation);
+						Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[3].position, base.transform.rotation);
 						this.ShotsFired++;
 					}
 				}
 				else if (this.ShotsFired < 4 && this.Timer > 0.3f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[4].position, base.transform.rotation);
+					Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[4].position, base.transform.rotation);
 					this.ShotsFired = 0;
 					this.Fire = false;
 					this.Timer = 0f;
@@ -151,17 +151,17 @@ public class MechaScript : MonoBehaviour
 		this.MyController.Move(Physics.gravity * Time.deltaTime);
 		float axis = Input.GetAxis("Vertical");
 		float axis2 = Input.GetAxis("Horizontal");
-		Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
-		a.y = 0f;
-		a = a.normalized;
-		Vector3 a2 = new Vector3(a.z, 0f, -a.x);
-		Vector3 vector = axis2 * a2 + axis * a;
+		Vector3 vector = this.MainCamera.transform.TransformDirection(Vector3.forward);
+		vector.y = 0f;
+		vector = vector.normalized;
+		Vector3 a = new Vector3(vector.z, 0f, -vector.x);
+		Vector3 vector2 = axis2 * a + axis * vector;
 		Quaternion b = Quaternion.identity;
-		if (vector != Vector3.zero)
+		if (vector2 != Vector3.zero)
 		{
-			b = Quaternion.LookRotation(vector);
+			b = Quaternion.LookRotation(vector2);
 		}
-		if (vector != Vector3.zero)
+		if (vector2 != Vector3.zero)
 		{
 			base.transform.rotation = Quaternion.Lerp(base.transform.rotation, b, Time.deltaTime);
 			this.Wheels[0].rotation = Quaternion.Lerp(this.Wheels[0].rotation, b, Time.deltaTime * 10f);

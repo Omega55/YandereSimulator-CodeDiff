@@ -62,23 +62,20 @@ namespace MaidDereMinigame
 				if (!this.prevVertical)
 				{
 					this.prevVertical = true;
-					if (num < 0f)
+					if (num >= 0f)
 					{
 						int num2 = this.mainMenuButtons.IndexOf(this.activeMenuButton);
-						if (num2 == 0)
-						{
-							this.SetActiveMenuButton(this.mainMenuButtons.Count - 1);
-						}
-						else
-						{
-							this.SetActiveMenuButton(num2 - 1);
-						}
+						this.SetActiveMenuButton((num2 + 1) % this.mainMenuButtons.Count);
+						return;
 					}
-					else
+					int num3 = this.mainMenuButtons.IndexOf(this.activeMenuButton);
+					if (num3 == 0)
 					{
-						int num3 = this.mainMenuButtons.IndexOf(this.activeMenuButton);
-						this.SetActiveMenuButton((num3 + 1) % this.mainMenuButtons.Count);
+						this.SetActiveMenuButton(this.mainMenuButtons.Count - 1);
+						return;
 					}
+					this.SetActiveMenuButton(num3 - 1);
+					return;
 				}
 			}
 			else

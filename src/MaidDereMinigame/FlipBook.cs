@@ -23,7 +23,7 @@ namespace MaidDereMinigame
 			{
 				if (FlipBook.instance == null)
 				{
-					FlipBook.instance = UnityEngine.Object.FindObjectOfType<FlipBook>();
+					FlipBook.instance = Object.FindObjectOfType<FlipBook>();
 				}
 				return FlipBook.instance;
 			}
@@ -66,13 +66,16 @@ namespace MaidDereMinigame
 
 		private IEnumerator FlipToPageRoutine(int page)
 		{
-			bool forward = this.curPage < page;
+			bool flag = this.curPage < page;
 			this.canGoBack = false;
-			if (forward)
+			if (flag)
 			{
 				while (this.curPage < page)
 				{
-					this.flipBookPages[this.curPage++].Transition(forward);
+					List<FlipBookPage> list = this.flipBookPages;
+					int num = this.curPage;
+					this.curPage = num + 1;
+					list[num].Transition(flag);
 				}
 				yield return new WaitForSeconds(0.4f);
 				this.flipBookPages[this.curPage].ObjectActive(true);
@@ -82,7 +85,10 @@ namespace MaidDereMinigame
 				this.flipBookPages[this.curPage].ObjectActive(false);
 				while (this.curPage > page)
 				{
-					this.flipBookPages[--this.curPage].Transition(forward);
+					List<FlipBookPage> list2 = this.flipBookPages;
+					int num = this.curPage - 1;
+					this.curPage = num;
+					list2[num].Transition(flag);
 				}
 				yield return new WaitForSeconds(0.6f);
 				this.flipBookPages[this.curPage].ObjectActive(true);

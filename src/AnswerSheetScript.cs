@@ -41,17 +41,15 @@ public class AnswerSheetScript : MonoBehaviour
 				this.DoorGap.Prompt.enabled = true;
 				this.MyMesh.mesh = null;
 				this.Phase++;
+				return;
 			}
-			else
-			{
-				SchemeGlobals.SetSchemeStage(5, 8);
-				this.Schemes.UpdateInstructions();
-				this.Prompt.Yandere.Inventory.AnswerSheet = false;
-				this.Prompt.Hide();
-				this.Prompt.enabled = false;
-				this.MyMesh.mesh = this.OriginalMesh;
-				this.Phase++;
-			}
+			SchemeGlobals.SetSchemeStage(5, 8);
+			this.Schemes.UpdateInstructions();
+			this.Prompt.Yandere.Inventory.AnswerSheet = false;
+			this.Prompt.Hide();
+			this.Prompt.enabled = false;
+			this.MyMesh.mesh = this.OriginalMesh;
+			this.Phase++;
 		}
 	}
 }

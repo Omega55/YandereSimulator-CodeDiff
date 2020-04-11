@@ -51,7 +51,7 @@ public class AlarmDiscScript : MonoBehaviour
 	{
 		if (this.Frame > 0)
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 		else if (!this.NoScream)
 		{
@@ -63,24 +63,24 @@ public class AlarmDiscScript : MonoBehaviour
 				}
 				if (!this.Male)
 				{
-					this.PlayClip(this.FemaleScreams[UnityEngine.Random.Range(0, this.FemaleScreams.Length)], base.transform.position);
+					this.PlayClip(this.FemaleScreams[Random.Range(0, this.FemaleScreams.Length)], base.transform.position);
 				}
 				else if (this.Delinquent)
 				{
-					this.PlayClip(this.DelinquentScreams[UnityEngine.Random.Range(0, this.DelinquentScreams.Length)], base.transform.position);
+					this.PlayClip(this.DelinquentScreams[Random.Range(0, this.DelinquentScreams.Length)], base.transform.position);
 				}
 				else
 				{
-					this.PlayClip(this.MaleScreams[UnityEngine.Random.Range(0, this.MaleScreams.Length)], base.transform.position);
+					this.PlayClip(this.MaleScreams[Random.Range(0, this.MaleScreams.Length)], base.transform.position);
 				}
 			}
 			else if (!this.Male)
 			{
-				this.PlayClip(this.LongFemaleScreams[UnityEngine.Random.Range(0, this.LongFemaleScreams.Length)], base.transform.position);
+				this.PlayClip(this.LongFemaleScreams[Random.Range(0, this.LongFemaleScreams.Length)], base.transform.position);
 			}
 			else
 			{
-				this.PlayClip(this.LongMaleScreams[UnityEngine.Random.Range(0, this.LongMaleScreams.Length)], base.transform.position);
+				this.PlayClip(this.LongMaleScreams[Random.Range(0, this.LongMaleScreams.Length)], base.transform.position);
 			}
 		}
 		this.Frame++;
@@ -93,7 +93,7 @@ public class AlarmDiscScript : MonoBehaviour
 			this.Student = other.gameObject.GetComponent<StudentScript>();
 			if (this.Student != null && this.Student.enabled && this.Student.DistractionSpot != new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z))
 			{
-				UnityEngine.Object.Destroy(this.Student.Giggle);
+				Object.Destroy(this.Student.Giggle);
 				this.Student.InvestigationTimer = 0f;
 				this.Student.InvestigationPhase = 0;
 				this.Student.Investigating = false;
@@ -113,14 +113,13 @@ public class AlarmDiscScript : MonoBehaviour
 						{
 							this.StudentIsBusy = true;
 						}
-						if ((this.Student.StudentID != this.Student.StudentManager.RivalID && this.Student.StudentID != 1) || this.Student.CurrentAction == StudentActionType.SitAndEatBento)
+						if (this.Student.StudentID == this.Student.StudentManager.RivalID || this.Student.StudentID == 1)
 						{
+							StudentActionType currentAction = this.Student.CurrentAction;
 						}
 						if ((!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Guarding && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && !this.Student.Fleeing && !this.Student.Shoving && !this.Student.SentHome && this.Student.ClubActivityPhase < 16 && !this.Student.Vomiting && !this.Student.Lethal && !this.Student.Headache && !this.Student.Sedated && !this.Student.SenpaiWitnessingRivalDie) || (this.Student.Persona == PersonaType.Protective && this.Originator.StudentID == 11))
 						{
-							if (this.Student.Male)
-							{
-							}
+							bool male = this.Student.Male;
 							if (!this.Student.Struggling)
 							{
 								this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.LeanAnim);
@@ -236,7 +235,7 @@ public class AlarmDiscScript : MonoBehaviour
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = 5f;
 		audioSource.maxDistance = 10f;
@@ -257,7 +256,7 @@ public class AlarmDiscScript : MonoBehaviour
 		if (!this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting && !this.Student.TurnOffRadio && !this.Student.Fleeing && !this.Student.Distracting && !this.Student.GoAway && !this.Student.FocusOnYandere && !this.StudentIsBusy && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && this.Student.Actions[this.Student.Phase] != StudentActionType.Graffiti && this.Student.Actions[this.Student.Phase] != StudentActionType.Bully && !this.Student.Headache)
 		{
 			this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
-			GameObject giggle = UnityEngine.Object.Instantiate<GameObject>(this.Student.EmptyGameObject, new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z), Quaternion.identity);
+			GameObject giggle = Object.Instantiate<GameObject>(this.Student.EmptyGameObject, new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z), Quaternion.identity);
 			this.Student.Giggle = giggle;
 			if (this.Student.Pathfinding != null && !this.Student.Nemesis)
 			{

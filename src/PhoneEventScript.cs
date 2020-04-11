@@ -156,168 +156,165 @@ public class PhoneEventScript : MonoBehaviour
 			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || !this.EventStudent.Alive)
 			{
 				this.EndEvent();
+				return;
 			}
-			else
+			if (!this.EventStudent.Pathfinding.canMove)
 			{
-				if (!this.EventStudent.Pathfinding.canMove)
+				if (this.EventPhase == 1)
 				{
-					if (this.EventPhase == 1)
+					this.Timer += Time.deltaTime;
+					this.EventStudent.CharacterAnimation.CrossFade(this.EventAnim[0]);
+					AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
+					this.EventPhase++;
+				}
+				else if (this.EventPhase == 2)
+				{
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 1.5f)
 					{
-						this.Timer += Time.deltaTime;
-						this.EventStudent.CharacterAnimation.CrossFade(this.EventAnim[0]);
-						AudioClipPlayer.Play(this.EventClip[0], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
+						this.EventStudent.SmartPhone.SetActive(true);
+						this.EventStudent.SmartPhone.transform.localPosition = new Vector3(-0.015f, -0.005f, -0.015f);
+						this.EventStudent.SmartPhone.transform.localEulerAngles = new Vector3(0f, -150f, 165f);
+					}
+					if (this.Timer > 2f)
+					{
+						AudioClipPlayer.Play(this.EventClip[1], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
+						this.EventSubtitle.text = this.EventSpeech[1];
+						this.Timer = 0f;
 						this.EventPhase++;
 					}
-					else if (this.EventPhase == 2)
+				}
+				else if (this.EventPhase == 3)
+				{
+					this.Timer += Time.deltaTime;
+					if (this.Timer > this.CurrentClipLength)
 					{
-						this.Timer += Time.deltaTime;
-						if (this.Timer > 1.5f)
-						{
-							this.EventStudent.SmartPhone.SetActive(true);
-							this.EventStudent.SmartPhone.transform.localPosition = new Vector3(-0.015f, -0.005f, -0.015f);
-							this.EventStudent.SmartPhone.transform.localEulerAngles = new Vector3(0f, -150f, 165f);
-						}
-						if (this.Timer > 2f)
-						{
-							AudioClipPlayer.Play(this.EventClip[1], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
-							this.EventSubtitle.text = this.EventSpeech[1];
-							this.Timer = 0f;
-							this.EventPhase++;
-						}
-					}
-					else if (this.EventPhase == 3)
-					{
-						this.Timer += Time.deltaTime;
-						if (this.Timer > this.CurrentClipLength)
-						{
-							this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.RunAnim);
-							this.EventStudent.CurrentDestination = this.EventLocation;
-							this.EventStudent.Pathfinding.target = this.EventLocation;
-							this.EventStudent.Pathfinding.canSearch = true;
-							this.EventStudent.Pathfinding.canMove = true;
-							this.EventStudent.Pathfinding.speed = 4f;
-							this.EventSubtitle.text = string.Empty;
-							this.Timer = 0f;
-							this.EventPhase++;
-						}
-					}
-					else if (this.EventPhase == 4)
-					{
-						if (this.EventStudentID != 11)
-						{
-							this.DumpPoint.enabled = true;
-						}
-						this.EventStudent.Private = true;
-						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[2]);
-						AudioClipPlayer.Play(this.EventClip[2], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.RunAnim);
+						this.EventStudent.CurrentDestination = this.EventLocation;
+						this.EventStudent.Pathfinding.target = this.EventLocation;
+						this.EventStudent.Pathfinding.canSearch = true;
+						this.EventStudent.Pathfinding.canMove = true;
+						this.EventStudent.Pathfinding.speed = 4f;
+						this.EventSubtitle.text = string.Empty;
+						this.Timer = 0f;
 						this.EventPhase++;
 					}
-					else if (this.EventPhase < 13)
+				}
+				else if (this.EventPhase == 4)
+				{
+					if (this.EventStudentID != 11)
 					{
-						if (this.VoiceClip != null)
-						{
-							this.VoiceClip.GetComponent<AudioSource>().pitch = Time.timeScale;
-							this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time = this.VoiceClip.GetComponent<AudioSource>().time;
-							if (this.VoiceClip.GetComponent<AudioSource>().time > this.SpeechTimes[this.EventPhase - 3])
-							{
-								this.EventSubtitle.text = this.EventSpeech[this.EventPhase - 3];
-								this.EventPhase++;
-							}
-						}
+						this.DumpPoint.enabled = true;
 					}
-					else
+					this.EventStudent.Private = true;
+					this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventAnim[2]);
+					AudioClipPlayer.Play(this.EventClip[2], this.EventStudent.transform.position, 5f, 10f, out this.VoiceClip, out this.CurrentClipLength);
+					this.EventPhase++;
+				}
+				else if (this.EventPhase < 13)
+				{
+					if (this.VoiceClip != null)
 					{
-						if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length * 90.33333f)
+						this.VoiceClip.GetComponent<AudioSource>().pitch = Time.timeScale;
+						this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time = this.VoiceClip.GetComponent<AudioSource>().time;
+						if (this.VoiceClip.GetComponent<AudioSource>().time > this.SpeechTimes[this.EventPhase - 3])
 						{
-							this.EventStudent.SmartPhone.SetActive(true);
-						}
-						if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length)
-						{
-							this.EndEvent();
-						}
-					}
-					float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-					if (num < 10f)
-					{
-						float num2 = Mathf.Abs((num - 10f) * 0.2f);
-						if (num2 < 0f)
-						{
-							num2 = 0f;
-						}
-						if (num2 > 1f)
-						{
-							num2 = 1f;
-						}
-						this.Jukebox.Dip = 1f - 0.5f * num2;
-						this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
-					}
-					else
-					{
-						this.EventSubtitle.transform.localScale = Vector3.zero;
-					}
-					if (base.enabled && this.EventPhase > 4)
-					{
-						if (num < 5f)
-						{
-							this.Yandere.Eavesdropping = true;
-						}
-						else
-						{
-							this.Yandere.Eavesdropping = false;
-						}
-					}
-					if (this.EventPhase == 11 && num < 5f)
-					{
-						if (this.EventStudentID == 30)
-						{
-							if (!EventGlobals.Event2)
-							{
-								EventGlobals.Event2 = true;
-								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-								ConversationGlobals.SetTopicDiscovered(25, true);
-								this.Yandere.NotificationManager.TopicName = "Money";
-								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
-								this.Yandere.NotificationManager.TopicName = "Money";
-								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
-								ConversationGlobals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
-							}
-						}
-						else if (!EventGlobals.OsanaEvent1)
-						{
-							EventGlobals.OsanaEvent1 = true;
-							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
+							this.EventSubtitle.text = this.EventSpeech[this.EventPhase - 3];
+							this.EventPhase++;
 						}
 					}
 				}
-				if ((this.EventStudent.Pathfinding.canMove || this.EventPhase > 3) && this.EventFriend != null && this.EventPhase > 3)
+				else
 				{
-					if (this.EventFriend.CurrentDestination != this.SpyLocation)
+					if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length * 90.33333f)
 					{
-						this.Timer += Time.deltaTime;
-						if (this.Timer > 3f)
+						this.EventStudent.SmartPhone.SetActive(true);
+					}
+					if (this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].time >= this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[2]].length)
+					{
+						this.EndEvent();
+					}
+				}
+				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+				if (num < 10f)
+				{
+					float num2 = Mathf.Abs((num - 10f) * 0.2f);
+					if (num2 < 0f)
+					{
+						num2 = 0f;
+					}
+					if (num2 > 1f)
+					{
+						num2 = 1f;
+					}
+					this.Jukebox.Dip = 1f - 0.5f * num2;
+					this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
+				}
+				else
+				{
+					this.EventSubtitle.transform.localScale = Vector3.zero;
+				}
+				if (base.enabled && this.EventPhase > 4)
+				{
+					if (num < 5f)
+					{
+						this.Yandere.Eavesdropping = true;
+					}
+					else
+					{
+						this.Yandere.Eavesdropping = false;
+					}
+				}
+				if (this.EventPhase == 11 && num < 5f)
+				{
+					if (this.EventStudentID == 30)
+					{
+						if (!EventGlobals.Event2)
 						{
-							this.EventFriend.CharacterAnimation.CrossFade(this.EventStudent.RunAnim);
-							this.EventFriend.CurrentDestination = this.SpyLocation;
-							this.EventFriend.Pathfinding.target = this.SpyLocation;
-							this.EventFriend.Pathfinding.canSearch = true;
-							this.EventFriend.Pathfinding.canMove = true;
-							this.EventFriend.Pathfinding.speed = 4f;
-							this.EventFriend.Routine = true;
-							this.Timer = 0f;
-						}
-						else
-						{
-							this.EventFriend.targetRotation = Quaternion.LookRotation(this.StudentManager.Students[this.EventStudentID].transform.position - this.EventFriend.transform.position);
-							this.EventFriend.transform.rotation = Quaternion.Slerp(this.EventFriend.transform.rotation, this.EventFriend.targetRotation, 10f * Time.deltaTime);
+							EventGlobals.Event2 = true;
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
+							ConversationGlobals.SetTopicDiscovered(25, true);
+							this.Yandere.NotificationManager.TopicName = "Money";
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+							this.Yandere.NotificationManager.TopicName = "Money";
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
+							ConversationGlobals.SetTopicLearnedByStudent(25, this.EventStudentID, true);
 						}
 					}
-					else if (this.EventFriend.DistanceToDestination < 1f)
+					else if (!EventGlobals.OsanaEvent1)
 					{
-						this.EventFriend.CharacterAnimation.CrossFade("f02_cornerPeek_00");
-						this.EventFriend.Pathfinding.canSearch = false;
-						this.EventFriend.Pathfinding.canMove = false;
-						this.SettleFriend();
+						EventGlobals.OsanaEvent1 = true;
+						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
 					}
+				}
+			}
+			if ((this.EventStudent.Pathfinding.canMove || this.EventPhase > 3) && this.EventFriend != null && this.EventPhase > 3)
+			{
+				if (this.EventFriend.CurrentDestination != this.SpyLocation)
+				{
+					this.Timer += Time.deltaTime;
+					if (this.Timer > 3f)
+					{
+						this.EventFriend.CharacterAnimation.CrossFade(this.EventStudent.RunAnim);
+						this.EventFriend.CurrentDestination = this.SpyLocation;
+						this.EventFriend.Pathfinding.target = this.SpyLocation;
+						this.EventFriend.Pathfinding.canSearch = true;
+						this.EventFriend.Pathfinding.canMove = true;
+						this.EventFriend.Pathfinding.speed = 4f;
+						this.EventFriend.Routine = true;
+						this.Timer = 0f;
+						return;
+					}
+					this.EventFriend.targetRotation = Quaternion.LookRotation(this.StudentManager.Students[this.EventStudentID].transform.position - this.EventFriend.transform.position);
+					this.EventFriend.transform.rotation = Quaternion.Slerp(this.EventFriend.transform.rotation, this.EventFriend.targetRotation, 10f * Time.deltaTime);
+					return;
+				}
+				else if (this.EventFriend.DistanceToDestination < 1f)
+				{
+					this.EventFriend.CharacterAnimation.CrossFade("f02_cornerPeek_00");
+					this.EventFriend.Pathfinding.canSearch = false;
+					this.EventFriend.Pathfinding.canMove = false;
+					this.SettleFriend();
 				}
 			}
 		}
@@ -326,8 +323,7 @@ public class PhoneEventScript : MonoBehaviour
 	private void SettleFriend()
 	{
 		this.EventFriend.MoveTowardsTarget(this.SpyLocation.position);
-		float num = Quaternion.Angle(this.EventFriend.transform.rotation, this.SpyLocation.rotation);
-		if (num > 1f)
+		if (Quaternion.Angle(this.EventFriend.transform.rotation, this.SpyLocation.rotation) > 1f)
 		{
 			this.EventFriend.transform.rotation = Quaternion.Slerp(this.EventFriend.transform.rotation, this.SpyLocation.rotation, 10f * Time.deltaTime);
 		}
@@ -341,7 +337,7 @@ public class PhoneEventScript : MonoBehaviour
 			this.EventStudent.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 			if (this.VoiceClip != null)
 			{
-				UnityEngine.Object.Destroy(this.VoiceClip);
+				Object.Destroy(this.VoiceClip);
 			}
 			if (this.EventFriend != null)
 			{

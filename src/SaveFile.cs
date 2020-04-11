@@ -74,8 +74,7 @@ public class SaveFile
 			string s = File.ReadAllText(SaveFile.GetFullSaveFileName(index));
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(SaveFileData));
 			MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(s));
-			SaveFileData saveFileData = (SaveFileData)xmlSerializer.Deserialize(stream);
-			result = new SaveFile(saveFileData, index);
+			result = new SaveFile((SaveFileData)xmlSerializer.Deserialize(stream), index);
 		}
 		catch (Exception ex)
 		{
@@ -96,8 +95,7 @@ public class SaveFile
 	{
 		try
 		{
-			string fullSaveFileName = SaveFile.GetFullSaveFileName(index);
-			File.Delete(fullSaveFileName);
+			File.Delete(SaveFile.GetFullSaveFileName(index));
 		}
 		catch (Exception ex)
 		{
@@ -127,8 +125,7 @@ public class SaveFile
 			string fullSaveFileName = SaveFile.GetFullSaveFileName(this.index);
 			if (!SaveFile.Exists(this.index))
 			{
-				FileStream fileStream = File.Create(fullSaveFileName);
-				fileStream.Dispose();
+				File.Create(fullSaveFileName).Dispose();
 			}
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(SaveFileData));
 			using (XmlWriter xmlWriter = XmlWriter.Create(fullSaveFileName, new XmlWriterSettings

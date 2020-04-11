@@ -376,9 +376,7 @@ public class CosmeticScript : MonoBehaviour
 
 	public void Start()
 	{
-		if (this.Kidnapped)
-		{
-		}
+		bool kidnapped = this.Kidnapped;
 		if (this.RightShoe != null)
 		{
 			this.RightShoe.SetActive(false);
@@ -446,7 +444,7 @@ public class CosmeticScript : MonoBehaviour
 			this.FacialHairstyle = 0;
 			this.EyewearID = 0;
 			this.Accessory = 0;
-			this.Stockings = string.Empty;
+			this.Stockings = "";
 			this.BreastSize = 1f;
 			this.Empty = true;
 		}
@@ -455,13 +453,13 @@ public class CosmeticScript : MonoBehaviour
 			this.Randomize = true;
 			if (!this.Male)
 			{
-				name = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
+				name = this.StudentManager.FirstNames[Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[Random.Range(0, this.StudentManager.LastNames.Length)];
 				this.JSON.Students[this.StudentID].Name = name;
 				this.Student.Name = name;
 			}
 			else
 			{
-				name = this.StudentManager.MaleNames[UnityEngine.Random.Range(0, this.StudentManager.MaleNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
+				name = this.StudentManager.MaleNames[Random.Range(0, this.StudentManager.MaleNames.Length)] + " " + this.StudentManager.LastNames[Random.Range(0, this.StudentManager.LastNames.Length)];
 				this.JSON.Students[this.StudentID].Name = name;
 				this.Student.Name = name;
 			}
@@ -475,7 +473,7 @@ public class CosmeticScript : MonoBehaviour
 		if (this.Randomize)
 		{
 			this.Teacher = false;
-			this.BreastSize = UnityEngine.Random.Range(0.5f, 2f);
+			this.BreastSize = Random.Range(0.5f, 2f);
 			this.Accessory = 0;
 			this.Club = ClubType.None;
 			if (!this.Male)
@@ -483,13 +481,13 @@ public class CosmeticScript : MonoBehaviour
 				this.Hairstyle = 1;
 				while (this.Hairstyle == 1 || this.Hairstyle == 20 || this.Hairstyle == 21)
 				{
-					this.Hairstyle = UnityEngine.Random.Range(1, this.FemaleHair.Length);
+					this.Hairstyle = Random.Range(1, this.FemaleHair.Length);
 				}
 			}
 			else
 			{
-				this.SkinColor = UnityEngine.Random.Range(0, this.SkinTextures.Length);
-				this.Hairstyle = UnityEngine.Random.Range(1, this.MaleHair.Length);
+				this.SkinColor = Random.Range(0, this.SkinTextures.Length);
+				this.Hairstyle = Random.Range(1, this.MaleHair.Length);
 			}
 		}
 		if (!this.Male)
@@ -548,7 +546,7 @@ public class CosmeticScript : MonoBehaviour
 				this.LeftWristband.GetComponent<Renderer>().material.mainTexture = this.WristwearTextures[this.StudentID];
 				this.Bookbag.GetComponent<Renderer>().material.mainTexture = this.BookbagTextures[this.StudentID];
 				this.HoodieRenderer.material.mainTexture = this.HoodieTextures[this.StudentID];
-				if (this.PhoneCharms.Length > 0)
+				if (this.PhoneCharms.Length != 0)
 				{
 					this.PhoneCharms[this.StudentID].SetActive(true);
 				}
@@ -737,9 +735,10 @@ public class CosmeticScript : MonoBehaviour
 		else
 		{
 			this.ThickBrows.SetActive(false);
-			foreach (GameObject gameObject2 in this.GaloAccessories)
+			GameObject[] array = this.GaloAccessories;
+			for (int i = 0; i < array.Length; i++)
 			{
-				gameObject2.SetActive(false);
+				array[i].SetActive(false);
 			}
 			if (this.Club == ClubType.Occult)
 			{
@@ -774,9 +773,10 @@ public class CosmeticScript : MonoBehaviour
 				}
 				if (StudentGlobals.CustomSuitorJewelry > 0)
 				{
-					foreach (GameObject gameObject3 in this.GaloAccessories)
+					array = this.GaloAccessories;
+					for (int i = 0; i < array.Length; i++)
 					{
-						gameObject3.SetActive(true);
+						array[i].SetActive(true);
 					}
 				}
 			}
@@ -874,7 +874,7 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.Armband.GetComponent<Renderer>().material.SetTextureOffset("_MainTex", new Vector2(-0.64375f, 0f));
 			this.Armband.SetActive(true);
-			string str = string.Empty;
+			string str = "";
 			if (this.StudentID == 86)
 			{
 				str = "Strict";
@@ -945,144 +945,144 @@ public class CosmeticScript : MonoBehaviour
 				component.material.SetTextureOffset("_MainTex", new Vector2(0.69f, 0.335f));
 			}
 		}
-		foreach (GameObject gameObject4 in this.FemaleAccessories)
+		foreach (GameObject gameObject2 in this.FemaleAccessories)
+		{
+			if (gameObject2 != null)
+			{
+				gameObject2.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject3 in this.MaleAccessories)
+		{
+			if (gameObject3 != null)
+			{
+				gameObject3.SetActive(false);
+			}
+		}
+		foreach (GameObject gameObject4 in this.ClubAccessories)
 		{
 			if (gameObject4 != null)
 			{
 				gameObject4.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject5 in this.MaleAccessories)
+		foreach (GameObject gameObject5 in this.TeacherAccessories)
 		{
 			if (gameObject5 != null)
 			{
 				gameObject5.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject6 in this.ClubAccessories)
+		foreach (GameObject gameObject6 in this.TeacherHair)
 		{
 			if (gameObject6 != null)
 			{
 				gameObject6.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject7 in this.TeacherAccessories)
+		foreach (GameObject gameObject7 in this.FemaleHair)
 		{
 			if (gameObject7 != null)
 			{
 				gameObject7.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject8 in this.TeacherHair)
+		foreach (GameObject gameObject8 in this.MaleHair)
 		{
 			if (gameObject8 != null)
 			{
 				gameObject8.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject9 in this.FemaleHair)
+		foreach (GameObject gameObject9 in this.FacialHair)
 		{
 			if (gameObject9 != null)
 			{
 				gameObject9.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject10 in this.MaleHair)
+		foreach (GameObject gameObject10 in this.Eyewear)
 		{
 			if (gameObject10 != null)
 			{
 				gameObject10.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject11 in this.FacialHair)
+		foreach (GameObject gameObject11 in this.RightStockings)
 		{
 			if (gameObject11 != null)
 			{
 				gameObject11.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject12 in this.Eyewear)
+		foreach (GameObject gameObject12 in this.LeftStockings)
 		{
 			if (gameObject12 != null)
 			{
 				gameObject12.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject13 in this.RightStockings)
+		foreach (GameObject gameObject13 in this.Scanners)
 		{
 			if (gameObject13 != null)
 			{
 				gameObject13.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject14 in this.LeftStockings)
+		foreach (GameObject gameObject14 in this.Flowers)
 		{
 			if (gameObject14 != null)
 			{
 				gameObject14.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject15 in this.Scanners)
+		foreach (GameObject gameObject15 in this.Roses)
 		{
 			if (gameObject15 != null)
 			{
 				gameObject15.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject16 in this.Flowers)
+		foreach (GameObject gameObject16 in this.Goggles)
 		{
 			if (gameObject16 != null)
 			{
 				gameObject16.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject17 in this.Roses)
+		foreach (GameObject gameObject17 in this.RedCloth)
 		{
 			if (gameObject17 != null)
 			{
 				gameObject17.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject18 in this.Goggles)
+		foreach (GameObject gameObject18 in this.Kerchiefs)
 		{
 			if (gameObject18 != null)
 			{
 				gameObject18.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject19 in this.RedCloth)
+		foreach (GameObject gameObject19 in this.CatGifts)
 		{
 			if (gameObject19 != null)
 			{
 				gameObject19.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject20 in this.Kerchiefs)
+		foreach (GameObject gameObject20 in this.PunkAccessories)
 		{
 			if (gameObject20 != null)
 			{
 				gameObject20.SetActive(false);
 			}
 		}
-		foreach (GameObject gameObject21 in this.CatGifts)
+		foreach (GameObject gameObject21 in this.MusicNotes)
 		{
 			if (gameObject21 != null)
 			{
 				gameObject21.SetActive(false);
-			}
-		}
-		foreach (GameObject gameObject22 in this.PunkAccessories)
-		{
-			if (gameObject22 != null)
-			{
-				gameObject22.SetActive(false);
-			}
-		}
-		foreach (GameObject gameObject23 in this.MusicNotes)
-		{
-			if (gameObject23 != null)
-			{
-				gameObject23.SetActive(false);
 			}
 		}
 		bool flag2 = false;
@@ -1329,9 +1329,9 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
-			float r = UnityEngine.Random.Range(0f, 1f);
-			float g = UnityEngine.Random.Range(0f, 1f);
-			float b = UnityEngine.Random.Range(0f, 1f);
+			float r = Random.Range(0f, 1f);
+			float g = Random.Range(0f, 1f);
+			float b = Random.Range(0f, 1f);
 			this.RightEyeRenderer.material.color = new Color(r, g, b);
 			this.LeftEyeRenderer.material.color = new Color(r, g, b);
 		}
@@ -1447,7 +1447,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
-			this.HairRenderer.material.color = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
+			this.HairRenderer.material.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 		}
 		if (!this.Teacher)
 		{
@@ -1499,9 +1499,7 @@ public class CosmeticScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.StudentID == 10)
-		{
-		}
+		int studentID = this.StudentID;
 		if (this.StudentID == 25 || this.StudentID == 30)
 		{
 			this.FemaleAccessories[6].SetActive(true);
@@ -1573,7 +1571,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Male && (this.Hairstyle == 20 || this.Hairstyle == 21))
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -1586,7 +1584,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
-			this.FaceTexture = ((!this.CustomHair) ? this.FaceTextures[this.SkinColor] : this.HairRenderer.material.mainTexture);
+			this.FaceTexture = (this.CustomHair ? this.HairRenderer.material.mainTexture : this.FaceTextures[this.SkinColor]);
 			bool flag = false;
 			if (this.StudentID == 28)
 			{
@@ -1703,13 +1701,11 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[this.FaceID].mainTexture = this.FaceTexture;
 			this.MyRenderer.materials[this.SkinID].mainTexture = this.SkinTextures[this.SkinColor];
 			this.MyRenderer.materials[this.UniformID].mainTexture = this.CasualTexture;
+			return;
 		}
-		else
-		{
-			this.MyRenderer.materials[this.FaceID].mainTexture = this.FaceTexture;
-			this.MyRenderer.materials[this.SkinID].mainTexture = this.SkinTextures[this.SkinColor];
-			this.MyRenderer.materials[this.UniformID].mainTexture = this.UniformTexture;
-		}
+		this.MyRenderer.materials[this.FaceID].mainTexture = this.FaceTexture;
+		this.MyRenderer.materials[this.SkinID].mainTexture = this.SkinTextures[this.SkinColor];
+		this.MyRenderer.materials[this.UniformID].mainTexture = this.UniformTexture;
 	}
 
 	public void SetFemaleUniform()
@@ -1793,9 +1789,7 @@ public class CosmeticScript : MonoBehaviour
 			this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
 			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
 		}
-		if (this.Club == ClubType.Bully)
-		{
-		}
+		ClubType club = this.Club;
 		if (this.MysteriousObstacle)
 		{
 			this.FaceTexture = this.BlackBody;
@@ -1817,11 +1811,9 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
 			this.MyRenderer.materials[1].SetFloat("_BlendAmount1", 1f);
+			return;
 		}
-		else
-		{
-			this.RemoveCensor();
-		}
+		this.RemoveCensor();
 	}
 
 	public void RemoveCensor()
@@ -1839,23 +1831,20 @@ public class CosmeticScript : MonoBehaviour
 				if (!this.TakingPortrait)
 				{
 					this.MaleAccessories[1].SetActive(false);
+					return;
 				}
-				else
-				{
-					this.MaleAccessories[1].SetActive(true);
-				}
+				this.MaleAccessories[1].SetActive(true);
+				return;
 			}
 		}
-		else if (this.StudentID == 11 && this.PhoneCharms.Length > 0)
+		else if (this.StudentID == 11 && this.PhoneCharms.Length != 0)
 		{
 			if (TaskGlobals.GetTaskStatus(11) < 3)
 			{
 				this.PhoneCharms[11].SetActive(false);
+				return;
 			}
-			else
-			{
-				this.PhoneCharms[11].SetActive(true);
-			}
+			this.PhoneCharms[11].SetActive(true);
 		}
 	}
 
@@ -1898,77 +1887,77 @@ public class CosmeticScript : MonoBehaviour
 		{
 			if (gameObject != null && !gameObject.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject);
+				Object.Destroy(gameObject);
 			}
 		}
 		foreach (GameObject gameObject2 in this.MaleAccessories)
 		{
 			if (gameObject2 != null && !gameObject2.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject2);
+				Object.Destroy(gameObject2);
 			}
 		}
 		foreach (GameObject gameObject3 in this.ClubAccessories)
 		{
 			if (gameObject3 != null && !gameObject3.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject3);
+				Object.Destroy(gameObject3);
 			}
 		}
 		foreach (GameObject gameObject4 in this.TeacherAccessories)
 		{
 			if (gameObject4 != null && !gameObject4.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject4);
+				Object.Destroy(gameObject4);
 			}
 		}
 		foreach (GameObject gameObject5 in this.TeacherHair)
 		{
 			if (gameObject5 != null && !gameObject5.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject5);
+				Object.Destroy(gameObject5);
 			}
 		}
 		foreach (GameObject gameObject6 in this.FemaleHair)
 		{
 			if (gameObject6 != null && !gameObject6.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject6);
+				Object.Destroy(gameObject6);
 			}
 		}
 		foreach (GameObject gameObject7 in this.MaleHair)
 		{
 			if (gameObject7 != null && !gameObject7.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject7);
+				Object.Destroy(gameObject7);
 			}
 		}
 		foreach (GameObject gameObject8 in this.FacialHair)
 		{
 			if (gameObject8 != null && !gameObject8.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject8);
+				Object.Destroy(gameObject8);
 			}
 		}
 		foreach (GameObject gameObject9 in this.Eyewear)
 		{
 			if (gameObject9 != null && !gameObject9.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject9);
+				Object.Destroy(gameObject9);
 			}
 		}
 		foreach (GameObject gameObject10 in this.RightStockings)
 		{
 			if (gameObject10 != null && !gameObject10.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject10);
+				Object.Destroy(gameObject10);
 			}
 		}
 		foreach (GameObject gameObject11 in this.LeftStockings)
 		{
 			if (gameObject11 != null && !gameObject11.activeInHierarchy)
 			{
-				UnityEngine.Object.Destroy(gameObject11);
+				Object.Destroy(gameObject11);
 			}
 		}
 	}
@@ -2073,96 +2062,106 @@ public class CosmeticScript : MonoBehaviour
 				this.CustomStockings[1] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[1];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom2")
 		{
-			WWW NewCustomStockings2 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings2.png");
-			yield return NewCustomStockings2;
-			if (NewCustomStockings2.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings2.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[2] = NewCustomStockings2.texture;
+				this.CustomStockings[2] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[2];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom3")
 		{
-			WWW NewCustomStockings3 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings3.png");
-			yield return NewCustomStockings3;
-			if (NewCustomStockings3.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings3.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[3] = NewCustomStockings3.texture;
+				this.CustomStockings[3] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[3];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom4")
 		{
-			WWW NewCustomStockings4 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings4.png");
-			yield return NewCustomStockings4;
-			if (NewCustomStockings4.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings4.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[4] = NewCustomStockings4.texture;
+				this.CustomStockings[4] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[4];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom5")
 		{
-			WWW NewCustomStockings5 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings5.png");
-			yield return NewCustomStockings5;
-			if (NewCustomStockings5.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings5.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[5] = NewCustomStockings5.texture;
+				this.CustomStockings[5] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[5];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom6")
 		{
-			WWW NewCustomStockings6 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings6.png");
-			yield return NewCustomStockings6;
-			if (NewCustomStockings6.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings6.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[6] = NewCustomStockings6.texture;
+				this.CustomStockings[6] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[6];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom7")
 		{
-			WWW NewCustomStockings7 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings7.png");
-			yield return NewCustomStockings7;
-			if (NewCustomStockings7.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings7.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[7] = NewCustomStockings7.texture;
+				this.CustomStockings[7] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[7];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom8")
 		{
-			WWW NewCustomStockings8 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings8.png");
-			yield return NewCustomStockings8;
-			if (NewCustomStockings8.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings8.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[8] = NewCustomStockings8.texture;
+				this.CustomStockings[8] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[8];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom9")
 		{
-			WWW NewCustomStockings9 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings9.png");
-			yield return NewCustomStockings9;
-			if (NewCustomStockings9.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings9.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[9] = NewCustomStockings9.texture;
+				this.CustomStockings[9] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[9];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Custom10")
 		{
-			WWW NewCustomStockings10 = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings10.png");
-			yield return NewCustomStockings10;
-			if (NewCustomStockings10.error == null)
+			WWW NewCustomStockings = new WWW("file:///" + Application.streamingAssetsPath + "/CustomStockings10.png");
+			yield return NewCustomStockings;
+			if (NewCustomStockings.error == null)
 			{
-				this.CustomStockings[10] = NewCustomStockings10.texture;
+				this.CustomStockings[10] = NewCustomStockings.texture;
 			}
 			this.MyStockings = this.CustomStockings[10];
+			NewCustomStockings = null;
 		}
 		else if (this.Stockings == "Loose")
 		{
@@ -2193,11 +2192,9 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[0].mainTexture = this.CasualTexture;
 			this.MyRenderer.materials[1].mainTexture = this.CasualTexture;
+			return;
 		}
-		else
-		{
-			this.MyRenderer.materials[this.UniformID].mainTexture = this.CasualTexture;
-		}
+		this.MyRenderer.materials[this.UniformID].mainTexture = this.CasualTexture;
 	}
 
 	public void WearOutdoorShoes()
@@ -2206,11 +2203,9 @@ public class CosmeticScript : MonoBehaviour
 		{
 			this.MyRenderer.materials[0].mainTexture = this.UniformTexture;
 			this.MyRenderer.materials[1].mainTexture = this.UniformTexture;
+			return;
 		}
-		else
-		{
-			this.MyRenderer.materials[this.UniformID].mainTexture = this.UniformTexture;
-		}
+		this.MyRenderer.materials[this.UniformID].mainTexture = this.UniformTexture;
 	}
 
 	public void EyeTypeCheck()
@@ -2365,26 +2360,26 @@ public class CosmeticScript : MonoBehaviour
 
 	public StudentCosmeticSheet CosmeticSheet()
 	{
-		StudentCosmeticSheet result = default(StudentCosmeticSheet);
-		result.Blendshapes = new List<float>();
-		result.Male = this.Male;
-		result.CustomHair = this.CustomHair;
-		result.Accessory = this.Accessory;
-		result.Hairstyle = this.Hairstyle;
-		result.Stockings = this.Stockings;
-		result.BreastSize = this.BreastSize;
-		result.CustomHair = this.CustomHair;
-		result.Schoolwear = this.Student.Schoolwear;
-		result.Bloody = (this.Student.LiquidProjector.enabled && this.Student.LiquidProjector.material.mainTexture == this.Student.BloodTexture);
-		result.HairColor = this.HairRenderer.material.color;
-		result.EyeColor = this.RightEyeRenderer.material.color;
+		StudentCosmeticSheet studentCosmeticSheet = default(StudentCosmeticSheet);
+		studentCosmeticSheet.Blendshapes = new List<float>();
+		studentCosmeticSheet.Male = this.Male;
+		studentCosmeticSheet.CustomHair = this.CustomHair;
+		studentCosmeticSheet.Accessory = this.Accessory;
+		studentCosmeticSheet.Hairstyle = this.Hairstyle;
+		studentCosmeticSheet.Stockings = this.Stockings;
+		studentCosmeticSheet.BreastSize = this.BreastSize;
+		studentCosmeticSheet.CustomHair = this.CustomHair;
+		studentCosmeticSheet.Schoolwear = this.Student.Schoolwear;
+		studentCosmeticSheet.Bloody = (this.Student.LiquidProjector.enabled && this.Student.LiquidProjector.material.mainTexture == this.Student.BloodTexture);
+		studentCosmeticSheet.HairColor = this.HairRenderer.material.color;
+		studentCosmeticSheet.EyeColor = this.RightEyeRenderer.material.color;
 		if (!this.Male)
 		{
 			for (int i = 0; i < this.MyRenderer.sharedMesh.blendShapeCount; i++)
 			{
-				result.Blendshapes.Add(this.MyRenderer.GetBlendShapeWeight(i));
+				studentCosmeticSheet.Blendshapes.Add(this.MyRenderer.GetBlendShapeWeight(i));
 			}
 		}
-		return result;
+		return studentCosmeticSheet;
 	}
 }

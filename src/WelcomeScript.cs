@@ -80,20 +80,14 @@ public class WelcomeScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.S))
-		{
-		}
-		if (Input.GetKeyDown(KeyCode.Y))
-		{
-		}
+		Input.GetKeyDown(KeyCode.S);
+		Input.GetKeyDown(KeyCode.Y);
 		if (!this.Continue)
 		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime);
 			if (this.Darkness.color.a <= 0f)
 			{
-				if (Input.GetKeyDown(KeyCode.W))
-				{
-				}
+				Input.GetKeyDown(KeyCode.W);
 				if (Input.anyKeyDown)
 				{
 					this.Timer = 5f;
@@ -131,18 +125,16 @@ public class WelcomeScript : MonoBehaviour
 					this.FlashRed = true;
 				}
 			}
+			return;
 		}
-		else
+		this.ID = 0;
+		while (this.ID < 3)
 		{
-			this.ID = 0;
-			while (this.ID < 3)
+			this.ID++;
+			this.FlashingLabels[this.ID].color = new Color(this.FlashingLabels[this.ID].color.r - Time.deltaTime * 10f, this.FlashingLabels[this.ID].color.g, this.FlashingLabels[this.ID].color.b, this.FlashingLabels[this.ID].color.a);
+			if (this.FlashingLabels[this.ID].color.r < 0f)
 			{
-				this.ID++;
-				this.FlashingLabels[this.ID].color = new Color(this.FlashingLabels[this.ID].color.r - Time.deltaTime * 10f, this.FlashingLabels[this.ID].color.g, this.FlashingLabels[this.ID].color.b, this.FlashingLabels[this.ID].color.a);
-				if (this.FlashingLabels[this.ID].color.r < 0f)
-				{
-					this.FlashRed = false;
-				}
+				this.FlashRed = false;
 			}
 		}
 	}

@@ -30,6 +30,7 @@ public class BentoScript : MonoBehaviour
 			if (this.Prompt.Yandere != null)
 			{
 				this.Yandere = this.Prompt.Yandere;
+				return;
 			}
 		}
 		else if (this.Yandere.Inventory.EmeticPoison || this.Yandere.Inventory.RatPoison || this.Yandere.Inventory.LethalPoison)
@@ -84,6 +85,7 @@ public class BentoScript : MonoBehaviour
 					this.Poison = 2;
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
+					return;
 				}
 			}
 		}

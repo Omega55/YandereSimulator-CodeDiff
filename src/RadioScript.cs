@@ -68,8 +68,7 @@ public class RadioScript : MonoBehaviour
 			}
 			if (this.On && this.Victim == null && this.AlarmDisc != null)
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
-				AlarmDiscScript component = gameObject.GetComponent<AlarmDiscScript>();
+				AlarmDiscScript component = Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>();
 				component.SourceRadio = this;
 				component.NoScream = true;
 				component.Radio = true;
@@ -119,6 +118,7 @@ public class RadioScript : MonoBehaviour
 					if (this.Jukebox.ClubDip > this.Jukebox.Volume)
 					{
 						this.Jukebox.ClubDip = this.Jukebox.Volume;
+						return;
 					}
 				}
 			}

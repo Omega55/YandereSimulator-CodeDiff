@@ -132,7 +132,7 @@ public class NoteLockerScript : MonoBehaviour
 				}
 				if (this.Timer > 3.5f && !this.SpawnedNote)
 				{
-					this.NewNote = UnityEngine.Object.Instantiate<GameObject>(this.Note, base.transform.position, Quaternion.identity);
+					this.NewNote = Object.Instantiate<GameObject>(this.Note, base.transform.position, Quaternion.identity);
 					this.NewNote.transform.parent = this.Student.LeftHand;
 					if (this.Student.Male)
 					{
@@ -156,12 +156,12 @@ public class NoteLockerScript : MonoBehaviour
 						}
 						else
 						{
-							UnityEngine.Object.Destroy(this.NewNote);
+							Object.Destroy(this.NewNote);
 						}
 					}
 					if (this.Timer > 12.25f && this.NewBall == null)
 					{
-						this.NewBall = UnityEngine.Object.Instantiate<GameObject>(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
+						this.NewBall = Object.Instantiate<GameObject>(this.Ball, this.Student.LeftHand.position, Quaternion.identity);
 						Rigidbody component = this.NewBall.GetComponent<Rigidbody>();
 						component.AddRelativeForce(this.Student.transform.forward * -100f);
 						component.AddRelativeForce(Vector3.up * 100f);
@@ -176,7 +176,7 @@ public class NoteLockerScript : MonoBehaviour
 					}
 					else
 					{
-						UnityEngine.Object.Destroy(this.NewNote);
+						Object.Destroy(this.NewNote);
 					}
 				}
 				if (this.Phase == 1)
@@ -194,6 +194,7 @@ public class NoteLockerScript : MonoBehaviour
 							this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 1, 3f);
 						}
 						this.Phase++;
+						return;
 					}
 				}
 				else if (this.Phase == 2)
@@ -213,6 +214,7 @@ public class NoteLockerScript : MonoBehaviour
 								this.Yandere.Subtitle.UpdateLabel(SubtitleType.NoteReactionMale, 2, 3f);
 							}
 							this.Phase++;
+							return;
 						}
 					}
 					else if (this.Timer > 10.166667f)

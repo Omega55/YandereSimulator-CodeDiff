@@ -196,14 +196,13 @@ public class TitleMenuScript : MonoBehaviour
 			{
 				if (this.InputManager.TappedDown)
 				{
-					this.Selected = ((this.Selected >= this.SelectionCount - 1) ? 0 : (this.Selected + 1));
+					this.Selected = ((this.Selected < this.SelectionCount - 1) ? (this.Selected + 1) : 0);
 				}
 				if (this.InputManager.TappedUp)
 				{
-					this.Selected = ((this.Selected <= 0) ? (this.SelectionCount - 1) : (this.Selected - 1));
+					this.Selected = ((this.Selected > 0) ? (this.Selected - 1) : (this.SelectionCount - 1));
 				}
-				bool flag = this.InputManager.TappedUp || this.InputManager.TappedDown;
-				if (flag)
+				if (this.InputManager.TappedUp || this.InputManager.TappedDown)
 				{
 					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 225f - 75f * (float)this.Selected, this.Highlight.localPosition.z);
 				}
@@ -247,9 +246,7 @@ public class TitleMenuScript : MonoBehaviour
 					GameGlobals.LoveSick = !GameGlobals.LoveSick;
 					SceneManager.LoadScene("TitleScene");
 				}
-				if (Input.GetKeyDown("m"))
-				{
-				}
+				Input.GetKeyDown("m");
 				if (!this.LoveSick)
 				{
 					if (this.NeverChange)
@@ -293,7 +290,7 @@ public class TitleMenuScript : MonoBehaviour
 				if (this.SaveFiles.SaveDatas[this.SaveFiles.ID].EmptyFile.activeInHierarchy)
 				{
 					this.PromptBar.Label[0].text = "Create New";
-					this.PromptBar.Label[2].text = string.Empty;
+					this.PromptBar.Label[2].text = "";
 					this.PromptBar.UpdateButtons();
 				}
 				else

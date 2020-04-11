@@ -76,8 +76,7 @@ public class DateAndTime
 	{
 		int hours = this.clock.Hours24;
 		this.clock.Tick(dt);
-		int hours2 = this.clock.Hours24;
-		if (hours2 < hours)
+		if (this.clock.Hours24 < hours)
 		{
 			this.IncrementWeekday();
 		}

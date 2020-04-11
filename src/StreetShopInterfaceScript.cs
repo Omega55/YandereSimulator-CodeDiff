@@ -132,7 +132,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 				}
 				else if (this.SpeechPhase == 2 && this.Timer > 10.1f)
 				{
-					int num = UnityEngine.Random.Range(2, 4);
+					int num = Random.Range(2, 4);
 					this.Shopkeeper.mainTexture = this.ShopkeeperPortraits[num];
 					this.Timer = 10f;
 				}
@@ -188,84 +188,93 @@ public class StreetShopInterfaceScript : MonoBehaviour
 			this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
 			this.SpeechPhase = 0;
 			this.Timer = 1f;
+			return;
 		}
-		else if (PlayerGlobals.Money < this.Costs[this.Selected])
+		if (PlayerGlobals.Money < this.Costs[this.Selected])
 		{
 			this.StreetManager.Clock.MoneyFail();
 			this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[4];
 			this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
 			this.SpeechPhase = 0;
 			this.Timer = 1f;
+			return;
 		}
-		else
+		ShopType currentStore = this.CurrentStore;
+		switch (currentStore)
 		{
-			switch (this.CurrentStore)
+		case ShopType.Nonfunctional:
+			this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[6];
+			this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+			this.SpeechPhase = 0;
+			this.Timer = 1f;
+			return;
+		case ShopType.Hardware:
+		case ShopType.Maid:
+			break;
+		case ShopType.Manga:
+			this.PurchaseEffect();
+			switch (this.Selected)
 			{
-			case ShopType.Nonfunctional:
-				this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[6];
-				this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
-				this.SpeechPhase = 0;
-				this.Timer = 1f;
-				break;
-			case ShopType.Manga:
-				this.PurchaseEffect();
-				switch (this.Selected)
-				{
-				case 1:
-					CollectibleGlobals.SetMangaCollected(6, true);
-					break;
-				case 2:
-					CollectibleGlobals.SetMangaCollected(7, true);
-					break;
-				case 3:
-					CollectibleGlobals.SetMangaCollected(8, true);
-					break;
-				case 4:
-					CollectibleGlobals.SetMangaCollected(9, true);
-					break;
-				case 5:
-					CollectibleGlobals.SetMangaCollected(10, true);
-					break;
-				case 6:
-					CollectibleGlobals.SetMangaCollected(1, true);
-					break;
-				case 7:
-					CollectibleGlobals.SetMangaCollected(2, true);
-					break;
-				case 8:
-					CollectibleGlobals.SetMangaCollected(3, true);
-					break;
-				case 9:
-					CollectibleGlobals.SetMangaCollected(4, true);
-					break;
-				case 10:
-					CollectibleGlobals.SetMangaCollected(5, true);
-					break;
-				}
-				break;
-			case ShopType.Salon:
-				this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[6];
-				this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
-				this.SpeechPhase = 0;
-				this.Timer = 1f;
-				break;
-			case ShopType.Gift:
-				this.PurchaseEffect();
-				if (this.Selected < 6)
-				{
-					CollectibleGlobals.SenpaiGifts++;
-				}
-				else
-				{
-					CollectibleGlobals.MatchmakingGifts++;
-				}
-				CollectibleGlobals.SetGiftPurchased(this.Selected, true);
-				break;
-			case ShopType.Lingerie:
-				this.PurchaseEffect();
-				CollectibleGlobals.SetPantyPurchased(this.Selected, true);
-				break;
+			case 1:
+				CollectibleGlobals.SetMangaCollected(6, true);
+				return;
+			case 2:
+				CollectibleGlobals.SetMangaCollected(7, true);
+				return;
+			case 3:
+				CollectibleGlobals.SetMangaCollected(8, true);
+				return;
+			case 4:
+				CollectibleGlobals.SetMangaCollected(9, true);
+				return;
+			case 5:
+				CollectibleGlobals.SetMangaCollected(10, true);
+				return;
+			case 6:
+				CollectibleGlobals.SetMangaCollected(1, true);
+				return;
+			case 7:
+				CollectibleGlobals.SetMangaCollected(2, true);
+				return;
+			case 8:
+				CollectibleGlobals.SetMangaCollected(3, true);
+				return;
+			case 9:
+				CollectibleGlobals.SetMangaCollected(4, true);
+				return;
+			case 10:
+				CollectibleGlobals.SetMangaCollected(5, true);
+				return;
+			default:
+				return;
 			}
+			break;
+		case ShopType.Salon:
+			this.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[6];
+			this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
+			this.SpeechPhase = 0;
+			this.Timer = 1f;
+			break;
+		case ShopType.Gift:
+			this.PurchaseEffect();
+			if (this.Selected < 6)
+			{
+				CollectibleGlobals.SenpaiGifts++;
+			}
+			else
+			{
+				CollectibleGlobals.MatchmakingGifts++;
+			}
+			CollectibleGlobals.SetGiftPurchased(this.Selected, true);
+			return;
+		default:
+			if (currentStore != ShopType.Lingerie)
+			{
+				return;
+			}
+			this.PurchaseEffect();
+			CollectibleGlobals.SetPantyPurchased(this.Selected, true);
+			return;
 		}
 	}
 
@@ -290,7 +299,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 	{
 		for (int i = 1; i < 11; i++)
 		{
-			this.Icons[i].spriteName = string.Empty;
+			this.Icons[i].spriteName = "";
 			this.Icons[i].gameObject.SetActive(false);
 			this.ProductsLabel[i].color = new Color(1f, 1f, 1f, 1f);
 		}
@@ -385,7 +394,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 		}
 		for (int i = 1; i < 11; i++)
 		{
-			if (this.Icons[i].spriteName != string.Empty)
+			if (this.Icons[i].spriteName != "")
 			{
 				this.Icons[i].gameObject.SetActive(true);
 				if (this.Icons[i].spriteName == "Yes")

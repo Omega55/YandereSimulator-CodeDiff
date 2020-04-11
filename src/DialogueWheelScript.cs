@@ -254,7 +254,7 @@ public class DialogueWheelScript : MonoBehaviour
 				}
 				if (this.Selected < this.FavorText.Length)
 				{
-					this.CenterLabel.text = ((!this.AskingFavor) ? this.LoveText[this.Selected] : this.FavorText[this.Selected]);
+					this.CenterLabel.text = (this.AskingFavor ? this.FavorText[this.Selected] : this.LoveText[this.Selected]);
 				}
 			}
 			if (!this.ClubLeader)
@@ -262,7 +262,7 @@ public class DialogueWheelScript : MonoBehaviour
 				for (int i = 1; i < 7; i++)
 				{
 					Transform transform = this.Segment[i].transform;
-					transform.localScale = Vector3.Lerp(transform.localScale, (this.Selected != i) ? new Vector3(1f, 1f, 1f) : new Vector3(1.3f, 1.3f, 1f), Time.deltaTime * 10f);
+					transform.localScale = Vector3.Lerp(transform.localScale, (this.Selected == i) ? new Vector3(1.3f, 1.3f, 1f) : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				}
 			}
 			else
@@ -270,7 +270,7 @@ public class DialogueWheelScript : MonoBehaviour
 				for (int j = 1; j < 7; j++)
 				{
 					Transform transform2 = this.ClubSegment[j].transform;
-					transform2.localScale = Vector3.Lerp(transform2.localScale, (this.Selected != j) ? new Vector3(1f, 1f, 1f) : new Vector3(1.3f, 1.3f, 1f), Time.deltaTime * 10f);
+					transform2.localScale = Vector3.Lerp(transform2.localScale, (this.Selected == j) ? new Vector3(1.3f, 1.3f, 1f) : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				}
 			}
 			if (!this.Matchmaking)
@@ -278,7 +278,7 @@ public class DialogueWheelScript : MonoBehaviour
 				for (int k = 1; k < 5; k++)
 				{
 					Transform transform3 = this.FavorSegment[k].transform;
-					transform3.localScale = Vector3.Lerp(transform3.localScale, (this.Selected != k) ? new Vector3(1f, 1f, 1f) : new Vector3(1.3f, 1.3f, 1f), Time.deltaTime * 10f);
+					transform3.localScale = Vector3.Lerp(transform3.localScale, (this.Selected == k) ? new Vector3(1.3f, 1.3f, 1f) : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				}
 			}
 			else
@@ -286,7 +286,7 @@ public class DialogueWheelScript : MonoBehaviour
 				for (int l = 1; l < 5; l++)
 				{
 					Transform transform4 = this.LoveSegment[l].transform;
-					transform4.localScale = Vector3.Lerp(transform4.localScale, (this.Selected != l) ? new Vector3(1f, 1f, 1f) : new Vector3(1.3f, 1.3f, 1f), Time.deltaTime * 10f);
+					transform4.localScale = Vector3.Lerp(transform4.localScale, (this.Selected == l) ? new Vector3(1.3f, 1.3f, 1f) : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				}
 			}
 			if (Input.GetButtonDown("A"))
@@ -613,7 +613,7 @@ public class DialogueWheelScript : MonoBehaviour
 		{
 			this.TaskDialogueWindow.SetActive(true);
 		}
-		this.TaskIcon.spriteName = ((!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID)) ? "Task" : "Heart");
+		this.TaskIcon.spriteName = (PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID) ? "Heart" : "Task");
 		this.Impatience.fillAmount = 0f;
 		for (int i = 1; i < 7; i++)
 		{
@@ -931,11 +931,9 @@ public class DialogueWheelScript : MonoBehaviour
 		if (ClubGlobals.Club == ClubType.Delinquent)
 		{
 			this.Text[6] = "Intimidate";
+			return;
 		}
-		else
-		{
-			this.Text[6] = "Ask Favor";
-		}
+		this.Text[6] = "Ask Favor";
 	}
 
 	public void End()

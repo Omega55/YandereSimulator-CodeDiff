@@ -25,6 +25,7 @@ public class SplashCameraScript : MonoBehaviour
 			{
 				this.Show = false;
 				this.Timer = 0f;
+				return;
 			}
 		}
 		else

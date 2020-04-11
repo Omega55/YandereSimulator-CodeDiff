@@ -147,15 +147,14 @@ public class TaskWindowScript : MonoBehaviour
 
 	private void GetPortrait(int ID)
 	{
-		string url = string.Concat(new string[]
+		WWW www = new WWW(string.Concat(new string[]
 		{
 			"file:///",
 			Application.streamingAssetsPath,
 			"/Portraits/Student_",
 			ID.ToString(),
 			".png"
-		});
-		WWW www = new WWW(url);
+		}));
 		this.Portrait.mainTexture = www.texture;
 	}
 

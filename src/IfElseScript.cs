@@ -17,28 +17,34 @@ public class IfElseScript : MonoBehaviour
 		if (this.ID == 1)
 		{
 			this.Day = "Monday";
+			return;
 		}
-		else if (this.ID == 2)
+		if (this.ID == 2)
 		{
 			this.Day = "Tuesday";
+			return;
 		}
-		else if (this.ID == 3)
+		if (this.ID == 3)
 		{
 			this.Day = "Wednesday";
+			return;
 		}
-		else if (this.ID == 4)
+		if (this.ID == 4)
 		{
 			this.Day = "Thursday";
+			return;
 		}
-		else if (this.ID == 5)
+		if (this.ID == 5)
 		{
 			this.Day = "Friday";
+			return;
 		}
-		else if (this.ID == 6)
+		if (this.ID == 6)
 		{
 			this.Day = "Saturday";
+			return;
 		}
-		else if (this.ID == 7)
+		if (this.ID == 7)
 		{
 			this.Day = "Sunday";
 		}
@@ -50,25 +56,27 @@ public class IfElseScript : MonoBehaviour
 		{
 		case 1:
 			this.Day = "Monday";
-			break;
+			return;
 		case 2:
 			this.Day = "Tuesday";
-			break;
+			return;
 		case 3:
 			this.Day = "Wednesday";
-			break;
+			return;
 		case 4:
 			this.Day = "Thursday";
-			break;
+			return;
 		case 5:
 			this.Day = "Friday";
-			break;
+			return;
 		case 6:
 			this.Day = "Saturday";
-			break;
+			return;
 		case 7:
 			this.Day = "Sunday";
-			break;
+			return;
+		default:
+			return;
 		}
 	}
 }

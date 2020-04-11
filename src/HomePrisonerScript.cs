@@ -270,6 +270,7 @@ public class HomePrisonerScript : MonoBehaviour
 					this.HomeYandere.CanMove = true;
 					this.HomeYandere.gameObject.SetActive(true);
 					this.HomeWindow.Show = false;
+					return;
 				}
 			}
 			else

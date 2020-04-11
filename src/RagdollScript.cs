@@ -542,7 +542,7 @@ public class RagdollScript : MonoBehaviour
 					float axis2 = Input.GetAxis("Horizontal");
 					if (axis != 0f || axis2 != 0f)
 					{
-						this.Student.CharacterAnimation.CrossFade((!this.Yandere.Running) ? this.WalkAnim : this.RunAnim);
+						this.Student.CharacterAnimation.CrossFade(this.Yandere.Running ? this.RunAnim : this.WalkAnim);
 					}
 					else
 					{
@@ -570,9 +570,10 @@ public class RagdollScript : MonoBehaviour
 
 	public void StopDragging()
 	{
-		foreach (Rigidbody rigidbody in this.Student.Ragdoll.AllRigidbodies)
+		Rigidbody[] allRigidbodies = this.Student.Ragdoll.AllRigidbodies;
+		for (int i = 0; i < allRigidbodies.Length; i++)
 		{
-			rigidbody.drag = 0f;
+			allRigidbodies[i].drag = 0f;
 		}
 		if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && !this.Tranquil)
 		{
@@ -626,9 +627,10 @@ public class RagdollScript : MonoBehaviour
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
 		this.Dumped = true;
-		foreach (Rigidbody rigidbody in this.AllRigidbodies)
+		Rigidbody[] allRigidbodies = this.AllRigidbodies;
+		for (int i = 0; i < allRigidbodies.Length; i++)
 		{
-			rigidbody.isKinematic = true;
+			allRigidbodies[i].isKinematic = true;
 		}
 	}
 
@@ -668,7 +670,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		for (int i = 0; i < this.BodyParts.Length; i++)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
 			gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
 			gameObject.GetComponent<PromptScript>().enabled = false;
 			gameObject.GetComponent<PickUpScript>().enabled = false;
@@ -699,7 +701,7 @@ public class RagdollScript : MonoBehaviour
 					i++;
 					this.Decapitated = false;
 				}
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+				GameObject gameObject = Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
 				gameObject.transform.parent = this.Yandere.LimbParent;
 				gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
 				BodyPartScript component = gameObject.GetComponent<BodyPartScript>();
@@ -785,7 +787,7 @@ public class RagdollScript : MonoBehaviour
 			}
 			Debug.Log("BloodPoolSpawner.transform.position is: " + this.BloodPoolSpawner.transform.position);
 			Debug.Log("Student.StudentManager.SEStairs.bounds is: " + this.Student.StudentManager.SEStairs.bounds);
-			Debug.Log("Student.StudentManager.SEStairs.bounds.Contains(BloodPoolSpawner.transform.position) is: " + this.Student.StudentManager.SEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position));
+			Debug.Log("Student.StudentManager.SEStairs.bounds.Contains(BloodPoolSpawner.transform.position) is: " + this.Student.StudentManager.SEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position).ToString());
 			if (!this.Student.StudentManager.NEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.NWStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.SEStairs.bounds.Contains(this.BloodPoolSpawner.transform.position) && !this.Student.StudentManager.SWStairs.bounds.Contains(this.BloodPoolSpawner.transform.position))
 			{
 				this.BloodPoolSpawner.SpawnBigPool();
@@ -820,9 +822,9 @@ public class RagdollScript : MonoBehaviour
 		{
 			if (this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>() != null)
 			{
-				UnityEngine.Object.Destroy(this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>());
+				Object.Destroy(this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>());
 			}
-			UnityEngine.Object.Destroy(this.AllRigidbodies[i]);
+			Object.Destroy(this.AllRigidbodies[i]);
 			this.AllColliders[i].enabled = false;
 		}
 		this.Prompt.Hide();

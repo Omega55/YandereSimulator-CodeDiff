@@ -40,12 +40,14 @@ public class PowerOutletScript : MonoBehaviour
 					this.PowerStrip.SetActive(false);
 					this.PluggedOutlet.SetActive(true);
 					this.Prompt.HideButton[0] = true;
+					return;
 				}
 			}
 			else if (this.Prompt.enabled)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
+				return;
 			}
 		}
 		else if (this.Prompt.Yandere.EquippedWeapon != null)
@@ -69,6 +71,7 @@ public class PowerOutletScript : MonoBehaviour
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				base.enabled = false;
+				return;
 			}
 		}
 		else if (this.Prompt.enabled)

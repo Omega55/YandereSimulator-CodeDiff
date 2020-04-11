@@ -120,6 +120,7 @@ public class ThanksForPlayingScript : MonoBehaviour
 			if (Input.GetButtonDown("A"))
 			{
 				this.FadeOut = true;
+				return;
 			}
 		}
 		else

@@ -36,15 +36,13 @@ public class ClubAmbienceScript : MonoBehaviour
 			{
 				component.volume = Mathf.MoveTowards(component.volume, this.MaxVolume, Time.deltaTime * 0.1f);
 				this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, this.ClubDip, Time.deltaTime * 0.1f);
+				return;
 			}
-			else
+			component.volume = Mathf.MoveTowards(component.volume, 0f, Time.deltaTime * 0.1f);
+			this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, 0f, Time.deltaTime * 0.1f);
+			if (this.Jukebox.ClubDip == 0f)
 			{
-				component.volume = Mathf.MoveTowards(component.volume, 0f, Time.deltaTime * 0.1f);
-				this.Jukebox.ClubDip = Mathf.MoveTowards(this.Jukebox.ClubDip, 0f, Time.deltaTime * 0.1f);
-				if (this.Jukebox.ClubDip == 0f)
-				{
-					this.EffectJukebox = false;
-				}
+				this.EffectJukebox = false;
 			}
 		}
 	}

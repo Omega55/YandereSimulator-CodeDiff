@@ -233,11 +233,10 @@ public class PauseScreenScript : MonoBehaviour
 							if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.PoisonScene))
 							{
 								uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
+								return;
 							}
-							else
-							{
-								uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 1f);
-							}
+							uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 1f);
+							return;
 						}
 					}
 					else if (this.HomeCamera.Destination == this.HomeCamera.Destinations[0])
@@ -254,6 +253,7 @@ public class PauseScreenScript : MonoBehaviour
 						this.Panel.enabled = true;
 						this.Sideways = false;
 						this.Show = true;
+						return;
 					}
 				}
 			}
@@ -335,22 +335,22 @@ public class PauseScreenScript : MonoBehaviour
 				}
 				if (this.MainMenu.activeInHierarchy && !this.Quitting)
 				{
-					if (this.InputManager.TappedUp || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+					if (this.InputManager.TappedUp)
 					{
 						this.Row--;
 						this.UpdateSelection();
 					}
-					if (this.InputManager.TappedDown || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+					if (this.InputManager.TappedDown)
 					{
 						this.Row++;
 						this.UpdateSelection();
 					}
-					if (this.InputManager.TappedRight || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+					if (this.InputManager.TappedRight)
 					{
 						this.Column++;
 						this.UpdateSelection();
 					}
-					if (this.InputManager.TappedLeft || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+					if (this.InputManager.TappedLeft)
 					{
 						this.Column--;
 						this.UpdateSelection();
@@ -367,7 +367,7 @@ public class PauseScreenScript : MonoBehaviour
 					{
 						if (this.PhoneIcons[j] != null)
 						{
-							Vector3 b = (this.Selected == j) ? new Vector3(1.5f, 1.5f, 1.5f) : new Vector3(1f, 1f, 1f);
+							Vector3 b = (this.Selected != j) ? new Vector3(1f, 1f, 1f) : new Vector3(1.5f, 1.5f, 1.5f);
 							this.PhoneIcons[j].transform.localScale = Vector3.Lerp(this.PhoneIcons[j].transform.localScale, b, this.Speed);
 						}
 					}

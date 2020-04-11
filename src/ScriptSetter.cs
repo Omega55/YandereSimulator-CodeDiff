@@ -10,8 +10,7 @@ public class ScriptSetter : MonoBehaviour
 
 	private void Start()
 	{
-		Component[] components = base.GetComponents(typeof(Component));
-		foreach (Component component in components)
+		foreach (Component component in base.GetComponents(typeof(Component)))
 		{
 			Debug.Log(string.Concat(new object[]
 			{

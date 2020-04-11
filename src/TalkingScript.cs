@@ -25,7 +25,7 @@ public class TalkingScript : MonoBehaviour
 
 	public bool Fake;
 
-	public string IdleAnim = string.Empty;
+	public string IdleAnim = "";
 
 	public int ClubBonus;
 
@@ -78,7 +78,7 @@ public class TalkingScript : MonoBehaviour
 					}
 					this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
-				else if (this.IdleAnim != string.Empty)
+				else if (this.IdleAnim != "")
 				{
 					this.S.CharacterAnimation.CrossFade(this.IdleAnim);
 				}
@@ -320,7 +320,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
+					Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				if (this.S.CharacterAnimation[this.S.CurrentAnim].time >= this.S.CharacterAnimation[this.S.CurrentAnim].length)
@@ -628,7 +628,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
+					Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -688,7 +688,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
+					Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -734,7 +734,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
+					Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -810,7 +810,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
+					Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -927,7 +927,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
+					Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -1253,8 +1253,9 @@ public class TalkingScript : MonoBehaviour
 						this.S.Subtitle.UpdateLabel(SubtitleType.GiveHelp, 0, 4f);
 					}
 				}
-				else if (Input.GetButtonDown("A"))
+				else
 				{
+					Input.GetButtonDown("A");
 				}
 				if (this.S.CharacterAnimation[this.S.GossipAnim].time >= this.S.CharacterAnimation[this.S.GossipAnim].length)
 				{
@@ -1420,6 +1421,7 @@ public class TalkingScript : MonoBehaviour
 						this.S.Pathfinding.canSearch = true;
 						this.S.Pathfinding.canMove = true;
 						this.S.DistanceToDestination = 100f;
+						return;
 					}
 				}
 			}

@@ -9,7 +9,7 @@ public class DoorBoxScript : MonoBehaviour
 
 	private void Update()
 	{
-		float y = Mathf.Lerp(base.transform.localPosition.y, (!this.Show) ? -630f : -530f, Time.deltaTime * 10f);
+		float y = Mathf.Lerp(base.transform.localPosition.y, this.Show ? -530f : -630f, Time.deltaTime * 10f);
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, y, base.transform.localPosition.z);
 	}
 }

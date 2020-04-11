@@ -264,7 +264,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						this.inputX = Mathf.MoveTowards(this.inputX, 0f, Time.deltaTime * 10f);
 					}
 					float num = 0f;
-					float num2 = (this.inputX == 0f || num == 0f || !this.limitDiagonalSpeed) ? 1f : 0.707106769f;
+					float num2 = (this.inputX != 0f && num != 0f && this.limitDiagonalSpeed) ? 0.707106769f : 1f;
 					if (!this.Attacking)
 					{
 						if (Input.GetAxis("VaniaHorizontal") < 0f)
@@ -330,7 +330,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 							else
 							{
 								this.IdleTimer = 10f;
-								component.CrossFade((this.speed != this.walkSpeed) ? "f02_yanvaniaRun_00" : "f02_yanvaniaWalk_00", 0.1f);
+								component.CrossFade((this.speed == this.walkSpeed) ? "f02_yanvaniaWalk_00" : "f02_yanvaniaRun_00", 0.1f);
 							}
 						}
 						bool flag = false;
@@ -360,7 +360,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						}
 						if (!this.toggleRun)
 						{
-							this.speed = ((!Input.GetKey(KeyCode.LeftShift)) ? this.walkSpeed : this.runSpeed);
+							this.speed = (Input.GetKey(KeyCode.LeftShift) ? this.runSpeed : this.walkSpeed);
 						}
 						if ((flag && this.slideWhenOverSlopeLimit) || (this.slideOnTaggedObjects && this.hit.collider.tag == "Slide"))
 						{
@@ -388,7 +388,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 							this.IdleTimer = 10f;
 							this.jumpTimer = 0;
 							AudioSource component2 = base.GetComponent<AudioSource>();
-							component2.clip = this.Voices[UnityEngine.Random.Range(0, this.Voices.Length)];
+							component2.clip = this.Voices[Random.Range(0, this.Voices.Length)];
 							component2.Play();
 						}
 					}
@@ -396,7 +396,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 					{
 						if (!this.Attacking)
 						{
-							component.CrossFade((base.transform.position.y <= this.PreviousY) ? "f02_yanvaniaFall_00" : "f02_yanvaniaJump_00", 0.4f);
+							component.CrossFade((base.transform.position.y > this.PreviousY) ? "f02_yanvaniaJump_00" : "f02_yanvaniaFall_00", 0.4f);
 						}
 						this.PreviousY = base.transform.position.y;
 						if (!this.falling)
@@ -457,7 +457,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				}
 			}
 			this.moveDirection.y = this.moveDirection.y - this.gravity * Time.deltaTime;
-			this.grounded = ((this.controller.Move(this.moveDirection * Time.deltaTime) & CollisionFlags.Below) != CollisionFlags.None);
+			this.grounded = ((this.controller.Move(this.moveDirection * Time.deltaTime) & CollisionFlags.Below) > CollisionFlags.None);
 			if (this.grounded && this.EnterCutscene)
 			{
 				this.YanvaniaCamera.Cutscene = true;
@@ -466,6 +466,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			if ((this.controller.collisionFlags & CollisionFlags.Above) != CollisionFlags.None && this.moveDirection.y > 0f)
 			{
 				this.moveDirection.y = 0f;
+				return;
 			}
 		}
 		else if (this.Health == 0f)
@@ -520,7 +521,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			{
 				AudioSource.PlayClipAtPoint(this.WhipSound, base.transform.position);
 				AudioSource component2 = base.GetComponent<AudioSource>();
-				component2.clip = this.Voices[UnityEngine.Random.Range(0, this.Voices.Length)];
+				component2.clip = this.Voices[Random.Range(0, this.Voices.Length)];
 				component2.Play();
 				this.WhipChain[0].transform.localScale = Vector3.zero;
 				this.Attacking = true;
@@ -570,7 +571,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (!this.SpunUp)
 							{
-								AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
+								AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, Random.Range(0.9f, 1.1f));
 								this.StraightenWhip();
 								this.TargetRotation = -360f;
 								this.Rotation = 0f;
@@ -586,7 +587,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 						{
 							if (!this.SpunDown)
 							{
-								AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
+								AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, Random.Range(0.9f, 1.1f));
 								this.StraightenWhip();
 								this.TargetRotation = 360f;
 								this.Rotation = 0f;
@@ -678,9 +679,10 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			this.FlashTimer -= Time.deltaTime;
 			if (!this.Red)
 			{
-				foreach (Material material in this.MyRenderer.materials)
+				Material[] materials = this.MyRenderer.materials;
+				for (int j = 0; j < materials.Length; j++)
 				{
-					material.color = new Color(1f, 0f, 0f, 1f);
+					materials[j].color = new Color(1f, 0f, 0f, 1f);
 				}
 				this.Frames++;
 				if (this.Frames == 5)
@@ -691,9 +693,10 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			}
 			else
 			{
-				foreach (Material material2 in this.MyRenderer.materials)
+				Material[] materials = this.MyRenderer.materials;
+				for (int j = 0; j < materials.Length; j++)
 				{
-					material2.color = new Color(1f, 1f, 1f, 1f);
+					materials[j].color = new Color(1f, 1f, 1f, 1f);
 				}
 				this.Frames++;
 				if (this.Frames == 5)
@@ -708,9 +711,10 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			this.FlashTimer = 0f;
 			if (this.MyRenderer.materials[0].color != new Color(1f, 1f, 1f, 1f))
 			{
-				foreach (Material material3 in this.MyRenderer.materials)
+				Material[] materials = this.MyRenderer.materials;
+				for (int j = 0; j < materials.Length; j++)
 				{
-					material3.color = new Color(1f, 1f, 1f, 1f);
+					materials[j].color = new Color(1f, 1f, 1f, 1f);
 				}
 			}
 		}
@@ -726,8 +730,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				}
 				else
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.LevelUpEffect, this.LevelLabel.transform.position, Quaternion.identity);
-					gameObject.transform.parent = this.LevelLabel.transform;
+					Object.Instantiate<GameObject>(this.LevelUpEffect, this.LevelLabel.transform.position, Quaternion.identity).transform.parent = this.LevelLabel.transform;
 					this.MaxHealth += 20f;
 					this.Health = this.MaxHealth;
 					this.EXP -= 100f;
@@ -776,7 +779,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 
 	private void FallingDamageAlert(float fallDistance)
 	{
-		AudioClipPlayer.Play2D(this.LandSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
+		AudioClipPlayer.Play2D(this.LandSound, base.transform.position, Random.Range(0.9f, 1.1f));
 		this.Character.GetComponent<Animation>().Play("f02_yanvaniaCrouch_00");
 		this.fallingDamageThreshold = this.originalThreshold;
 	}
@@ -785,7 +788,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 	{
 		if (!this.SpunRight)
 		{
-			AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
+			AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, Random.Range(0.9f, 1.1f));
 			this.StraightenWhip();
 			this.TargetRotation = 360f;
 			this.Rotation = 0f;
@@ -798,7 +801,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 	{
 		if (!this.SpunLeft)
 		{
-			AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, UnityEngine.Random.Range(0.9f, 1.1f));
+			AudioClipPlayer.Play2D(this.WhipSound, base.transform.position, Random.Range(0.9f, 1.1f));
 			this.StraightenWhip();
 			this.TargetRotation = -360f;
 			this.Rotation = 0f;
@@ -863,7 +866,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 			}
 		}
 		AudioSource component = base.GetComponent<AudioSource>();
-		component.clip = this.Injuries[UnityEngine.Random.Range(0, this.Injuries.Length)];
+		component.clip = this.Injuries[Random.Range(0, this.Injuries.Length)];
 		component.Play();
 		this.WhipChain[0].transform.localScale = Vector3.zero;
 		Animation component2 = this.Character.GetComponent<Animation>();
@@ -887,7 +890,7 @@ public class YanvaniaYanmontScript : MonoBehaviour
 				this.YanvaniaCamera.StopMusic = true;
 				component.clip = this.DeathSound;
 				component.Play();
-				this.NewBlood = UnityEngine.Object.Instantiate<GameObject>(this.DeathBlood, base.transform.position, Quaternion.identity);
+				this.NewBlood = Object.Instantiate<GameObject>(this.DeathBlood, base.transform.position, Quaternion.identity);
 				this.NewBlood.transform.parent = this.Hips;
 				this.NewBlood.transform.localPosition = Vector3.zero;
 				component2.CrossFade("f02_yanvaniaDeath_00");

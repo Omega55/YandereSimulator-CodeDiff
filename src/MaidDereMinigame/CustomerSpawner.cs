@@ -47,18 +47,16 @@ namespace MaidDereMinigame
 			}
 			if (this.timeTillSpawn <= 0f)
 			{
-				this.timeTillSpawn = this.spawnRate + UnityEngine.Random.Range(-this.spawnVariance, this.spawnVariance);
+				this.timeTillSpawn = this.spawnRate + Random.Range(-this.spawnVariance, this.spawnVariance);
 				this.SpawnCustomer();
+				return;
 			}
-			else
-			{
-				this.timeTillSpawn -= Time.deltaTime;
-			}
+			this.timeTillSpawn -= Time.deltaTime;
 		}
 
 		private void SpawnCustomer()
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.customerPrefabs[UnityEngine.Random.Range(0, this.customerPrefabs.Length)]);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.customerPrefabs[Random.Range(0, this.customerPrefabs.Length)]);
 			gameObject.transform.position = base.transform.position;
 			AIController component = gameObject.GetComponent<AIController>();
 			component.Init();

@@ -362,21 +362,21 @@ public class SettingsScript : MonoBehaviour
 			this.ParticleLabel.text = "None";
 		}
 		this.FPSCapLabel.text = QualityManagerScript.FPSStrings[OptionGlobals.FPSIndex];
-		this.OutlinesLabel.text = ((!OptionGlobals.DisableOutlines) ? "On" : "Off");
+		this.OutlinesLabel.text = (OptionGlobals.DisableOutlines ? "Off" : "On");
 		this.AliasingLabel.text = QualitySettings.antiAliasing + "x";
-		this.PostAliasingLabel.text = ((!OptionGlobals.DisablePostAliasing) ? "On" : "Off");
-		this.BloomLabel.text = ((!OptionGlobals.DisableBloom) ? "On" : "Off");
-		this.LowDetailLabel.text = ((OptionGlobals.LowDetailStudents != 0) ? ((OptionGlobals.LowDetailStudents * 10).ToString() + "m") : "Off");
-		this.FarAnimsLabel.text = ((OptionGlobals.DisableFarAnimations != 0) ? ((OptionGlobals.DisableFarAnimations * 5).ToString() + "m") : "Off");
+		this.PostAliasingLabel.text = (OptionGlobals.DisablePostAliasing ? "Off" : "On");
+		this.BloomLabel.text = (OptionGlobals.DisableBloom ? "Off" : "On");
+		this.LowDetailLabel.text = ((OptionGlobals.LowDetailStudents == 0) ? "Off" : ((OptionGlobals.LowDetailStudents * 10).ToString() + "m"));
+		this.FarAnimsLabel.text = ((OptionGlobals.DisableFarAnimations == 0) ? "Off" : ((OptionGlobals.DisableFarAnimations * 5).ToString() + "m"));
 		this.DrawDistanceLabel.text = OptionGlobals.DrawDistance + "m";
-		this.FogLabel.text = ((!OptionGlobals.Fog) ? "Off" : "On");
-		this.ToggleRunLabel.text = ((!OptionGlobals.ToggleRun) ? "Hold" : "Toggle");
-		this.SensitivityLabel.text = string.Empty + OptionGlobals.Sensitivity;
-		this.InvertAxisLabel.text = ((!OptionGlobals.InvertAxis) ? "No" : "Yes");
-		this.DisableTutorialsLabel.text = ((!OptionGlobals.TutorialsOff) ? "No" : "Yes");
-		this.WindowedMode.text = ((!Screen.fullScreen) ? "Yes" : "No");
-		this.AmbientObscurance.text = ((!OptionGlobals.DisableObscurance) ? "On" : "Off");
-		this.ShadowsLabel.text = ((!OptionGlobals.EnableShadows) ? "No" : "Yes");
+		this.FogLabel.text = (OptionGlobals.Fog ? "On" : "Off");
+		this.ToggleRunLabel.text = (OptionGlobals.ToggleRun ? "Toggle" : "Hold");
+		this.SensitivityLabel.text = string.Concat(OptionGlobals.Sensitivity);
+		this.InvertAxisLabel.text = (OptionGlobals.InvertAxis ? "Yes" : "No");
+		this.DisableTutorialsLabel.text = (OptionGlobals.TutorialsOff ? "Yes" : "No");
+		this.WindowedMode.text = (Screen.fullScreen ? "No" : "Yes");
+		this.AmbientObscurance.text = (OptionGlobals.DisableObscurance ? "Off" : "On");
+		this.ShadowsLabel.text = (OptionGlobals.EnableShadows ? "Yes" : "No");
 	}
 
 	private void UpdateHighlight()

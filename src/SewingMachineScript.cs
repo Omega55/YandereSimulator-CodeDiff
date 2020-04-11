@@ -28,8 +28,9 @@ public class SewingMachineScript : MonoBehaviour
 		if (TaskGlobals.GetTaskStatus(30) == 1)
 		{
 			this.Check = true;
+			return;
 		}
-		else if (TaskGlobals.GetTaskStatus(30) > 2)
+		if (TaskGlobals.GetTaskStatus(30) > 2)
 		{
 			base.enabled = false;
 		}
@@ -80,30 +81,29 @@ public class SewingMachineScript : MonoBehaviour
 				this.targetRotation = Quaternion.LookRotation(base.transform.parent.transform.parent.position - this.Yandere.transform.position);
 				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 				this.Yandere.MoveTowardsTarget(this.Chair.transform.position);
+				return;
 			}
-			else if (!this.MoveAway)
+			if (!this.MoveAway)
 			{
 				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.Inventory.ModifiedUniform = true;
 				this.StudentManager.Students[30].TaskPhase = 5;
 				TaskGlobals.SetTaskStatus(30, 2);
-				UnityEngine.Object.Destroy(this.Uniform.gameObject);
+				Object.Destroy(this.Uniform.gameObject);
 				this.MoveAway = true;
 				this.Check = false;
+				return;
 			}
-			else
+			this.Yandere.MoveTowardsTarget(this.Chair.gameObject.transform.position + new Vector3(-0.5f, 0f, 0f));
+			if (this.Timer > 6f)
 			{
-				this.Yandere.MoveTowardsTarget(this.Chair.gameObject.transform.position + new Vector3(-0.5f, 0f, 0f));
-				if (this.Timer > 6f)
-				{
-					this.Yandere.MyController.radius = 0.2f;
-					this.Yandere.CanMove = true;
-					this.Chair.enabled = true;
-					base.enabled = false;
-					this.Sewing = false;
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
-				}
+				this.Yandere.MyController.radius = 0.2f;
+				this.Yandere.CanMove = true;
+				this.Chair.enabled = true;
+				base.enabled = false;
+				this.Sewing = false;
+				this.Prompt.Hide();
+				this.Prompt.enabled = false;
 			}
 		}
 	}

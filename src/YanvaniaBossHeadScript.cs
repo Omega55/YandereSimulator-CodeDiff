@@ -18,7 +18,7 @@ public class YanvaniaBossHeadScript : MonoBehaviour
 	{
 		if (this.Timer <= 0f && this.Dracula.NewTeleportEffect == null && other.gameObject.name == "Heart")
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, base.transform.position, Quaternion.identity);
+			Object.Instantiate<GameObject>(this.HitEffect, base.transform.position, Quaternion.identity);
 			this.Timer = 1f;
 			this.Dracula.TakeDamage();
 		}

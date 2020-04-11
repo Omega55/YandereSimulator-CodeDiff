@@ -1423,7 +1423,7 @@ public class SubtitleScript : MonoBehaviour
 
 	private string GetRandomString(string[] strings)
 	{
-		return strings[UnityEngine.Random.Range(0, strings.Length)];
+		return strings[Random.Range(0, strings.Length)];
 	}
 
 	public void UpdateLabel(SubtitleType subtitleType, int ID, float Duration)
@@ -1595,17 +1595,17 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.EavesdropReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.EavesdropReactions.Length);
+			this.RandomID = Random.Range(0, this.EavesdropReactions.Length);
 			this.Label.text = this.EavesdropReactions[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.ViolenceReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.ViolenceReactions.Length);
+			this.RandomID = Random.Range(0, this.ViolenceReactions.Length);
 			this.Label.text = this.ViolenceReactions[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.EventEavesdropReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.EventEavesdropReactions.Length);
+			this.RandomID = Random.Range(0, this.EventEavesdropReactions.Length);
 			this.Label.text = this.EventEavesdropReactions[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.RivalEavesdropReaction)
@@ -1616,33 +1616,33 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.PickpocketReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.PickpocketReactions.Length);
+			this.RandomID = Random.Range(0, this.PickpocketReactions.Length);
 			this.Label.text = this.PickpocketReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.PickpocketApology)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.PickpocketApologies.Length);
+			this.RandomID = Random.Range(0, this.PickpocketApologies.Length);
 			this.Label.text = this.PickpocketApologies[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.CleaningApology)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.CleaningApologies.Length);
+			this.RandomID = Random.Range(0, this.CleaningApologies.Length);
 			this.Label.text = this.CleaningApologies[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.PoisonApology)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.PoisonApologies.Length);
+			this.RandomID = Random.Range(0, this.PoisonApologies.Length);
 			this.Label.text = this.PoisonApologies[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.HoldingBloodyClothingApology)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.HoldingBloodyClothingApologies.Length);
+			this.RandomID = Random.Range(0, this.HoldingBloodyClothingApologies.Length);
 			this.Label.text = this.HoldingBloodyClothingApologies[this.RandomID];
 		}
 		else if (subtitleType == SubtitleType.RivalPickpocketReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.RivalPickpocketReactions.Length);
+			this.RandomID = Random.Range(0, this.RivalPickpocketReactions.Length);
 			this.Label.text = this.RivalPickpocketReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -1655,7 +1655,7 @@ public class SubtitleScript : MonoBehaviour
 		{
 			if (this.Label.text == string.Empty)
 			{
-				this.RandomID = UnityEngine.Random.Range(0, this.HmmReactions.Length);
+				this.RandomID = Random.Range(0, this.HmmReactions.Length);
 				this.Label.text = this.HmmReactions[this.RandomID];
 			}
 		}
@@ -1663,7 +1663,7 @@ public class SubtitleScript : MonoBehaviour
 		{
 			if (this.Label.text == string.Empty)
 			{
-				this.RandomID = UnityEngine.Random.Range(0, this.HoldingBloodyClothingReactions.Length);
+				this.RandomID = Random.Range(0, this.HoldingBloodyClothingReactions.Length);
 				this.Label.text = this.HoldingBloodyClothingReactions[this.RandomID];
 			}
 		}
@@ -1671,67 +1671,67 @@ public class SubtitleScript : MonoBehaviour
 		{
 			if (this.Label.text == string.Empty)
 			{
-				this.RandomID = UnityEngine.Random.Range(0, this.ParanoidReactions.Length);
+				this.RandomID = Random.Range(0, this.ParanoidReactions.Length);
 				this.Label.text = this.ParanoidReactions[this.RandomID];
 			}
 		}
 		else if (subtitleType == SubtitleType.TeacherWeaponReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherWeaponReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherWeaponReactions.Length);
 			this.Label.text = this.TeacherWeaponReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherBloodReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherBloodReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherBloodReactions.Length);
 			this.Label.text = this.TeacherBloodReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherInsanityReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherInsanityReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherInsanityReactions.Length);
 			this.Label.text = this.TeacherInsanityReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherWeaponHostile)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherWeaponHostiles.Length);
+			this.RandomID = Random.Range(0, this.TeacherWeaponHostiles.Length);
 			this.Label.text = this.TeacherWeaponHostiles[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherBloodHostile)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherBloodHostiles.Length);
+			this.RandomID = Random.Range(0, this.TeacherBloodHostiles.Length);
 			this.Label.text = this.TeacherBloodHostiles[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherInsanityHostile)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherInsanityHostiles.Length);
+			this.RandomID = Random.Range(0, this.TeacherInsanityHostiles.Length);
 			this.Label.text = this.TeacherInsanityHostiles[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherCoverUpHostile)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherCoverUpHostiles.Length);
+			this.RandomID = Random.Range(0, this.TeacherCoverUpHostiles.Length);
 			this.Label.text = this.TeacherCoverUpHostiles[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherLewdReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherLewdReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherLewdReactions.Length);
 			this.Label.text = this.TeacherLewdReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherTrespassingReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherTrespassReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherTrespassReactions.Length);
 			this.Label.text = this.TeacherTrespassReactions[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.TeacherLateReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherLateReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherLateReactions.Length);
 			this.Label.text = this.TeacherLateReactions[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
@@ -1742,7 +1742,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.TeacherCorpseReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherCorpseReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherCorpseReactions.Length);
 			this.Label.text = this.TeacherCorpseReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -1758,7 +1758,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.TeacherAttackReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherAttackReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherAttackReactions.Length);
 			this.Label.text = this.TeacherAttackReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -1769,13 +1769,13 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.TeacherPrankReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherPrankReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherPrankReactions.Length);
 			this.Label.text = this.TeacherPrankReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.TeacherTheftReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.TeacherTheftReactions.Length);
+			this.RandomID = Random.Range(0, this.TeacherTheftReactions.Length);
 			this.Label.text = this.TeacherTheftReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -1791,121 +1791,121 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.DelinquentShove)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentShoves.Length);
+			this.RandomID = Random.Range(0, this.DelinquentShoves.Length);
 			this.Label.text = this.DelinquentShoves[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentReactions.Length);
+			this.RandomID = Random.Range(0, this.DelinquentReactions.Length);
 			this.Label.text = this.DelinquentReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentWeaponReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentWeaponReactions.Length);
+			this.RandomID = Random.Range(0, this.DelinquentWeaponReactions.Length);
 			this.Label.text = this.DelinquentWeaponReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentThreatened)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentThreateneds.Length);
+			this.RandomID = Random.Range(0, this.DelinquentThreateneds.Length);
 			this.Label.text = this.DelinquentThreateneds[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentTaunt)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentTaunts.Length);
+			this.RandomID = Random.Range(0, this.DelinquentTaunts.Length);
 			this.Label.text = this.DelinquentTaunts[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentCalm)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentCalms.Length);
+			this.RandomID = Random.Range(0, this.DelinquentCalms.Length);
 			this.Label.text = this.DelinquentCalms[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentFight)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFights.Length);
+			this.RandomID = Random.Range(0, this.DelinquentFights.Length);
 			this.Label.text = this.DelinquentFights[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentAvenge)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentAvenges.Length);
+			this.RandomID = Random.Range(0, this.DelinquentAvenges.Length);
 			this.Label.text = this.DelinquentAvenges[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentWin)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentWins.Length);
+			this.RandomID = Random.Range(0, this.DelinquentWins.Length);
 			this.Label.text = this.DelinquentWins[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentSurrender)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentSurrenders.Length);
+			this.RandomID = Random.Range(0, this.DelinquentSurrenders.Length);
 			this.Label.text = this.DelinquentSurrenders[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentNoSurrender)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentNoSurrenders.Length);
+			this.RandomID = Random.Range(0, this.DelinquentNoSurrenders.Length);
 			this.Label.text = this.DelinquentNoSurrenders[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentMurderReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentMurderReactions.Length);
+			this.RandomID = Random.Range(0, this.DelinquentMurderReactions.Length);
 			this.Label.text = this.DelinquentMurderReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentCorpseReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentCorpseReactions.Length);
+			this.RandomID = Random.Range(0, this.DelinquentCorpseReactions.Length);
 			this.Label.text = this.DelinquentCorpseReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentFriendCorpseReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFriendCorpseReactions.Length);
+			this.RandomID = Random.Range(0, this.DelinquentFriendCorpseReactions.Length);
 			this.Label.text = this.DelinquentFriendCorpseReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentResume)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentResumes.Length);
+			this.RandomID = Random.Range(0, this.DelinquentResumes.Length);
 			this.Label.text = this.DelinquentResumes[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentFlee)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFlees.Length);
+			this.RandomID = Random.Range(0, this.DelinquentFlees.Length);
 			this.Label.text = this.DelinquentFlees[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentEnemyFlee)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentEnemyFlees.Length);
+			this.RandomID = Random.Range(0, this.DelinquentEnemyFlees.Length);
 			this.Label.text = this.DelinquentEnemyFlees[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentFriendFlee)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentFriendFlees.Length);
+			this.RandomID = Random.Range(0, this.DelinquentFriendFlees.Length);
 			this.Label.text = this.DelinquentFriendFlees[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentInjuredFlee)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentInjuredFlees.Length);
+			this.RandomID = Random.Range(0, this.DelinquentInjuredFlees.Length);
 			this.Label.text = this.DelinquentInjuredFlees[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.DelinquentCheer)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentCheers.Length);
+			this.RandomID = Random.Range(0, this.DelinquentCheers.Length);
 			this.Label.text = this.DelinquentCheers[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -1913,14 +1913,14 @@ public class SubtitleScript : MonoBehaviour
 		{
 			if (this.Label.text == string.Empty)
 			{
-				this.RandomID = UnityEngine.Random.Range(0, this.DelinquentHmms.Length);
+				this.RandomID = Random.Range(0, this.DelinquentHmms.Length);
 				this.Label.text = this.DelinquentHmms[this.RandomID];
 				this.PlayVoice(subtitleType, this.RandomID);
 			}
 		}
 		else if (subtitleType == SubtitleType.DelinquentGrudge)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.DelinquentGrudges.Length);
+			this.RandomID = Random.Range(0, this.DelinquentGrudges.Length);
 			this.Label.text = this.DelinquentGrudges[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -2017,7 +2017,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.EvilDelinquentCorpseReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.EvilDelinquentCorpseReactions.Length);
+			this.RandomID = Random.Range(0, this.EvilDelinquentCorpseReactions.Length);
 			this.Label.text = this.EvilDelinquentCorpseReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -2256,19 +2256,19 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.SenpaiInsanityReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiInsanityReactions.Length);
+			this.RandomID = Random.Range(0, this.SenpaiInsanityReactions.Length);
 			this.Label.text = this.SenpaiInsanityReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.SenpaiWeaponReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiWeaponReactions.Length);
+			this.RandomID = Random.Range(0, this.SenpaiWeaponReactions.Length);
 			this.Label.text = this.SenpaiWeaponReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
 		else if (subtitleType == SubtitleType.SenpaiBloodReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiBloodReactions.Length);
+			this.RandomID = Random.Range(0, this.SenpaiBloodReactions.Length);
 			this.Label.text = this.SenpaiBloodReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -2293,7 +2293,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.SenpaiViolenceReaction)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.SenpaiViolenceReactions.Length);
+			this.RandomID = Random.Range(0, this.SenpaiViolenceReactions.Length);
 			this.Label.text = this.SenpaiViolenceReactions[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -2309,7 +2309,7 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.YandereWhimper)
 		{
-			this.RandomID = UnityEngine.Random.Range(0, this.YandereWhimpers.Length);
+			this.RandomID = Random.Range(0, this.YandereWhimpers.Length);
 			this.Label.text = this.YandereWhimpers[this.RandomID];
 			this.PlayVoice(subtitleType, this.RandomID);
 		}
@@ -2341,7 +2341,7 @@ public class SubtitleScript : MonoBehaviour
 		{
 			while (this.RandomID == this.PreviousRandom)
 			{
-				this.RandomID = UnityEngine.Random.Range(0, this.PhotoAnnoyances.Length);
+				this.RandomID = Random.Range(0, this.PhotoAnnoyances.Length);
 			}
 			this.PreviousRandom = this.RandomID;
 			this.Label.text = this.PhotoAnnoyances[this.RandomID];
@@ -2736,12 +2736,10 @@ public class SubtitleScript : MonoBehaviour
 
 	private void PlayVoice(SubtitleType subtitleType, int ID)
 	{
-		if (this.CurrentClip != null)
-		{
-		}
+		this.CurrentClip != null;
 		this.Jukebox.Dip = 0.5f;
 		AudioClipArrayWrapper audioClipArrayWrapper;
-		bool flag = this.SubtitleClipArrays.TryGetValue(subtitleType, out audioClipArrayWrapper);
+		this.SubtitleClipArrays.TryGetValue(subtitleType, out audioClipArrayWrapper);
 		this.PlayClip(audioClipArrayWrapper[ID], base.transform.position);
 	}
 
@@ -2896,13 +2894,13 @@ public class SubtitleScript : MonoBehaviour
 			AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 			audioSource.clip = clip;
 			audioSource.Play();
-			UnityEngine.Object.Destroy(gameObject, clip.length);
+			Object.Destroy(gameObject, clip.length);
 			audioSource.rolloffMode = AudioRolloffMode.Linear;
 			audioSource.spatialBlend = 1f;
 			audioSource.minDistance = 5f;
 			audioSource.maxDistance = 15f;
 			this.CurrentClip = gameObject;
-			audioSource.volume = ((this.Yandere.position.y >= gameObject.transform.position.y - 2f) ? 1f : 0f);
+			audioSource.volume = ((this.Yandere.position.y < gameObject.transform.position.y - 2f) ? 0f : 1f);
 			this.Speaker = null;
 		}
 	}

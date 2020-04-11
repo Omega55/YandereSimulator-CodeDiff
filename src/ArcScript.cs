@@ -14,8 +14,7 @@ public class ArcScript : MonoBehaviour
 		this.Timer += Time.deltaTime;
 		if (this.Timer > 1f)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.ArcTrail, base.transform.position, base.transform.rotation);
-			gameObject.GetComponent<Rigidbody>().AddRelativeForce(ArcScript.NEW_ARC_RELATIVE_FORCE);
+			Object.Instantiate<GameObject>(this.ArcTrail, base.transform.position, base.transform.rotation).GetComponent<Rigidbody>().AddRelativeForce(ArcScript.NEW_ARC_RELATIVE_FORCE);
 			this.Timer = 0f;
 		}
 	}

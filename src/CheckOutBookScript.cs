@@ -20,11 +20,9 @@ public class CheckOutBookScript : MonoBehaviour
 		{
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
+			return;
 		}
-		else
-		{
-			this.Prompt.enabled = true;
-			this.Prompt.Hide();
-		}
+		this.Prompt.enabled = true;
+		this.Prompt.Hide();
 	}
 }

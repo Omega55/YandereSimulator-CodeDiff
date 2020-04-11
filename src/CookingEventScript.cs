@@ -76,9 +76,10 @@ public class CookingEventScript : MonoBehaviour
 		this.Octodog.SetActive(false);
 		this.Sausage.SetActive(false);
 		this.Rotation = -90f;
-		foreach (Transform transform in this.Octodogs)
+		Transform[] octodogs = this.Octodogs;
+		for (int i = 0; i < octodogs.Length; i++)
 		{
-			transform.gameObject.SetActive(false);
+			octodogs[i].gameObject.SetActive(false);
 		}
 		this.EventSubtitle.transform.localScale = Vector3.zero;
 		this.EventCheck = true;
@@ -90,9 +91,7 @@ public class CookingEventScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-		}
+		Input.GetKeyDown(KeyCode.Space);
 		if (!this.Clock.StopTime && this.EventCheck && this.Clock.HourTime > this.EventTime)
 		{
 			this.EventStudent = this.StudentManager.Students[this.EventStudentID];
@@ -136,8 +135,9 @@ public class CookingEventScript : MonoBehaviour
 			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || this.EventStudent.Yandere.Cooking)
 			{
 				this.EndEvent();
+				return;
 			}
-			else if (this.EventStudent.DistanceToDestination < 1f)
+			if (this.EventStudent.DistanceToDestination < 1f)
 			{
 				if (this.EventPhase == -1)
 				{
@@ -357,11 +357,9 @@ public class CookingEventScript : MonoBehaviour
 						num2 = 1f;
 					}
 					this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
+					return;
 				}
-				else
-				{
-					this.EventSubtitle.transform.localScale = Vector3.zero;
-				}
+				this.EventSubtitle.transform.localScale = Vector3.zero;
 			}
 		}
 	}
@@ -372,7 +370,7 @@ public class CookingEventScript : MonoBehaviour
 		{
 			if (this.VoiceClip != null)
 			{
-				UnityEngine.Object.Destroy(this.VoiceClip);
+				Object.Destroy(this.VoiceClip);
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];

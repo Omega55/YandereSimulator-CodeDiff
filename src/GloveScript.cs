@@ -13,8 +13,7 @@ public class GloveScript : MonoBehaviour
 
 	private void Start()
 	{
-		YandereScript component = GameObject.Find("YandereChan").GetComponent<YandereScript>();
-		Physics.IgnoreCollision(component.GetComponent<Collider>(), this.MyCollider);
+		Physics.IgnoreCollision(GameObject.Find("YandereChan").GetComponent<YandereScript>().GetComponent<Collider>(), this.MyCollider);
 		if (base.transform.position.y > 1000f)
 		{
 			base.transform.position = new Vector3(12f, 0f, 28f);

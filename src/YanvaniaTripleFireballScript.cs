@@ -15,7 +15,7 @@ public class YanvaniaTripleFireballScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Direction = ((this.Dracula.position.x <= base.transform.position.x) ? 1 : -1);
+		this.Direction = ((this.Dracula.position.x > base.transform.position.x) ? -1 : 1);
 	}
 
 	private void Update()
@@ -46,7 +46,7 @@ public class YanvaniaTripleFireballScript : MonoBehaviour
 		this.Timer += Time.deltaTime;
 		if (this.Timer > 10f)
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

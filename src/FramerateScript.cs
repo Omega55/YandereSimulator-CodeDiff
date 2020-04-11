@@ -5,8 +5,6 @@ public class FramerateScript : MonoBehaviour
 {
 	public float updateInterval = 0.5f;
 
-	private GUIText fpsText;
-
 	private float accum;
 
 	private int frames;
@@ -19,7 +17,6 @@ public class FramerateScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.fpsText = base.GetComponent<GUIText>();
 		this.timeleft = this.updateInterval;
 	}
 

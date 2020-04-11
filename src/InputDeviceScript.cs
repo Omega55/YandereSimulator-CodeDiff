@@ -43,9 +43,9 @@ public class InputDeviceScript : MonoBehaviour
 		if (this.Type != type)
 		{
 			PromptSwapScript[] array = Resources.FindObjectsOfTypeAll<PromptSwapScript>();
-			foreach (PromptSwapScript promptSwapScript in array)
+			for (int j = 0; j < array.Length; j++)
 			{
-				promptSwapScript.UpdateSpriteType(this.Type);
+				array[j].UpdateSpriteType(this.Type);
 			}
 		}
 		this.Horizontal = Input.GetAxis("Horizontal");

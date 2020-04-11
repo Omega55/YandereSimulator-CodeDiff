@@ -9,14 +9,14 @@ public class YanvaniaSmallFireballScript : MonoBehaviour
 	{
 		if (other.gameObject.name == "Heart")
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+			Object.Destroy(base.gameObject);
 		}
 		if (other.gameObject.name == "YanmontChan")
 		{
 			other.gameObject.GetComponent<YanvaniaYanmontScript>().TakeDamage(10);
-			UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

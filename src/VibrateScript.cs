@@ -12,6 +12,6 @@ public class VibrateScript : MonoBehaviour
 
 	private void Update()
 	{
-		base.transform.localPosition = new Vector3(this.Origin.x + UnityEngine.Random.Range(-5f, 5f), this.Origin.y + UnityEngine.Random.Range(-5f, 5f), base.transform.localPosition.z);
+		base.transform.localPosition = new Vector3(this.Origin.x + Random.Range(-5f, 5f), this.Origin.y + Random.Range(-5f, 5f), base.transform.localPosition.z);
 	}
 }

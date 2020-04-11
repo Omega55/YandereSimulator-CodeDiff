@@ -16,11 +16,9 @@ public class SciFiTerminalScript : MonoBehaviour
 		if (this.Student.StudentID != 65)
 		{
 			base.enabled = false;
+			return;
 		}
-		else
-		{
-			this.RobotArms = this.Student.StudentManager.RobotArms;
-		}
+		this.RobotArms = this.Student.StudentManager.RobotArms;
 	}
 
 	private void Update()
@@ -35,11 +33,10 @@ public class SciFiTerminalScript : MonoBehaviour
 					if (!this.RobotArms.On[0])
 					{
 						this.RobotArms.ActivateArms();
+						return;
 					}
-					else
-					{
-						this.RobotArms.ToggleWork();
-					}
+					this.RobotArms.ToggleWork();
+					return;
 				}
 			}
 			else

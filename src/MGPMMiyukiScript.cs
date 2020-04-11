@@ -206,57 +206,57 @@ public class MGPMMiyukiScript : MonoBehaviour
 				{
 					if (this.MagicLevel == 0)
 					{
-						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
+						GameObject gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
 					}
 					else if (this.MagicLevel == 1)
 					{
-						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.1f, 0f, 0f), Quaternion.identity);
+						GameObject gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.1f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
-						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.1f, 0f, 0f), Quaternion.identity);
+						gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.1f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
 					}
 					else if (this.MagicLevel == 2)
 					{
-						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
+						GameObject gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
-						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.2f, 0f, 0f), Quaternion.identity);
+						gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.2f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
-						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.2f, 0f, 0f), Quaternion.identity);
+						gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.2f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
 					}
 					else
 					{
-						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
+						GameObject gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
-						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.2f, 0f, 0f), Quaternion.identity);
+						gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.2f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
-						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.2f, 0f, 0f), Quaternion.identity);
+						gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.2f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
-						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.4f, 0f, 0f), Quaternion.identity);
+						gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(0.4f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
 						gameObject.GetComponent<MGPMProjectileScript>().Angle = 1;
-						gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.4f, 0f, 0f), Quaternion.identity);
+						gameObject = Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position + new Vector3(-0.4f, 0f, 0f), Quaternion.identity);
 						gameObject.transform.parent = base.transform.parent;
 						gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
 						gameObject.transform.localScale = new Vector3(16f, 16f, 1f);
@@ -303,24 +303,25 @@ public class MGPMMiyukiScript : MonoBehaviour
 				}
 				if (this.Health > 0)
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+					GameObject gameObject = Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
 					gameObject.transform.parent = base.transform.parent;
 					gameObject.transform.localScale = new Vector3(64f, 64f, 1f);
 					AudioSource.PlayClipAtPoint(this.DamageSound, base.transform.position);
 				}
 				else
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.DeathExplosion, base.transform.position, Quaternion.identity);
-					gameObject.transform.parent = base.transform.parent;
-					gameObject.transform.localScale = new Vector3(128f, 128f, 1f);
+					GameObject gameObject2 = Object.Instantiate<GameObject>(this.DeathExplosion, base.transform.position, Quaternion.identity);
+					gameObject2.transform.parent = base.transform.parent;
+					gameObject2.transform.localScale = new Vector3(128f, 128f, 1f);
 					AudioSource.PlayClipAtPoint(this.DeathSound, base.transform.position);
 					this.GameplayManager.BeginGameOver();
 					base.gameObject.SetActive(false);
 				}
 			}
 			this.UpdateHearts();
+			return;
 		}
-		else if (collision.gameObject.layer == 15)
+		if (collision.gameObject.layer == 15)
 		{
 			AudioSource.PlayClipAtPoint(this.PickUpSound, base.transform.position);
 			this.GameplayManager.Score += 10;
@@ -336,7 +337,7 @@ public class MGPMMiyukiScript : MonoBehaviour
 				this.Magic = 0f;
 			}
 			this.MagicBar.localScale = new Vector3(this.Magic / 20f, 1f, 1f);
-			UnityEngine.Object.Destroy(collision.gameObject);
+			Object.Destroy(collision.gameObject);
 		}
 	}
 

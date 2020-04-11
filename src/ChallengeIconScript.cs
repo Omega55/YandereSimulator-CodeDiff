@@ -28,13 +28,11 @@ public class ChallengeIconScript : MonoBehaviour
 			this.R = 1f;
 			this.G = 0f;
 			this.B = 0f;
+			return;
 		}
-		else
-		{
-			this.R = 1f;
-			this.G = 1f;
-			this.B = 1f;
-		}
+		this.R = 1f;
+		this.G = 1f;
+		this.B = 1f;
 	}
 
 	private void Update()
@@ -69,13 +67,11 @@ public class ChallengeIconScript : MonoBehaviour
 				this.IconFrame.color = Color.white;
 				this.NameFrame.color = Color.white;
 				this.Name.color = Color.white;
+				return;
 			}
-			else
-			{
-				this.IconFrame.color = new Color(this.R, this.G, this.B, 1f);
-				this.NameFrame.color = new Color(this.R, this.G, this.B, 1f);
-				this.Name.color = new Color(this.R, this.G, this.B, 1f);
-			}
+			this.IconFrame.color = new Color(this.R, this.G, this.B, 1f);
+			this.NameFrame.color = new Color(this.R, this.G, this.B, 1f);
+			this.Name.color = new Color(this.R, this.G, this.B, 1f);
 		}
 	}
 }

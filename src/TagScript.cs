@@ -21,14 +21,10 @@ public class TagScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.Target != null)
+		if (this.Target != null && Vector3.Angle(this.MainCamera.forward, this.MainCamera.position - this.Target.position) > 90f)
 		{
-			float num = Vector3.Angle(this.MainCamera.forward, this.MainCamera.position - this.Target.position);
-			if (num > 90f)
-			{
-				Vector2 vector = this.MainCameraCamera.WorldToScreenPoint(this.Target.position);
-				base.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
-			}
+			Vector2 vector = this.MainCameraCamera.WorldToScreenPoint(this.Target.position);
+			base.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
 		}
 	}
 }

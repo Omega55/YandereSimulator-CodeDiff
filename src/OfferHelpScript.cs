@@ -89,60 +89,58 @@ public class OfferHelpScript : MonoBehaviour
 					component3.clip = this.EventClip[this.EventPhase];
 					component3.Play();
 					this.Spoken = true;
+					return;
+				}
+				if (!this.Yandere.PauseScreen.Show && Input.GetButtonDown("A"))
+				{
+					this.Timer += this.EventClip[this.EventPhase].length + 1f;
+				}
+				if (this.EventSpeaker[this.EventPhase] == 1)
+				{
+					if (component[this.EventAnim[this.EventPhase]].time >= component[this.EventAnim[this.EventPhase]].length)
+					{
+						component.CrossFade(this.Yandere.IdleAnim);
+					}
+				}
+				else if (component2[this.EventAnim[this.EventPhase]].time >= component2[this.EventAnim[this.EventPhase]].length)
+				{
+					component2.CrossFade(this.Student.IdleAnim);
+				}
+				this.Timer += Time.deltaTime;
+				if (this.Timer > this.EventClip[this.EventPhase].length)
+				{
+					Debug.Log("Emptying string.");
+					this.EventSubtitle.text = string.Empty;
 				}
 				else
 				{
-					if (!this.Yandere.PauseScreen.Show && Input.GetButtonDown("A"))
+					this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
+				}
+				if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
+				{
+					if (this.EventStudentID == 5 && this.EventPhase == 2)
 					{
-						this.Timer += this.EventClip[this.EventPhase].length + 1f;
+						this.Yandere.PauseScreen.StudentInfoMenu.Targeting = true;
+						base.StartCoroutine(this.Yandere.PauseScreen.PhotoGallery.GetPhotos());
+						this.Yandere.PauseScreen.PhotoGallery.gameObject.SetActive(true);
+						this.Yandere.PauseScreen.PhotoGallery.NamingBully = true;
+						this.Yandere.PauseScreen.MainMenu.SetActive(false);
+						this.Yandere.PauseScreen.Panel.enabled = true;
+						this.Yandere.PauseScreen.Sideways = true;
+						this.Yandere.PauseScreen.Show = true;
+						Time.timeScale = 0.0001f;
+						this.Yandere.PauseScreen.PhotoGallery.UpdateButtonPrompts();
+						this.Offering = false;
+						return;
 					}
-					if (this.EventSpeaker[this.EventPhase] == 1)
-					{
-						if (component[this.EventAnim[this.EventPhase]].time >= component[this.EventAnim[this.EventPhase]].length)
-						{
-							component.CrossFade(this.Yandere.IdleAnim);
-						}
-					}
-					else if (component2[this.EventAnim[this.EventPhase]].time >= component2[this.EventAnim[this.EventPhase]].length)
-					{
-						component2.CrossFade(this.Student.IdleAnim);
-					}
-					this.Timer += Time.deltaTime;
-					if (this.Timer > this.EventClip[this.EventPhase].length)
-					{
-						Debug.Log("Emptying string.");
-						this.EventSubtitle.text = string.Empty;
-					}
-					else
-					{
-						this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
-					}
-					if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
-					{
-						if (this.EventStudentID == 5 && this.EventPhase == 2)
-						{
-							this.Yandere.PauseScreen.StudentInfoMenu.Targeting = true;
-							base.StartCoroutine(this.Yandere.PauseScreen.PhotoGallery.GetPhotos());
-							this.Yandere.PauseScreen.PhotoGallery.gameObject.SetActive(true);
-							this.Yandere.PauseScreen.PhotoGallery.NamingBully = true;
-							this.Yandere.PauseScreen.MainMenu.SetActive(false);
-							this.Yandere.PauseScreen.Panel.enabled = true;
-							this.Yandere.PauseScreen.Sideways = true;
-							this.Yandere.PauseScreen.Show = true;
-							Time.timeScale = 0.0001f;
-							this.Yandere.PauseScreen.PhotoGallery.UpdateButtonPrompts();
-							this.Offering = false;
-						}
-						else
-						{
-							this.Continue();
-						}
-					}
+					this.Continue();
+					return;
 				}
 			}
 			else if (this.StudentManager.Students[this.EventStudentID].Pushed || !this.StudentManager.Students[this.EventStudentID].Alive)
 			{
 				base.gameObject.SetActive(false);
+				return;
 			}
 		}
 		else
@@ -183,8 +181,9 @@ public class OfferHelpScript : MonoBehaviour
 				this.Unable = true;
 			}
 			this.Prompt.MyCollider.enabled = true;
+			return;
 		}
-		else if (this.EventStudentID == 5)
+		if (this.EventStudentID == 5)
 		{
 			this.Prompt.MyCollider.enabled = true;
 		}
@@ -225,7 +224,7 @@ public class OfferHelpScript : MonoBehaviour
 			this.Student.Routine = true;
 			this.Yandere.CanMove = true;
 			this.Jukebox.Dip = 1f;
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

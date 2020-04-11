@@ -26,6 +26,7 @@ public class MGPMThanksScript : MonoBehaviour
 			{
 				this.Jukebox.Play();
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 2)
@@ -36,6 +37,7 @@ public class MGPMThanksScript : MonoBehaviour
 				this.Jukebox.loop = true;
 				this.Jukebox.Play();
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 3)
@@ -43,6 +45,7 @@ public class MGPMThanksScript : MonoBehaviour
 			if (Input.anyKeyDown)
 			{
 				this.Phase++;
+				return;
 			}
 		}
 		else

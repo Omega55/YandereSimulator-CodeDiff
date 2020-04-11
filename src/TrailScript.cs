@@ -5,8 +5,7 @@ public class TrailScript : MonoBehaviour
 {
 	private void Start()
 	{
-		GameObject gameObject = GameObject.Find("YandereChan");
-		Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), base.GetComponent<Collider>());
-		UnityEngine.Object.Destroy(this);
+		Physics.IgnoreCollision(GameObject.Find("YandereChan").GetComponent<Collider>(), base.GetComponent<Collider>());
+		Object.Destroy(this);
 	}
 }

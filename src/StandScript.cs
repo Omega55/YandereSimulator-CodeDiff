@@ -50,6 +50,7 @@ public class StandScript : MonoBehaviour
 			if (this.Weapons == 8 && this.Yandere.transform.position.y > 11.9f && Input.GetButtonDown("RB") && !MissionModeGlobals.MissionMode && !this.Yandere.Laughing && this.Yandere.CanMove)
 			{
 				this.Yandere.Jojo();
+				return;
 			}
 		}
 		else if (this.Phase == 0)
@@ -61,12 +62,13 @@ public class StandScript : MonoBehaviour
 					AudioSource.PlayClipAtPoint(this.SummonSFX, base.transform.position);
 					this.SFX = true;
 				}
-				UnityEngine.Object.Instantiate<GameObject>(this.SummonEffect, this.SummonTransform.position, Quaternion.identity);
+				Object.Instantiate<GameObject>(this.SummonEffect, this.SummonTransform.position, Quaternion.identity);
 			}
 			if (this.Stand.GetComponent<Animation>()["StandSummon"].time >= this.Stand.GetComponent<Animation>()["StandSummon"].length)
 			{
 				this.Stand.GetComponent<Animation>().CrossFade("StandIdle");
 				this.Phase++;
+				return;
 			}
 		}
 		else
@@ -76,21 +78,18 @@ public class StandScript : MonoBehaviour
 			if (this.Yandere.CanMove)
 			{
 				this.Return();
-				if (axis != 0f || axis2 != 0f)
-				{
-					if (this.Yandere.Running)
-					{
-						this.Stand.GetComponent<Animation>().CrossFade("StandRun");
-					}
-					else
-					{
-						this.Stand.GetComponent<Animation>().CrossFade("StandWalk");
-					}
-				}
-				else
+				if (axis == 0f && axis2 == 0f)
 				{
 					this.Stand.GetComponent<Animation>().CrossFade("StandIdle");
+					return;
 				}
+				if (this.Yandere.Running)
+				{
+					this.Stand.GetComponent<Animation>().CrossFade("StandRun");
+					return;
+				}
+				this.Stand.GetComponent<Animation>().CrossFade("StandWalk");
+				return;
 			}
 			else if (this.Yandere.RPGCamera.enabled)
 			{
@@ -104,23 +103,26 @@ public class StandScript : MonoBehaviour
 					this.Stand.GetComponent<Animation>().CrossFade("StandAttack");
 					this.StandPunch.MyCollider.enabled = true;
 					this.ReadyForFinisher = true;
+					return;
 				}
-				else if (this.ReadyForFinisher)
+				if (this.ReadyForFinisher)
 				{
 					if (this.Phase == 1)
 					{
 						base.GetComponent<AudioSource>().Play();
-						this.Finisher = UnityEngine.Random.Range(1, 3);
+						this.Finisher = Random.Range(1, 3);
 						this.Stand.GetComponent<Animation>().CrossFade("StandFinisher" + this.Finisher.ToString());
 						this.Phase++;
+						return;
 					}
-					else if (this.Phase == 2)
+					if (this.Phase == 2)
 					{
 						if (this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].time >= 0.5f)
 						{
 							this.FalconPunch.MyCollider.enabled = true;
 							this.StandPunch.MyCollider.enabled = false;
 							this.Phase++;
+							return;
 						}
 					}
 					else if (this.Phase == 3 && (this.StandPunch.MyCollider.enabled || this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].time >= this.Stand.GetComponent<Animation>()["StandFinisher" + this.Finisher.ToString()].length))

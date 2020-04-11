@@ -116,12 +116,14 @@ public class RingEventScript : MonoBehaviour
 				this.RingCollider.enabled = false;
 				this.Yandere.Inventory.Ring = false;
 				this.EndEvent();
+				return;
 			}
-			else if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || !this.EventStudent.Alive)
+			if (this.Clock.HourTime > this.EventTime + 0.5f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || !this.EventStudent.Alive)
 			{
 				this.EndEvent();
+				return;
 			}
-			else if (!this.EventStudent.Pathfinding.canMove)
+			if (!this.EventStudent.Pathfinding.canMove)
 			{
 				if (this.EventPhase == 1)
 				{
@@ -179,7 +181,7 @@ public class RingEventScript : MonoBehaviour
 						}
 						this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[0]].time = this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[0]].length;
 						this.EventStudent.Character.GetComponent<Animation>()[this.EventAnim[0]].speed = -1f;
-						this.EventStudent.Character.GetComponent<Animation>().CrossFade((!(this.EventStudent.Cosmetic.FemaleAccessories[3] != null)) ? this.EventAnim[1] : this.EventAnim[0]);
+						this.EventStudent.Character.GetComponent<Animation>().CrossFade((this.EventStudent.Cosmetic.FemaleAccessories[3] != null) ? this.EventAnim[0] : this.EventAnim[1]);
 						this.EventPhase++;
 					}
 				}
@@ -235,11 +237,9 @@ public class RingEventScript : MonoBehaviour
 							num2 = 1f;
 						}
 						this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
+						return;
 					}
-					else
-					{
-						this.EventSubtitle.transform.localScale = Vector3.zero;
-					}
+					this.EventSubtitle.transform.localScale = Vector3.zero;
 				}
 			}
 		}
@@ -251,7 +251,7 @@ public class RingEventScript : MonoBehaviour
 		{
 			if (this.VoiceClip != null)
 			{
-				UnityEngine.Object.Destroy(this.VoiceClip);
+				Object.Destroy(this.VoiceClip);
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];

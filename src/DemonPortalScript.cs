@@ -31,10 +31,10 @@ public class DemonPortalScript : MonoBehaviour
 		{
 			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.CanMove = false;
-			UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+			Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 			this.Timer += Time.deltaTime;
 		}
-		this.DemonRealmAudio.volume = Mathf.MoveTowards(this.DemonRealmAudio.volume, (this.Yandere.transform.position.y <= 1000f) ? 0f : 0.5f, Time.deltaTime * 0.1f);
+		this.DemonRealmAudio.volume = Mathf.MoveTowards(this.DemonRealmAudio.volume, (this.Yandere.transform.position.y > 1000f) ? 0.5f : 0f, Time.deltaTime * 0.1f);
 		if (this.Timer > 0f)
 		{
 			if (this.Yandere.transform.position.y > 1000f)
@@ -51,11 +51,13 @@ public class DemonPortalScript : MonoBehaviour
 						this.HeartbeatCamera.SetActive(true);
 						this.FPS.SetActive(true);
 						this.HUD.SetActive(true);
+						return;
 					}
 				}
 				else if (this.Timer > 1f)
 				{
 					this.Yandere.Character.SetActive(false);
+					return;
 				}
 			}
 			else

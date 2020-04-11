@@ -152,7 +152,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 					this.MyAudio.clip = this.MoveSound;
 					this.MyAudio.Play();
 				}
-				this.Continue.color = new Color(this.Continue.color.r, this.Continue.color.g, this.Continue.color.b, (this.Selected == 4) ? 0f : 1f);
+				this.Continue.color = new Color(this.Continue.color.r, this.Continue.color.g, this.Continue.color.b, (this.Selected != 4) ? 1f : 0f);
 				if (Input.GetButtonDown("A"))
 				{
 					this.Nudge = true;
@@ -169,9 +169,10 @@ public class HeartbrokenCursorScript : MonoBehaviour
 						{
 							this.Cracks[1].transform.parent.position = this.StudentManager.Yandere.Head.position;
 							this.Cracks[1].transform.parent.position = Vector3.MoveTowards(this.Cracks[1].transform.parent.position, this.Heartbroken.transform.parent.position, -1f);
-							foreach (VibrateScript vibrateScript in this.Vibrations)
+							VibrateScript[] vibrations = this.Vibrations;
+							for (int i = 0; i < vibrations.Length; i++)
 							{
-								vibrateScript.enabled = false;
+								vibrations[i].enabled = false;
 							}
 							this.Heartbroken.Freeze = true;
 						}
@@ -180,7 +181,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 							this.Heartbroken.Darken();
 							while (this.RandomCrack == this.LastRandomCrack)
 							{
-								this.RandomCrack = UnityEngine.Random.Range(0, 3);
+								this.RandomCrack = Random.Range(0, 3);
 							}
 							this.LastRandomCrack = this.RandomCrack;
 							this.MyAudio.clip = this.CrackSound[this.RandomCrack];
@@ -197,7 +198,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 							int cracksSpawned = this.CracksSpawned;
 							while (cracksSpawned == this.CracksSpawned)
 							{
-								int num = UnityEngine.Random.Range(1, this.Cracks.Length);
+								int num = Random.Range(1, this.Cracks.Length);
 								if (!this.Cracks[num].activeInHierarchy)
 								{
 									this.Cracks[num].SetActive(true);
@@ -267,8 +268,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 							this.Background[1].SetActive(false);
 							this.SNAPLetters.SetActive(false);
 							Time.timeScale = 0.5f;
-							GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.ShatterPrefab);
-							ShatterSpawner component = gameObject.GetComponent<ShatterSpawner>();
+							ShatterSpawner component = Object.Instantiate<GameObject>(this.ShatterPrefab).GetComponent<ShatterSpawner>();
 							component.ScreenMaterial.mainTexture = this.BlackTexture;
 							component.ShatterOrigin = new Vector2((float)Screen.width * 0.5f, (float)Screen.height * 0.5f);
 							this.StudentManager.Yandere.CharacterAnimation["f02_snapRise_00"].speed = 2f;
@@ -362,6 +362,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 			{
 				base.transform.localPosition = new Vector3(-225f, base.transform.localPosition.y, base.transform.localPosition.z);
 				this.Nudge = false;
+				return;
 			}
 		}
 		else

@@ -27,12 +27,10 @@ public class EmergencyExitScript : MonoBehaviour
 		if (!this.Open)
 		{
 			this.Pivot.localEulerAngles = new Vector3(this.Pivot.localEulerAngles.x, Mathf.Lerp(this.Pivot.localEulerAngles.y, 0f, Time.deltaTime * 10f), this.Pivot.localEulerAngles.z);
+			return;
 		}
-		else
-		{
-			this.Pivot.localEulerAngles = new Vector3(this.Pivot.localEulerAngles.x, Mathf.Lerp(this.Pivot.localEulerAngles.y, 90f, Time.deltaTime * 10f), this.Pivot.localEulerAngles.z);
-			this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
-		}
+		this.Pivot.localEulerAngles = new Vector3(this.Pivot.localEulerAngles.x, Mathf.Lerp(this.Pivot.localEulerAngles.y, 90f, Time.deltaTime * 10f), this.Pivot.localEulerAngles.z);
+		this.Timer = Mathf.MoveTowards(this.Timer, 0f, Time.deltaTime);
 	}
 
 	private void OnTriggerStay(Collider other)

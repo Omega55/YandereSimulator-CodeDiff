@@ -70,7 +70,7 @@ namespace MaidDereMinigame
 			this.collider2d.enabled = false;
 			if (this.targetChair == null)
 			{
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
 			}
 			this.happinessMeter.gameObject.SetActive(false);
 			this.speechBubble.gameObject.SetActive(false);
@@ -100,7 +100,7 @@ namespace MaidDereMinigame
 		public void Pause(bool toPause)
 		{
 			this.isPaused = toPause;
-			base.GetComponent<Animator>().speed = (float)((!this.isPaused) ? 1 : 0);
+			base.GetComponent<Animator>().speed = (float)(this.isPaused ? 0 : 1);
 		}
 
 		private void Update()
@@ -118,6 +118,7 @@ namespace MaidDereMinigame
 					this.happiness = 100f;
 					this.happinessMeter.SetFill(this.happiness / 100f);
 					this.state = AIController.AIState.Menu;
+					return;
 				}
 				break;
 			case AIController.AIState.Menu:
@@ -126,54 +127,48 @@ namespace MaidDereMinigame
 					this.StandUp();
 					this.state = AIController.AIState.Leaving;
 					GameController.AddAngryCustomer();
+					return;
 				}
-				else
-				{
-					this.ReduceHappiness();
-				}
-				break;
+				this.ReduceHappiness();
+				return;
 			case AIController.AIState.Ordering:
 				if (this.orderTime <= 0f)
 				{
 					this.state = AIController.AIState.Waiting;
 					this.speechBubble.GetComponent<Animator>().SetTrigger("BubbleDrop");
 					this.animator.SetTrigger("DoneOrdering");
+					return;
 				}
-				else
-				{
-					this.orderTime -= Time.deltaTime;
-				}
-				break;
+				this.orderTime -= Time.deltaTime;
+				return;
 			case AIController.AIState.Waiting:
 				if (this.happiness <= 0f)
 				{
 					this.StandUp();
 					this.state = AIController.AIState.Leaving;
 					GameController.AddAngryCustomer();
+					return;
 				}
-				else
-				{
-					this.ReduceHappiness();
-				}
-				break;
+				this.ReduceHappiness();
+				return;
 			case AIController.AIState.Eating:
 				if (this.eatTime <= 0f)
 				{
 					this.StandUp();
 					this.state = AIController.AIState.Leaving;
+					return;
 				}
-				else
-				{
-					this.eatTime -= Time.deltaTime;
-				}
-				break;
+				this.eatTime -= Time.deltaTime;
+				return;
 			case AIController.AIState.Leaving:
 				if (Mathf.Abs(base.transform.position.x - this.leaveTarget.position.x) <= this.distanceThreshold)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 					this.leaveTarget.GetComponent<CustomerSpawner>().OpenDoor();
 				}
 				break;
+			default:
+				return;
 			}
 		}
 
@@ -228,11 +223,9 @@ namespace MaidDereMinigame
 			if (this.Male)
 			{
 				SFXController.PlaySound(SFXController.Sounds.MaleCustomerGreet);
+				return;
 			}
-			else
-			{
-				SFXController.PlaySound(SFXController.Sounds.FemaleCustomerGreet);
-			}
+			SFXController.PlaySound(SFXController.Sounds.FemaleCustomerGreet);
 		}
 
 		public void DeliverFood(Food deliveredFood)
@@ -310,9 +303,9 @@ namespace MaidDereMinigame
 
 		public void SetSortingLayer(bool back)
 		{
-			this.spriteRenderer.sortingLayerName = ((!back) ? "Default" : "CustomerSitting");
-			base.GetComponent<CharacterHairPlacer>().hairInstance.sortingLayerName = ((!back) ? "Default" : "CustomerSitting");
-			this.throbObject.GetComponent<SpriteRenderer>().sortingLayerName = ((!back) ? "Default" : "CustomerSitting");
+			this.spriteRenderer.sortingLayerName = (back ? "CustomerSitting" : "Default");
+			base.GetComponent<CharacterHairPlacer>().hairInstance.sortingLayerName = (back ? "CustomerSitting" : "Default");
+			this.throbObject.GetComponent<SpriteRenderer>().sortingLayerName = (back ? "CustomerSitting" : "Default");
 		}
 	}
 }

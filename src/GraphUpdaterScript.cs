@@ -12,7 +12,7 @@ public class GraphUpdaterScript : MonoBehaviour
 		if (this.Frames > 0)
 		{
 			this.Graph.Scan(null);
-			UnityEngine.Object.Destroy(this);
+			Object.Destroy(this);
 		}
 		this.Frames++;
 	}

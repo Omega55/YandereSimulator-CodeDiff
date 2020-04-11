@@ -31,6 +31,7 @@ public class NyanDroidScript : MonoBehaviour
 				this.Prompt.Circle[0].fillAmount = 1f;
 				this.Pathfinding.canSearch = true;
 				this.Pathfinding.canMove = true;
+				return;
 			}
 		}
 		else

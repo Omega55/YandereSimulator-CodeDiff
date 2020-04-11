@@ -31,7 +31,7 @@ public class DelinquentVoicesScript : MonoBehaviour
 				{
 					while (this.RandomID == this.LastID)
 					{
-						this.RandomID = UnityEngine.Random.Range(0, this.Subtitle.DelinquentAnnoyClips.Length);
+						this.RandomID = Random.Range(0, this.Subtitle.DelinquentAnnoyClips.Length);
 					}
 					this.LastID = this.RandomID;
 					this.Subtitle.UpdateLabel(SubtitleType.DelinquentAnnoy, this.RandomID, 3f);
@@ -40,7 +40,7 @@ public class DelinquentVoicesScript : MonoBehaviour
 				{
 					while (this.RandomID == this.LastID)
 					{
-						this.RandomID = UnityEngine.Random.Range(0, this.Subtitle.DelinquentCaseClips.Length);
+						this.RandomID = Random.Range(0, this.Subtitle.DelinquentCaseClips.Length);
 					}
 					this.LastID = this.RandomID;
 					this.Subtitle.UpdateLabel(SubtitleType.DelinquentCase, this.RandomID, 3f);

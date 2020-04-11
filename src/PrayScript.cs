@@ -120,13 +120,13 @@ public class PrayScript : MonoBehaviour
 			this.GenderPrompt.Circle[0].fillAmount = 1f;
 			if (!this.SpawnMale)
 			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!StudentGlobals.GetStudentDead(37)) ? 1f : 0.5f);
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, StudentGlobals.GetStudentDead(37) ? 0.5f : 1f);
 				this.GenderPrompt.Label[0].text = "     Male Victim";
 				this.SpawnMale = true;
 			}
 			else
 			{
-				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, (!StudentGlobals.GetStudentDead(39)) ? 1f : 0.5f);
+				this.VictimLabel.color = new Color(this.VictimLabel.color.r, this.VictimLabel.color.g, this.VictimLabel.color.b, StudentGlobals.GetStudentDead(39) ? 0.5f : 1f);
 				this.GenderPrompt.Label[0].text = "     Female Victim";
 				this.SpawnMale = false;
 			}
@@ -152,7 +152,7 @@ public class PrayScript : MonoBehaviour
 				this.PromptBar.Label[4].text = "Choose";
 				this.PromptBar.UpdateButtons();
 				this.PromptBar.Show = true;
-				this.StudentNumber = ((!this.SpawnMale) ? 39 : 37);
+				this.StudentNumber = (this.SpawnMale ? 37 : 39);
 				if (this.StudentManager.Students[this.StudentNumber] != null)
 				{
 					if (!this.StudentManager.Students[this.StudentNumber].gameObject.activeInHierarchy)
@@ -173,12 +173,11 @@ public class PrayScript : MonoBehaviour
 				if (this.PrayWindow.localScale.x > 0.1f)
 				{
 					this.PrayWindow.localScale = Vector3.Lerp(this.PrayWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+					return;
 				}
-				else
-				{
-					this.PrayWindow.localScale = Vector3.zero;
-					this.PrayWindow.gameObject.SetActive(false);
-				}
+				this.PrayWindow.localScale = Vector3.zero;
+				this.PrayWindow.gameObject.SetActive(false);
+				return;
 			}
 		}
 		else
@@ -217,13 +216,15 @@ public class PrayScript : MonoBehaviour
 						this.Yandere.SanityBased = false;
 					}
 					this.Exit();
+					return;
 				}
-				else if (this.Selected == 2)
+				if (this.Selected == 2)
 				{
 					this.Yandere.Sanity -= 50f;
 					this.Exit();
+					return;
 				}
-				else if (this.Selected == 3)
+				if (this.Selected == 3)
 				{
 					if (this.VictimLabel.color.a == 1f && this.StudentManager.NPCsSpawned >= this.StudentManager.NPCsTotal)
 					{
@@ -239,7 +240,7 @@ public class PrayScript : MonoBehaviour
 						}
 						if (this.StudentManager.Students[this.StudentID] != null)
 						{
-							UnityEngine.Object.Destroy(this.StudentManager.Students[this.StudentID].gameObject);
+							Object.Destroy(this.StudentManager.Students[this.StudentID].gameObject);
 						}
 						this.StudentManager.Students[this.StudentID] = null;
 						this.StudentManager.ForceSpawn = true;
@@ -251,40 +252,47 @@ public class PrayScript : MonoBehaviour
 						this.Victims = 0;
 						this.JustSummoned = true;
 						this.Exit();
+						return;
 					}
 				}
-				else if (this.Selected == 4)
+				else
 				{
-					this.SpawnWeapons();
-					this.Exit();
-				}
-				else if (this.Selected == 5)
-				{
-					if (this.Yandere.Gloved)
+					if (this.Selected == 4)
 					{
-						this.Yandere.Gloves.Blood.enabled = false;
+						this.SpawnWeapons();
+						this.Exit();
+						return;
 					}
-					if (this.Yandere.CurrentUniformOrigin == 1)
+					if (this.Selected == 5)
 					{
-						this.StudentManager.OriginalUniforms++;
+						if (this.Yandere.Gloved)
+						{
+							this.Yandere.Gloves.Blood.enabled = false;
+						}
+						if (this.Yandere.CurrentUniformOrigin == 1)
+						{
+							this.StudentManager.OriginalUniforms++;
+						}
+						else
+						{
+							this.StudentManager.NewUniforms++;
+						}
+						this.Police.BloodyClothing = 0;
+						this.Yandere.Bloodiness = 0f;
+						this.Yandere.Sanity = 100f;
+						this.Exit();
+						return;
 					}
-					else
+					if (this.Selected == 6)
 					{
-						this.StudentManager.NewUniforms++;
+						this.WeaponManager.CleanWeapons();
+						this.Exit();
+						return;
 					}
-					this.Police.BloodyClothing = 0;
-					this.Yandere.Bloodiness = 0f;
-					this.Yandere.Sanity = 100f;
-					this.Exit();
-				}
-				else if (this.Selected == 6)
-				{
-					this.WeaponManager.CleanWeapons();
-					this.Exit();
-				}
-				else if (this.Selected == 8)
-				{
-					this.Exit();
+					if (this.Selected == 8)
+					{
+						this.Exit();
+					}
 				}
 			}
 		}

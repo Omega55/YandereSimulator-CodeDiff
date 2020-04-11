@@ -269,7 +269,7 @@ namespace YandereSimulator.Yancord
 							this.Dialogue[this.currentPhase + 2].Message = this.GetReaction(this.currentPhase);
 							this.Dialogue[this.currentPhase + 1].sentByPlayer = true;
 							this.DialogueChooseMenu.SetActive(false);
-							this.ChatLabel.text = string.Empty;
+							this.ChatLabel.text = "";
 							this.ShowingDialogueOption = false;
 							this.timer = 0f;
 							this.currentPhase++;
@@ -305,8 +305,9 @@ namespace YandereSimulator.Yancord
 				this.SpawnChatMessage();
 				this.Chatting = true;
 			}
-			else if (Input.GetKeyDown(KeyCode.Q))
+			else
 			{
+				Input.GetKeyDown(KeyCode.Q);
 			}
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
@@ -368,7 +369,7 @@ namespace YandereSimulator.Yancord
 		{
 			for (int i = 1; i < this.Dialogue.Count; i++)
 			{
-				MessageScript item = UnityEngine.Object.Instantiate<MessageScript>(this.MessagePrefab, new Vector3(0f, this.Messages[i - 1].transform.position.y - ((float)this.Messages[i - 1].MessageLabel.height * 0.00167239446f + this.Distance * 0.00167239446f), 0f), Quaternion.identity, this.ConversationParent);
+				MessageScript item = Object.Instantiate<MessageScript>(this.MessagePrefab, new Vector3(0f, this.Messages[i - 1].transform.position.y - ((float)this.Messages[i - 1].MessageLabel.height * 0.00167239446f + this.Distance * 0.00167239446f), 0f), Quaternion.identity, this.ConversationParent);
 				this.Messages.Add(item);
 				this.Messages[i].MessageLabel.text = this.Dialogue[i].Message;
 				if (this.Dialogue[i].isQuestion)
@@ -401,7 +402,7 @@ namespace YandereSimulator.Yancord
 					this.Messages[this.currentPhase].gameObject.SetActive(true);
 					this.Messages[this.currentPhase].MessageLabel.text = this.Dialogue[this.currentPhase].Message;
 					float num = -400f + (float)this.Messages[this.currentPhase].MessageLabel.height - 10f;
-					float num2 = -this.Messages[this.currentPhase].transform.position.y - num;
+					Vector3 position = this.Messages[this.currentPhase].transform.position;
 					this.Messages[this.currentPhase].transform.position = new Vector3(0f, num * 0.00167239446f, 0f);
 					for (int i = this.currentPhase - 1; i >= 0; i--)
 					{
@@ -411,6 +412,7 @@ namespace YandereSimulator.Yancord
 					{
 						this.Messages[j].transform.position = new Vector3(0f, this.Messages[j - 1].transform.position.y - ((float)this.Messages[j - 1].MessageLabel.height * 0.00167239446f + this.Distance * 0.00167239446f), 0f);
 					}
+					return;
 				}
 			}
 			else if (!this.Messages[this.currentPhase].gameObject.activeInHierarchy)

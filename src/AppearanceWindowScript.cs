@@ -41,12 +41,11 @@ public class AppearanceWindowScript : MonoBehaviour
 				if (this.Window.localScale.x > 0.1f)
 				{
 					this.Window.localScale = Vector3.Lerp(this.Window.localScale, Vector3.zero, Time.deltaTime * 10f);
+					return;
 				}
-				else
-				{
-					this.Window.localScale = Vector3.zero;
-					this.Window.gameObject.SetActive(false);
-				}
+				this.Window.localScale = Vector3.zero;
+				this.Window.gameObject.SetActive(false);
+				return;
 			}
 		}
 		else

@@ -131,25 +131,25 @@ public static class ClubGlobals
 		}
 		foreach (ClubType clubType2 in ClubGlobals.KeysOfClubKicked())
 		{
-			object[] array4 = new object[4];
-			array4[0] = "Profile_";
-			array4[1] = GameGlobals.Profile;
-			array4[2] = "_ClubKicked_";
+			object[] array3 = new object[4];
+			array3[0] = "Profile_";
+			array3[1] = GameGlobals.Profile;
+			array3[2] = "_ClubKicked_";
 			int num3 = 3;
-			int num4 = (int)clubType2;
-			array4[num3] = num4.ToString();
-			Globals.Delete(string.Concat(array4));
+			int num2 = (int)clubType2;
+			array3[num3] = num2.ToString();
+			Globals.Delete(string.Concat(array3));
 		}
 		foreach (ClubType clubType3 in ClubGlobals.KeysOfQuitClub())
 		{
-			object[] array6 = new object[4];
-			array6[0] = "Profile_";
-			array6[1] = GameGlobals.Profile;
-			array6[2] = "_QuitClub_";
-			int num5 = 3;
-			int num6 = (int)clubType3;
-			array6[num5] = num6.ToString();
-			Globals.Delete(string.Concat(array6));
+			object[] array4 = new object[4];
+			array4[0] = "Profile_";
+			array4[1] = GameGlobals.Profile;
+			array4[2] = "_QuitClub_";
+			int num4 = 3;
+			int num2 = (int)clubType3;
+			array4[num4] = num2.ToString();
+			Globals.Delete(string.Concat(array4));
 		}
 		KeysHelper.Delete("Profile_" + GameGlobals.Profile + "_ClubClosed_");
 		KeysHelper.Delete("Profile_" + GameGlobals.Profile + "_ClubKicked_");

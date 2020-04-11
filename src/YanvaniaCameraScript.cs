@@ -38,6 +38,7 @@ public class YanvaniaCameraScript : MonoBehaviour
 			if (base.transform.position.x > 47.9f)
 			{
 				base.transform.position = new Vector3(47.9f, base.transform.position.y, base.transform.position.z);
+				return;
 			}
 		}
 		else
@@ -45,7 +46,7 @@ public class YanvaniaCameraScript : MonoBehaviour
 			if (this.StopMusic)
 			{
 				AudioSource component = this.Jukebox.GetComponent<AudioSource>();
-				component.volume -= Time.deltaTime * ((this.Yanmont.Health <= 0f) ? 0.025f : 0.2f);
+				component.volume -= Time.deltaTime * ((this.Yanmont.Health > 0f) ? 0.2f : 0.025f);
 				if (component.volume <= 0f)
 				{
 					this.StopMusic = false;

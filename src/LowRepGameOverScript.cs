@@ -198,6 +198,7 @@ public class LowRepGameOverScript : MonoBehaviour
 			{
 				this.Giggle();
 				this.GiggleTimer = 0f;
+				return;
 			}
 		}
 		else if (this.GigglePhase == 2)
@@ -206,6 +207,7 @@ public class LowRepGameOverScript : MonoBehaviour
 			{
 				this.Giggle();
 				this.GiggleTimer = 0f;
+				return;
 			}
 		}
 		else if (this.GigglePhase == 3)
@@ -214,6 +216,7 @@ public class LowRepGameOverScript : MonoBehaviour
 			{
 				this.Giggle();
 				this.GiggleTimer = 0f;
+				return;
 			}
 		}
 		else if (this.GigglePhase == 4)
@@ -222,6 +225,7 @@ public class LowRepGameOverScript : MonoBehaviour
 			{
 				this.Giggle();
 				this.GiggleTimer = 0f;
+				return;
 			}
 		}
 		else if (this.GigglePhase > 4 && this.GiggleTimer > 0.125f)
@@ -233,19 +237,17 @@ public class LowRepGameOverScript : MonoBehaviour
 
 	private void Giggle()
 	{
-		this.GiggleID = UnityEngine.Random.Range(1, this.Giggles.Length);
+		this.GiggleID = Random.Range(1, this.Giggles.Length);
 		while (this.GiggleID == this.PreviousGiggle)
 		{
-			this.GiggleID = UnityEngine.Random.Range(1, this.Giggles.Length);
+			this.GiggleID = Random.Range(1, this.Giggles.Length);
 		}
 		this.PreviousGiggle = this.GiggleID;
 		if (this.GigglePhase < 6)
 		{
 			AudioSource.PlayClipAtPoint(this.Giggles[this.GiggleID], this.MyCamera.transform.position);
+			return;
 		}
-		else
-		{
-			AudioSource.PlayClipAtPoint(this.Giggles[this.GiggleID], this.MyCamera.transform.position + Vector3.up * this.Timer);
-		}
+		AudioSource.PlayClipAtPoint(this.Giggles[this.GiggleID], this.MyCamera.transform.position + Vector3.up * this.Timer);
 	}
 }

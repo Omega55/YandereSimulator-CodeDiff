@@ -155,7 +155,7 @@ public class WeaponScript : MonoBehaviour
 		this.MyRigidbody = base.GetComponent<Rigidbody>();
 		this.MyRigidbody.isKinematic = true;
 		Transform transform = GameObject.Find("WeaponOriginParent").transform;
-		this.Origin = UnityEngine.Object.Instantiate<GameObject>(this.Prompt.Yandere.StudentManager.EmptyObject, base.transform.position, Quaternion.identity).transform;
+		this.Origin = Object.Instantiate<GameObject>(this.Prompt.Yandere.StudentManager.EmptyObject, base.transform.position, Quaternion.identity).transform;
 		this.Origin.parent = transform;
 	}
 
@@ -198,8 +198,7 @@ public class WeaponScript : MonoBehaviour
 		}
 		else
 		{
-			int num = UnityEngine.Random.Range(2, 4);
-			array = ((num != 2) ? this.Clips3 : this.Clips2);
+			array = ((Random.Range(2, 4) == 2) ? this.Clips2 : this.Clips3);
 		}
 		if (stealth)
 		{
@@ -268,7 +267,7 @@ public class WeaponScript : MonoBehaviour
 			{
 				if (this.Type == WeaponType.Knife)
 				{
-					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, Mathf.Lerp(base.transform.localEulerAngles.y, (!this.Flip) ? 0f : 180f, Time.deltaTime * 10f), base.transform.localEulerAngles.z);
+					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, Mathf.Lerp(base.transform.localEulerAngles.y, this.Flip ? 180f : 0f, Time.deltaTime * 10f), base.transform.localEulerAngles.z);
 				}
 				else if (this.Type == WeaponType.Saw && this.Spin)
 				{
@@ -471,7 +470,7 @@ public class WeaponScript : MonoBehaviour
 			if (this.DumpTimer > 1f)
 			{
 				this.Yandere.Incinerator.MurderWeapons++;
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
 			}
 		}
 		if (base.transform.parent == this.Yandere.ItemParent && this.Concealable && this.Yandere.Weapon[1] != this && this.Yandere.Weapon[2] != this)
@@ -543,7 +542,7 @@ public class WeaponScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < this.Outline.Length)
 		{
-			this.Outline[this.ID].color = ((!this.Evidence) ? this.OriginalColor : this.EvidenceColor);
+			this.Outline[this.ID].color = (this.Evidence ? this.EvidenceColor : this.OriginalColor);
 			this.ID++;
 		}
 		if (base.transform.position.y > 1000f)
@@ -571,11 +570,10 @@ public class WeaponScript : MonoBehaviour
 					if (!this.Yandere.Armed || this.Yandere.Equipped == 3)
 					{
 						this.Prompt.Label[3].text = "     Swap " + this.Yandere.Weapon[1].Name + " for " + this.Name;
+						return;
 					}
-					else
-					{
-						this.Prompt.Label[3].text = "     Swap " + this.Yandere.EquippedWeapon.Name + " for " + this.Name;
-					}
+					this.Prompt.Label[3].text = "     Swap " + this.Yandere.EquippedWeapon.Name + " for " + this.Name;
+					return;
 				}
 			}
 			else if (this.Prompt.Label[3] != null)
@@ -591,20 +589,23 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.BloodSpray[0].Play();
 			this.BloodSpray[1].Play();
+			return;
 		}
-		else if (this.WeaponID == 8)
+		if (this.WeaponID == 8)
 		{
 			base.gameObject.GetComponent<ParticleSystem>().Play();
 			base.GetComponent<AudioSource>().clip = this.OriginalClip;
 			base.GetComponent<AudioSource>().Play();
+			return;
 		}
-		else if (this.WeaponID == 2 || this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 13)
+		if (this.WeaponID == 2 || this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 13)
 		{
 			base.GetComponent<AudioSource>().Play();
+			return;
 		}
-		else if (this.WeaponID == 14)
+		if (this.WeaponID == 14)
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
+			Object.Instantiate<GameObject>(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
 			base.GetComponent<AudioSource>().Play();
 		}
 	}

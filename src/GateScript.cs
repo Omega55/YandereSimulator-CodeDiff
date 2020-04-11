@@ -121,6 +121,7 @@ public class GateScript : MonoBehaviour
 					this.RightGateLoop.Stop();
 					this.LeftGateLoop.Stop();
 					this.AudioPlayed = true;
+					return;
 				}
 			}
 		}

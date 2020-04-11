@@ -29,20 +29,18 @@ public class ExclamationScript : MonoBehaviour
 				base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 				this.Alpha = Mathf.Lerp(this.Alpha, 0.5f, Time.deltaTime * 10f);
 				this.Graphic.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, this.Alpha));
+				return;
+			}
+			if (base.transform.localScale.x > 0.1f)
+			{
+				base.transform.localScale = Vector3.Lerp(base.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
 			}
 			else
 			{
-				if (base.transform.localScale.x > 0.1f)
-				{
-					base.transform.localScale = Vector3.Lerp(base.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
-				}
-				else
-				{
-					base.transform.localScale = Vector3.zero;
-				}
-				this.Alpha = Mathf.Lerp(this.Alpha, 0f, Time.deltaTime * 10f);
-				this.Graphic.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, this.Alpha));
+				base.transform.localScale = Vector3.zero;
 			}
+			this.Alpha = Mathf.Lerp(this.Alpha, 0f, Time.deltaTime * 10f);
+			this.Graphic.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, this.Alpha));
 		}
 	}
 }

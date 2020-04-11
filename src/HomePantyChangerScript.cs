@@ -45,7 +45,7 @@ public class HomePantyChangerScript : MonoBehaviour
 	{
 		for (int i = 0; i < this.TotalPanties; i++)
 		{
-			this.NewPanties = UnityEngine.Object.Instantiate<GameObject>(this.PantyModels[i], new Vector3(base.transform.position.x, base.transform.position.y - 0.85f, base.transform.position.z - 1f), Quaternion.identity);
+			this.NewPanties = Object.Instantiate<GameObject>(this.PantyModels[i], new Vector3(base.transform.position.x, base.transform.position.y - 0.85f, base.transform.position.z - 1f), Quaternion.identity);
 			this.NewPanties.transform.parent = this.PantyParent;
 			this.NewPanties.GetComponent<HomePantiesScript>().PantyChanger = this;
 			this.NewPanties.GetComponent<HomePantiesScript>().ID = i;
@@ -107,6 +107,7 @@ public class HomePantyChangerScript : MonoBehaviour
 				this.HomeCamera.Target = this.HomeCamera.Targets[0];
 				this.HomeYandere.CanMove = true;
 				this.HomeWindow.Show = false;
+				return;
 			}
 		}
 		else
@@ -142,11 +143,9 @@ public class HomePantyChangerScript : MonoBehaviour
 		}
 		if (this.Selected == 0 || CollectibleGlobals.GetPantyPurchased(this.Selected))
 		{
-			this.ButtonLabel.text = ((this.Selected != PlayerGlobals.PantiesEquipped) ? "Wear" : "Equipped");
+			this.ButtonLabel.text = ((this.Selected == PlayerGlobals.PantiesEquipped) ? "Equipped" : "Wear");
+			return;
 		}
-		else
-		{
-			this.ButtonLabel.text = "Unavailable";
-		}
+		this.ButtonLabel.text = "Unavailable";
 	}
 }

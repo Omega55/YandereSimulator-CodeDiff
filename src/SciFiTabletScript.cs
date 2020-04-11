@@ -24,6 +24,7 @@ public class SciFiTabletScript : MonoBehaviour
 			{
 				this.Holograms.UpdateHolograms();
 				this.Updated = true;
+				return;
 			}
 		}
 		else

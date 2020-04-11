@@ -9,7 +9,7 @@ public class ParticleDeathScript : MonoBehaviour
 	{
 		if (this.Particles.isPlaying && this.Particles.particleCount == 0)
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

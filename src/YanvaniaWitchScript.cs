@@ -38,8 +38,8 @@ public class YanvaniaWitchScript : MonoBehaviour
 			if (this.AttackTimer > 0.8f && !this.CastSpell)
 			{
 				this.CastSpell = true;
-				UnityEngine.Object.Instantiate<GameObject>(this.BlackHole, base.transform.position + Vector3.up * 3f + Vector3.right * 6f, Quaternion.identity);
-				UnityEngine.Object.Instantiate<GameObject>(this.GroundImpact, base.transform.position + Vector3.right * 1.15f, Quaternion.identity);
+				Object.Instantiate<GameObject>(this.BlackHole, base.transform.position + Vector3.up * 3f + Vector3.right * 6f, Quaternion.identity);
+				Object.Instantiate<GameObject>(this.GroundImpact, base.transform.position + Vector3.right * 1.15f, Quaternion.identity);
 			}
 			if (component["Staff Spell Ground"].time >= component["Staff Spell Ground"].length)
 			{
@@ -80,7 +80,7 @@ public class YanvaniaWitchScript : MonoBehaviour
 				}
 				if (this.HitReactTimer >= 1f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
 					this.HitReactTimer = 0f;
 					this.HP -= 5f + ((float)this.Yanmont.Level * 5f - 5f);
 					AudioSource component2 = base.GetComponent<AudioSource>();
@@ -90,12 +90,10 @@ public class YanvaniaWitchScript : MonoBehaviour
 						component.Play("Die 2");
 						this.Yanmont.EXP += 100f;
 						base.enabled = false;
-						UnityEngine.Object.Destroy(this.Wall);
+						Object.Destroy(this.Wall);
+						return;
 					}
-					else
-					{
-						component2.PlayOneShot(this.HitSound);
-					}
+					component2.PlayOneShot(this.HitSound);
 				}
 			}
 		}

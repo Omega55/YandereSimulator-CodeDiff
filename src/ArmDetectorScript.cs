@@ -149,8 +149,8 @@ public class ArmDetectorScript : MonoBehaviour
 					{
 						if (this.ArmArray[j] != null)
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.SmallDarkAura, this.ArmArray[j].transform.position, Quaternion.identity);
-							UnityEngine.Object.Destroy(this.ArmArray[j]);
+							Object.Instantiate<GameObject>(this.SmallDarkAura, this.ArmArray[j].transform.position, Quaternion.identity);
+							Object.Destroy(this.ArmArray[j]);
 						}
 					}
 				}
@@ -184,7 +184,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
 				{
@@ -193,7 +193,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 0f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 0f)
 				{
@@ -218,12 +218,12 @@ public class ArmDetectorScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer > (float)this.ArmsSpawned)
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.DemonArm, this.SpawnPoints[this.ArmsSpawned].position, Quaternion.identity);
+					GameObject gameObject = Object.Instantiate<GameObject>(this.DemonArm, this.SpawnPoints[this.ArmsSpawned].position, Quaternion.identity);
 					gameObject.transform.parent = this.Yandere.transform;
 					gameObject.transform.LookAt(this.Yandere.transform);
 					gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y + 180f, gameObject.transform.localEulerAngles.z);
 					this.ArmsSpawned++;
-					gameObject.GetComponent<DemonArmScript>().IdleAnim = ((this.ArmsSpawned % 2 != 1) ? "DemonArmIdle" : "DemonArmIdleOld");
+					gameObject.GetComponent<DemonArmScript>().IdleAnim = ((this.ArmsSpawned % 2 == 1) ? "DemonArmIdleOld" : "DemonArmIdle");
 				}
 				if (this.ArmsSpawned == 10)
 				{
@@ -244,8 +244,8 @@ public class ArmDetectorScript : MonoBehaviour
 				{
 					if (ragdollScript2 != null && ragdollScript2.Burned && ragdollScript2.Sacrifice && !ragdollScript2.Dragged && !ragdollScript2.Carried)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.SmallDarkAura, ragdollScript2.Prompt.transform.position, Quaternion.identity);
-						UnityEngine.Object.Destroy(ragdollScript2.gameObject);
+						Object.Instantiate<GameObject>(this.SmallDarkAura, ragdollScript2.Prompt.transform.position, Quaternion.identity);
+						Object.Destroy(ragdollScript2.gameObject);
 						this.Yandere.NearBodies--;
 						this.Police.Corpses--;
 					}
@@ -281,7 +281,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), Random.Range(-5f, 5f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
 				{
@@ -290,7 +290,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 5)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 0f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 0f)
 				{
@@ -354,8 +354,8 @@ public class ArmDetectorScript : MonoBehaviour
 					{
 						if (this.BodyArray[l] != null)
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.SmallDarkAura, this.BodyArray[l].transform.position, Quaternion.identity);
-							UnityEngine.Object.Destroy(this.BodyArray[l]);
+							Object.Instantiate<GameObject>(this.SmallDarkAura, this.BodyArray[l].transform.position, Quaternion.identity);
+							Object.Destroy(this.BodyArray[l]);
 						}
 					}
 				}
@@ -364,6 +364,7 @@ public class ArmDetectorScript : MonoBehaviour
 				{
 					this.Timer = 0f;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 2)
@@ -383,15 +384,17 @@ public class ArmDetectorScript : MonoBehaviour
 					component.clip = this.EmptyDemonLine;
 					component.Play();
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 3)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
 				{
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 4)
@@ -463,19 +466,15 @@ public class ArmDetectorScript : MonoBehaviour
 	private void OnTriggerExit(Collider other)
 	{
 		PickUpScript component = other.gameObject.GetComponent<PickUpScript>();
-		if (component != null && component.BodyPart)
+		if (component != null && component.BodyPart && other.gameObject.GetComponent<BodyPartScript>().Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
 		{
-			BodyPartScript component2 = other.gameObject.GetComponent<BodyPartScript>();
-			if (component2.Sacrifice && (other.gameObject.name == "FemaleRightArm(Clone)" || other.gameObject.name == "FemaleLeftArm(Clone)" || other.gameObject.name == "MaleRightArm(Clone)" || other.gameObject.name == "MaleLeftArm(Clone)" || other.gameObject.name == "SacrificialArm(Clone)"))
-			{
-				this.Arms--;
-				Debug.Log("Decrement arm count again?");
-			}
+			this.Arms--;
+			Debug.Log("Decrement arm count again?");
 		}
 		if (other.transform.parent != null && other.transform.parent.parent != null && other.transform.parent.parent.parent != null)
 		{
-			StudentScript component3 = other.transform.parent.parent.parent.gameObject.GetComponent<StudentScript>();
-			if (component3 != null && component3.Ragdoll.Sacrifice && component3.Armband.activeInHierarchy)
+			StudentScript component2 = other.transform.parent.parent.parent.gameObject.GetComponent<StudentScript>();
+			if (component2 != null && component2.Ragdoll.Sacrifice && component2.Armband.activeInHierarchy)
 			{
 				this.Bodies--;
 			}

@@ -19,11 +19,11 @@ public class RichPresenceHelper : MonoBehaviour
 	{
 		this.CompileDictionaries();
 		this._discordController = base.GetComponent<DiscordController>();
-		UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+		Object.DontDestroyOnLoad(base.gameObject);
 		this._discordController.enabled = false;
 		this._discordController.presence.state = this.GetSceneDescription();
 		this._discordController.enabled = true;
-		DiscordRpc.UpdatePresence(ref this._discordController.presence);
+		DiscordRpc.UpdatePresence(this._discordController.presence);
 		base.InvokeRepeating("UpdatePresence", 0f, 10f);
 	}
 
@@ -31,7 +31,7 @@ public class RichPresenceHelper : MonoBehaviour
 	{
 		if (level == 11)
 		{
-			this._clockScript = UnityEngine.Object.FindObjectOfType<ClockScript>();
+			this._clockScript = Object.FindObjectOfType<ClockScript>();
 		}
 		this.UpdatePresence();
 	}
@@ -39,7 +39,7 @@ public class RichPresenceHelper : MonoBehaviour
 	private void UpdatePresence()
 	{
 		this._discordController.presence.state = this.GetSceneDescription();
-		DiscordRpc.UpdatePresence(ref this._discordController.presence);
+		DiscordRpc.UpdatePresence(this._discordController.presence);
 	}
 
 	private void CompileDictionaries()
@@ -55,6 +55,7 @@ public class RichPresenceHelper : MonoBehaviour
 		this._periods.Add(4, "Class Time");
 		this._periods.Add(5, "Cleaning Time");
 		this._periods.Add(6, "After School");
+		this._sceneDescriptions.Add("ResolutionScene", "Setting the resolution!");
 		this._sceneDescriptions.Add("WelcomeScene", "Launching the game!");
 		this._sceneDescriptions.Add("SponsorScene", "Checking out the sponsors!");
 		this._sceneDescriptions.Add("TitleScene", "At the title screen!");
@@ -82,25 +83,23 @@ public class RichPresenceHelper : MonoBehaviour
 		this._sceneDescriptions.Add("MaidGameScene", "Being a cute maid! MOE MOE KYUN!");
 		this._sceneDescriptions.Add("StreetScene", "Chilling in town!");
 		this._sceneDescriptions.Add("DiscordScene", "Awaiting Verification");
+		this._sceneDescriptions.Add("OsanaJoke", "Killing Osana at long last!");
 	}
 
 	private string GetSceneDescription()
 	{
 		string name = SceneManager.GetActiveScene().name;
-		if (name != null)
+		if (name == "SchoolScene")
 		{
-			if (name == "SchoolScene")
+			string text = MissionModeGlobals.MissionMode ? ", Mission Mode" : string.Empty;
+			return string.Format("{0}, {1}, {2}, {3}{4}", new object[]
 			{
-				string text = (!MissionModeGlobals.MissionMode) ? string.Empty : ", Mission Mode";
-				return string.Format("{0}, {1}, {2}, {3}{4}", new object[]
-				{
-					this._sceneDescriptions["SchoolScene"],
-					this._clockScript.TimeLabel.text,
-					this._periods[this._clockScript.Period],
-					this._weekdays[this._clockScript.Weekday],
-					text
-				});
-			}
+				this._sceneDescriptions["SchoolScene"],
+				this._clockScript.TimeLabel.text,
+				this._periods[this._clockScript.Period],
+				this._weekdays[this._clockScript.Weekday],
+				text
+			});
 		}
 		if (this._sceneDescriptions.ContainsKey(name))
 		{

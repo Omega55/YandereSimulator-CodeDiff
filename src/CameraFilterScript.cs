@@ -1246,12 +1246,10 @@ public class CameraFilterScript : MonoBehaviour
 		{
 			this.DisplayTimer += Time.deltaTime;
 			this.NameLabel.transform.localPosition = Vector3.Lerp(this.NameLabel.transform.localPosition, new Vector3(1245f, 0f, 0f), Time.deltaTime * 10f);
+			return;
 		}
-		else
-		{
-			this.Speed += Time.deltaTime * 10f;
-			this.NameLabel.transform.localPosition = Vector3.MoveTowards(this.NameLabel.transform.localPosition, Vector3.zero, this.Speed);
-		}
+		this.Speed += Time.deltaTime * 10f;
+		this.NameLabel.transform.localPosition = Vector3.MoveTowards(this.NameLabel.transform.localPosition, Vector3.zero, this.Speed);
 	}
 
 	private void UpdateFilter()
@@ -1587,898 +1585,900 @@ public class CameraFilterScript : MonoBehaviour
 		{
 		case 1:
 			this.Anomaly.enabled = true;
-			break;
+			return;
 		case 2:
 			this.Binary.enabled = true;
-			break;
+			return;
 		case 3:
 			this.BlackHole3D.enabled = true;
-			break;
+			return;
 		case 4:
 			this.Computer.enabled = true;
-			break;
+			return;
 		case 5:
 			this.Distortion.enabled = true;
-			break;
+			return;
 		case 6:
 			this.FogSmoke.enabled = true;
-			break;
+			return;
 		case 7:
 			this.Ghost.enabled = true;
-			break;
+			return;
 		case 8:
 			this.Inverse.enabled = true;
-			break;
+			return;
 		case 9:
 			this.Matrix.enabled = true;
-			break;
+			return;
 		case 10:
 			this.Mirror3D.enabled = true;
-			break;
+			return;
 		case 11:
 			this.Myst.enabled = true;
-			break;
+			return;
 		case 12:
 			this.ScanScene.enabled = true;
-			break;
+			return;
 		case 13:
 			this.Shield.enabled = true;
-			break;
+			return;
 		case 14:
 			this.Snow.enabled = true;
-			break;
+			return;
 		case 15:
 			this.AAABlood.enabled = true;
-			break;
+			return;
 		case 16:
 			this.AAABloodOnScreen.enabled = true;
-			break;
+			return;
 		case 17:
 			this.AAABloodHit.enabled = true;
-			break;
+			return;
 		case 18:
 			this.AAABloodPlus.enabled = true;
-			break;
+			return;
 		case 19:
 			this.SuperComputer.enabled = true;
-			break;
+			return;
 		case 20:
 			this.SuperHexagon.enabled = true;
-			break;
+			return;
 		case 21:
 			this.WaterDrop.enabled = true;
-			break;
+			return;
 		case 22:
 			this.WaterDropPro.enabled = true;
-			break;
+			return;
 		case 23:
 			this.AlienVision.enabled = true;
-			break;
+			return;
 		case 24:
 			this.FXAA.enabled = true;
-			break;
+			return;
 		case 25:
 			this.Fog.enabled = true;
-			break;
+			return;
 		case 26:
 			this.Rain.enabled = true;
-			break;
+			return;
 		case 27:
 			this.RainPro.enabled = true;
-			break;
+			return;
 		case 28:
 			this.RainPro3D.enabled = true;
-			break;
+			return;
 		case 29:
 			this.Snow8bits.enabled = true;
-			break;
+			return;
 		case 30:
 			this.Blend.enabled = true;
-			break;
+			return;
 		case 31:
 			this.BlueScreen.enabled = true;
-			break;
+			return;
 		case 32:
 			this.Color.enabled = true;
-			break;
+			return;
 		case 33:
 			this.ColorBurn.enabled = true;
-			break;
+			return;
 		case 34:
 			this.ColorDodge.enabled = true;
-			break;
+			return;
 		case 35:
 			this.ColorKey.enabled = true;
-			break;
+			return;
 		case 36:
 			this.Darken.enabled = true;
-			break;
+			return;
 		case 37:
 			this.DarkerColor.enabled = true;
-			break;
+			return;
 		case 38:
 			this.Difference.enabled = true;
-			break;
+			return;
 		case 39:
 			this.Divide.enabled = true;
-			break;
+			return;
 		case 40:
 			this.Exclusion.enabled = true;
-			break;
+			return;
 		case 41:
 			this.GreenScreen.enabled = true;
-			break;
+			return;
 		case 42:
 			this.HardLight.enabled = true;
-			break;
+			return;
 		case 43:
 			this.HardMix.enabled = true;
-			break;
+			return;
 		case 44:
 			this.Blend2CameraHue.enabled = true;
-			break;
+			return;
 		case 45:
 			this.Lighten.enabled = true;
-			break;
+			return;
 		case 46:
 			this.LighterColor.enabled = true;
-			break;
+			return;
 		case 47:
 			this.LinearBurn.enabled = true;
-			break;
+			return;
 		case 48:
 			this.LinearDodge.enabled = true;
-			break;
+			return;
 		case 49:
 			this.LinearLight.enabled = true;
-			break;
+			return;
 		case 50:
 			this.Luminosity.enabled = true;
-			break;
+			return;
 		case 51:
 			this.Multiply.enabled = true;
-			break;
+			return;
 		case 52:
 			this.Overlay.enabled = true;
-			break;
+			return;
 		case 53:
 			this.PhotoshopFilters.enabled = true;
-			break;
+			return;
 		case 54:
 			this.PinLight.enabled = true;
-			break;
+			return;
 		case 55:
 			this.Saturation.enabled = true;
-			break;
+			return;
 		case 56:
 			this.Screen.enabled = true;
-			break;
+			return;
 		case 57:
 			this.SoftLight.enabled = true;
-			break;
+			return;
 		case 58:
 			this.SplitScreen.enabled = true;
-			break;
+			return;
 		case 59:
 			this.SplitScreen3D.enabled = true;
-			break;
+			return;
 		case 60:
 			this.Subtract.enabled = true;
-			break;
+			return;
 		case 61:
 			this.VividLight.enabled = true;
-			break;
+			return;
 		case 62:
 			this.Blizzard.enabled = true;
-			break;
+			return;
 		case 63:
 			this.Bloom.enabled = true;
-			break;
+			return;
 		case 64:
 			this.BlurHole.enabled = true;
-			break;
+			return;
 		case 65:
 			this.Blurry.enabled = true;
-			break;
+			return;
 		case 66:
 			this.Dithering2x2.enabled = true;
-			break;
+			return;
 		case 67:
 			this.DitherOffset.enabled = true;
-			break;
+			return;
 		case 68:
 			this.Focus.enabled = true;
-			break;
+			return;
 		case 69:
 			this.GaussianBlur.enabled = true;
-			break;
+			return;
 		case 70:
 			this.Movie.enabled = true;
-			break;
+			return;
 		case 71:
 			this.BlurNoise.enabled = true;
-			break;
+			return;
 		case 72:
 			this.Radial.enabled = true;
-			break;
+			return;
 		case 73:
 			this.RadialFast.enabled = true;
-			break;
+			return;
 		case 74:
 			this.Regular.enabled = true;
-			break;
+			return;
 		case 75:
 			this.Steam.enabled = true;
-			break;
+			return;
 		case 76:
 			this.TiltShift.enabled = true;
-			break;
+			return;
 		case 77:
 			this.TiltShiftHole.enabled = true;
-			break;
+			return;
 		case 78:
 			this.TiltShiftV.enabled = true;
-			break;
+			return;
 		case 79:
 			this.BrokenScreen.enabled = true;
-			break;
+			return;
 		case 80:
 			this.BrokenSimple.enabled = true;
-			break;
+			return;
 		case 81:
 			this.Spliter.enabled = true;
-			break;
+			return;
 		case 82:
 			this.ThermalVision.enabled = true;
-			break;
+			return;
 		case 83:
 			this.AdjustColorRGB.enabled = true;
-			break;
+			return;
 		case 84:
 			this.AdjustFullColors.enabled = true;
-			break;
+			return;
 		case 85:
 			this.AdjustPreFilters.enabled = true;
-			break;
+			return;
 		case 86:
 			this.BleachBypass.enabled = true;
-			break;
+			return;
 		case 87:
 			this.Brightness.enabled = true;
-			break;
+			return;
 		case 88:
 			this.DarkColor.enabled = true;
-			break;
+			return;
 		case 89:
 			this.HSV.enabled = true;
-			break;
+			return;
 		case 90:
 			this.HUERotate.enabled = true;
-			break;
+			return;
 		case 91:
 			this.NewPosterize.enabled = true;
-			break;
+			return;
 		case 92:
 			this.RgbClamp.enabled = true;
-			break;
+			return;
 		case 93:
 			this.Threshold.enabled = true;
-			break;
+			return;
 		case 94:
 			this.AdjustLevels.enabled = true;
-			break;
+			return;
 		case 95:
 			this.BrightContrastSaturation.enabled = true;
-			break;
+			return;
 		case 96:
 			this.ChromaticAberration.enabled = true;
-			break;
+			return;
 		case 97:
 			this.ChromaticPlus.enabled = true;
-			break;
+			return;
 		case 98:
 			this.Contrast.enabled = true;
-			break;
+			return;
 		case 99:
 			this.GrayScale.enabled = true;
-			break;
+			return;
 		case 100:
 			this.Invert.enabled = true;
-			break;
+			return;
 		case 101:
 			this.ColorNoise.enabled = true;
-			break;
+			return;
 		case 102:
 			this.ColorRGB.enabled = true;
-			break;
+			return;
 		case 103:
 			this.Sepia.enabled = true;
-			break;
+			return;
 		case 104:
 			this.Switching.enabled = true;
-			break;
+			return;
 		case 105:
 			this.YUV.enabled = true;
-			break;
+			return;
 		case 106:
 			this.Normal.enabled = true;
-			break;
+			return;
 		case 107:
 			this.Aspiration.enabled = true;
-			break;
+			return;
 		case 108:
 			this.BigFace.enabled = true;
-			break;
+			return;
 		case 109:
 			this.BlackHole.enabled = true;
-			break;
+			return;
 		case 110:
 			this.Dissipation.enabled = true;
-			break;
+			return;
 		case 111:
 			this.Dream.enabled = true;
-			break;
+			return;
 		case 112:
 			this.Dream2.enabled = true;
-			break;
+			return;
 		case 113:
 			this.FishEye.enabled = true;
-			break;
+			return;
 		case 114:
 			this.Flag.enabled = true;
-			break;
+			return;
 		case 115:
 			this.Flush.enabled = true;
-			break;
+			return;
 		case 116:
 			this.HalfSphere.enabled = true;
-			break;
+			return;
 		case 117:
 			this.Heat.enabled = true;
-			break;
+			return;
 		case 118:
 			this.Lens.enabled = true;
-			break;
+			return;
 		case 119:
 			this.DistortionNoise.enabled = true;
-			break;
+			return;
 		case 120:
 			this.ShockWave.enabled = true;
-			break;
+			return;
 		case 121:
 			this.ShockWaveManual.enabled = true;
-			break;
+			return;
 		case 122:
 			this.Twist.enabled = true;
-			break;
+			return;
 		case 123:
 			this.TwistSquare.enabled = true;
-			break;
+			return;
 		case 124:
 			this.DistortionWaterDrop.enabled = true;
-			break;
+			return;
 		case 125:
 			this.WaveHorizontal.enabled = true;
-			break;
+			return;
 		case 126:
 			this.BluePrint.enabled = true;
-			break;
+			return;
 		case 127:
 			this.CellShading.enabled = true;
-			break;
+			return;
 		case 128:
 			this.CellShading2.enabled = true;
-			break;
+			return;
 		case 129:
 			this.Comics.enabled = true;
-			break;
+			return;
 		case 130:
 			this.Crosshatch.enabled = true;
-			break;
+			return;
 		case 131:
 			this.Curve.enabled = true;
-			break;
+			return;
 		case 132:
 			this.EnhancedComics.enabled = true;
-			break;
+			return;
 		case 133:
 			this.Halftone.enabled = true;
-			break;
+			return;
 		case 134:
 			this.Laplacian.enabled = true;
-			break;
+			return;
 		case 135:
 			this.Lines.enabled = true;
-			break;
+			return;
 		case 136:
 			this.Manga.enabled = true;
-			break;
+			return;
 		case 137:
 			this.Manga2.enabled = true;
-			break;
+			return;
 		case 138:
 			this.Manga3.enabled = true;
-			break;
+			return;
 		case 139:
 			this.Manga4.enabled = true;
-			break;
+			return;
 		case 140:
 			this.Manga5.enabled = true;
-			break;
+			return;
 		case 141:
 			this.MangaColor.enabled = true;
-			break;
+			return;
 		case 142:
 			this.MangaFlash.enabled = true;
-			break;
+			return;
 		case 143:
 			this.MangaFlashWhite.enabled = true;
-			break;
+			return;
 		case 144:
 			this.MangaFlashColor.enabled = true;
-			break;
+			return;
 		case 145:
 			this.NewCellShading.enabled = true;
-			break;
+			return;
 		case 146:
 			this.Paper.enabled = true;
-			break;
+			return;
 		case 147:
 			this.Paper2.enabled = true;
-			break;
+			return;
 		case 148:
 			this.Paper3.enabled = true;
-			break;
+			return;
 		case 149:
 			this.Toon.enabled = true;
-			break;
+			return;
 		case 150:
 			this.BlackLine.enabled = true;
-			break;
+			return;
 		case 151:
 			this.Edgefilter.enabled = true;
-			break;
+			return;
 		case 152:
 			this.Golden.enabled = true;
-			break;
+			return;
 		case 153:
 			this.Neon.enabled = true;
-			break;
+			return;
 		case 154:
 			this.Sigmoid.enabled = true;
-			break;
+			return;
 		case 155:
 			this.Sobel.enabled = true;
-			break;
+			return;
 		case 156:
 			this.Rotation.enabled = true;
-			break;
+			return;
 		case 157:
 			this.SHOWFPS.enabled = true;
-			break;
+			return;
 		case 158:
 			this.EyesVision1.enabled = true;
-			break;
+			return;
 		case 159:
 			this.EyesVision2.enabled = true;
-			break;
+			return;
 		case 160:
 			this.ColorPerfection.enabled = true;
-			break;
+			return;
 		case 161:
 			this.Grain.enabled = true;
-			break;
+			return;
 		case 162:
 			this.FlyVision.enabled = true;
-			break;
+			return;
 		case 163:
 			this.FX8bits.enabled = true;
-			break;
+			return;
 		case 164:
 			this.FX8bitsgb.enabled = true;
-			break;
+			return;
 		case 165:
 			this.Ascii.enabled = true;
-			break;
+			return;
 		case 166:
 			this.DarkMatter.enabled = true;
-			break;
+			return;
 		case 167:
 			this.DigitalMatrix.enabled = true;
-			break;
+			return;
 		case 168:
 			this.DigitalMatrixDistortion.enabled = true;
-			break;
+			return;
 		case 169:
 			this.DotCircle.enabled = true;
-			break;
+			return;
 		case 170:
 			this.Drunk.enabled = true;
-			break;
+			return;
 		case 171:
 			this.Drunk2.enabled = true;
-			break;
+			return;
 		case 172:
 			this.EarthQuake.enabled = true;
-			break;
+			return;
 		case 173:
 			this.Funk.enabled = true;
-			break;
+			return;
 		case 174:
 			this.Glitch1.enabled = true;
-			break;
+			return;
 		case 175:
 			this.Glitch2.enabled = true;
-			break;
+			return;
 		case 176:
 			this.Glitch3.enabled = true;
-			break;
+			return;
 		case 177:
 			this.Grid.enabled = true;
-			break;
+			return;
 		case 178:
 			this.Hexagon.enabled = true;
-			break;
+			return;
 		case 179:
 			this.HexagonBlack.enabled = true;
-			break;
+			return;
 		case 180:
 			this.Hypno.enabled = true;
-			break;
+			return;
 		case 181:
 			this.InverChromiLum.enabled = true;
-			break;
+			return;
 		case 182:
 			this.FXMirror.enabled = true;
-			break;
+			return;
 		case 183:
 			this.FXPlasma.enabled = true;
-			break;
+			return;
 		case 184:
 			this.FXPsycho.enabled = true;
-			break;
+			return;
 		case 185:
 			this.Scan.enabled = true;
-			break;
+			return;
 		case 186:
 			this.Screens.enabled = true;
-			break;
+			return;
 		case 187:
 			this.Spot.enabled = true;
-			break;
+			return;
 		case 188:
 			this.superDot.enabled = true;
-			break;
+			return;
 		case 189:
 			this.ZebraColor.enabled = true;
-			break;
+			return;
 		case 190:
 			this.GlassesOn.enabled = true;
-			break;
+			return;
 		case 191:
 			this.GlassesOn2.enabled = true;
-			break;
+			return;
 		case 192:
 			this.GlassesOn3.enabled = true;
-			break;
+			return;
 		case 193:
 			this.GlassesOn4.enabled = true;
-			break;
+			return;
 		case 194:
 			this.GlassesOn5.enabled = true;
-			break;
+			return;
 		case 195:
 			this.GlassesOn6.enabled = true;
-			break;
+			return;
 		case 196:
 			this.Mozaic.enabled = true;
-			break;
+			return;
 		case 197:
 			this.Glow.enabled = true;
-			break;
+			return;
 		case 198:
 			this.GlowColor.enabled = true;
-			break;
+			return;
 		case 199:
 			this.Ansi.enabled = true;
-			break;
+			return;
 		case 200:
 			this.Desert.enabled = true;
-			break;
+			return;
 		case 201:
 			this.ElectricGradient.enabled = true;
-			break;
+			return;
 		case 202:
 			this.FireGradient.enabled = true;
-			break;
+			return;
 		case 203:
 			this.GradientsHue.enabled = true;
-			break;
+			return;
 		case 204:
 			this.NeonGradient.enabled = true;
-			break;
+			return;
 		case 205:
 			this.GradientsRainbow.enabled = true;
-			break;
+			return;
 		case 206:
 			this.Stripe.enabled = true;
-			break;
+			return;
 		case 207:
 			this.Tech.enabled = true;
-			break;
+			return;
 		case 208:
 			this.Therma.enabled = true;
-			break;
+			return;
 		case 209:
 			this.LightRainbow.enabled = true;
-			break;
+			return;
 		case 210:
 			this.LightRainbow2.enabled = true;
-			break;
+			return;
 		case 211:
 			this.Water.enabled = true;
-			break;
+			return;
 		case 212:
 			this.Water2.enabled = true;
-			break;
+			return;
 		case 213:
 			this.Lut.enabled = true;
-			break;
+			return;
 		case 214:
 			this.LutExtra.enabled = true;
-			break;
+			return;
 		case 215:
 			this.Mask.enabled = true;
-			break;
+			return;
 		case 216:
 			this.PlayWith.enabled = true;
-			break;
+			return;
 		case 217:
 			this.Plus.enabled = true;
-			break;
+			return;
 		case 218:
 			this.LutSimple.enabled = true;
-			break;
+			return;
 		case 219:
 			this.TestMode.enabled = true;
-			break;
+			return;
 		case 220:
 			this.NewGlitch1.enabled = true;
-			break;
+			return;
 		case 221:
 			this.NewGlitch2.enabled = true;
-			break;
+			return;
 		case 222:
 			this.NewGlitch3.enabled = true;
-			break;
+			return;
 		case 223:
 			this.NewGlitch4.enabled = true;
-			break;
+			return;
 		case 224:
 			this.NewGlitch5.enabled = true;
-			break;
+			return;
 		case 225:
 			this.NewGlitch6.enabled = true;
-			break;
+			return;
 		case 226:
 			this.NewGlitch7.enabled = true;
-			break;
+			return;
 		case 227:
 			this.NightVisionFX.enabled = true;
-			break;
+			return;
 		case 228:
 			this.NightVision4.enabled = true;
-			break;
+			return;
 		case 229:
 			this.TV.enabled = true;
-			break;
+			return;
 		case 230:
 			this.TV2.enabled = true;
-			break;
+			return;
 		case 231:
 			this.TV3.enabled = true;
-			break;
+			return;
 		case 232:
 			this.NightVision1.enabled = true;
-			break;
+			return;
 		case 233:
 			this.NightVision2.enabled = true;
-			break;
+			return;
 		case 234:
 			this.NightVision3.enabled = true;
-			break;
+			return;
 		case 235:
 			this.NightVision5.enabled = true;
-			break;
+			return;
 		case 236:
 			this.ThermaVision.enabled = true;
-			break;
+			return;
 		case 237:
 			this.Cutting1.enabled = true;
-			break;
+			return;
 		case 238:
 			this.Cutting2.enabled = true;
-			break;
+			return;
 		case 239:
 			this.DeepOilPaintHQ.enabled = true;
-			break;
+			return;
 		case 240:
 			this.Dot.enabled = true;
-			break;
+			return;
 		case 241:
 			this.OilPaint.enabled = true;
-			break;
+			return;
 		case 242:
 			this.OilPaintHQ.enabled = true;
-			break;
+			return;
 		case 243:
 			this.Sweater.enabled = true;
-			break;
+			return;
 		case 244:
 			this.Pixelisation.enabled = true;
-			break;
+			return;
 		case 245:
 			this.RainFX.enabled = true;
-			break;
+			return;
 		case 246:
 			this.RealVHS.enabled = true;
-			break;
+			return;
 		case 247:
 			this.Loading.enabled = true;
-			break;
+			return;
 		case 248:
 			this.Sharpen.enabled = true;
-			break;
+			return;
 		case 249:
 			this.Bubble.enabled = true;
-			break;
+			return;
 		case 250:
 			this.TV50.enabled = true;
-			break;
+			return;
 		case 251:
 			this.TV80.enabled = true;
-			break;
+			return;
 		case 252:
 			this.ARCADE.enabled = true;
-			break;
+			return;
 		case 253:
 			this.ARCADE2.enabled = true;
-			break;
+			return;
 		case 254:
 			this.ARCADEFast.enabled = true;
-			break;
+			return;
 		case 255:
 			this.Artefact.enabled = true;
-			break;
+			return;
 		case 256:
 			this.BrokenGlass.enabled = true;
-			break;
+			return;
 		case 257:
 			this.BrokenGlass2.enabled = true;
-			break;
+			return;
 		case 258:
 			this.Chromatical.enabled = true;
-			break;
+			return;
 		case 259:
 			this.Chromatical2.enabled = true;
-			break;
+			return;
 		case 260:
 			this.CompressionFX.enabled = true;
-			break;
+			return;
 		case 261:
 			this.Distorted.enabled = true;
-			break;
+			return;
 		case 262:
 			this.Horror.enabled = true;
-			break;
+			return;
 		case 263:
 			this.LED.enabled = true;
-			break;
+			return;
 		case 264:
 			this.MovieNoise.enabled = true;
-			break;
+			return;
 		case 265:
 			this.TVNoise.enabled = true;
-			break;
+			return;
 		case 266:
 			this.Old.enabled = true;
-			break;
+			return;
 		case 267:
 			this.OldMovie.enabled = true;
-			break;
+			return;
 		case 268:
 			this.OldMovie2.enabled = true;
-			break;
+			return;
 		case 269:
 			this.PlanetMars.enabled = true;
-			break;
+			return;
 		case 270:
 			this.Posterize.enabled = true;
-			break;
+			return;
 		case 271:
 			this.TVRgb.enabled = true;
-			break;
+			return;
 		case 272:
 			this.Tiles.enabled = true;
-			break;
+			return;
 		case 273:
 			this.Vcr.enabled = true;
-			break;
+			return;
 		case 274:
 			this.TVVHS.enabled = true;
-			break;
+			return;
 		case 275:
 			this.VHSRewind.enabled = true;
-			break;
+			return;
 		case 276:
 			this.Video3D.enabled = true;
-			break;
+			return;
 		case 277:
 			this.Videoflip.enabled = true;
-			break;
+			return;
 		case 278:
 			this.Vignetting.enabled = true;
-			break;
+			return;
 		case 279:
 			this.Vintage.enabled = true;
-			break;
+			return;
 		case 280:
 			this.WideScreenCircle.enabled = true;
-			break;
+			return;
 		case 281:
 			this.WideScreenHorizontal.enabled = true;
-			break;
+			return;
 		case 282:
 			this.WideScreenHV.enabled = true;
-			break;
+			return;
 		case 283:
 			this.WideScreenVertical.enabled = true;
-			break;
+			return;
 		case 284:
 			this.Tracking.enabled = true;
-			break;
+			return;
 		case 285:
 			this.Aura.enabled = true;
-			break;
+			return;
 		case 286:
 			this.AuraDistortion.enabled = true;
-			break;
+			return;
 		case 287:
 			this.VisionBlood.enabled = true;
-			break;
+			return;
 		case 288:
 			this.VisionBloodFast.enabled = true;
-			break;
+			return;
 		case 289:
 			this.Crystal.enabled = true;
-			break;
+			return;
 		case 290:
 			this.Drost.enabled = true;
-			break;
+			return;
 		case 291:
 			this.VisionHellBlood.enabled = true;
-			break;
+			return;
 		case 292:
 			this.VisionPlasma.enabled = true;
-			break;
+			return;
 		case 293:
 			this.VisionPsycho.enabled = true;
-			break;
+			return;
 		case 294:
 			this.VisionRainbow.enabled = true;
-			break;
+			return;
 		case 295:
 			this.SniperScore.enabled = true;
-			break;
+			return;
 		case 296:
 			this.Tunnel.enabled = true;
-			break;
+			return;
 		case 297:
 			this.Warp.enabled = true;
-			break;
+			return;
 		case 298:
 			this.Warp2.enabled = true;
-			break;
+			return;
+		default:
+			return;
 		}
 	}
 }

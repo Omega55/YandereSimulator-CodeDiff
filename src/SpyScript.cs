@@ -50,6 +50,7 @@ public class SpyScript : MonoBehaviour
 				this.Yandere.MainCamera.enabled = false;
 				this.SpyCamera.SetActive(true);
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 2)

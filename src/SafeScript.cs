@@ -57,6 +57,7 @@ public class SafeScript : MonoBehaviour
 			if (this.Rotation < 1f)
 			{
 				this.Open = false;
+				return;
 			}
 		}
 		else if (this.SafePrompt.Yandere.Inventory.LockPick)
@@ -71,6 +72,7 @@ public class SafeScript : MonoBehaviour
 				this.SafePrompt.HideButton[2] = true;
 				this.ContentsPrompt.MyCollider.enabled = true;
 				this.Open = true;
+				return;
 			}
 		}
 		else if (!this.SafePrompt.HideButton[2])

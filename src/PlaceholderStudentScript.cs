@@ -21,7 +21,7 @@ public class PlaceholderStudentScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Target = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject).transform;
+		this.Target = Object.Instantiate<GameObject>(this.EmptyGameObject).transform;
 		this.ChooseNewDestination();
 	}
 
@@ -51,8 +51,9 @@ public class PlaceholderStudentScript : MonoBehaviour
 				Debug.DrawLine(this.Eyes.position, this.FakeStudentSpawner.SuspiciousObjects[0].transform.position, Color.red);
 				Debug.DrawLine(this.Eyes.position, this.FakeStudentSpawner.SuspiciousObjects[1].transform.position, Color.red);
 				Debug.DrawLine(this.Eyes.position, this.FakeStudentSpawner.SuspiciousObjects[2].transform.position, Color.red);
+				return;
 			}
-			else if (this.StudentID < this.FakeStudentSpawner.StudentID + 5 && this.StudentID > this.FakeStudentSpawner.StudentID - 5)
+			if (this.StudentID < this.FakeStudentSpawner.StudentID + 5 && this.StudentID > this.FakeStudentSpawner.StudentID - 5)
 			{
 				if (Vector3.Distance(base.transform.position, this.FakeStudentSpawner.SuspiciousObjects[0].transform.position) < 5f)
 				{
@@ -74,19 +75,22 @@ public class PlaceholderStudentScript : MonoBehaviour
 	{
 		if (this.NESW == 1)
 		{
-			this.Target.position = new Vector3(UnityEngine.Random.Range(-21f, 21f), base.transform.position.y, UnityEngine.Random.Range(21f, 19f));
+			this.Target.position = new Vector3(Random.Range(-21f, 21f), base.transform.position.y, Random.Range(21f, 19f));
+			return;
 		}
-		else if (this.NESW == 2)
+		if (this.NESW == 2)
 		{
-			this.Target.position = new Vector3(UnityEngine.Random.Range(19f, 21f), base.transform.position.y, UnityEngine.Random.Range(29f, -37f));
+			this.Target.position = new Vector3(Random.Range(19f, 21f), base.transform.position.y, Random.Range(29f, -37f));
+			return;
 		}
-		else if (this.NESW == 3)
+		if (this.NESW == 3)
 		{
-			this.Target.position = new Vector3(UnityEngine.Random.Range(-21f, 21f), base.transform.position.y, UnityEngine.Random.Range(-21f, -19f));
+			this.Target.position = new Vector3(Random.Range(-21f, 21f), base.transform.position.y, Random.Range(-21f, -19f));
+			return;
 		}
-		else if (this.NESW == 4)
+		if (this.NESW == 4)
 		{
-			this.Target.position = new Vector3(UnityEngine.Random.Range(-19f, -21f), base.transform.position.y, UnityEngine.Random.Range(29f, -37f));
+			this.Target.position = new Vector3(Random.Range(-19f, -21f), base.transform.position.y, Random.Range(29f, -37f));
 		}
 	}
 }

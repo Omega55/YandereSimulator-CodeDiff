@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 public static class GameObjectUtils
@@ -7,46 +6,18 @@ public static class GameObjectUtils
 	public static void SetLayerRecursively(GameObject obj, int newLayer)
 	{
 		obj.layer = newLayer;
-		IEnumerator enumerator = obj.transform.GetEnumerator();
-		try
+		foreach (object obj2 in obj.transform)
 		{
-			while (enumerator.MoveNext())
-			{
-				object obj2 = enumerator.Current;
-				Transform transform = (Transform)obj2;
-				GameObjectUtils.SetLayerRecursively(transform.gameObject, newLayer);
-			}
-		}
-		finally
-		{
-			IDisposable disposable;
-			if ((disposable = (enumerator as IDisposable)) != null)
-			{
-				disposable.Dispose();
-			}
+			GameObjectUtils.SetLayerRecursively(((Transform)obj2).gameObject, newLayer);
 		}
 	}
 
 	public static void SetTagRecursively(GameObject obj, string newTag)
 	{
 		obj.tag = newTag;
-		IEnumerator enumerator = obj.transform.GetEnumerator();
-		try
+		foreach (object obj2 in obj.transform)
 		{
-			while (enumerator.MoveNext())
-			{
-				object obj2 = enumerator.Current;
-				Transform transform = (Transform)obj2;
-				GameObjectUtils.SetTagRecursively(transform.gameObject, newTag);
-			}
-		}
-		finally
-		{
-			IDisposable disposable;
-			if ((disposable = (enumerator as IDisposable)) != null)
-			{
-				disposable.Dispose();
-			}
+			GameObjectUtils.SetTagRecursively(((Transform)obj2).gameObject, newTag);
 		}
 	}
 }

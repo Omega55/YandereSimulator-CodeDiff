@@ -10,9 +10,7 @@ public class ModelSwapScript : MonoBehaviour
 
 	public void Update()
 	{
-		if (Input.GetKeyDown("z"))
-		{
-		}
+		Input.GetKeyDown("z");
 	}
 
 	public void Attach(GameObject Attachment, bool Inactives)
@@ -25,11 +23,10 @@ public class ModelSwapScript : MonoBehaviour
 		Attachment.transform.SetParent(PelvisRoot);
 		PelvisRoot.localEulerAngles = Vector3.zero;
 		PelvisRoot.localPosition = Vector3.zero;
-		Transform[] StudentBones = PelvisRoot.GetComponentsInChildren<Transform>(Inactives);
-		Transform[] Bones = Attachment.GetComponentsInChildren<Transform>(Inactives);
-		foreach (Transform transform in Bones)
+		Transform[] componentsInChildren = PelvisRoot.GetComponentsInChildren<Transform>(Inactives);
+		foreach (Transform transform in Attachment.GetComponentsInChildren<Transform>(Inactives))
 		{
-			foreach (Transform transform2 in StudentBones)
+			foreach (Transform transform2 in componentsInChildren)
 			{
 				if (transform.name == transform2.name)
 				{

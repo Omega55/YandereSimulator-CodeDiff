@@ -21,7 +21,7 @@ public class SpeedrunTimerScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Label.enabled)
 			{
-				this.Label.text = string.Empty + this.FormatTime(this.Timer);
+				this.Label.text = (this.FormatTime(this.Timer) ?? "");
 			}
 			if (Input.GetKeyDown(KeyCode.Delete))
 			{

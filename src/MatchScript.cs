@@ -22,7 +22,7 @@ public class MatchScript : MonoBehaviour
 				base.transform.localScale = new Vector3(base.transform.localScale.x, base.transform.localScale.y, base.transform.localScale.z - Time.deltaTime);
 				if (base.transform.localScale.z < 0f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 			}
 		}

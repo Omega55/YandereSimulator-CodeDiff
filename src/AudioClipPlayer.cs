@@ -10,14 +10,14 @@ public static class AudioClipPlayer
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = minDistance;
 		audioSource.maxDistance = maxDistance;
 		audioSource.spatialBlend = 1f;
 		clipOwner = gameObject;
 		float y = gameObject.transform.position.y;
-		audioSource.volume = ((playerY >= y - 2f) ? 1f : 0f);
+		audioSource.volume = ((playerY < y - 2f) ? 0f : 1f);
 	}
 
 	public static void PlayAttached(AudioClip clip, Vector3 position, Transform attachment, float minDistance, float maxDistance, out GameObject clipOwner, float playerY)
@@ -28,14 +28,14 @@ public static class AudioClipPlayer
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = minDistance;
 		audioSource.maxDistance = maxDistance;
 		audioSource.spatialBlend = 1f;
 		clipOwner = gameObject;
 		float y = gameObject.transform.position.y;
-		audioSource.volume = ((playerY >= y - 2f) ? 1f : 0f);
+		audioSource.volume = ((playerY < y - 2f) ? 0f : 1f);
 	}
 
 	public static void PlayAttached(AudioClip clip, Transform attachment, float minDistance, float maxDistance)
@@ -46,7 +46,7 @@ public static class AudioClipPlayer
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = minDistance;
 		audioSource.maxDistance = maxDistance;
@@ -60,7 +60,7 @@ public static class AudioClipPlayer
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 		clipLength = clip.length;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = minDistance;
@@ -76,7 +76,7 @@ public static class AudioClipPlayer
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.minDistance = minDistance;
 		audioSource.maxDistance = maxDistance;
@@ -91,7 +91,7 @@ public static class AudioClipPlayer
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 	}
 
 	public static void Play2D(AudioClip clip, Vector3 position, float pitch)
@@ -101,7 +101,7 @@ public static class AudioClipPlayer
 		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.clip = clip;
 		audioSource.Play();
-		UnityEngine.Object.Destroy(gameObject, clip.length);
+		Object.Destroy(gameObject, clip.length);
 		audioSource.pitch = pitch;
 	}
 }

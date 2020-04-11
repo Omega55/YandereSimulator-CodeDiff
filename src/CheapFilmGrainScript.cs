@@ -11,6 +11,6 @@ public class CheapFilmGrainScript : MonoBehaviour
 
 	private void Update()
 	{
-		this.MyRenderer.material.mainTextureScale = new Vector2(UnityEngine.Random.Range(this.Floor, this.Ceiling), UnityEngine.Random.Range(this.Floor, this.Ceiling));
+		this.MyRenderer.material.mainTextureScale = new Vector2(Random.Range(this.Floor, this.Ceiling), Random.Range(this.Floor, this.Ceiling));
 	}
 }

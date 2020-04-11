@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MissionModeScript : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class MissionModeScript : MonoBehaviour
 
 	public UISprite Darkness;
 
-	public GUIText FPS;
+	public Text FPS;
 
 	public GardenHoleScript[] GardenHoles;
 
@@ -500,13 +501,11 @@ public class MissionModeScript : MonoBehaviour
 				}
 			}
 			this.Enabled = true;
+			return;
 		}
-		else
-		{
-			this.MissionModeMenu.gameObject.SetActive(false);
-			this.TimeLabel.gameObject.SetActive(false);
-			base.enabled = false;
-		}
+		this.MissionModeMenu.gameObject.SetActive(false);
+		this.TimeLabel.gameObject.SetActive(false);
+		base.enabled = false;
 	}
 
 	private void Update()
@@ -540,6 +539,7 @@ public class MissionModeScript : MonoBehaviour
 				this.Yandere.HUD.alpha = 1f;
 				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 0f);
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 2)
@@ -997,6 +997,7 @@ public class MissionModeScript : MonoBehaviour
 			{
 				this.AlphabetArrow.LocalArrow.LookAt(new Vector3(0f, 0f, this.ExitPortal.transform.position.z));
 				this.AlphabetArrow.transform.eulerAngles = this.AlphabetArrow.LocalArrow.transform.eulerAngles - new Vector3(0f, this.StudentManager.MainCamera.transform.eulerAngles.y, 0f);
+				return;
 			}
 		}
 		else if (this.Phase == 3)
@@ -1009,6 +1010,7 @@ public class MissionModeScript : MonoBehaviour
 				this.Success();
 				this.Timer = 0f;
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 4)
@@ -1085,12 +1087,11 @@ public class MissionModeScript : MonoBehaviour
 					{
 						base.GetComponent<AudioSource>().PlayOneShot(this.InfoFailure);
 						this.GameOverPhase++;
+						return;
 					}
-					else
-					{
-						this.GameOverPhase++;
-						this.Timer += 5f;
-					}
+					this.GameOverPhase++;
+					this.Timer += 5f;
+					return;
 				}
 			}
 			else if (this.GameOverPhase == 2 && this.Timer > 7.5f)
@@ -1116,7 +1117,7 @@ public class MissionModeScript : MonoBehaviour
 		}
 		this.Yandere.enabled = false;
 		this.GameOverReason.text = this.GameOverReasons[this.GameOverID];
-		if (this.ColorCorrections.Length > 0)
+		if (this.ColorCorrections.Length != 0)
 		{
 			this.ColorCorrections[2].enabled = true;
 		}
@@ -1136,14 +1137,13 @@ public class MissionModeScript : MonoBehaviour
 	{
 		while (!this.Valid)
 		{
-			this.RandomNumber = (float)UnityEngine.Random.Range(1000000, 10000000);
-			float num = this.RandomNumber / 9f;
-			if (num % 5f == 0f)
+			this.RandomNumber = (float)Random.Range(1000000, 10000000);
+			if (this.RandomNumber / 9f % 5f == 0f)
 			{
 				this.Valid = true;
 			}
 		}
-		this.DiscordCodeLabel.text = string.Empty + this.RandomNumber;
+		this.DiscordCodeLabel.text = string.Concat(this.RandomNumber);
 		this.DiscordCodeLabel.transform.parent.gameObject.SetActive(true);
 		this.GameOverHeader.transform.localPosition = new Vector3(this.GameOverHeader.transform.localPosition.x, 0f, this.GameOverHeader.transform.localPosition.z);
 		this.GameOverHeader.text = "MISSION ACCOMPLISHED";
@@ -1231,15 +1231,13 @@ public class MissionModeScript : MonoBehaviour
 
 	private void ChangeAllText()
 	{
-		UILabel[] array = UnityEngine.Object.FindObjectsOfType<UILabel>();
-		foreach (UILabel uilabel in array)
+		foreach (UILabel uilabel in Object.FindObjectsOfType<UILabel>())
 		{
 			float a = uilabel.color.a;
 			uilabel.color = new Color(1f, 1f, 1f, a);
 			uilabel.trueTypeFont = this.Arial;
 		}
-		UISprite[] array3 = UnityEngine.Object.FindObjectsOfType<UISprite>();
-		foreach (UISprite uisprite in array3)
+		foreach (UISprite uisprite in Object.FindObjectsOfType<UISprite>())
 		{
 			float a2 = uisprite.color.a;
 			if (uisprite.color != new Color(0f, 0f, 0f, a2))

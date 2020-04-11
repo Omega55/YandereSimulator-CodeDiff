@@ -14,10 +14,8 @@ public class CameraDistanceDisableScript : MonoBehaviour
 		if (Vector3.Distance(this.Yandere.position, this.RenderTarget.position) > 15f)
 		{
 			this.MyCamera.enabled = false;
+			return;
 		}
-		else
-		{
-			this.MyCamera.enabled = true;
-		}
+		this.MyCamera.enabled = true;
 	}
 }

@@ -135,12 +135,12 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		StudentJson studentJson = this.JSON.Students[ID];
 		this.NameLabel.text = studentJson.Name;
-		string text = string.Empty + studentJson.Class;
+		string text = string.Concat(studentJson.Class);
 		text = text.Insert(1, "-");
 		this.ClassLabel.text = "Class " + text;
 		if (ID == 90 || ID > 96)
 		{
-			this.ClassLabel.text = string.Empty;
+			this.ClassLabel.text = "";
 		}
 		if (StudentGlobals.GetStudentReputation(ID) < 0)
 		{
@@ -208,15 +208,14 @@ public class StudentInfoScript : MonoBehaviour
 		component.Stop();
 		if (ID < 12 || (ID > 20 && ID < 98))
 		{
-			string url = string.Concat(new string[]
+			WWW www = new WWW(string.Concat(new string[]
 			{
 				"file:///",
 				Application.streamingAssetsPath,
 				"/Portraits/Student_",
 				ID.ToString(),
 				".png"
-			});
-			WWW www = new WWW(url);
+			}));
 			if (!StudentGlobals.GetStudentReplaced(ID))
 			{
 				this.Portrait.mainTexture = www.texture;
@@ -513,53 +512,52 @@ public class StudentInfoScript : MonoBehaviour
 		if (this.ShowRep)
 		{
 			this.ReputationChart.transform.localScale = Vector3.Lerp(this.ReputationChart.transform.localScale, new Vector3(138f, 138f, 138f), Time.unscaledDeltaTime * 10f);
+			return;
 		}
-		else
-		{
-			this.ReputationChart.transform.localScale = Vector3.Lerp(this.ReputationChart.transform.localScale, new Vector3(0f, 0f, 0f), Time.unscaledDeltaTime * 10f);
-		}
+		this.ReputationChart.transform.localScale = Vector3.Lerp(this.ReputationChart.transform.localScale, new Vector3(0f, 0f, 0f), Time.unscaledDeltaTime * 10f);
 	}
 
 	private void UpdateAdditionalInfo(int ID)
 	{
-		Debug.Log("EventGlobals.Event1 is: " + EventGlobals.Event1);
+		Debug.Log("EventGlobals.Event1 is: " + EventGlobals.Event1.ToString());
 		if (ID == 11)
 		{
-			this.Strings[1] = ((!EventGlobals.OsanaEvent1) ? "?????" : "May be a victim of blackmail");
-			this.Strings[2] = ((!EventGlobals.OsanaEvent2) ? "?????" : "Has a stalker.");
+			this.Strings[1] = (EventGlobals.OsanaEvent1 ? "May be a victim of blackmail" : "?????");
+			this.Strings[2] = (EventGlobals.OsanaEvent2 ? "Has a stalker." : "?????");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
+			return;
 		}
-		else if (ID == 30)
+		if (ID == 30)
 		{
-			this.Strings[1] = ((!EventGlobals.Event1) ? "?????" : "May be a victim of domestic abuse.");
-			this.Strings[2] = ((!EventGlobals.Event2) ? "?????" : "May be engaging in compensated dating in Shisuta Town.");
+			this.Strings[1] = (EventGlobals.Event1 ? "May be a victim of domestic abuse." : "?????");
+			this.Strings[2] = (EventGlobals.Event2 ? "May be engaging in compensated dating in Shisuta Town." : "?????");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
+			return;
 		}
-		else if (ID == 51)
+		if (ID == 51)
 		{
 			if (ClubGlobals.GetClubClosed(ClubType.LightMusic))
 			{
 				this.InfoLabel.text = "Disbanded the Light Music Club, dyed her hair back to its original color, removed her piercings, and stopped socializing with others.";
+				return;
 			}
-			else
-			{
-				this.InfoLabel.text = this.JSON.Students[ID].Info;
-			}
-		}
-		else if (!StudentGlobals.GetStudentReplaced(ID))
-		{
-			if (this.JSON.Students[ID].Info == string.Empty)
-			{
-				this.InfoLabel.text = "No additional information is available at this time.";
-			}
-			else
-			{
-				this.InfoLabel.text = this.JSON.Students[ID].Info;
-			}
+			this.InfoLabel.text = this.JSON.Students[ID].Info;
+			return;
 		}
 		else
 		{
-			this.InfoLabel.text = "No additional information is available at this time.";
+			if (StudentGlobals.GetStudentReplaced(ID))
+			{
+				this.InfoLabel.text = "No additional information is available at this time.";
+				return;
+			}
+			if (this.JSON.Students[ID].Info == string.Empty)
+			{
+				this.InfoLabel.text = "No additional information is available at this time.";
+				return;
+			}
+			this.InfoLabel.text = this.JSON.Students[ID].Info;
+			return;
 		}
 	}
 
@@ -567,7 +565,7 @@ public class StudentInfoScript : MonoBehaviour
 	{
 		for (int i = 1; i < this.TopicIcons.Length; i++)
 		{
-			this.TopicIcons[i].spriteName = (ConversationGlobals.GetTopicDiscovered(i) ? i : 0).ToString();
+			this.TopicIcons[i].spriteName = ((!ConversationGlobals.GetTopicDiscovered(i)) ? 0 : i).ToString();
 		}
 		for (int j = 1; j <= 25; j++)
 		{
@@ -593,7 +591,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else
 		{
-			reputationTriangle = new Vector3((float)UnityEngine.Random.Range(-100, 101), (float)UnityEngine.Random.Range(-100, 101), (float)UnityEngine.Random.Range(-100, 101));
+			reputationTriangle = new Vector3((float)Random.Range(-100, 101), (float)Random.Range(-100, 101), (float)Random.Range(-100, 101));
 		}
 		this.ReputationChart.fields[0].Value = reputationTriangle.x;
 		this.ReputationChart.fields[1].Value = reputationTriangle.y;

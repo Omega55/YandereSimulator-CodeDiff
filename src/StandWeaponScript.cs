@@ -16,6 +16,7 @@ public class StandWeaponScript : MonoBehaviour
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
 				this.MoveToStand();
+				return;
 			}
 		}
 		else

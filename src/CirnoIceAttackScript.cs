@@ -13,7 +13,7 @@ public class CirnoIceAttackScript : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		UnityEngine.Object.Instantiate<GameObject>(this.IceExplosion, base.transform.position, Quaternion.identity);
+		Object.Instantiate<GameObject>(this.IceExplosion, base.transform.position, Quaternion.identity);
 		if (collision.gameObject.layer == 9)
 		{
 			StudentScript component = collision.gameObject.GetComponent<StudentScript>();
@@ -23,6 +23,6 @@ public class CirnoIceAttackScript : MonoBehaviour
 				component.BecomeRagdoll();
 			}
 		}
-		UnityEngine.Object.Destroy(base.gameObject);
+		Object.Destroy(base.gameObject);
 	}
 }

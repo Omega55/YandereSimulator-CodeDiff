@@ -114,7 +114,7 @@ public class TaskListScript : MonoBehaviour
 		}
 		else
 		{
-			string path = string.Concat(new string[]
+			string url = string.Concat(new string[]
 			{
 				"file:///",
 				Application.streamingAssetsPath,
@@ -122,7 +122,7 @@ public class TaskListScript : MonoBehaviour
 				(this.ID + this.ListPosition).ToString(),
 				".png"
 			});
-			WWW www = new WWW(path);
+			WWW www = new WWW(url);
 			yield return www;
 			this.StudentIcon.mainTexture = www.texture;
 			this.TaskWindow.AltGenericCheck(this.ID + this.ListPosition);
@@ -136,6 +136,7 @@ public class TaskListScript : MonoBehaviour
 				this.TaskIcon.mainTexture = this.TaskWindow.Icons[this.ID + this.ListPosition];
 				this.TaskDesc.text = this.TaskWindow.Descriptions[this.ID + this.ListPosition];
 			}
+			www = null;
 		}
 		yield break;
 	}

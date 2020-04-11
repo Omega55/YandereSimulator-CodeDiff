@@ -137,133 +137,126 @@ public class TapePlayerMenuScript : MonoBehaviour
 	{
 		AudioSource component = base.GetComponent<AudioSource>();
 		float t = Time.unscaledDeltaTime * 10f;
-		if (!this.Show)
+		if (this.Show)
 		{
-			if (this.List.localPosition.x > -955f)
+			if (this.Listening)
 			{
-				this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -956f, t), this.List.localPosition.y, this.List.localPosition.z);
-				this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, t), this.TimeBar.localPosition.z);
-			}
-			else
-			{
-				this.TimeBar.gameObject.SetActive(false);
-				this.List.gameObject.SetActive(false);
-			}
-		}
-		else if (this.Listening)
-		{
-			this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -955f, t), this.List.localPosition.y, this.List.localPosition.z);
-			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 0f, t), this.TimeBar.localPosition.z);
-			this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.15f, t), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.35f, t));
-			if (this.Phase == 1)
-			{
-				this.TapePlayer.GetComponent<Animation>()["InsertTape"].time += 0.0555555f;
-				if (this.TapePlayer.GetComponent<Animation>()["InsertTape"].time >= this.TapePlayer.GetComponent<Animation>()["InsertTape"].length)
+				this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -955f, t), this.List.localPosition.y, this.List.localPosition.z);
+				this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 0f, t), this.TimeBar.localPosition.z);
+				this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.15f, t), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.35f, t));
+				if (this.Phase == 1)
 				{
-					this.TapePlayer.GetComponent<Animation>().Play("PressPlay");
-					component.Play();
-					this.PromptBar.Label[0].text = "PAUSE";
-					this.PromptBar.Label[1].text = "STOP";
-					this.PromptBar.Label[5].text = "REWIND / FAST FORWARD";
-					this.PromptBar.UpdateButtons();
-					this.Phase++;
-				}
-			}
-			else if (this.Phase == 2)
-			{
-				this.Timer += 0.0166666675f;
-				if (component.isPlaying)
-				{
-					if ((double)this.Timer > 0.1)
+					this.TapePlayer.GetComponent<Animation>()["InsertTape"].time += 0.0555555f;
+					if (this.TapePlayer.GetComponent<Animation>()["InsertTape"].time >= this.TapePlayer.GetComponent<Animation>()["InsertTape"].length)
 					{
-						this.TapePlayer.GetComponent<Animation>()["PressPlay"].time += 0.0166666675f;
-						if (this.TapePlayer.GetComponent<Animation>()["PressPlay"].time > this.TapePlayer.GetComponent<Animation>()["PressPlay"].length)
+						this.TapePlayer.GetComponent<Animation>().Play("PressPlay");
+						component.Play();
+						this.PromptBar.Label[0].text = "PAUSE";
+						this.PromptBar.Label[1].text = "STOP";
+						this.PromptBar.Label[5].text = "REWIND / FAST FORWARD";
+						this.PromptBar.UpdateButtons();
+						this.Phase++;
+					}
+				}
+				else if (this.Phase == 2)
+				{
+					this.Timer += 0.0166666675f;
+					if (component.isPlaying)
+					{
+						if ((double)this.Timer > 0.1)
 						{
-							this.TapePlayer.GetComponent<Animation>()["PressPlay"].time = this.TapePlayer.GetComponent<Animation>()["PressPlay"].length;
+							this.TapePlayer.GetComponent<Animation>()["PressPlay"].time += 0.0166666675f;
+							if (this.TapePlayer.GetComponent<Animation>()["PressPlay"].time > this.TapePlayer.GetComponent<Animation>()["PressPlay"].length)
+							{
+								this.TapePlayer.GetComponent<Animation>()["PressPlay"].time = this.TapePlayer.GetComponent<Animation>()["PressPlay"].length;
+							}
 						}
 					}
-				}
-				else
-				{
-					this.TapePlayer.GetComponent<Animation>()["PressPlay"].time -= 0.0166666675f;
-					if (this.TapePlayer.GetComponent<Animation>()["PressPlay"].time < 0f)
+					else
 					{
-						this.TapePlayer.GetComponent<Animation>()["PressPlay"].time = 0f;
-					}
-					if (Input.GetButtonDown("A"))
-					{
-						this.PromptBar.Label[0].text = "PAUSE";
-						this.TapePlayer.Spin = true;
-						component.time = this.ResumeTime;
-						component.Play();
-					}
-				}
-				if (this.TapePlayer.GetComponent<Animation>()["PressPlay"].time >= this.TapePlayer.GetComponent<Animation>()["PressPlay"].length)
-				{
-					this.TapePlayer.Spin = true;
-					if (component.time >= component.clip.length - 1f)
-					{
-						this.TapePlayer.GetComponent<Animation>().Play("PressEject");
-						this.TapePlayer.Spin = false;
-						if (!component.isPlaying)
+						this.TapePlayer.GetComponent<Animation>()["PressPlay"].time -= 0.0166666675f;
+						if (this.TapePlayer.GetComponent<Animation>()["PressPlay"].time < 0f)
 						{
-							component.clip = this.TapeStop;
+							this.TapePlayer.GetComponent<Animation>()["PressPlay"].time = 0f;
+						}
+						if (Input.GetButtonDown("A"))
+						{
+							this.PromptBar.Label[0].text = "PAUSE";
+							this.TapePlayer.Spin = true;
+							component.time = this.ResumeTime;
 							component.Play();
 						}
+					}
+					if (this.TapePlayer.GetComponent<Animation>()["PressPlay"].time >= this.TapePlayer.GetComponent<Animation>()["PressPlay"].length)
+					{
+						this.TapePlayer.Spin = true;
+						if (component.time >= component.clip.length - 1f)
+						{
+							this.TapePlayer.GetComponent<Animation>().Play("PressEject");
+							this.TapePlayer.Spin = false;
+							if (!component.isPlaying)
+							{
+								component.clip = this.TapeStop;
+								component.Play();
+							}
+							this.Subtitle.text = string.Empty;
+							this.Phase++;
+						}
+						if (Input.GetButtonDown("A") && component.isPlaying)
+						{
+							this.PromptBar.Label[0].text = "PLAY";
+							this.TapePlayer.Spin = false;
+							this.ResumeTime = component.time;
+							component.Stop();
+						}
+					}
+					if (Input.GetButtonDown("B"))
+					{
+						this.TapePlayer.GetComponent<Animation>().Play("PressEject");
+						component.clip = this.TapeStop;
+						this.TapePlayer.Spin = false;
+						component.Play();
+						this.PromptBar.Label[0].text = string.Empty;
+						this.PromptBar.Label[1].text = string.Empty;
+						this.PromptBar.Label[5].text = string.Empty;
+						this.PromptBar.UpdateButtons();
 						this.Subtitle.text = string.Empty;
 						this.Phase++;
 					}
-					if (Input.GetButtonDown("A") && component.isPlaying)
+				}
+				else if (this.Phase == 3)
+				{
+					this.TapePlayer.GetComponent<Animation>()["PressEject"].time += 0.0166666675f;
+					if (this.TapePlayer.GetComponent<Animation>()["PressEject"].time >= this.TapePlayer.GetComponent<Animation>()["PressEject"].length)
 					{
-						this.PromptBar.Label[0].text = "PLAY";
-						this.TapePlayer.Spin = false;
-						this.ResumeTime = component.time;
-						component.Stop();
+						this.TapePlayer.GetComponent<Animation>().Play("InsertTape");
+						this.TapePlayer.GetComponent<Animation>()["InsertTape"].time = this.TapePlayer.GetComponent<Animation>()["InsertTape"].length;
+						this.TapePlayer.FastForward = false;
+						this.Phase++;
 					}
 				}
-				if (Input.GetButtonDown("B"))
+				else if (this.Phase == 4)
 				{
-					this.TapePlayer.GetComponent<Animation>().Play("PressEject");
-					component.clip = this.TapeStop;
-					this.TapePlayer.Spin = false;
-					component.Play();
-					this.PromptBar.Label[0].text = string.Empty;
-					this.PromptBar.Label[1].text = string.Empty;
-					this.PromptBar.Label[5].text = string.Empty;
-					this.PromptBar.UpdateButtons();
-					this.Subtitle.text = string.Empty;
-					this.Phase++;
+					this.TapePlayer.GetComponent<Animation>()["InsertTape"].time -= 0.0555555f;
+					if (this.TapePlayer.GetComponent<Animation>()["InsertTape"].time <= 0f)
+					{
+						this.TapePlayer.Tape.SetActive(false);
+						this.Jukebox.SetActive(true);
+						this.Listening = false;
+						this.Timer = 0f;
+						this.PromptBar.Label[0].text = "PLAY";
+						this.PromptBar.Label[1].text = "BACK";
+						this.PromptBar.Label[4].text = "CHOOSE";
+						this.PromptBar.Label[5].text = "CATEGORY";
+						this.PromptBar.UpdateButtons();
+					}
 				}
-			}
-			else if (this.Phase == 3)
-			{
-				this.TapePlayer.GetComponent<Animation>()["PressEject"].time += 0.0166666675f;
-				if (this.TapePlayer.GetComponent<Animation>()["PressEject"].time >= this.TapePlayer.GetComponent<Animation>()["PressEject"].length)
+				if (this.Phase != 2)
 				{
-					this.TapePlayer.GetComponent<Animation>().Play("InsertTape");
-					this.TapePlayer.GetComponent<Animation>()["InsertTape"].time = this.TapePlayer.GetComponent<Animation>()["InsertTape"].length;
-					this.TapePlayer.FastForward = false;
-					this.Phase++;
+					this.Label.text = "00:00 / 00:00";
+					this.Bar.fillAmount = 0f;
+					return;
 				}
-			}
-			else if (this.Phase == 4)
-			{
-				this.TapePlayer.GetComponent<Animation>()["InsertTape"].time -= 0.0555555f;
-				if (this.TapePlayer.GetComponent<Animation>()["InsertTape"].time <= 0f)
-				{
-					this.TapePlayer.Tape.SetActive(false);
-					this.Jukebox.SetActive(true);
-					this.Listening = false;
-					this.Timer = 0f;
-					this.PromptBar.Label[0].text = "PLAY";
-					this.PromptBar.Label[1].text = "BACK";
-					this.PromptBar.Label[4].text = "CHOOSE";
-					this.PromptBar.Label[5].text = "CATEGORY";
-					this.PromptBar.UpdateButtons();
-				}
-			}
-			if (this.Phase == 2)
-			{
 				if (this.InputManager.DPadRight || Input.GetKey(KeyCode.RightArrow))
 				{
 					this.ResumeTime += 1.66666663f;
@@ -311,8 +304,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs1[i];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 2)
+					if (this.Selected == 2)
 					{
 						for (int j = 0; j < this.Cues2.Length; j++)
 						{
@@ -321,8 +315,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs2[j];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 3)
+					if (this.Selected == 3)
 					{
 						for (int k = 0; k < this.Cues3.Length; k++)
 						{
@@ -331,8 +326,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs3[k];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 4)
+					if (this.Selected == 4)
 					{
 						for (int l = 0; l < this.Cues4.Length; l++)
 						{
@@ -341,8 +337,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs4[l];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 5)
+					if (this.Selected == 5)
 					{
 						for (int m = 0; m < this.Cues5.Length; m++)
 						{
@@ -351,8 +348,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs5[m];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 6)
+					if (this.Selected == 6)
 					{
 						for (int n = 0; n < this.Cues6.Length; n++)
 						{
@@ -361,8 +359,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs6[n];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 7)
+					if (this.Selected == 7)
 					{
 						for (int num3 = 0; num3 < this.Cues7.Length; num3++)
 						{
@@ -371,8 +370,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs7[num3];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 8)
+					if (this.Selected == 8)
 					{
 						for (int num4 = 0; num4 < this.Cues8.Length; num4++)
 						{
@@ -381,8 +381,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs8[num4];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 9)
+					if (this.Selected == 9)
 					{
 						for (int num5 = 0; num5 < this.Cues9.Length; num5++)
 						{
@@ -391,8 +392,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs9[num5];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 10)
+					if (this.Selected == 10)
 					{
 						for (int num6 = 0; num6 < this.Cues10.Length; num6++)
 						{
@@ -401,6 +403,7 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.Subs10[num6];
 							}
 						}
+						return;
 					}
 				}
 				else if (this.Category == 2)
@@ -424,6 +427,7 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.BasementSubs10[num8];
 							}
 						}
+						return;
 					}
 				}
 				else if (this.Category == 3)
@@ -437,8 +441,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.HeadmasterSubs1[num9];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 2)
+					if (this.Selected == 2)
 					{
 						for (int num10 = 0; num10 < this.HeadmasterCues2.Length; num10++)
 						{
@@ -447,8 +452,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.HeadmasterSubs2[num10];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 6)
+					if (this.Selected == 6)
 					{
 						for (int num11 = 0; num11 < this.HeadmasterCues6.Length; num11++)
 						{
@@ -457,8 +463,9 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.HeadmasterSubs6[num11];
 							}
 						}
+						return;
 					}
-					else if (this.Selected == 10)
+					if (this.Selected == 10)
 					{
 						for (int num12 = 0; num12 < this.HeadmasterCues10.Length; num12++)
 						{
@@ -467,128 +474,136 @@ public class TapePlayerMenuScript : MonoBehaviour
 								this.Subtitle.text = this.HeadmasterSubs10[num12];
 							}
 						}
+						return;
 					}
 				}
 			}
 			else
 			{
-				this.Label.text = "00:00 / 00:00";
-				this.Bar.fillAmount = 0f;
-			}
-		}
-		else
-		{
-			this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.2125f, t), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.4125f, t));
-			this.List.transform.localPosition = new Vector3(Mathf.Lerp(this.List.transform.localPosition.x, 0f, t), this.List.transform.localPosition.y, this.List.transform.localPosition.z);
-			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, t), this.TimeBar.localPosition.z);
-			if (this.InputManager.TappedRight)
-			{
-				this.Category++;
-				if (this.Category > 3)
+				this.TapePlayerCamera.position = new Vector3(Mathf.Lerp(this.TapePlayerCamera.position.x, -26.2125f, t), this.TapePlayerCamera.position.y, Mathf.Lerp(this.TapePlayerCamera.position.z, 5.4125f, t));
+				this.List.transform.localPosition = new Vector3(Mathf.Lerp(this.List.transform.localPosition.x, 0f, t), this.List.transform.localPosition.y, this.List.transform.localPosition.z);
+				this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, t), this.TimeBar.localPosition.z);
+				if (this.InputManager.TappedRight)
 				{
-					this.Category = 1;
-				}
-				this.UpdateLabels();
-			}
-			else if (this.InputManager.TappedLeft)
-			{
-				this.Category--;
-				if (this.Category < 1)
-				{
-					this.Category = 3;
-				}
-				this.UpdateLabels();
-			}
-			if (this.InputManager.TappedUp)
-			{
-				this.Selected--;
-				if (this.Selected < 1)
-				{
-					this.Selected = 10;
-				}
-				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 440f - 80f * (float)this.Selected, this.Highlight.localPosition.z);
-				this.CheckSelection();
-			}
-			else if (this.InputManager.TappedDown)
-			{
-				this.Selected++;
-				if (this.Selected > 10)
-				{
-					this.Selected = 1;
-				}
-				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 440f - 80f * (float)this.Selected, this.Highlight.localPosition.z);
-				this.CheckSelection();
-			}
-			else if (Input.GetButtonDown("A"))
-			{
-				bool flag = false;
-				if (this.Category == 1)
-				{
-					if (CollectibleGlobals.GetTapeCollected(this.Selected))
+					this.Category++;
+					if (this.Category > 3)
 					{
-						CollectibleGlobals.SetTapeListened(this.Selected, true);
-						flag = true;
+						this.Category = 1;
 					}
+					this.UpdateLabels();
 				}
-				else if (this.Category == 2)
+				else if (this.InputManager.TappedLeft)
 				{
-					if (CollectibleGlobals.GetBasementTapeCollected(this.Selected))
+					this.Category--;
+					if (this.Category < 1)
 					{
-						CollectibleGlobals.SetBasementTapeListened(this.Selected, true);
-						flag = true;
+						this.Category = 3;
 					}
+					this.UpdateLabels();
 				}
-				else if (this.Category == 3 && CollectibleGlobals.GetHeadmasterTapeCollected(this.Selected))
+				if (this.InputManager.TappedUp)
 				{
-					CollectibleGlobals.SetHeadmasterTapeListened(this.Selected, true);
-					flag = true;
+					this.Selected--;
+					if (this.Selected < 1)
+					{
+						this.Selected = 10;
+					}
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 440f - 80f * (float)this.Selected, this.Highlight.localPosition.z);
+					this.CheckSelection();
+					return;
 				}
-				if (flag)
+				if (this.InputManager.TappedDown)
 				{
-					this.NewIcons[this.Selected].SetActive(false);
-					this.Jukebox.SetActive(false);
-					this.Listening = true;
-					this.Phase = 1;
-					this.PromptBar.Label[0].text = string.Empty;
-					this.PromptBar.Label[1].text = string.Empty;
-					this.PromptBar.Label[4].text = string.Empty;
-					this.PromptBar.UpdateButtons();
-					this.TapePlayer.GetComponent<Animation>().Play("InsertTape");
-					this.TapePlayer.Tape.SetActive(true);
+					this.Selected++;
+					if (this.Selected > 10)
+					{
+						this.Selected = 1;
+					}
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 440f - 80f * (float)this.Selected, this.Highlight.localPosition.z);
+					this.CheckSelection();
+					return;
+				}
+				if (Input.GetButtonDown("A"))
+				{
+					bool flag = false;
 					if (this.Category == 1)
 					{
-						component.clip = this.Recordings[this.Selected];
+						if (CollectibleGlobals.GetTapeCollected(this.Selected))
+						{
+							CollectibleGlobals.SetTapeListened(this.Selected, true);
+							flag = true;
+						}
 					}
 					else if (this.Category == 2)
 					{
-						component.clip = this.BasementRecordings[this.Selected];
+						if (CollectibleGlobals.GetBasementTapeCollected(this.Selected))
+						{
+							CollectibleGlobals.SetBasementTapeListened(this.Selected, true);
+							flag = true;
+						}
 					}
-					else
+					else if (this.Category == 3 && CollectibleGlobals.GetHeadmasterTapeCollected(this.Selected))
 					{
-						component.clip = this.HeadmasterRecordings[this.Selected];
+						CollectibleGlobals.SetHeadmasterTapeListened(this.Selected, true);
+						flag = true;
 					}
-					component.time = 0f;
-					this.RoundedTime = (float)Mathf.CeilToInt(component.clip.length);
-					int num13 = (int)(this.RoundedTime / 60f);
-					int num14 = (int)(this.RoundedTime % 60f);
-					this.ClipLength = string.Format("{0:00}:{1:00}", num13, num14);
+					if (flag)
+					{
+						this.NewIcons[this.Selected].SetActive(false);
+						this.Jukebox.SetActive(false);
+						this.Listening = true;
+						this.Phase = 1;
+						this.PromptBar.Label[0].text = string.Empty;
+						this.PromptBar.Label[1].text = string.Empty;
+						this.PromptBar.Label[4].text = string.Empty;
+						this.PromptBar.UpdateButtons();
+						this.TapePlayer.GetComponent<Animation>().Play("InsertTape");
+						this.TapePlayer.Tape.SetActive(true);
+						if (this.Category == 1)
+						{
+							component.clip = this.Recordings[this.Selected];
+						}
+						else if (this.Category == 2)
+						{
+							component.clip = this.BasementRecordings[this.Selected];
+						}
+						else
+						{
+							component.clip = this.HeadmasterRecordings[this.Selected];
+						}
+						component.time = 0f;
+						this.RoundedTime = (float)Mathf.CeilToInt(component.clip.length);
+						int num13 = (int)(this.RoundedTime / 60f);
+						int num14 = (int)(this.RoundedTime % 60f);
+						this.ClipLength = string.Format("{0:00}:{1:00}", num13, num14);
+						return;
+					}
+				}
+				else if (Input.GetButtonDown("B"))
+				{
+					this.TapePlayer.Yandere.HeartCamera.enabled = true;
+					this.TapePlayer.Yandere.RPGCamera.enabled = true;
+					this.TapePlayer.TapePlayerCamera.enabled = false;
+					this.TapePlayer.NoteWindow.SetActive(true);
+					this.TapePlayer.PromptBar.ClearButtons();
+					this.TapePlayer.Yandere.CanMove = true;
+					this.TapePlayer.PromptBar.Show = false;
+					this.TapePlayer.Prompt.enabled = true;
+					this.TapePlayer.Yandere.HUD.alpha = 1f;
+					Time.timeScale = 1f;
+					this.Show = false;
 				}
 			}
-			else if (Input.GetButtonDown("B"))
-			{
-				this.TapePlayer.Yandere.HeartCamera.enabled = true;
-				this.TapePlayer.Yandere.RPGCamera.enabled = true;
-				this.TapePlayer.TapePlayerCamera.enabled = false;
-				this.TapePlayer.NoteWindow.SetActive(true);
-				this.TapePlayer.PromptBar.ClearButtons();
-				this.TapePlayer.Yandere.CanMove = true;
-				this.TapePlayer.PromptBar.Show = false;
-				this.TapePlayer.Prompt.enabled = true;
-				this.TapePlayer.Yandere.HUD.alpha = 1f;
-				Time.timeScale = 1f;
-				this.Show = false;
-			}
+			return;
 		}
+		if (this.List.localPosition.x > -955f)
+		{
+			this.List.localPosition = new Vector3(Mathf.Lerp(this.List.localPosition.x, -956f, t), this.List.localPosition.y, this.List.localPosition.z);
+			this.TimeBar.localPosition = new Vector3(this.TimeBar.localPosition.x, Mathf.Lerp(this.TimeBar.localPosition.y, 100f, t), this.TimeBar.localPosition.z);
+			return;
+		}
+		this.TimeBar.gameObject.SetActive(false);
+		this.List.gameObject.SetActive(false);
 	}
 
 	public void UpdateLabels()
@@ -646,18 +661,17 @@ public class TapePlayerMenuScript : MonoBehaviour
 	{
 		if (this.Category == 1)
 		{
-			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetTapeCollected(this.Selected)) ? string.Empty : "PLAY");
+			this.TapePlayer.PromptBar.Label[0].text = (CollectibleGlobals.GetTapeCollected(this.Selected) ? "PLAY" : string.Empty);
 			this.TapePlayer.PromptBar.UpdateButtons();
+			return;
 		}
-		else if (this.Category == 2)
+		if (this.Category == 2)
 		{
-			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetBasementTapeCollected(this.Selected)) ? string.Empty : "PLAY");
+			this.TapePlayer.PromptBar.Label[0].text = (CollectibleGlobals.GetBasementTapeCollected(this.Selected) ? "PLAY" : string.Empty);
 			this.TapePlayer.PromptBar.UpdateButtons();
+			return;
 		}
-		else
-		{
-			this.TapePlayer.PromptBar.Label[0].text = ((!CollectibleGlobals.GetHeadmasterTapeCollected(this.Selected)) ? string.Empty : "PLAY");
-			this.TapePlayer.PromptBar.UpdateButtons();
-		}
+		this.TapePlayer.PromptBar.Label[0].text = (CollectibleGlobals.GetHeadmasterTapeCollected(this.Selected) ? "PLAY" : string.Empty);
+		this.TapePlayer.PromptBar.UpdateButtons();
 	}
 }

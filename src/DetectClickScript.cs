@@ -25,15 +25,11 @@ public class DetectClickScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		RaycastHit raycastHit;
+		if (Input.GetMouseButtonDown(0) && Physics.Raycast(this.GUICamera.ScreenPointToRay(Input.mousePosition), out raycastHit, 100f) && raycastHit.collider == this.MyCollider && this.Label.color.a == 1f)
 		{
-			Ray ray = this.GUICamera.ScreenPointToRay(Input.mousePosition);
-			RaycastHit raycastHit;
-			if (Physics.Raycast(ray, out raycastHit, 100f) && raycastHit.collider == this.MyCollider && this.Label.color.a == 1f)
-			{
-				this.Sprite.color = new Color(1f, 1f, 1f, 1f);
-				this.Clicked = true;
-			}
+			this.Sprite.color = new Color(1f, 1f, 1f, 1f);
+			this.Clicked = true;
 		}
 	}
 

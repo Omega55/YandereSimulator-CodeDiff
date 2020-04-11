@@ -70,7 +70,7 @@ public class DateChaser : MonoBehaviour
 			float num = Time.time - this.startTime;
 			this.CurrentDate = (int)Mathf.Lerp((float)this.startDate, (float)this.endDate, this.curve.Evaluate(num / this.generalDuration));
 			DateTime dateTime = DateChaser.fromUnix((long)this.CurrentDate);
-			string text = (dateTime.Day != 22 && dateTime.Day != 2) ? ((dateTime.Day != 3) ? ((dateTime.Day != 1) ? "th" : "st") : "rd") : "nd";
+			string text = (dateTime.Day == 22 || dateTime.Day == 2) ? "nd" : ((dateTime.Day == 3) ? "rd" : ((dateTime.Day == 1) ? "st" : "th"));
 			this.CurrentTimeString = string.Format("{0} {1}{2}, {3}", new object[]
 			{
 				this.monthNames[dateTime.Month - 1],
@@ -84,12 +84,10 @@ public class DateChaser : MonoBehaviour
 			}
 			this.lastFrameDay = dateTime.Day;
 			this.Timer += Time.deltaTime;
+			return;
 		}
-		else
-		{
-			this.startTime = Time.time;
-			this.CurrentDate = this.startDate;
-		}
+		this.startTime = Time.time;
+		this.CurrentDate = this.startDate;
 	}
 
 	private void onDayTick(int day)

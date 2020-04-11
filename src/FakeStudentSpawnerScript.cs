@@ -47,19 +47,19 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 			{
 				if (this.NESW == 1)
 				{
-					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(21f, 19f)), Quaternion.identity);
+					this.NewStudent = Object.Instantiate<GameObject>(this.Student, new Vector3(Random.Range(-21f, 21f), (float)this.Height, Random.Range(21f, 19f)), Quaternion.identity);
 				}
 				else if (this.NESW == 2)
 				{
-					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(19f, 21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
+					this.NewStudent = Object.Instantiate<GameObject>(this.Student, new Vector3(Random.Range(19f, 21f), (float)this.Height, Random.Range(29f, -37f)), Quaternion.identity);
 				}
 				else if (this.NESW == 3)
 				{
-					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(-21f, 21f), (float)this.Height, UnityEngine.Random.Range(-21f, -19f)), Quaternion.identity);
+					this.NewStudent = Object.Instantiate<GameObject>(this.Student, new Vector3(Random.Range(-21f, 21f), (float)this.Height, Random.Range(-21f, -19f)), Quaternion.identity);
 				}
 				else if (this.NESW == 4)
 				{
-					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>(this.Student, new Vector3(UnityEngine.Random.Range(-19f, -21f), (float)this.Height, UnityEngine.Random.Range(29f, -37f)), Quaternion.identity);
+					this.NewStudent = Object.Instantiate<GameObject>(this.Student, new Vector3(Random.Range(-19f, -21f), (float)this.Height, Random.Range(29f, -37f)), Quaternion.identity);
 				}
 				this.StudentID++;
 				this.NewStudent.GetComponent<PlaceholderStudentScript>().FakeStudentSpawner = this;
@@ -83,15 +83,13 @@ public class FakeStudentSpawnerScript : MonoBehaviour
 						this.NESW = 1;
 					}
 				}
-				this.Student = ((!(this.Student == this.FakeFemale)) ? this.FakeFemale : this.FakeMale);
+				this.Student = ((this.Student == this.FakeFemale) ? this.FakeMale : this.FakeFemale);
 			}
 			this.StudentIDLimit = this.StudentID;
 			this.StudentID = 1;
 			this.AlreadySpawned = true;
+			return;
 		}
-		else
-		{
-			this.FakeStudentParent.gameObject.SetActive(!this.FakeStudentParent.gameObject.activeInHierarchy);
-		}
+		this.FakeStudentParent.gameObject.SetActive(!this.FakeStudentParent.gameObject.activeInHierarchy);
 	}
 }

@@ -24,7 +24,7 @@ public class BlowtorchScript : MonoBehaviour
 	private void Update()
 	{
 		this.Timer = Mathf.MoveTowards(this.Timer, 5f, Time.deltaTime);
-		float num = UnityEngine.Random.Range(0.9f, 1f);
+		float num = Random.Range(0.9f, 1f);
 		this.Flame.localScale = new Vector3(num, num, num);
 		if (this.Timer == 5f)
 		{

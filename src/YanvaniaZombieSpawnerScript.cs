@@ -37,7 +37,7 @@ public class YanvaniaZombieSpawnerScript : MonoBehaviour
 				{
 					if (this.Zombies[this.ID] == null)
 					{
-						this.SpawnSide = UnityEngine.Random.Range(1, 3);
+						this.SpawnSide = Random.Range(1, 3);
 						if (this.Yanmont.transform.position.x < this.LeftBoundary + 5f)
 						{
 							this.SpawnSide = 2;
@@ -72,7 +72,7 @@ public class YanvaniaZombieSpawnerScript : MonoBehaviour
 							this.SpawnPoints[2].x = this.RelativePoint + 4.5f;
 							this.SpawnPoints[3].x = this.RelativePoint + 5.5f;
 						}
-						this.Zombies[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.Zombie, this.SpawnPoints[this.ID], Quaternion.identity);
+						this.Zombies[this.ID] = Object.Instantiate<GameObject>(this.Zombie, this.SpawnPoints[this.ID], Quaternion.identity);
 						this.NewZombieScript = this.Zombies[this.ID].GetComponent<YanvaniaZombieScript>();
 						this.NewZombieScript.LeftBoundary = this.LeftBoundary;
 						this.NewZombieScript.RightBoundary = this.RightBoundary;

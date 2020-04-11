@@ -95,7 +95,7 @@ public class CombatMinigameScript : MonoBehaviour
 		this.Zoom = true;
 		if (this.Delinquent.Male)
 		{
-			this.Prefix = string.Empty;
+			this.Prefix = "";
 		}
 		else
 		{
@@ -104,12 +104,10 @@ public class CombatMinigameScript : MonoBehaviour
 		if (!this.Practice)
 		{
 			this.Difficulty = 1f;
+			return;
 		}
-		else
-		{
-			this.Delinquent.MyWeapon.GetComponent<Rigidbody>().isKinematic = true;
-			this.Delinquent.MyWeapon.GetComponent<Rigidbody>().useGravity = false;
-		}
+		this.Delinquent.MyWeapon.GetComponent<Rigidbody>().isKinematic = true;
+		this.Delinquent.MyWeapon.GetComponent<Rigidbody>().useGravity = false;
 	}
 
 	private void Update()
@@ -143,7 +141,7 @@ public class CombatMinigameScript : MonoBehaviour
 		}
 		if (this.Phase > 0)
 		{
-			this.MainCamera.position += new Vector3(this.Shake * UnityEngine.Random.Range(-1f, 1f), this.Shake * UnityEngine.Random.Range(-1f, 1f), this.Shake * UnityEngine.Random.Range(-1f, 1f));
+			this.MainCamera.position += new Vector3(this.Shake * Random.Range(-1f, 1f), this.Shake * Random.Range(-1f, 1f), this.Shake * Random.Range(-1f, 1f));
 			this.Shake = Mathf.Lerp(this.Shake, 0f, Time.deltaTime * 10f);
 			this.AdjustMidpoint();
 		}
@@ -180,6 +178,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.ChooseButton();
 					this.Slowdown();
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 2)
@@ -191,8 +190,9 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyAudio.pitch = 1f;
 					this.DisablePrompts();
 					this.Phase++;
+					return;
 				}
-				else if (this.Success)
+				if (this.Success)
 				{
 					this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatB"].time = this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatA"].time;
 					this.Yandere.CharacterAnimation["Yandere_CombatB"].time = this.Yandere.CharacterAnimation["Yandere_CombatA"].time;
@@ -211,6 +211,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyVocals.clip = this.Vocals[this.Path];
 					this.MyVocals.time = this.Yandere.CharacterAnimation["Yandere_CombatB"].time + 0.5f;
 					this.MyVocals.Play();
+					return;
 				}
 			}
 			else if (this.Phase == 3)
@@ -219,7 +220,7 @@ public class CombatMinigameScript : MonoBehaviour
 				{
 					if (this.Yandere.CharacterAnimation["Yandere_CombatA"].time > 1.66666f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.LeftArmRoll.position, Quaternion.identity);
+						Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.LeftArmRoll.position, Quaternion.identity);
 						this.Shake += this.ShakeFactor;
 						this.Strike++;
 						this.Yandere.Health--;
@@ -228,7 +229,7 @@ public class CombatMinigameScript : MonoBehaviour
 				}
 				else if (this.Strike < 2 && this.Yandere.CharacterAnimation["Yandere_CombatA"].time > 2.5f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightArmRoll.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightArmRoll.position, Quaternion.identity);
 					this.Shake += this.ShakeFactor;
 					this.Strike++;
 					this.Yandere.Health--;
@@ -305,6 +306,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyVocals.clip = this.Vocals[this.Path];
 					this.MyVocals.time = this.Yandere.CharacterAnimation["Yandere_CombatA"].time;
 					this.MyVocals.Play();
+					return;
 				}
 			}
 		}
@@ -318,6 +320,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.ChooseButton();
 					this.Slowdown();
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 4)
@@ -329,8 +332,9 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyAudio.pitch = 1f;
 					this.DisablePrompts();
 					this.Phase++;
+					return;
 				}
-				else if (this.Success)
+				if (this.Success)
 				{
 					this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatC"].time = this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatB"].time;
 					this.Yandere.CharacterAnimation["Yandere_CombatC"].time = this.Yandere.CharacterAnimation["Yandere_CombatB"].time;
@@ -350,13 +354,14 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyVocals.clip = this.Vocals[this.Path];
 					this.MyVocals.time = this.Yandere.CharacterAnimation["Yandere_CombatC"].time;
 					this.MyVocals.Play();
+					return;
 				}
 			}
 			else if (this.Phase == 5)
 			{
 				if (this.Strike < 1 && this.Yandere.CharacterAnimation["Yandere_CombatB"].time > 2.66666f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Delinquent.LeftHand.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.HitEffect, this.Delinquent.LeftHand.position, Quaternion.identity);
 					this.Shake += this.ShakeFactor;
 					this.Strike++;
 				}
@@ -374,6 +379,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyVocals.clip = this.Vocals[this.Path];
 					this.MyVocals.time = this.Yandere.CharacterAnimation["Yandere_CombatA"].time;
 					this.MyVocals.Play();
+					return;
 				}
 			}
 		}
@@ -383,7 +389,7 @@ public class CombatMinigameScript : MonoBehaviour
 			{
 				if (this.Strike < 1 && this.Yandere.CharacterAnimation["Yandere_CombatC"].time > 2.5f)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightHand.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightHand.position, Quaternion.identity);
 					this.Shake += this.ShakeFactor;
 					this.Strike++;
 				}
@@ -393,6 +399,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.ChooseButton();
 					this.Slowdown();
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 6)
@@ -404,8 +411,9 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyVocals.pitch = 1f;
 					this.MyAudio.pitch = 1f;
 					this.Phase++;
+					return;
 				}
-				else if (this.Success)
+				if (this.Success)
 				{
 					this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatD"].time = this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatC"].time;
 					this.Yandere.CharacterAnimation["Yandere_CombatD"].time = this.Yandere.CharacterAnimation["Yandere_CombatC"].time;
@@ -425,6 +433,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.MyVocals.clip = this.Vocals[this.Path];
 					this.MyVocals.time = this.Yandere.CharacterAnimation["Yandere_CombatD"].time;
 					this.MyVocals.Play();
+					return;
 				}
 			}
 			else if (this.Phase == 7 && this.Yandere.CharacterAnimation["Yandere_CombatC"].time > this.Yandere.CharacterAnimation["Yandere_CombatC"].length)
@@ -441,6 +450,7 @@ public class CombatMinigameScript : MonoBehaviour
 				this.MyVocals.clip = this.Vocals[this.Path];
 				this.MyVocals.time = this.Yandere.CharacterAnimation["Yandere_CombatA"].time;
 				this.MyVocals.Play();
+				return;
 			}
 		}
 		else if (this.Path == 4)
@@ -451,7 +461,7 @@ public class CombatMinigameScript : MonoBehaviour
 				{
 					if (this.Yandere.CharacterAnimation["Yandere_CombatD"].time > 4f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightKnee.position, Quaternion.identity);
+						Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightKnee.position, Quaternion.identity);
 						if (!this.Delinquent.WitnessedMurder)
 						{
 							this.Delinquent.MyWeapon.transform.parent = null;
@@ -542,6 +552,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.ReleaseYandere();
 					this.ResetValues();
 					this.Yandere.StudentManager.UpdateStudents(0);
+					return;
 				}
 			}
 		}
@@ -563,6 +574,7 @@ public class CombatMinigameScript : MonoBehaviour
 						this.Yandere.EmptyHands();
 						this.Yandere.Lost = true;
 						this.Phase++;
+						return;
 					}
 				}
 			}
@@ -620,6 +632,7 @@ public class CombatMinigameScript : MonoBehaviour
 					this.Delinquent.Patience = 5;
 					this.ResetValues();
 					this.Yandere.StudentManager.UpdateStudents(0);
+					return;
 				}
 			}
 		}
@@ -678,7 +691,7 @@ public class CombatMinigameScript : MonoBehaviour
 		int buttonID = this.ButtonID;
 		while (this.ButtonID == buttonID)
 		{
-			this.ButtonID = UnityEngine.Random.Range(1, 5);
+			this.ButtonID = Random.Range(1, 5);
 		}
 		if (this.ButtonID == 1)
 		{

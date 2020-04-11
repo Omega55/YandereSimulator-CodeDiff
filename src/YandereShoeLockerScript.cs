@@ -24,6 +24,7 @@ public class YandereShoeLockerScript : MonoBehaviour
 				this.Yandere.Casual = !this.Yandere.Casual;
 				this.Yandere.ChangeSchoolwear();
 				this.Yandere.CanMove = true;
+				return;
 			}
 		}
 		else

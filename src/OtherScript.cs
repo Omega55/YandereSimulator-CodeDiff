@@ -21,6 +21,7 @@ public class OtherScript : MonoBehaviour
 	{
 		for (int i = 1; i < 101; i++)
 		{
+			this.StudentManager.Students[i];
 			if (!this.StudentManager.Students[i].Male && (this.StudentManager.Students[i].Cosmetic.Hairstyle == 20 || this.StudentManager.Students[i].Cosmetic.Hairstyle == 21))
 			{
 				this.Wow();

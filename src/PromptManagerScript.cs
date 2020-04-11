@@ -25,6 +25,7 @@ public class PromptManagerScript : MonoBehaviour
 						promptScript.enabled = false;
 					}
 				}
+				return;
 			}
 		}
 		else if (this.Outside)

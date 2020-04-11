@@ -242,7 +242,7 @@ public class ServicesScript : MonoBehaviour
 				this.ServiceAvailable[this.ID] = true;
 			}
 			UILabel uilabel = this.NameLabels[this.ID];
-			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, (!this.ServiceAvailable[this.ID] || servicePurchased) ? 0.5f : 1f);
+			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, (this.ServiceAvailable[this.ID] && !servicePurchased) ? 1f : 0.5f);
 			this.ID++;
 		}
 	}
@@ -251,7 +251,7 @@ public class ServicesScript : MonoBehaviour
 	{
 		if (this.ServiceAvailable[this.Selected] && !SchemeGlobals.GetServicePurchased(this.Selected))
 		{
-			this.PromptBar.Label[0].text = ((this.Inventory.PantyShots < this.ServiceCosts[this.Selected]) ? string.Empty : "Purchase");
+			this.PromptBar.Label[0].text = ((this.Inventory.PantyShots >= this.ServiceCosts[this.Selected]) ? "Purchase" : string.Empty);
 			this.PromptBar.UpdateButtons();
 		}
 		else

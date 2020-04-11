@@ -18,27 +18,24 @@ namespace MaidDereMinigame
 		private void Start()
 		{
 			float num = this.targetAspect.x / this.targetAspect.y;
-			float num2 = (float)Screen.width / (float)Screen.height;
-			float num3 = num2 / num;
-			if (num3 < 1f)
+			float num2 = (float)Screen.width / (float)Screen.height / num;
+			if (num2 < 1f)
 			{
 				Rect rect = this.cam.rect;
 				rect.width = 1f;
-				rect.height = num3;
+				rect.height = num2;
 				rect.x = 0f;
-				rect.y = (1f - num3) / 2f;
+				rect.y = (1f - num2) / 2f;
 				this.cam.rect = rect;
+				return;
 			}
-			else
-			{
-				Rect rect2 = this.cam.rect;
-				float num4 = 1f / num3;
-				rect2.width = num4;
-				rect2.height = 1f;
-				rect2.x = (1f - num4) / 2f;
-				rect2.y = 0f;
-				this.cam.rect = rect2;
-			}
+			Rect rect2 = this.cam.rect;
+			float num3 = 1f / num2;
+			rect2.width = num3;
+			rect2.height = 1f;
+			rect2.x = (1f - num3) / 2f;
+			rect2.y = 0f;
+			this.cam.rect = rect2;
 		}
 	}
 }

@@ -99,7 +99,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 	{
 		for (int i = 1; i < 101; i++)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StudentPortrait, base.transform.position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.StudentPortrait, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = this.PortraitGrid;
 			gameObject.transform.localPosition = new Vector3(-300f + (float)this.Column * 150f, 80f - (float)this.Row * 160f, 0f);
 			gameObject.transform.localEulerAngles = Vector3.zero;
@@ -192,12 +192,12 @@ public class StudentInfoMenuScript : MonoBehaviour
 						}
 						else
 						{
-							this.PromptBar.Label[2].text = string.Empty;
+							this.PromptBar.Label[2].text = "";
 						}
 					}
 					else
 					{
-						this.PromptBar.Label[2].text = string.Empty;
+						this.PromptBar.Label[2].text = "";
 					}
 					this.PromptBar.Label[1].text = "Back";
 					this.PromptBar.Label[3].text = "Interests";
@@ -286,7 +286,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			}
 		}
 		float t = Time.unscaledDeltaTime * 10f;
-		float num = (float)((this.Row % 2 != 0) ? ((this.Row - 1) / 2) : (this.Row / 2));
+		float num = (float)((this.Row % 2 == 0) ? (this.Row / 2) : ((this.Row - 1) / 2));
 		float b = 320f * num;
 		this.PortraitGrid.localPosition = new Vector3(this.PortraitGrid.localPosition.x, Mathf.Lerp(this.PortraitGrid.localPosition.y, b, t), this.PortraitGrid.localPosition.z);
 		this.Scrollbar.localPosition = new Vector3(this.Scrollbar.localPosition.x, Mathf.Lerp(this.Scrollbar.localPosition.y, 175f - 350f * (this.PortraitGrid.localPosition.y / 2880f), t), this.Scrollbar.localPosition.z);
@@ -419,7 +419,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 		{
 			if (this.StudentID == 1 || this.StudentID > 97 || (this.StudentID > 10 && this.StudentID < 21) || this.StudentPortraits[this.StudentID].DeathShadow.activeInHierarchy || (this.StudentManager.Students[this.StudentID] != null && !this.StudentManager.Students[this.StudentID].enabled))
 			{
-				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.Label[0].text = "";
 			}
 			else
 			{
@@ -436,11 +436,9 @@ public class StudentInfoMenuScript : MonoBehaviour
 		if (this.StudentID > 97 || StudentGlobals.GetStudentPhotographed(this.StudentID) || this.GettingInfo)
 		{
 			this.NameLabel.text = this.JSON.Students[this.StudentID].Name;
+			return;
 		}
-		else
-		{
-			this.NameLabel.text = "Unknown";
-		}
+		this.NameLabel.text = "Unknown";
 	}
 
 	public IEnumerator UpdatePortraits()
@@ -449,7 +447,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 		{
 			Debug.Log("The Student Info Menu was instructed to get photos.");
 		}
-		for (int ID = 1; ID < 101; ID++)
+		int num;
+		for (int ID = 1; ID < 101; ID = num + 1)
 		{
 			if (this.Debugging)
 			{
@@ -483,7 +482,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 							{
 								Debug.Log("5 - GetStudentPhotographed is true.");
 							}
-							string path = string.Concat(new string[]
+							string text = string.Concat(new string[]
 							{
 								"file:///",
 								Application.streamingAssetsPath,
@@ -493,9 +492,9 @@ public class StudentInfoMenuScript : MonoBehaviour
 							});
 							if (this.Debugging)
 							{
-								Debug.Log("Path is: " + path);
+								Debug.Log("Path is: " + text);
 							}
-							WWW www = new WWW(path);
+							WWW www = new WWW(text);
 							if (this.Debugging)
 							{
 								Debug.Log("Waiting for www to return.");
@@ -521,6 +520,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 								this.StudentPortraits[ID].Portrait.mainTexture = this.UnknownPortrait;
 							}
 							this.PortraitLoaded[ID] = true;
+							www = null;
 						}
 						else
 						{
@@ -563,6 +563,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.StudentPortraits[ID].PrisonBars.SetActive(true);
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}
+			num = ID;
 		}
 		yield break;
 	}

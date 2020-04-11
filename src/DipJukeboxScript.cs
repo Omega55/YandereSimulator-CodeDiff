@@ -24,6 +24,7 @@ public class DipJukeboxScript : MonoBehaviour
 				if (this.Jukebox.ClubDip > this.Jukebox.Volume)
 				{
 					this.Jukebox.ClubDip = this.Jukebox.Volume;
+					return;
 				}
 			}
 		}

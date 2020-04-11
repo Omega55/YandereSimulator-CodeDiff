@@ -62,16 +62,19 @@ public class DoorGapScript : MonoBehaviour
 					this.Prompt.Label[0].text = "     Pick Up Sheets";
 					this.Prompt.enabled = true;
 					this.Phase = 2;
+					return;
 				}
-				else if (this.Timer > 3f)
+				if (this.Timer > 3f)
 				{
 					Transform transform = this.Papers[2];
 					transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, Mathf.Lerp(transform.localPosition.z, -0.166f, Time.deltaTime * 10f));
+					return;
 				}
-				else if (this.Timer > 1f)
+				if (this.Timer > 1f)
 				{
 					Transform transform2 = this.Papers[1];
 					transform2.localPosition = new Vector3(transform2.localPosition.x, transform2.localPosition.y, Mathf.Lerp(transform2.localPosition.z, 0.166f, Time.deltaTime * 10f));
+					return;
 				}
 			}
 		}
@@ -116,12 +119,14 @@ public class DoorGapScript : MonoBehaviour
 				{
 					this.Prompt.Label[0].text = "     Pick Up Phone";
 					this.Prompt.enabled = true;
+					return;
 				}
-				else if (this.Timer > 3f)
+				if (this.Timer > 3f)
 				{
 					this.Papers[1].localPosition = new Vector3(this.Papers[1].localPosition.x, this.Papers[1].localPosition.y, Mathf.Lerp(this.Papers[1].localPosition.z, -0.166f, Time.deltaTime * 10f));
+					return;
 				}
-				else if (this.Timer > 1f)
+				if (this.Timer > 1f)
 				{
 					this.Papers[1].localPosition = new Vector3(this.Papers[1].localPosition.x, this.Papers[1].localPosition.y, Mathf.Lerp(this.Papers[1].localPosition.z, 0.166f, Time.deltaTime * 10f));
 				}

@@ -111,81 +111,81 @@ public class StudentSaveData
 				studentSaveData.studentDead.Add(num6);
 			}
 		}
-		foreach (int num8 in StudentGlobals.KeysOfStudentDying())
+		foreach (int num7 in StudentGlobals.KeysOfStudentDying())
 		{
-			if (StudentGlobals.GetStudentDying(num8))
+			if (StudentGlobals.GetStudentDying(num7))
 			{
-				studentSaveData.studentDying.Add(num8);
+				studentSaveData.studentDying.Add(num7);
 			}
 		}
-		foreach (int num10 in StudentGlobals.KeysOfStudentExpelled())
+		foreach (int num8 in StudentGlobals.KeysOfStudentExpelled())
 		{
-			if (StudentGlobals.GetStudentExpelled(num10))
+			if (StudentGlobals.GetStudentExpelled(num8))
 			{
-				studentSaveData.studentExpelled.Add(num10);
+				studentSaveData.studentExpelled.Add(num8);
 			}
 		}
-		foreach (int num12 in StudentGlobals.KeysOfStudentExposed())
+		foreach (int num9 in StudentGlobals.KeysOfStudentExposed())
 		{
-			if (StudentGlobals.GetStudentExposed(num12))
+			if (StudentGlobals.GetStudentExposed(num9))
 			{
-				studentSaveData.studentExposed.Add(num12);
+				studentSaveData.studentExposed.Add(num9);
 			}
 		}
-		foreach (int num14 in StudentGlobals.KeysOfStudentEyeColor())
+		foreach (int num10 in StudentGlobals.KeysOfStudentEyeColor())
 		{
-			studentSaveData.studentEyeColor.Add(num14, StudentGlobals.GetStudentEyeColor(num14));
+			studentSaveData.studentEyeColor.Add(num10, StudentGlobals.GetStudentEyeColor(num10));
 		}
-		foreach (int num16 in StudentGlobals.KeysOfStudentGrudge())
+		foreach (int num11 in StudentGlobals.KeysOfStudentGrudge())
 		{
-			if (StudentGlobals.GetStudentGrudge(num16))
+			if (StudentGlobals.GetStudentGrudge(num11))
 			{
-				studentSaveData.studentGrudge.Add(num16);
+				studentSaveData.studentGrudge.Add(num11);
 			}
 		}
-		foreach (int num18 in StudentGlobals.KeysOfStudentHairstyle())
+		foreach (int num12 in StudentGlobals.KeysOfStudentHairstyle())
 		{
-			studentSaveData.studentHairstyle.Add(num18, StudentGlobals.GetStudentHairstyle(num18));
+			studentSaveData.studentHairstyle.Add(num12, StudentGlobals.GetStudentHairstyle(num12));
 		}
-		foreach (int num20 in StudentGlobals.KeysOfStudentKidnapped())
+		foreach (int num13 in StudentGlobals.KeysOfStudentKidnapped())
 		{
-			if (StudentGlobals.GetStudentKidnapped(num20))
+			if (StudentGlobals.GetStudentKidnapped(num13))
 			{
-				studentSaveData.studentKidnapped.Add(num20);
+				studentSaveData.studentKidnapped.Add(num13);
 			}
 		}
-		foreach (int num22 in StudentGlobals.KeysOfStudentMissing())
+		foreach (int num14 in StudentGlobals.KeysOfStudentMissing())
 		{
-			if (StudentGlobals.GetStudentMissing(num22))
+			if (StudentGlobals.GetStudentMissing(num14))
 			{
-				studentSaveData.studentMissing.Add(num22);
+				studentSaveData.studentMissing.Add(num14);
 			}
 		}
-		foreach (int num24 in StudentGlobals.KeysOfStudentName())
+		foreach (int num15 in StudentGlobals.KeysOfStudentName())
 		{
-			studentSaveData.studentName.Add(num24, StudentGlobals.GetStudentName(num24));
+			studentSaveData.studentName.Add(num15, StudentGlobals.GetStudentName(num15));
 		}
-		foreach (int num26 in StudentGlobals.KeysOfStudentPhotographed())
+		foreach (int num16 in StudentGlobals.KeysOfStudentPhotographed())
 		{
-			if (StudentGlobals.GetStudentPhotographed(num26))
+			if (StudentGlobals.GetStudentPhotographed(num16))
 			{
-				studentSaveData.studentPhotographed.Add(num26);
+				studentSaveData.studentPhotographed.Add(num16);
 			}
 		}
-		foreach (int num28 in StudentGlobals.KeysOfStudentReplaced())
+		foreach (int num17 in StudentGlobals.KeysOfStudentReplaced())
 		{
-			if (StudentGlobals.GetStudentReplaced(num28))
+			if (StudentGlobals.GetStudentReplaced(num17))
 			{
-				studentSaveData.studentReplaced.Add(num28);
+				studentSaveData.studentReplaced.Add(num17);
 			}
 		}
-		foreach (int num30 in StudentGlobals.KeysOfStudentReputation())
+		foreach (int num18 in StudentGlobals.KeysOfStudentReputation())
 		{
-			studentSaveData.studentReputation.Add(num30, StudentGlobals.GetStudentReputation(num30));
+			studentSaveData.studentReputation.Add(num18, StudentGlobals.GetStudentReputation(num18));
 		}
-		foreach (int num32 in StudentGlobals.KeysOfStudentSanity())
+		foreach (int num19 in StudentGlobals.KeysOfStudentSanity())
 		{
-			studentSaveData.studentSanity.Add(num32, StudentGlobals.GetStudentSanity(num32));
+			studentSaveData.studentSanity.Add(num19, StudentGlobals.GetStudentSanity(num19));
 		}
 		return studentSaveData;
 	}

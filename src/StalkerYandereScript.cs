@@ -155,17 +155,17 @@ public class StalkerYandereScript : MonoBehaviour
 		this.MyController.Move(Physics.gravity * Time.deltaTime);
 		float axis = Input.GetAxis("Vertical");
 		float axis2 = Input.GetAxis("Horizontal");
-		Vector3 a = this.MainCamera.transform.TransformDirection(Vector3.forward);
-		a.y = 0f;
-		a = a.normalized;
-		Vector3 a2 = new Vector3(a.z, 0f, -a.x);
-		Vector3 vector = axis2 * a2 + axis * a;
+		Vector3 vector = this.MainCamera.transform.TransformDirection(Vector3.forward);
+		vector.y = 0f;
+		vector = vector.normalized;
+		Vector3 a = new Vector3(vector.z, 0f, -vector.x);
+		Vector3 vector2 = axis2 * a + axis * vector;
 		Quaternion b = Quaternion.identity;
-		if (vector != Vector3.zero)
+		if (vector2 != Vector3.zero)
 		{
-			b = Quaternion.LookRotation(vector);
+			b = Quaternion.LookRotation(vector2);
 		}
-		if (vector != Vector3.zero)
+		if (vector2 != Vector3.zero)
 		{
 			base.transform.rotation = Quaternion.Lerp(base.transform.rotation, b, Time.deltaTime * 10f);
 		}
@@ -195,31 +195,34 @@ public class StalkerYandereScript : MonoBehaviour
 				{
 					this.MyAnimation.CrossFade(this.CrouchRunAnim);
 					this.MyController.Move(base.transform.forward * this.CrouchRunSpeed * Time.deltaTime);
+					return;
 				}
-				else
-				{
-					this.MyAnimation.CrossFade(this.RunAnim);
-					this.MyController.Move(base.transform.forward * this.RunSpeed * Time.deltaTime);
-				}
-			}
-			else if (this.Stance.Current == StanceType.Crouching)
-			{
-				this.MyAnimation.CrossFade(this.CrouchWalkAnim);
-				this.MyController.Move(base.transform.forward * (this.CrouchWalkSpeed * Time.deltaTime));
+				this.MyAnimation.CrossFade(this.RunAnim);
+				this.MyController.Move(base.transform.forward * this.RunSpeed * Time.deltaTime);
+				return;
 			}
 			else
 			{
+				if (this.Stance.Current == StanceType.Crouching)
+				{
+					this.MyAnimation.CrossFade(this.CrouchWalkAnim);
+					this.MyController.Move(base.transform.forward * (this.CrouchWalkSpeed * Time.deltaTime));
+					return;
+				}
 				this.MyAnimation.CrossFade(this.WalkAnim);
 				this.MyController.Move(base.transform.forward * (this.WalkSpeed * Time.deltaTime));
+				return;
 			}
-		}
-		else if (this.Stance.Current == StanceType.Crouching)
-		{
-			this.MyAnimation.CrossFade(this.CrouchIdleAnim);
 		}
 		else
 		{
+			if (this.Stance.Current == StanceType.Crouching)
+			{
+				this.MyAnimation.CrossFade(this.CrouchIdleAnim);
+				return;
+			}
 			this.MyAnimation.CrossFade(this.IdleAnim);
+			return;
 		}
 	}
 

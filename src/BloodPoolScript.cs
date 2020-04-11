@@ -28,7 +28,7 @@ public class BloodPoolScript : MonoBehaviour
 		Vector3 position = base.transform.position;
 		if (position.x > 125f || position.x < -125f || position.z > 200f || position.z < -100f)
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 		if (Application.loadedLevelName == "IntroScene" || Application.loadedLevelName == "NewIntroScene")
 		{

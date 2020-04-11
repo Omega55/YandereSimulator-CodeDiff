@@ -168,8 +168,9 @@ public class QualityManagerScript : MonoBehaviour
 				emission8.rateOverTime = 100f;
 				emission9.rateOverTime = 100f;
 				emission10.rateOverTime = 100f;
+				return;
 			}
-			else if (OptionGlobals.ParticleCount == 2)
+			if (OptionGlobals.ParticleCount == 2)
 			{
 				emission.rateOverTime = 10f;
 				emission2.rateOverTime = 10f;
@@ -181,8 +182,9 @@ public class QualityManagerScript : MonoBehaviour
 				emission8.rateOverTime = 10f;
 				emission9.rateOverTime = 10f;
 				emission10.rateOverTime = 10f;
+				return;
 			}
-			else if (OptionGlobals.ParticleCount == 1)
+			if (OptionGlobals.ParticleCount == 1)
 			{
 				emission.enabled = false;
 				emission2.enabled = false;
@@ -399,11 +401,9 @@ public class QualityManagerScript : MonoBehaviour
 			if ((float)this.StudentManager.FarAnimThreshold > 0f)
 			{
 				this.StudentManager.DisableFarAnims = true;
+				return;
 			}
-			else
-			{
-				this.StudentManager.DisableFarAnims = false;
-			}
+			this.StudentManager.DisableFarAnims = false;
 		}
 	}
 
@@ -433,13 +433,11 @@ public class QualityManagerScript : MonoBehaviour
 			{
 				this.Yandere.MainCamera.clearFlags = CameraClearFlags.Skybox;
 				RenderSettings.fogMode = FogMode.Exponential;
+				return;
 			}
-			else
-			{
-				this.Yandere.MainCamera.clearFlags = CameraClearFlags.Color;
-				RenderSettings.fogMode = FogMode.Linear;
-				RenderSettings.fogEndDistance = (float)OptionGlobals.DrawDistance;
-			}
+			this.Yandere.MainCamera.clearFlags = CameraClearFlags.Color;
+			RenderSettings.fogMode = FogMode.Linear;
+			RenderSettings.fogEndDistance = (float)OptionGlobals.DrawDistance;
 		}
 	}
 
@@ -447,7 +445,7 @@ public class QualityManagerScript : MonoBehaviour
 	{
 		if (!this.DoNothing)
 		{
-			this.Sun.shadows = ((!OptionGlobals.EnableShadows) ? LightShadows.None : LightShadows.Soft);
+			this.Sun.shadows = (OptionGlobals.EnableShadows ? LightShadows.Soft : LightShadows.None);
 		}
 	}
 
@@ -482,14 +480,12 @@ public class QualityManagerScript : MonoBehaviour
 				this.ExperimentalDepthOfField34.enabled = false;
 				this.ExperimentalSSAOEffect.enabled = false;
 				this.BloomEffect.enabled = true;
+				return;
 			}
-			else
-			{
-				this.ExperimentalBloomAndLensFlares.enabled = false;
-				this.ExperimentalDepthOfField34.enabled = false;
-				this.ExperimentalSSAOEffect.enabled = false;
-				this.BloomEffect.enabled = false;
-			}
+			this.ExperimentalBloomAndLensFlares.enabled = false;
+			this.ExperimentalDepthOfField34.enabled = false;
+			this.ExperimentalSSAOEffect.enabled = false;
+			this.BloomEffect.enabled = false;
 		}
 	}
 
@@ -607,12 +603,10 @@ public class QualityManagerScript : MonoBehaviour
 				this.AdjustRimLight(this.Nemesis.Cosmetic.MyRenderer.materials[1]);
 				this.AdjustRimLight(this.Nemesis.Cosmetic.MyRenderer.materials[2]);
 				this.AdjustRimLight(this.Nemesis.NemesisHair.GetComponent<Renderer>().material);
+				return;
 			}
-			else
-			{
-				this.RimLightActive = false;
-				this.UpdateOutlines();
-			}
+			this.RimLightActive = false;
+			this.UpdateOutlines();
 		}
 	}
 

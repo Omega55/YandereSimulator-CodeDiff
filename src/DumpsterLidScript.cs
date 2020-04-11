@@ -78,7 +78,7 @@ public class DumpsterLidScript : MonoBehaviour
 			}
 			if (this.Prompt.Circle[3].fillAmount == 0f)
 			{
-				UnityEngine.Object.Destroy(this.Prompt.Yandere.PickUp.gameObject);
+				Object.Destroy(this.Prompt.Yandere.PickUp.gameObject);
 				this.Prompt.Circle[3].fillAmount = 1f;
 				this.Prompt.HideButton[3] = false;
 				this.Fill = true;
@@ -121,7 +121,7 @@ public class DumpsterLidScript : MonoBehaviour
 				}
 				this.GarbageDebris.localPosition = new Vector3(this.GarbageDebris.localPosition.x, 1f, this.GarbageDebris.localPosition.z);
 				this.StudentToGoMissing = this.Corpse.GetComponent<StudentScript>().StudentID;
-				UnityEngine.Object.Destroy(this.Corpse);
+				Object.Destroy(this.Corpse);
 				this.Fill = false;
 				this.Prompt.Yandere.StudentManager.UpdateStudents(0);
 			}

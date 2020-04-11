@@ -19,7 +19,7 @@ public class YanvaniaBlackHoleScript : MonoBehaviour
 			this.SpawnTimer -= Time.deltaTime;
 			if (this.SpawnTimer <= 0f && this.Attacks < 5)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.BlackHoleAttack, base.transform.position, Quaternion.identity);
+				Object.Instantiate<GameObject>(this.BlackHoleAttack, base.transform.position, Quaternion.identity);
 				this.SpawnTimer = 0.5f;
 				this.Attacks++;
 			}

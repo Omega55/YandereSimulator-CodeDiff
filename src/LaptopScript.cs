@@ -45,15 +45,13 @@ public class LaptopScript : MonoBehaviour
 			this.LaptopCamera.enabled = false;
 			this.SCP.SetActive(false);
 			base.enabled = false;
+			return;
 		}
-		else
-		{
-			this.SCPRenderer.sharedMesh = this.Uniforms[StudentGlobals.FemaleUniform];
-			Animation component = this.SCP.GetComponent<Animation>();
-			component["f02_scp_00"].speed = 0f;
-			component["f02_scp_00"].time = 0f;
-			this.MyAudio = base.GetComponent<AudioSource>();
-		}
+		this.SCPRenderer.sharedMesh = this.Uniforms[StudentGlobals.FemaleUniform];
+		Animation component = this.SCP.GetComponent<Animation>();
+		component["f02_scp_00"].speed = 0f;
+		component["f02_scp_00"].time = 0f;
+		this.MyAudio = base.GetComponent<AudioSource>();
 	}
 
 	private void Update()
@@ -112,17 +110,22 @@ public class LaptopScript : MonoBehaviour
 			if (this.Yandere.StudentManager.Clock.HourTime > 16f || this.Yandere.Police.FadeOut)
 			{
 				this.TurnOff();
+				return;
 			}
 		}
-		else if (this.LaptopScreen.localScale.x > 0.1f)
+		else
 		{
-			this.LaptopScreen.localScale = Vector3.Lerp(this.LaptopScreen.localScale, Vector3.zero, Time.deltaTime * 10f);
-		}
-		else if (base.enabled)
-		{
-			this.LaptopScreen.localScale = Vector3.zero;
-			this.Hair.enabled = false;
-			base.enabled = false;
+			if (this.LaptopScreen.localScale.x > 0.1f)
+			{
+				this.LaptopScreen.localScale = Vector3.Lerp(this.LaptopScreen.localScale, Vector3.zero, Time.deltaTime * 10f);
+				return;
+			}
+			if (base.enabled)
+			{
+				this.LaptopScreen.localScale = Vector3.zero;
+				this.Hair.enabled = false;
+				base.enabled = false;
+			}
 		}
 	}
 

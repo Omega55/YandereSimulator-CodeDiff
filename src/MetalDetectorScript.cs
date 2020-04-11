@@ -113,8 +113,9 @@ public class MetalDetectorScript : MonoBehaviour
 						this.MissionMode.GameOver();
 						this.MissionMode.Phase = 4;
 						base.enabled = false;
+						return;
 					}
-					else if (!this.Yandere.Sprayed)
+					if (!this.Yandere.Sprayed)
 					{
 						this.MyAudio.clip = this.Alarm;
 						this.MyAudio.loop = true;

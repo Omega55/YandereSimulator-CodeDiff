@@ -24,10 +24,10 @@ public class CheckmarkScript : MonoBehaviour
 		if (Input.GetKeyDown("space") && this.ButtonPresses < 26)
 		{
 			this.ButtonPresses++;
-			this.ID = UnityEngine.Random.Range(0, this.Checkmarks.Length - 4);
+			this.ID = Random.Range(0, this.Checkmarks.Length - 4);
 			while (this.Checkmarks[this.ID].active)
 			{
-				this.ID = UnityEngine.Random.Range(0, this.Checkmarks.Length - 4);
+				this.ID = Random.Range(0, this.Checkmarks.Length - 4);
 			}
 			this.Checkmarks[this.ID].SetActive(true);
 		}

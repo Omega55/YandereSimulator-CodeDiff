@@ -15,7 +15,7 @@ public class BushSpawnerScript : MonoBehaviour
 		}
 		if (this.Begin)
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.Bush, new Vector3(UnityEngine.Random.Range(-16f, 16f), UnityEngine.Random.Range(0f, 4f), UnityEngine.Random.Range(-16f, 16f)), Quaternion.identity);
+			Object.Instantiate<GameObject>(this.Bush, new Vector3(Random.Range(-16f, 16f), Random.Range(0f, 4f), Random.Range(-16f, 16f)), Quaternion.identity);
 		}
 	}
 }

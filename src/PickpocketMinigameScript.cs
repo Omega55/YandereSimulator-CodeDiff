@@ -70,13 +70,12 @@ public class PickpocketMinigameScript : MonoBehaviour
 				{
 					this.ChooseButton();
 					this.Timer = 0f;
+					return;
 				}
-				else
-				{
-					this.Yandere.Caught = true;
-					this.Failure = true;
-					this.End();
-				}
+				this.Yandere.Caught = true;
+				this.Failure = true;
+				this.End();
+				return;
 			}
 			else if (this.ButtonID > 0)
 			{
@@ -86,8 +85,9 @@ public class PickpocketMinigameScript : MonoBehaviour
 					this.Yandere.Caught = true;
 					this.Failure = true;
 					this.End();
+					return;
 				}
-				else if (Input.GetButtonDown(this.CurrentButton))
+				if (Input.GetButtonDown(this.CurrentButton))
 				{
 					this.ButtonPrompts[this.ButtonID].enabled = false;
 					this.Circle.enabled = false;
@@ -111,6 +111,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 						this.Yandere.CanMove = true;
 						this.Success = true;
 						this.End();
+						return;
 					}
 				}
 			}
@@ -134,7 +135,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 		int buttonID = this.ButtonID;
 		while (this.ButtonID == buttonID)
 		{
-			this.ButtonID = UnityEngine.Random.Range(1, 5);
+			this.ButtonID = Random.Range(1, 5);
 		}
 		if (this.ButtonID == 1)
 		{

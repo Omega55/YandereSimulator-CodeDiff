@@ -87,7 +87,7 @@ public class CameraEffectsScript : MonoBehaviour
 		this.VibrationCheck = true;
 		this.VibrationTimer = 0.1f;
 		this.MurderStreaks.color = new Color(this.MurderStreaks.color.r, this.MurderStreaks.color.g, this.MurderStreaks.color.b, 1f);
-		this.Yandere.Jukebox.SFX.PlayOneShot((!this.Yandere.Noticed) ? this.MurderNoticed : this.SenpaiNoticed);
+		this.Yandere.Jukebox.SFX.PlayOneShot(this.Yandere.Noticed ? this.SenpaiNoticed : this.MurderNoticed);
 	}
 
 	public void DisableCamera()
@@ -95,10 +95,8 @@ public class CameraEffectsScript : MonoBehaviour
 		if (!this.OneCamera)
 		{
 			this.OneCamera = true;
+			return;
 		}
-		else
-		{
-			this.OneCamera = false;
-		}
+		this.OneCamera = false;
 	}
 }

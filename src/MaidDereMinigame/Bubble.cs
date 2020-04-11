@@ -31,12 +31,10 @@ namespace MaidDereMinigame
 			{
 				base.GetComponent<SpriteRenderer>().enabled = false;
 				this.foodRenderer.gameObject.SetActive(false);
+				return;
 			}
-			else
-			{
-				base.GetComponent<SpriteRenderer>().enabled = true;
-				this.foodRenderer.gameObject.SetActive(true);
-			}
+			base.GetComponent<SpriteRenderer>().enabled = true;
+			this.foodRenderer.gameObject.SetActive(true);
 		}
 
 		public void BubbleReachedMax()
@@ -52,7 +50,7 @@ namespace MaidDereMinigame
 
 		public void KillBubble()
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

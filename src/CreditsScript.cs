@@ -64,7 +64,7 @@ public class CreditsScript : MonoBehaviour
 
 	private GameObject SpawnLabel(int size)
 	{
-		return UnityEngine.Object.Instantiate<GameObject>((size != 1) ? this.BigCreditsLabel : this.SmallCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
+		return Object.Instantiate<GameObject>((size == 1) ? this.SmallCreditsLabel : this.BigCreditsLabel, this.SpawnPoint.position, Quaternion.identity);
 	}
 
 	private void Start()

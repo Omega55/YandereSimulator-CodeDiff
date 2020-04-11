@@ -22,6 +22,7 @@ public class SecurityCameraScript : MonoBehaviour
 			if (this.Rotation > 86.5f)
 			{
 				this.Direction = -1;
+				return;
 			}
 		}
 		else if (this.Rotation < -86.5f)
@@ -46,12 +47,14 @@ public class SecurityCameraScript : MonoBehaviour
 							this.MissionMode.GameOver();
 							this.MissionMode.Phase = 4;
 							base.enabled = false;
+							return;
 						}
-						else if (!this.SecuritySystem.Evidence)
+						if (!this.SecuritySystem.Evidence)
 						{
 							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Evidence);
 							this.SecuritySystem.Evidence = true;
 							this.SecuritySystem.Masked = false;
+							return;
 						}
 					}
 					else if (!this.SecuritySystem.Masked)
@@ -59,6 +62,7 @@ public class SecurityCameraScript : MonoBehaviour
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Evidence);
 						this.SecuritySystem.Evidence = true;
 						this.SecuritySystem.Masked = true;
+						return;
 					}
 				}
 			}

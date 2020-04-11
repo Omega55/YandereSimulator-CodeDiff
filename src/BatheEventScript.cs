@@ -95,61 +95,57 @@ public class BatheEventScript : MonoBehaviour
 			if (this.Clock.HourTime > this.EventTime + 1f || this.EventStudent.WitnessedMurder || this.EventStudent.Splashed || this.EventStudent.Alarmed || this.EventStudent.Dying || !this.EventStudent.Alive)
 			{
 				this.EndEvent();
+				return;
 			}
-			else
+			if (this.EventStudent.DistanceToDestination < 0.5f)
 			{
-				if (this.EventStudent.DistanceToDestination < 0.5f)
+				if (this.EventPhase == 1)
 				{
-					if (this.EventPhase == 1)
+					this.EventStudent.Routine = false;
+					this.EventStudent.BathePhase = 1;
+					this.EventStudent.Wet = true;
+					this.EventPhase++;
+				}
+				else if (this.EventPhase == 2)
+				{
+					if (this.EventStudent.BathePhase == 4)
 					{
-						this.EventStudent.Routine = false;
-						this.EventStudent.BathePhase = 1;
-						this.EventStudent.Wet = true;
+						this.RivalPhone.SetActive(true);
 						this.EventPhase++;
 					}
-					else if (this.EventPhase == 2)
-					{
-						if (this.EventStudent.BathePhase == 4)
-						{
-							this.RivalPhone.SetActive(true);
-							this.EventPhase++;
-						}
-					}
-					else if (this.EventPhase == 3 && !this.EventStudent.Wet)
-					{
-						this.EndEvent();
-					}
 				}
-				if (this.EventPhase == 4)
+				else if (this.EventPhase == 3 && !this.EventStudent.Wet)
 				{
-					this.Timer += Time.deltaTime;
-					if (this.Timer > this.CurrentClipLength + 1f)
-					{
-						this.EventStudent.Routine = true;
-						this.EndEvent();
-					}
+					this.EndEvent();
 				}
-				float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
-				if (num < 11f)
+			}
+			if (this.EventPhase == 4)
+			{
+				this.Timer += Time.deltaTime;
+				if (this.Timer > this.CurrentClipLength + 1f)
 				{
-					if (num < 10f)
-					{
-						float num2 = Mathf.Abs((num - 10f) * 0.2f);
-						if (num2 < 0f)
-						{
-							num2 = 0f;
-						}
-						if (num2 > 1f)
-						{
-							num2 = 1f;
-						}
-						this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
-					}
-					else
-					{
-						this.EventSubtitle.transform.localScale = Vector3.zero;
-					}
+					this.EventStudent.Routine = true;
+					this.EndEvent();
 				}
+			}
+			float num = Vector3.Distance(this.Yandere.transform.position, this.EventStudent.transform.position);
+			if (num < 11f)
+			{
+				if (num < 10f)
+				{
+					float num2 = Mathf.Abs((num - 10f) * 0.2f);
+					if (num2 < 0f)
+					{
+						num2 = 0f;
+					}
+					if (num2 > 1f)
+					{
+						num2 = 1f;
+					}
+					this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
+					return;
+				}
+				this.EventSubtitle.transform.localScale = Vector3.zero;
 			}
 		}
 	}
@@ -160,7 +156,7 @@ public class BatheEventScript : MonoBehaviour
 		{
 			if (this.VoiceClip != null)
 			{
-				UnityEngine.Object.Destroy(this.VoiceClip);
+				Object.Destroy(this.VoiceClip);
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];

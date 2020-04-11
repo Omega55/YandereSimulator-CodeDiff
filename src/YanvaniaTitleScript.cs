@@ -100,6 +100,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 				if (!this.ErrorWindow.activeInHierarchy)
 				{
 					this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, this.Darkness.color.a - Time.deltaTime);
+					return;
 				}
 			}
 			else if (this.Darkness.color.a <= 0f)
@@ -130,21 +131,20 @@ public class YanvaniaTitleScript : MonoBehaviour
 								this.Midori.gameObject.GetComponent<AudioSource>().Stop();
 								component.Stop();
 							}
-							if (!this.ErrorLeave)
-							{
-								this.ErrorWindow.SetActive(true);
-								this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
-								if (this.ErrorWindow.transform.localScale.x > 0.9f && Input.anyKeyDown)
-								{
-									AudioSource component2 = this.ErrorWindow.GetComponent<AudioSource>();
-									component2.clip = this.ExitSound;
-									component2.Play();
-									this.ErrorLeave = true;
-								}
-							}
-							else
+							if (this.ErrorLeave)
 							{
 								this.FadeOut = true;
+								return;
+							}
+							this.ErrorWindow.SetActive(true);
+							this.ErrorWindow.transform.localScale = Vector3.Lerp(this.ErrorWindow.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+							if (this.ErrorWindow.transform.localScale.x > 0.9f && Input.anyKeyDown)
+							{
+								AudioSource component2 = this.ErrorWindow.GetComponent<AudioSource>();
+								component2.clip = this.ExitSound;
+								component2.Play();
+								this.ErrorLeave = true;
+								return;
 							}
 						}
 						else
@@ -157,6 +157,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 							if (Input.GetKeyDown(KeyCode.Minus))
 							{
 								Time.timeScale = 1f;
+								return;
 							}
 						}
 					}
@@ -165,13 +166,12 @@ public class YanvaniaTitleScript : MonoBehaviour
 						if (this.Logo.color.a == 0f)
 						{
 							component.Play();
+							return;
 						}
-						else
-						{
-							component.loop = true;
-							component.clip = this.BGM;
-							component.Play();
-						}
+						component.loop = true;
+						component.clip = this.BGM;
+						component.Play();
+						return;
 					}
 					else if (component.clip != this.BGM)
 					{
@@ -179,6 +179,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 						if (Input.GetButtonDown("A"))
 						{
 							this.Skip();
+							return;
 						}
 					}
 					else if (!this.FadeButtons)
@@ -193,7 +194,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 							{
 								if (Input.GetButtonDown("A"))
 								{
-									UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
+									Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
 									if (this.Selected == 1 || this.Selected == 4)
 									{
 										this.FadeOut = true;
@@ -220,6 +221,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 									if (this.Selected > 4)
 									{
 										this.Selected = 1;
+										return;
 									}
 								}
 							}
@@ -241,8 +243,9 @@ public class YanvaniaTitleScript : MonoBehaviour
 						}
 						if ((this.Controls.alpha == 1f || this.Credits.alpha == 1f) && Input.GetButtonDown("B"))
 						{
-							UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.BackButtons[this.Selected].position, Quaternion.identity);
+							Object.Instantiate<GameObject>(this.ButtonEffect, this.BackButtons[this.Selected].position, Quaternion.identity);
 							this.FadeButtons = false;
+							return;
 						}
 					}
 				}
@@ -256,6 +259,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 					if (this.Midori.gameObject.GetComponent<AudioSource>().time > 3f)
 					{
 						YanvaniaGlobals.MidoriEasterEgg = false;
+						return;
 					}
 				}
 			}
@@ -270,15 +274,14 @@ public class YanvaniaTitleScript : MonoBehaviour
 				if (YanvaniaGlobals.DraculaDefeated)
 				{
 					SceneManager.LoadScene("HomeScene");
+					return;
 				}
-				else if (this.Selected == 1)
+				if (this.Selected == 1)
 				{
 					SceneManager.LoadScene("YanvaniaScene");
+					return;
 				}
-				else
-				{
-					SceneManager.LoadScene("HomeScene");
-				}
+				SceneManager.LoadScene("HomeScene");
 			}
 		}
 	}

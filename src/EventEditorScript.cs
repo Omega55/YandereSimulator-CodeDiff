@@ -19,7 +19,7 @@ public class EventEditorScript : MonoBehaviour
 
 	private void Awake()
 	{
-		this.inputManager = UnityEngine.Object.FindObjectOfType<InputManagerScript>();
+		this.inputManager = Object.FindObjectOfType<InputManagerScript>();
 	}
 
 	private void OnEnable()
@@ -32,8 +32,7 @@ public class EventEditorScript : MonoBehaviour
 
 	private void HandleInput()
 	{
-		bool buttonDown = Input.GetButtonDown("B");
-		if (buttonDown)
+		if (Input.GetButtonDown("B"))
 		{
 			this.mainPanel.gameObject.SetActive(true);
 			this.eventPanel.gameObject.SetActive(false);

@@ -134,9 +134,10 @@ public class PracticeWindowScript : MonoBehaviour
 						this.FadeOut = false;
 						this.FadeIn = true;
 						SceneManager.LoadScene("RhythmMinigameScene", LoadSceneMode.Additive);
-						foreach (GameObject gameObject in SceneManager.GetActiveScene().GetRootGameObjects())
+						GameObject[] rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+						for (int j = 0; j < rootGameObjects.Length; j++)
 						{
-							gameObject.SetActive(false);
+							rootGameObjects[j].SetActive(false);
 						}
 					}
 				}
@@ -209,6 +210,7 @@ public class PracticeWindowScript : MonoBehaviour
 						PlayerPrefs.SetFloat("TempReputation", 0f);
 						this.FadeIn = false;
 						this.Timer = 0f;
+						return;
 					}
 				}
 				else if (this.Club == ClubType.MartialArts)
@@ -299,15 +301,14 @@ public class PracticeWindowScript : MonoBehaviour
 			this.ID = 1;
 			while (this.ID < 6)
 			{
-				string url = string.Concat(new string[]
+				WWW www = new WWW(string.Concat(new string[]
 				{
 					"file:///",
 					Application.streamingAssetsPath,
 					"/Portraits/Student_",
 					(this.ClubID - this.ID).ToString(),
 					".png"
-				});
-				WWW www = new WWW(url);
+				}));
 				this.Texture[this.ID].mainTexture = www.texture;
 				this.Label[this.ID].text = this.StudentManager.JSON.Students[this.ClubID - this.ID].Name + "\n" + this.Difficulties[this.ID];
 				if (this.StudentManager.Students[this.ClubID - this.ID] != null)

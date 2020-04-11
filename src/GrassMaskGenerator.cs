@@ -24,7 +24,7 @@ public class GrassMaskGenerator : MonoBehaviour
 
 	public void Start()
 	{
-		UnityEngine.Object.Destroy(base.gameObject);
+		Object.Destroy(base.gameObject);
 	}
 
 	private void Update()
@@ -54,8 +54,7 @@ public class GrassMaskGenerator : MonoBehaviour
 	[ContextMenu("Generate and save the grass occlusion map")]
 	public void GenerateMap()
 	{
-		Camera component = base.GetComponent<Camera>();
-		component.Render();
+		base.GetComponent<Camera>().Render();
 		if (this.targetTexture == null || (float)this.targetTexture.width != this.aspectWidth * (float)this.mapUpscale || (float)this.targetTexture.height != this.aspectHeight * (float)this.mapUpscale)
 		{
 			if (this.targetTexture != null)

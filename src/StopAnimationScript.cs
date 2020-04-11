@@ -24,11 +24,13 @@ public class StopAnimationScript : MonoBehaviour
 				if (this.Anim.enabled)
 				{
 					this.Anim.enabled = false;
+					return;
 				}
 			}
 			else if (!this.Anim.enabled)
 			{
 				this.Anim.enabled = true;
+				return;
 			}
 		}
 		else if (!this.Anim.enabled)

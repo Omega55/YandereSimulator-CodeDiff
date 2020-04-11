@@ -39,7 +39,7 @@ namespace MaidDereMinigame
 			{
 				if (InteractionMenu.instance == null)
 				{
-					InteractionMenu.instance = UnityEngine.Object.FindObjectOfType<InteractionMenu>();
+					InteractionMenu.instance = Object.FindObjectOfType<InteractionMenu>();
 				}
 				return InteractionMenu.instance;
 			}
@@ -65,25 +65,28 @@ namespace MaidDereMinigame
 					InteractionMenu.Instance.aButtonSprites[i].gameObject.SetActive(false);
 				}
 			}
-			foreach (SpriteRenderer spriteRenderer in InteractionMenu.Instance.aButtons)
+			SpriteRenderer[] array = InteractionMenu.Instance.aButtons;
+			for (int j = 0; j < array.Length; j++)
 			{
-				spriteRenderer.gameObject.SetActive(text != InteractionMenu.AButtonText.None);
+				array[j].gameObject.SetActive(text != InteractionMenu.AButtonText.None);
 			}
 		}
 
 		public static void SetBButton(bool on)
 		{
-			foreach (SpriteRenderer spriteRenderer in InteractionMenu.Instance.backButtons)
+			SpriteRenderer[] array = InteractionMenu.Instance.backButtons;
+			for (int i = 0; i < array.Length; i++)
 			{
-				spriteRenderer.gameObject.SetActive(on);
+				array[i].gameObject.SetActive(on);
 			}
 		}
 
 		public static void SetADButton(bool on)
 		{
-			foreach (SpriteRenderer spriteRenderer in InteractionMenu.Instance.moveButtons)
+			SpriteRenderer[] array = InteractionMenu.Instance.moveButtons;
+			for (int i = 0; i < array.Length; i++)
 			{
-				spriteRenderer.gameObject.SetActive(on);
+				array[i].gameObject.SetActive(on);
 			}
 		}
 	}

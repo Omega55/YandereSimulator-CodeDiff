@@ -332,26 +332,25 @@ public class SaveLoadMenuScript : MonoBehaviour
 			if (this.ConfirmWindow.activeInHierarchy)
 			{
 				this.ConfirmWindow.SetActive(false);
+				return;
 			}
-			else
-			{
-				this.PauseScreen.MainMenu.SetActive(true);
-				this.PauseScreen.Sideways = false;
-				this.PauseScreen.PressedB = true;
-				base.gameObject.SetActive(false);
-				this.PauseScreen.PromptBar.ClearButtons();
-				this.PauseScreen.PromptBar.Label[0].text = "Accept";
-				this.PauseScreen.PromptBar.Label[1].text = "Exit";
-				this.PauseScreen.PromptBar.Label[4].text = "Choose";
-				this.PauseScreen.PromptBar.UpdateButtons();
-				this.PauseScreen.PromptBar.Show = true;
-			}
+			this.PauseScreen.MainMenu.SetActive(true);
+			this.PauseScreen.Sideways = false;
+			this.PauseScreen.PressedB = true;
+			base.gameObject.SetActive(false);
+			this.PauseScreen.PromptBar.ClearButtons();
+			this.PauseScreen.PromptBar.Label[0].text = "Accept";
+			this.PauseScreen.PromptBar.Label[1].text = "Exit";
+			this.PauseScreen.PromptBar.Label[4].text = "Choose";
+			this.PauseScreen.PromptBar.UpdateButtons();
+			this.PauseScreen.PromptBar.Show = true;
 		}
 	}
 
 	public IEnumerator GetThumbnails()
 	{
-		for (int ID = 1; ID < 11; ID++)
+		int num;
+		for (int ID = 1; ID < 11; ID = num + 1)
 		{
 			if (PlayerPrefs.GetString(string.Concat(new object[]
 			{
@@ -360,7 +359,7 @@ public class SaveLoadMenuScript : MonoBehaviour
 				"_Slot_",
 				ID,
 				"_DateTime"
-			})) != string.Empty)
+			})) != "")
 			{
 				this.DataLabels[ID].text = PlayerPrefs.GetString(string.Concat(new object[]
 				{
@@ -370,7 +369,7 @@ public class SaveLoadMenuScript : MonoBehaviour
 					ID,
 					"_DateTime"
 				}));
-				string path = string.Concat(new object[]
+				string url = string.Concat(new object[]
 				{
 					"file:///",
 					Application.streamingAssetsPath,
@@ -380,7 +379,7 @@ public class SaveLoadMenuScript : MonoBehaviour
 					ID,
 					"/Thumbnail.png"
 				});
-				WWW www = new WWW(path);
+				WWW www = new WWW(url);
 				yield return www;
 				if (www.error == null)
 				{
@@ -390,11 +389,13 @@ public class SaveLoadMenuScript : MonoBehaviour
 				{
 					Debug.Log("Could not retrieve the thumbnail. Maybe it was deleted from Streaming Assets?");
 				}
+				www = null;
 			}
 			else
 			{
 				this.DataLabels[ID].text = "No Data";
 			}
+			num = ID;
 		}
 		yield break;
 	}

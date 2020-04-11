@@ -12,7 +12,7 @@ namespace MaidDereMinigame
 
 		private void Awake()
 		{
-			int num = UnityEngine.Random.Range(0, this.hairSprites.Length);
+			int num = Random.Range(0, this.hairSprites.Length);
 			this.hairInstance = new GameObject("Hair", new Type[]
 			{
 				typeof(SpriteRenderer)
@@ -38,7 +38,7 @@ namespace MaidDereMinigame
 			float.TryParse(array[0], out num);
 			float y;
 			float.TryParse(array[1], out y);
-			this.hairInstance.transform.localPosition = new Vector3((!this.hairInstance.flipX) ? num : (-num), y, this.hairInstance.transform.localPosition.z);
+			this.hairInstance.transform.localPosition = new Vector3(this.hairInstance.flipX ? (-num) : num, y, this.hairInstance.transform.localPosition.z);
 		}
 	}
 }

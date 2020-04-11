@@ -16,7 +16,6 @@ public abstract class JsonData
 
 	protected static Dictionary<string, object>[] Deserialize(string filename)
 	{
-		string value = File.ReadAllText(filename);
-		return JsonReader.Deserialize<Dictionary<string, object>[]>(value);
+		return JsonReader.Deserialize<Dictionary<string, object>[]>(File.ReadAllText(filename));
 	}
 }

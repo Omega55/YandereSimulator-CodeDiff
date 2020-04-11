@@ -91,10 +91,9 @@ public class DDRMinigame : MonoBehaviour
 		for (int i = 0; i < this.trackCache.Length; i++)
 		{
 			this.trackCache[i] = new Dictionary<float, RectTransform>();
-			foreach (float num in level.Tracks[i].Nodes)
+			foreach (float key in level.Tracks[i].Nodes)
 			{
-				float key = num;
-				RectTransform component = UnityEngine.Object.Instantiate<GameObject>(this.arrowPrefab, this.uiTracks[i]).GetComponent<RectTransform>();
+				RectTransform component = Object.Instantiate<GameObject>(this.arrowPrefab, this.uiTracks[i]).GetComponent<RectTransform>();
 				switch (i)
 				{
 				case 0:
@@ -121,7 +120,7 @@ public class DDRMinigame : MonoBehaviour
 		this.levels = levels;
 		for (int i = 0; i < levels.Length; i++)
 		{
-			RectTransform component = UnityEngine.Object.Instantiate<GameObject>(this.levelIconPrefab, this.levelSelectParent).GetComponent<RectTransform>();
+			RectTransform component = Object.Instantiate<GameObject>(this.levelIconPrefab, this.levelSelectParent).GetComponent<RectTransform>();
 			component.GetComponent<Image>().sprite = levels[i].LevelIcon;
 			this.levelSelectCache.Add(component, levels[i]);
 		}
@@ -132,7 +131,7 @@ public class DDRMinigame : MonoBehaviour
 	{
 		foreach (KeyValuePair<RectTransform, DDRLevel> keyValuePair in this.levelSelectCache)
 		{
-			UnityEngine.Object.Destroy(keyValuePair.Key.gameObject);
+			Object.Destroy(keyValuePair.Key.gameObject);
 		}
 		this.levelSelectCache = new Dictionary<RectTransform, DDRLevel>();
 	}
@@ -166,7 +165,7 @@ public class DDRMinigame : MonoBehaviour
 		{
 			RectTransform key = this.levelSelectCache.ElementAt(i).Key;
 			Vector2 vector = new Vector2((float)(-(float)this.selectedLevel * 400 + i * 400), 0f);
-			key.anchoredPosition = ((!instant) ? Vector2.Lerp(key.anchoredPosition, vector, 10f * Time.deltaTime) : vector);
+			key.anchoredPosition = (instant ? vector : Vector2.Lerp(key.anchoredPosition, vector, 10f * Time.deltaTime));
 			this.levelNameLabel.text = this.levels[this.selectedLevel].LevelName;
 		}
 	}
@@ -196,9 +195,8 @@ public class DDRMinigame : MonoBehaviour
 			Dictionary<float, RectTransform> dictionary = this.trackCache[i];
 			foreach (float num in dictionary.Keys)
 			{
-				float num2 = num;
-				float num3 = num2 - time;
-				if (num3 < -0.05f)
+				float num2 = num - time;
+				if (num2 < -0.05f)
 				{
 					if (!flag)
 					{
@@ -209,7 +207,7 @@ public class DDRMinigame : MonoBehaviour
 					this.removeNodeAt(this.trackCache.ToList<Dictionary<float, RectTransform>>().IndexOf(dictionary), 0f);
 					return;
 				}
-				dictionary[num2].anchoredPosition = new Vector2(0f, -num3 * this.speed) + this.offset;
+				dictionary[num].anchoredPosition = new Vector2(0f, -num2 * this.speed) + this.offset;
 			}
 		}
 	}
@@ -334,8 +332,8 @@ public class DDRMinigame : MonoBehaviour
 
 	private void registerRating(DDRRating rating)
 	{
-		Dictionary<DDRRating, int> ratings;
-		(ratings = this.manager.GameState.Ratings)[rating] = ratings[rating] + 1;
+		Dictionary<DDRRating, int> ratings = this.manager.GameState.Ratings;
+		ratings[rating]++;
 		from x in this.manager.GameState.Ratings
 		orderby x.Value
 		select x;
@@ -343,7 +341,7 @@ public class DDRMinigame : MonoBehaviour
 
 	private void updateCombo(DDRRating rating)
 	{
-		this.comboText.text = string.Empty;
+		this.comboText.text = "";
 		this.comboText.color = Color.white;
 		this.comboText.GetComponent<Animation>().Play();
 		if (rating != DDRRating.Miss && rating != DDRRating.Early)
@@ -358,6 +356,7 @@ public class DDRMinigame : MonoBehaviour
 			{
 				this.comboText.text = string.Format("x{0} combo", this.manager.GameState.Combo);
 				this.comboText.color = Color.white;
+				return;
 			}
 		}
 		else
@@ -371,7 +370,7 @@ public class DDRMinigame : MonoBehaviour
 		Dictionary<float, RectTransform> dictionary = this.trackCache[trackId];
 		float[] array = dictionary.Keys.ToArray<float>();
 		Array.Sort<float>(array, (float a, float b) => a.CompareTo(b));
-		UnityEngine.Object.Destroy(dictionary[array[0]].gameObject, delay);
+		Object.Destroy(dictionary[array[0]].gameObject, delay);
 		dictionary.Remove(array[0]);
 	}
 
@@ -386,7 +385,7 @@ public class DDRMinigame : MonoBehaviour
 
 	private void displayHitRating(int track, DDRRating rating)
 	{
-		Text component = UnityEngine.Object.Instantiate<GameObject>(this.ratingTextPrefab, this.uiTracks[track]).GetComponent<Text>();
+		Text component = Object.Instantiate<GameObject>(this.ratingTextPrefab, this.uiTracks[track]).GetComponent<Text>();
 		component.rectTransform.anchoredPosition = new Vector2(0f, 280f);
 		switch (rating)
 		{
@@ -416,7 +415,7 @@ public class DDRMinigame : MonoBehaviour
 			component.color = this.earlyColor;
 			break;
 		}
-		UnityEngine.Object.Destroy(component, 1f);
+		Object.Destroy(component, 1f);
 	}
 
 	private void assignPoints(DDRRating rating)
@@ -452,7 +451,7 @@ public class DDRMinigame : MonoBehaviour
 
 	private void shakeUi(float factor)
 	{
-		Vector2 b = new Vector2(UnityEngine.Random.Range(-factor, factor), UnityEngine.Random.Range(-factor, factor));
+		Vector2 b = new Vector2(Random.Range(-factor, factor), Random.Range(-factor, factor));
 		this.gameplayUiParent.anchoredPosition += b;
 	}
 

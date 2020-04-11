@@ -54,38 +54,35 @@ public class TitleSponsorScript : MonoBehaviour
 		if (!this.Show)
 		{
 			base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 1050f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+			return;
 		}
-		else
+		base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+		if (this.InputManager.TappedUp)
 		{
-			base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
-			if (this.InputManager.TappedUp)
+			this.Row = ((this.Row > 0) ? (this.Row - 1) : (this.Rows - 1));
+		}
+		if (this.InputManager.TappedDown)
+		{
+			this.Row = ((this.Row < this.Rows - 1) ? (this.Row + 1) : 0);
+		}
+		if (this.InputManager.TappedRight)
+		{
+			this.Column = ((this.Column < this.Columns - 1) ? (this.Column + 1) : 0);
+		}
+		if (this.InputManager.TappedLeft)
+		{
+			this.Column = ((this.Column > 0) ? (this.Column - 1) : (this.Columns - 1));
+		}
+		if (this.InputManager.TappedUp || this.InputManager.TappedDown || this.InputManager.TappedRight || this.InputManager.TappedLeft)
+		{
+			this.UpdateHighlight();
+		}
+		if (Input.GetButtonDown("A"))
+		{
+			int sponsorIndex = this.GetSponsorIndex();
+			if (this.SponsorHasWebsite(sponsorIndex))
 			{
-				this.Row = ((this.Row <= 0) ? (this.Rows - 1) : (this.Row - 1));
-			}
-			if (this.InputManager.TappedDown)
-			{
-				this.Row = ((this.Row >= this.Rows - 1) ? 0 : (this.Row + 1));
-			}
-			if (this.InputManager.TappedRight)
-			{
-				this.Column = ((this.Column >= this.Columns - 1) ? 0 : (this.Column + 1));
-			}
-			if (this.InputManager.TappedLeft)
-			{
-				this.Column = ((this.Column <= 0) ? (this.Columns - 1) : (this.Column - 1));
-			}
-			bool flag = this.InputManager.TappedUp || this.InputManager.TappedDown || this.InputManager.TappedRight || this.InputManager.TappedLeft;
-			if (flag)
-			{
-				this.UpdateHighlight();
-			}
-			if (Input.GetButtonDown("A"))
-			{
-				int sponsorIndex = this.GetSponsorIndex();
-				if (this.SponsorHasWebsite(sponsorIndex))
-				{
-					Application.OpenURL(this.SponsorURLs[sponsorIndex]);
-				}
+				Application.OpenURL(this.SponsorURLs[sponsorIndex]);
 			}
 		}
 	}

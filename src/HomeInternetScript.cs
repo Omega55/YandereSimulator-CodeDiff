@@ -228,7 +228,7 @@ public class HomeInternetScript : MonoBehaviour
 			}
 			else if (this.SocialMedia.activeInHierarchy)
 			{
-				this.Menu.localScale = Vector3.Lerp(this.Menu.localScale, (!this.ShowMenu) ? Vector3.zero : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+				this.Menu.localScale = Vector3.Lerp(this.Menu.localScale, this.ShowMenu ? new Vector3(1f, 1f, 1f) : Vector3.zero, Time.deltaTime * 10f);
 				if (this.WritingPost)
 				{
 					this.NewPost.transform.localPosition = Vector3.Lerp(this.NewPost.transform.localPosition, Vector3.zero, Time.deltaTime * 10f);
@@ -236,7 +236,7 @@ public class HomeInternetScript : MonoBehaviour
 					for (int i = 1; i < this.Highlights.Length; i++)
 					{
 						UISprite uisprite = this.Highlights[i];
-						uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, Mathf.MoveTowards(uisprite.color.a, (!this.FadeOut) ? 1f : 0f, Time.deltaTime));
+						uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, Mathf.MoveTowards(uisprite.color.a, this.FadeOut ? 0f : 1f, Time.deltaTime));
 					}
 					if (this.Highlights[this.Selected].color.a == 1f)
 					{
@@ -556,7 +556,7 @@ public class HomeInternetScript : MonoBehaviour
 					}
 				}
 				this.Shake = Mathf.MoveTowards(this.Shake, 0f, Time.deltaTime * 10f);
-				this.MoneyLabel.transform.localPosition = new Vector3(445f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 410f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 0f);
+				this.MoneyLabel.transform.localPosition = new Vector3(445f + Random.Range(this.Shake * -1f, this.Shake * 1f), 410f + Random.Range(this.Shake * -1f, this.Shake * 1f), 0f);
 				if (Input.GetButtonDown("B"))
 				{
 					if (!this.AreYouSure.activeInHierarchy)
@@ -662,15 +662,14 @@ public class HomeInternetScript : MonoBehaviour
 
 	private void GetPortrait(int ID)
 	{
-		string url = string.Concat(new string[]
+		WWW www = new WWW(string.Concat(new string[]
 		{
 			"file:///",
 			Application.streamingAssetsPath,
 			"/Portraits/Student_",
 			ID.ToString(),
 			".png"
-		});
-		WWW www = new WWW(url);
+		}));
 		this.CurrentPortrait = www.texture;
 	}
 }

@@ -80,7 +80,7 @@ public class AudioSoftwareScript : MonoBehaviour
 				this.Yandere.MyController.radius = 0.2f;
 				this.Yandere.CanMove = true;
 				this.ChairCollider.enabled = false;
-				this.EventSubtitle.text = string.Empty;
+				this.EventSubtitle.text = "";
 				this.Screen.SetActive(false);
 				this.AudioDoctored = true;
 				this.Editing = false;

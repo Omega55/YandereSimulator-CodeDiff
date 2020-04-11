@@ -13,19 +13,20 @@ public class LowPolyStudentScript : MonoBehaviour
 	{
 		if ((float)this.Student.StudentManager.LowDetailThreshold > 0f)
 		{
-			float distanceSqr = this.Student.Prompt.DistanceSqr;
-			if (distanceSqr > (float)this.Student.StudentManager.LowDetailThreshold)
+			if (this.Student.Prompt.DistanceSqr > (float)this.Student.StudentManager.LowDetailThreshold)
 			{
 				if (!this.MyMesh.enabled)
 				{
 					this.Student.MyRenderer.enabled = false;
 					this.MyMesh.enabled = true;
+					return;
 				}
 			}
 			else if (this.MyMesh.enabled)
 			{
 				this.Student.MyRenderer.enabled = true;
 				this.MyMesh.enabled = false;
+				return;
 			}
 		}
 		else if (this.MyMesh.enabled)

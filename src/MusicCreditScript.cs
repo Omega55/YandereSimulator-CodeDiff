@@ -27,18 +27,16 @@ public class MusicCreditScript : MonoBehaviour
 			if (this.Timer < 5f)
 			{
 				base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+				return;
 			}
-			else
+			base.transform.localPosition = new Vector3(base.transform.localPosition.x + Time.deltaTime, base.transform.localPosition.y, base.transform.localPosition.z);
+			base.transform.localPosition = new Vector3(base.transform.localPosition.x + Mathf.Abs(base.transform.localPosition.x * 0.01f) * (Time.deltaTime * 1000f), base.transform.localPosition.y, base.transform.localPosition.z);
+			if (base.transform.localPosition.x > 400f)
 			{
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x + Time.deltaTime, base.transform.localPosition.y, base.transform.localPosition.z);
-				base.transform.localPosition = new Vector3(base.transform.localPosition.x + Mathf.Abs(base.transform.localPosition.x * 0.01f) * (Time.deltaTime * 1000f), base.transform.localPosition.y, base.transform.localPosition.z);
-				if (base.transform.localPosition.x > 400f)
-				{
-					base.transform.localPosition = new Vector3(400f, base.transform.localPosition.y, base.transform.localPosition.z);
-					this.Panel.enabled = false;
-					this.Slide = false;
-					this.Timer = 0f;
-				}
+				base.transform.localPosition = new Vector3(400f, base.transform.localPosition.y, base.transform.localPosition.z);
+				this.Panel.enabled = false;
+				this.Slide = false;
+				this.Timer = 0f;
 			}
 		}
 	}

@@ -18,8 +18,7 @@ public class RiggedAttacher : MonoBehaviour
 		Base.localEulerAngles = Vector3.zero;
 		Base.localPosition = Vector3.zero;
 		Transform[] componentsInChildren = Base.GetComponentsInChildren<Transform>();
-		Transform[] componentsInChildren2 = Attachment.GetComponentsInChildren<Transform>();
-		foreach (Transform transform in componentsInChildren2)
+		foreach (Transform transform in Attachment.GetComponentsInChildren<Transform>())
 		{
 			foreach (Transform transform2 in componentsInChildren)
 			{

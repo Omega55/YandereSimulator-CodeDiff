@@ -16,7 +16,7 @@ namespace MaidDereMinigame
 				if (Chair.chairs == null || Chair.chairs.Count == 0)
 				{
 					Chair.chairs = new Chairs();
-					foreach (Chair item in UnityEngine.Object.FindObjectsOfType<Chair>())
+					foreach (Chair item in Object.FindObjectsOfType<Chair>())
 					{
 						Chair.chairs.Add(item);
 					}
@@ -39,7 +39,7 @@ namespace MaidDereMinigame
 				}
 				if (chairs.Count > 0)
 				{
-					int index = UnityEngine.Random.Range(0, chairs.Count);
+					int index = Random.Range(0, chairs.Count);
 					chairs[index].available = false;
 					return chairs[index];
 				}

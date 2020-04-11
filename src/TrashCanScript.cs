@@ -98,34 +98,29 @@ public class TrashCanScript : MonoBehaviour
 
 	public void UpdatePrompt()
 	{
-		if (!this.Occupied)
-		{
-			if (this.Yandere.Armed)
-			{
-				this.Prompt.Label[0].text = "     Insert";
-				this.Prompt.HideButton[0] = false;
-			}
-			else if (this.Yandere.PickUp != null)
-			{
-				if (this.Yandere.PickUp.Evidence || this.Yandere.PickUp.Suspicious)
-				{
-					this.Prompt.Label[0].text = "     Insert";
-					this.Prompt.HideButton[0] = false;
-				}
-				else
-				{
-					this.Prompt.HideButton[0] = true;
-				}
-			}
-			else
-			{
-				this.Prompt.HideButton[0] = true;
-			}
-		}
-		else
+		if (this.Occupied)
 		{
 			this.Prompt.Label[0].text = "     Remove";
 			this.Prompt.HideButton[0] = false;
+			return;
 		}
+		if (this.Yandere.Armed)
+		{
+			this.Prompt.Label[0].text = "     Insert";
+			this.Prompt.HideButton[0] = false;
+			return;
+		}
+		if (!(this.Yandere.PickUp != null))
+		{
+			this.Prompt.HideButton[0] = true;
+			return;
+		}
+		if (this.Yandere.PickUp.Evidence || this.Yandere.PickUp.Suspicious)
+		{
+			this.Prompt.Label[0].text = "     Insert";
+			this.Prompt.HideButton[0] = false;
+			return;
+		}
+		this.Prompt.HideButton[0] = true;
 	}
 }

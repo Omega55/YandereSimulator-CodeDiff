@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,39 +17,12 @@ namespace MaidDereMinigame
 		public void Init()
 		{
 			this.cards = new List<TipCard>();
-			IEnumerator enumerator = base.transform.GetChild(0).GetEnumerator();
-			try
+			foreach (object obj in base.transform.GetChild(0))
 			{
-				while (enumerator.MoveNext())
+				foreach (object obj2 in ((Transform)obj))
 				{
-					object obj = enumerator.Current;
-					Transform transform = (Transform)obj;
-					IEnumerator enumerator2 = transform.GetEnumerator();
-					try
-					{
-						while (enumerator2.MoveNext())
-						{
-							object obj2 = enumerator2.Current;
-							Transform transform2 = (Transform)obj2;
-							this.cards.Add(transform2.GetComponent<TipCard>());
-						}
-					}
-					finally
-					{
-						IDisposable disposable;
-						if ((disposable = (enumerator2 as IDisposable)) != null)
-						{
-							disposable.Dispose();
-						}
-					}
-				}
-			}
-			finally
-			{
-				IDisposable disposable2;
-				if ((disposable2 = (enumerator as IDisposable)) != null)
-				{
-					disposable2.Dispose();
+					Transform transform = (Transform)obj2;
+					this.cards.Add(transform.GetComponent<TipCard>());
 				}
 			}
 			base.gameObject.SetActive(false);

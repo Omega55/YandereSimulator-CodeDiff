@@ -50,7 +50,7 @@ namespace MaidDereMinigame
 			{
 				if (GameController.instance == null)
 				{
-					GameController.instance = UnityEngine.Object.FindObjectOfType<GameController>();
+					GameController.instance = Object.FindObjectOfType<GameController>();
 				}
 				return GameController.instance;
 			}
@@ -72,11 +72,9 @@ namespace MaidDereMinigame
 				if (SceneManager.GetActiveScene().name == "MaidMenuScene")
 				{
 					SceneManager.LoadScene("StreetScene");
+					return;
 				}
-				else
-				{
-					SceneManager.LoadScene("CalendarScene");
-				}
+				SceneManager.LoadScene("CalendarScene");
 			}, fadeOut, true));
 		}
 
@@ -84,11 +82,11 @@ namespace MaidDereMinigame
 		{
 			if (GameController.Instance != this)
 			{
-				UnityEngine.Object.DestroyImmediate(base.gameObject);
+				Object.DestroyImmediate(base.gameObject);
 				return;
 			}
 			this.spriteRenderer = base.GetComponent<SpriteRenderer>();
-			UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+			Object.DontDestroyOnLoad(base.gameObject);
 		}
 
 		public static void SetPause(bool toPause)
@@ -131,7 +129,7 @@ namespace MaidDereMinigame
 				{
 					GameController.Instance.whiteFadeOutPost.color = Color.white;
 				}
-				UnityEngine.Object.Destroy(GameController.Instance.gameObject);
+				Object.Destroy(GameController.Instance.gameObject);
 				Camera.main.farClipPlane = 0f;
 				GameController.instance = null;
 			}
@@ -153,7 +151,7 @@ namespace MaidDereMinigame
 			GameController.SetPause(true);
 			GameController.Instance.tipPage.Init();
 			GameController.Instance.tipPage.DisplayTips(GameController.Instance.tips);
-			UnityEngine.Object.FindObjectOfType<GameStarter>().GetComponent<AudioSource>().Stop();
+			Object.FindObjectOfType<GameStarter>().GetComponent<AudioSource>().Stop();
 		}
 
 		public static void AddTip(float tip)
@@ -171,8 +169,7 @@ namespace MaidDereMinigame
 			float num = 0f;
 			foreach (float num2 in GameController.Instance.tips)
 			{
-				float num3 = num2;
-				num += Mathf.Floor(num3 * 100f) / 100f;
+				num += Mathf.Floor(num2 * 100f) / 100f;
 			}
 			return num + GameController.Instance.activeDifficultyVariables.basePay;
 		}

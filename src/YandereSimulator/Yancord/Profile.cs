@@ -28,7 +28,7 @@ namespace YandereSimulator.Yancord
 			{
 				text = text.Substring(0, 4);
 			}
-			return (!WithHashtag) ? text : ("#" + text);
+			return WithHashtag ? ("#" + text) : text;
 		}
 	}
 }

@@ -238,6 +238,7 @@ public class ConfessionSceneScript : MonoBehaviour
 				this.Suitor.CharacterAnimation.CrossFade("introHoldHands_00");
 				this.Kissing = false;
 				this.MoveSuitor = true;
+				return;
 			}
 		}
 		else if (this.Suitor != null)

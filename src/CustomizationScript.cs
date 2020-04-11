@@ -494,11 +494,11 @@ public class CustomizationScript : MonoBehaviour
 				{
 					if (tappedDown)
 					{
-						this.Selected = ((this.Selected < 6) ? (this.Selected + 1) : 1);
+						this.Selected = ((this.Selected >= 6) ? 1 : (this.Selected + 1));
 					}
 					else if (tappedUp)
 					{
-						this.Selected = ((this.Selected > 1) ? (this.Selected - 1) : 6);
+						this.Selected = ((this.Selected <= 1) ? 6 : (this.Selected - 1));
 					}
 					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 650f - (float)this.Selected * 150f, this.Highlight.localPosition.z);
 				}
@@ -641,7 +641,7 @@ public class CustomizationScript : MonoBehaviour
 				}
 				if (this.InputManager.TappedDown || this.InputManager.TappedUp)
 				{
-					this.Selected = ((this.Selected != 1) ? 1 : 2);
+					this.Selected = ((this.Selected == 1) ? 2 : 1);
 					this.UniformHighlight.localPosition = new Vector3(this.UniformHighlight.localPosition.x, 650f - (float)this.Selected * 150f, this.UniformHighlight.localPosition.z);
 				}
 				if (this.InputManager.TappedRight)
@@ -767,16 +767,14 @@ public class CustomizationScript : MonoBehaviour
 			if (this.Timer < 1f)
 			{
 				this.ApologyWindow.localPosition = new Vector3(Mathf.Lerp(this.ApologyWindow.localPosition.x, 0f, Time.deltaTime * 10f), this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
+				return;
 			}
-			else
+			this.ApologyWindow.localPosition = new Vector3(Mathf.Abs((this.ApologyWindow.localPosition.x - Time.deltaTime) * 0.01f) * (Time.deltaTime * 1000f), this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
+			if (this.ApologyWindow.localPosition.x < -1360f)
 			{
-				this.ApologyWindow.localPosition = new Vector3(Mathf.Abs((this.ApologyWindow.localPosition.x - Time.deltaTime) * 0.01f) * (Time.deltaTime * 1000f), this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
-				if (this.ApologyWindow.localPosition.x < -1360f)
-				{
-					this.ApologyWindow.localPosition = new Vector3(1360f, this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
-					this.Apologize = false;
-					this.Timer = 0f;
-				}
+				this.ApologyWindow.localPosition = new Vector3(1360f, this.ApologyWindow.localPosition.y, this.ApologyWindow.localPosition.z);
+				this.Apologize = false;
+				this.Timer = 0f;
 			}
 		}
 	}
@@ -921,8 +919,7 @@ public class CustomizationScript : MonoBehaviour
 
 	private void LoveSickColorSwap()
 	{
-		GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();
-		foreach (GameObject gameObject in array)
+		foreach (GameObject gameObject in Object.FindObjectsOfType<GameObject>())
 		{
 			UISprite component = gameObject.GetComponent<UISprite>();
 			if (component != null && component.color != Color.black && component.transform.parent != this.Highlight && component.transform.parent != this.UniformHighlight)

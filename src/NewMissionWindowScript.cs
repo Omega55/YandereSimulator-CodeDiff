@@ -284,7 +284,7 @@ public class NewMissionWindowScript : MonoBehaviour
 			if (Input.GetButtonDown("B"))
 			{
 				this.MissionModeMenu.PromptBar.ClearButtons();
-				this.MissionModeMenu.PromptBar.Label[0].text = string.Empty;
+				this.MissionModeMenu.PromptBar.Label[0].text = "";
 				this.MissionModeMenu.PromptBar.Label[1].text = "Return";
 				this.MissionModeMenu.PromptBar.Label[2].text = "Adjust Up";
 				this.MissionModeMenu.PromptBar.Label[3].text = "Adjust Down";
@@ -323,15 +323,14 @@ public class NewMissionWindowScript : MonoBehaviour
 		{
 			this.NameLabel[this.Column + Number].text = "Kill: " + this.JSON.Students[this.Target[this.Column + Number]].Name;
 		}
-		string url = string.Concat(new object[]
+		WWW www = new WWW(string.Concat(new object[]
 		{
 			"file:///",
 			Application.streamingAssetsPath,
 			"/Portraits/Student_",
 			this.Target[this.Column + Number],
 			".png"
-		});
-		WWW www = new WWW(url);
+		}));
 		this.Portrait[this.Column + Number].mainTexture = www.texture;
 	}
 
@@ -362,15 +361,14 @@ public class NewMissionWindowScript : MonoBehaviour
 		{
 			this.NameLabel[this.Column + Number].text = "Kill: " + this.JSON.Students[this.Target[this.Column + Number]].Name;
 		}
-		string url = string.Concat(new object[]
+		WWW www = new WWW(string.Concat(new object[]
 		{
 			"file:///",
 			Application.streamingAssetsPath,
 			"/Portraits/Student_",
 			this.Target[this.Column + Number],
 			".png"
-		});
-		WWW www = new WWW(url);
+		}));
 		this.Portrait[this.Column + Number].mainTexture = www.texture;
 	}
 
@@ -379,8 +377,8 @@ public class NewMissionWindowScript : MonoBehaviour
 		int i;
 		for (i = 1; i < 11; i++)
 		{
-			this.Target[i] = UnityEngine.Random.Range(2, 89);
-			this.Method[i] = UnityEngine.Random.Range(0, 7);
+			this.Target[i] = Random.Range(2, 89);
+			this.Method[i] = Random.Range(0, 7);
 			this.MethodLabel[i].text = "By: " + this.MethodNames[this.Method[i]];
 		}
 		i = 1;
@@ -402,7 +400,7 @@ public class NewMissionWindowScript : MonoBehaviour
 
 	public void UpdateHighlight()
 	{
-		this.MissionModeMenu.PromptBar.Label[0].text = string.Empty;
+		this.MissionModeMenu.PromptBar.Label[0].text = "";
 		if (this.Row < 1)
 		{
 			this.Row = 5;
@@ -439,39 +437,37 @@ public class NewMissionWindowScript : MonoBehaviour
 				num = -400;
 			}
 			this.Highlight.localPosition = new Vector3((float)(-1200 + 400 * this.Column), (float)num, 0f);
+			return;
 		}
-		else
+		if (this.Column < 1)
 		{
-			if (this.Column < 1)
+			this.Column = 3;
+		}
+		else if (this.Column > 3)
+		{
+			this.Column = 1;
+		}
+		this.Highlight.localPosition = new Vector3((float)(-1200 + 600 * this.Column), -525f, 0f);
+		if (this.Column == 1)
+		{
+			if (this.Target[1] + this.Target[2] + this.Target[3] + this.Target[4] + this.Target[5] + this.Target[6] + this.Target[7] + this.Target[8] + this.Target[9] + this.Target[10] == 0)
 			{
-				this.Column = 3;
-			}
-			else if (this.Column > 3)
-			{
-				this.Column = 1;
-			}
-			this.Highlight.localPosition = new Vector3((float)(-1200 + 600 * this.Column), -525f, 0f);
-			if (this.Column == 1)
-			{
-				if (this.Target[1] + this.Target[2] + this.Target[3] + this.Target[4] + this.Target[5] + this.Target[6] + this.Target[7] + this.Target[8] + this.Target[9] + this.Target[10] == 0)
-				{
-					this.MissionModeMenu.PromptBar.Label[0].text = string.Empty;
-				}
-				else
-				{
-					this.MissionModeMenu.PromptBar.Label[0].text = "Confirm";
-				}
-			}
-			else if (this.Column == 2)
-			{
-				this.MissionModeMenu.PromptBar.Label[0].text = "Confirm";
+				this.MissionModeMenu.PromptBar.Label[0].text = "";
 			}
 			else
 			{
-				this.MissionModeMenu.PromptBar.Label[0].text = string.Empty;
+				this.MissionModeMenu.PromptBar.Label[0].text = "Confirm";
 			}
-			this.MissionModeMenu.PromptBar.UpdateButtons();
 		}
+		else if (this.Column == 2)
+		{
+			this.MissionModeMenu.PromptBar.Label[0].text = "Confirm";
+		}
+		else
+		{
+			this.MissionModeMenu.PromptBar.Label[0].text = "";
+		}
+		this.MissionModeMenu.PromptBar.UpdateButtons();
 	}
 
 	private void SaveInfo()
@@ -499,15 +495,14 @@ public class NewMissionWindowScript : MonoBehaviour
 			{
 				this.NameLabel[i].text = "Kill: " + this.JSON.Students[this.Target[i]].Name;
 			}
-			string url = string.Concat(new object[]
+			WWW www = new WWW(string.Concat(new object[]
 			{
 				"file:///",
 				Application.streamingAssetsPath,
 				"/Portraits/Student_",
 				this.Target[i],
 				".png"
-			});
-			WWW www = new WWW(url);
+			}));
 			this.Portrait[i].mainTexture = www.texture;
 			this.MethodLabel[i].text = "By: " + this.MethodNames[this.Method[i]];
 			this.DeathSkulls[i].SetActive(false);
@@ -535,12 +530,10 @@ public class NewMissionWindowScript : MonoBehaviour
 		if (this.NemesisDifficulty == 0)
 		{
 			this.NemesisLabel.text = "Nemesis: Off";
+			return;
 		}
-		else
-		{
-			this.NemesisLabel.text = "Nemesis: On";
-			this.NemesisPortrait.mainTexture = ((this.NemesisDifficulty <= 2) ? this.NemesisGraphic : this.AnonymousPortrait);
-		}
+		this.NemesisLabel.text = "Nemesis: On";
+		this.NemesisPortrait.mainTexture = ((this.NemesisDifficulty > 2) ? this.AnonymousPortrait : this.NemesisGraphic);
 	}
 
 	private void UpdateNemesisList()
@@ -578,10 +571,8 @@ public class NewMissionWindowScript : MonoBehaviour
 		if (this.NemesisAggression)
 		{
 			this.NemesisObjectives[4].localScale = Vector3.Lerp(this.NemesisObjectives[4].localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			return;
 		}
-		else
-		{
-			this.NemesisObjectives[4].localScale = Vector3.Lerp(this.NemesisObjectives[4].localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
-		}
+		this.NemesisObjectives[4].localScale = Vector3.Lerp(this.NemesisObjectives[4].localScale, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
 	}
 }

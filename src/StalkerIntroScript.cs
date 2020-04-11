@@ -118,12 +118,10 @@ public class StalkerIntroScript : MonoBehaviour
 			{
 				this.Neighborhood[0].SetActive(false);
 				this.Neighborhood[1].SetActive(true);
+				return;
 			}
-			else
-			{
-				this.Neighborhood[0].SetActive(true);
-				this.Neighborhood[1].SetActive(false);
-			}
+			this.Neighborhood[0].SetActive(true);
+			this.Neighborhood[1].SetActive(false);
 		}
 	}
 

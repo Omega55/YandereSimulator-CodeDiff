@@ -38,6 +38,7 @@ public class HomeCursorScript : MonoBehaviour
 				this.Highlight.localPosition = this.Photograph.transform.localPosition;
 				this.Highlight.localScale = new Vector3(this.Photograph.transform.localScale.x * 1.12f, this.Photograph.transform.localScale.y * 1.2f, 1f);
 				this.PhotoGallery.UpdateButtonPrompts();
+				return;
 			}
 		}
 		else if (other.gameObject.name != "SouthWall")

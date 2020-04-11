@@ -29,29 +29,29 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 
 	private void Start()
 	{
-		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
-		this.Direction = ((this.Dracula.position.x <= base.transform.position.x) ? 1 : -1);
+		Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
+		this.Direction = ((this.Dracula.position.x > base.transform.position.x) ? -1 : 1);
 	}
 
 	private void Update()
 	{
 		if (this.Timer > 1f && !this.SpawnedFirst)
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
-			this.FirstLavaball = UnityEngine.Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
+			Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
+			this.FirstLavaball = Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
 			this.FirstLavaball.transform.localScale = Vector3.zero;
 			this.SpawnedFirst = true;
 		}
 		if (this.FirstLavaball != null)
 		{
 			this.FirstLavaball.transform.localScale = Vector3.Lerp(this.FirstLavaball.transform.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
-			this.FirstPosition += ((this.FirstPosition != 0f) ? (this.FirstPosition * this.Speed) : Time.deltaTime);
+			this.FirstPosition += ((this.FirstPosition == 0f) ? Time.deltaTime : (this.FirstPosition * this.Speed));
 			this.FirstLavaball.transform.position = new Vector3(this.FirstLavaball.transform.position.x + this.FirstPosition * (float)this.Direction, this.FirstLavaball.transform.position.y, this.FirstLavaball.transform.position.z);
 			this.FirstLavaball.transform.eulerAngles = new Vector3(this.FirstLavaball.transform.eulerAngles.x, this.FirstLavaball.transform.eulerAngles.y, this.FirstLavaball.transform.eulerAngles.z - this.FirstPosition * (float)this.Direction * 36f);
 		}
 		if (this.Timer > 2f && !this.SpawnedSecond)
 		{
-			this.SecondLavaball = UnityEngine.Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
+			this.SecondLavaball = Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
 			this.SecondLavaball.transform.localScale = Vector3.zero;
 			this.SpawnedSecond = true;
 		}
@@ -74,13 +74,13 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 		{
 			if (this.FirstLavaball != null)
 			{
-				UnityEngine.Object.Destroy(this.FirstLavaball);
+				Object.Destroy(this.FirstLavaball);
 			}
 			if (this.SecondLavaball != null)
 			{
-				UnityEngine.Object.Destroy(this.SecondLavaball);
+				Object.Destroy(this.SecondLavaball);
 			}
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

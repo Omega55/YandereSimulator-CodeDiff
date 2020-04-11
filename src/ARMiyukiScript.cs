@@ -44,6 +44,6 @@ public class ARMiyukiScript : MonoBehaviour
 			this.Enemy = this.MyStudent.StudentManager.MiyukiCat;
 		}
 		base.transform.LookAt(this.Enemy.position);
-		UnityEngine.Object.Instantiate<GameObject>(this.Bullet, this.BulletSpawnPoint.position, base.transform.rotation);
+		Object.Instantiate<GameObject>(this.Bullet, this.BulletSpawnPoint.position, base.transform.rotation);
 	}
 }

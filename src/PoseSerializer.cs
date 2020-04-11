@@ -15,20 +15,18 @@ public static class PoseSerializer
 		serializedPose.BoneData = PoseSerializer.getBoneData(root);
 		string contents = JsonUtility.ToJson(serializedPose);
 		string text = string.Format("{0}/Poses/{1}", Application.streamingAssetsPath, poseName + ".txt");
-		FileInfo fileInfo = new FileInfo(text);
-		fileInfo.Directory.Create();
+		new FileInfo(text).Directory.Create();
 		File.WriteAllText(text, contents);
 	}
 
 	private static BoneData[] getBoneData(Transform root)
 	{
 		List<BoneData> list = new List<BoneData>();
-		Transform[] componentsInChildren = root.GetComponentsInChildren<Transform>();
-		foreach (Transform transform in componentsInChildren)
+		foreach (Transform transform in root.GetComponentsInChildren<Transform>())
 		{
 			list.Add(new BoneData
 			{
-				BoneName = ((!(transform == root)) ? transform.name : "StudentRoot"),
+				BoneName = ((transform == root) ? "StudentRoot" : transform.name),
 				LocalPosition = transform.localPosition,
 				LocalRotation = transform.localRotation,
 				LocalScale = transform.localScale
@@ -42,12 +40,11 @@ public static class PoseSerializer
 		string path = string.Format("{0}/Poses/{1}", Application.streamingAssetsPath, poseName + ".txt");
 		if (File.Exists(path))
 		{
-			string json = File.ReadAllText(path);
-			SerializedPose serializedPose = JsonUtility.FromJson<SerializedPose>(json);
-			StudentCosmeticSheet mySheet = JsonUtility.FromJson<StudentCosmeticSheet>(serializedPose.CosmeticData);
-			cosmeticScript.LoadCosmeticSheet(mySheet);
+			SerializedPose serializedPose = JsonUtility.FromJson<SerializedPose>(File.ReadAllText(path));
+			StudentCosmeticSheet studentCosmeticSheet = JsonUtility.FromJson<StudentCosmeticSheet>(serializedPose.CosmeticData);
+			cosmeticScript.LoadCosmeticSheet(studentCosmeticSheet);
 			cosmeticScript.CharacterAnimation.Stop();
-			bool flag = cosmeticScript.Male == mySheet.Male;
+			bool flag = cosmeticScript.Male == studentCosmeticSheet.Male;
 			Transform[] componentsInChildren = root.GetComponentsInChildren<Transform>();
 			foreach (BoneData boneData2 in serializedPose.BoneData)
 			{
@@ -75,7 +72,7 @@ public static class PoseSerializer
 
 	public static string[] GetSavedPoses()
 	{
-		string[] files = Directory.GetFiles(string.Format("{0}/Poses/{1}", Application.streamingAssetsPath, string.Empty));
+		string[] files = Directory.GetFiles(string.Format("{0}/Poses/{1}", Application.streamingAssetsPath, ""));
 		List<string> list = new List<string>();
 		foreach (string text in files)
 		{

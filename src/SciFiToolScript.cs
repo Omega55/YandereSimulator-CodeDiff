@@ -21,10 +21,8 @@ public class SciFiToolScript : MonoBehaviour
 		if ((double)Vector3.Distance(this.Tip.position, this.Target.position) < 0.1)
 		{
 			this.Sparks.Play();
+			return;
 		}
-		else
-		{
-			this.Sparks.Stop();
-		}
+		this.Sparks.Stop();
 	}
 }

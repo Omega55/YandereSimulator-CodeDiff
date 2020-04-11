@@ -30,6 +30,7 @@ public class ChoiceScript : MonoBehaviour
 			if (this.Darkness.color.a == 0f)
 			{
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 1)
@@ -47,6 +48,7 @@ public class ChoiceScript : MonoBehaviour
 			if (Input.GetButtonDown("A"))
 			{
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 2)

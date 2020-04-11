@@ -159,8 +159,7 @@ public class SaveLoadScript : MonoBehaviour
 				this.Student.StudentID,
 				"_rotZ"
 			})));
-			string json = File.ReadAllText(this.SaveFilePath);
-			JsonUtility.FromJsonOverwrite(json, this.Student);
+			JsonUtility.FromJsonOverwrite(File.ReadAllText(this.SaveFilePath), this.Student);
 		}
 	}
 }

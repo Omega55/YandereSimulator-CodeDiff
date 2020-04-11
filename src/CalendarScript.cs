@@ -284,8 +284,7 @@ public class CalendarScript : MonoBehaviour
 			SchoolGlobals.SchoolAtmosphere = 0f;
 			this.LoveSick = true;
 			Camera.main.backgroundColor = new Color(0f, 0f, 0f, 1f);
-			GameObject[] array = UnityEngine.Object.FindObjectsOfType<GameObject>();
-			foreach (GameObject gameObject in array)
+			foreach (GameObject gameObject in Object.FindObjectsOfType<GameObject>())
 			{
 				UISprite component = gameObject.GetComponent<UISprite>();
 				if (component != null)

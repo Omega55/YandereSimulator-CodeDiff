@@ -44,7 +44,7 @@ public class MusicTest : MonoBehaviour
 		{
 			float num3 = this.freqData[i];
 			float num4 = this.band[num];
-			this.band[num] = ((num3 <= num4) ? num4 : num3);
+			this.band[num] = ((num3 > num4) ? num3 : num4);
 			if (i > num2 - 3)
 			{
 				num++;

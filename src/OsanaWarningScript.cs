@@ -49,6 +49,7 @@ public class OsanaWarningScript : MonoBehaviour
 			if (Input.GetButtonDown("A"))
 			{
 				this.FadeOut = true;
+				return;
 			}
 		}
 		else if (this.Alpha == 1f)
@@ -59,6 +60,6 @@ public class OsanaWarningScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		this.RightHand.localEulerAngles += new Vector3(UnityEngine.Random.Range(1f, -1f), UnityEngine.Random.Range(1f, -1f), UnityEngine.Random.Range(1f, -1f));
+		this.RightHand.localEulerAngles += new Vector3(Random.Range(1f, -1f), Random.Range(1f, -1f), Random.Range(1f, -1f));
 	}
 }

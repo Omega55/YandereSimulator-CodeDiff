@@ -94,7 +94,7 @@ namespace MaidDereMinigame
 				if (this.interactionRange && Input.GetButtonDown("A"))
 				{
 					this.state = ServingCounter.KitchenState.SelectingInteraction;
-					this.selectedIndex = ((this.plates.Count != 0) ? 0 : 2);
+					this.selectedIndex = ((this.plates.Count == 0) ? 2 : 0);
 					this.kitchenModeHide.gameObject.SetActive(true);
 					this.SetMask(this.selectedIndex);
 					SFXController.PlaySound(SFXController.Sounds.MenuOpen);
@@ -107,43 +107,13 @@ namespace MaidDereMinigame
 					}
 					GameController.SetPause(true);
 					InteractionMenu.SetBButton(true);
+					return;
 				}
 				break;
 			case ServingCounter.KitchenState.SelectingInteraction:
-			{
-				int num = this.selectedIndex;
-				if (num != 0)
+				switch (this.selectedIndex)
 				{
-					if (num != 1)
-					{
-						if (num == 2)
-						{
-							this.interactionIndicator.transform.position = Chef.Instance.transform.position + Vector3.up * 0.8f;
-							InteractionMenu.SetAButton(InteractionMenu.AButtonText.PlaceOrder);
-							this.SetMask(this.selectedIndex);
-							if (Input.GetButtonDown("A"))
-							{
-								this.state = ServingCounter.KitchenState.Chef;
-								InteractionMenu.SetAButton(InteractionMenu.AButtonText.PlaceOrder);
-								FoodMenu.Instance.gameObject.SetActive(true);
-								SFXController.PlaySound(SFXController.Sounds.MenuOpen);
-							}
-						}
-					}
-					else
-					{
-						this.interactionIndicator.transform.position = this.trash.transform.position + Vector3.up * 0.5f;
-						InteractionMenu.SetAButton(InteractionMenu.AButtonText.TossPlate);
-						this.SetMask(this.selectedIndex);
-						if (Input.GetButtonDown("A"))
-						{
-							this.state = ServingCounter.KitchenState.Trash;
-							SFXController.PlaySound(SFXController.Sounds.MenuOpen);
-						}
-					}
-				}
-				else
-				{
+				case 0:
 					this.interactionIndicator.transform.position = this.interactionIndicatorStartingPos;
 					InteractionMenu.SetAButton(InteractionMenu.AButtonText.ChoosePlate);
 					this.SetMask(this.selectedIndex);
@@ -154,6 +124,29 @@ namespace MaidDereMinigame
 						InteractionMenu.SetAButton(InteractionMenu.AButtonText.GrabPlate);
 						SFXController.PlaySound(SFXController.Sounds.MenuOpen);
 					}
+					break;
+				case 1:
+					this.interactionIndicator.transform.position = this.trash.transform.position + Vector3.up * 0.5f;
+					InteractionMenu.SetAButton(InteractionMenu.AButtonText.TossPlate);
+					this.SetMask(this.selectedIndex);
+					if (Input.GetButtonDown("A"))
+					{
+						this.state = ServingCounter.KitchenState.Trash;
+						SFXController.PlaySound(SFXController.Sounds.MenuOpen);
+					}
+					break;
+				case 2:
+					this.interactionIndicator.transform.position = Chef.Instance.transform.position + Vector3.up * 0.8f;
+					InteractionMenu.SetAButton(InteractionMenu.AButtonText.PlaceOrder);
+					this.SetMask(this.selectedIndex);
+					if (Input.GetButtonDown("A"))
+					{
+						this.state = ServingCounter.KitchenState.Chef;
+						InteractionMenu.SetAButton(InteractionMenu.AButtonText.PlaceOrder);
+						FoodMenu.Instance.gameObject.SetActive(true);
+						SFXController.PlaySound(SFXController.Sounds.MenuOpen);
+					}
+					break;
 				}
 				if (Input.GetButtonDown("B"))
 				{
@@ -197,9 +190,9 @@ namespace MaidDereMinigame
 						this.selectedIndex = 2;
 					}
 					SFXController.PlaySound(SFXController.Sounds.MenuSelect);
+					return;
 				}
 				break;
-			}
 			case ServingCounter.KitchenState.Plates:
 				this.interactionIndicator.gameObject.SetActive(true);
 				this.interactionIndicator.transform.position = this.plates[this.selectedIndex].transform.position + Vector3.up * 0.25f;
@@ -234,6 +227,7 @@ namespace MaidDereMinigame
 				{
 					this.state = ServingCounter.KitchenState.SelectingInteraction;
 					SFXController.PlaySound(SFXController.Sounds.MenuBack);
+					return;
 				}
 				break;
 			case ServingCounter.KitchenState.Chef:
@@ -250,6 +244,7 @@ namespace MaidDereMinigame
 					Chef.AddToQueue(FoodMenu.Instance.GetActiveFood());
 					FoodMenu.Instance.gameObject.SetActive(false);
 					SFXController.PlaySound(SFXController.Sounds.MenuOpen);
+					return;
 				}
 				break;
 			case ServingCounter.KitchenState.Trash:
@@ -257,6 +252,8 @@ namespace MaidDereMinigame
 				this.state = ServingCounter.KitchenState.SelectingInteraction;
 				this.selectedIndex = 2;
 				break;
+			default:
+				return;
 			}
 		}
 
@@ -282,7 +279,7 @@ namespace MaidDereMinigame
 				foodInstance.transform.localPosition = Vector3.zero;
 			}
 			SFXController.PlaySound(SFXController.Sounds.Plate);
-			FoodInstance foodInstance2 = UnityEngine.Object.Instantiate<FoodInstance>(this.platePrefab);
+			FoodInstance foodInstance2 = Object.Instantiate<FoodInstance>(this.platePrefab);
 			foodInstance2.transform.parent = this.platePositions[0];
 			foodInstance2.transform.localPosition = Vector3.zero;
 			foodInstance2.food = food;
@@ -291,14 +288,14 @@ namespace MaidDereMinigame
 
 		public void RemovePlate(int index)
 		{
-			FoodInstance foodInstance = this.plates[index];
+			Component component = this.plates[index];
 			this.plates.RemoveAt(index);
-			UnityEngine.Object.Destroy(foodInstance.gameObject);
+			Object.Destroy(component.gameObject);
 			for (int i = index; i < this.plates.Count; i++)
 			{
-				FoodInstance foodInstance2 = this.plates[i];
-				foodInstance2.transform.parent = this.platePositions[i];
-				foodInstance2.transform.localPosition = Vector3.zero;
+				FoodInstance foodInstance = this.plates[i];
+				foodInstance.transform.parent = this.platePositions[i];
+				foodInstance.transform.localPosition = Vector3.zero;
 			}
 		}
 

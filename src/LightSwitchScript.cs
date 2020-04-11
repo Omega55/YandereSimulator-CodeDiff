@@ -72,7 +72,7 @@ public class LightSwitchScript : MonoBehaviour
 				component.Play();
 				if (this.ToiletEvent.EventActive && (this.ToiletEvent.EventPhase == 2 || this.ToiletEvent.EventPhase == 3))
 				{
-					this.ReactionID = UnityEngine.Random.Range(1, 4);
+					this.ReactionID = Random.Range(1, 4);
 					AudioClipPlayer.Play(this.ReactionClips[this.ReactionID], this.ToiletEvent.EventStudent.transform.position, 5f, 10f, out this.ToiletEvent.VoiceClip);
 					this.ToiletEvent.EventSubtitle.text = this.ReactionTexts[this.ReactionID];
 					this.SubtitleTimer += Time.deltaTime;

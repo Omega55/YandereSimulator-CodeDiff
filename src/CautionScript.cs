@@ -20,6 +20,7 @@ public class CautionScript : MonoBehaviour
 			if (this.Sprite.color.a > 1f)
 			{
 				this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, 1f);
+				return;
 			}
 		}
 		else

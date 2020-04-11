@@ -24,7 +24,7 @@ namespace MaidDereMinigame
 			{
 				if (FailGame.instance == null)
 				{
-					FailGame.instance = UnityEngine.Object.FindObjectOfType<FailGame>();
+					FailGame.instance = Object.FindObjectOfType<FailGame>();
 				}
 				return FailGame.instance;
 			}
@@ -46,7 +46,7 @@ namespace MaidDereMinigame
 
 		private IEnumerator GameFailedRoutine()
 		{
-			UnityEngine.Object.FindObjectOfType<InteractionMenu>().gameObject.SetActive(false);
+			Object.FindObjectOfType<InteractionMenu>().gameObject.SetActive(false);
 			yield return null;
 			this.textRenderer.color = Color.white;
 			while (this.transitionTime < this.targetTransitionTime)
@@ -62,8 +62,8 @@ namespace MaidDereMinigame
 			while (this.transitionTime < this.targetTransitionTime)
 			{
 				this.transitionTime += Time.deltaTime;
-				float opacity = Mathf.Lerp(0f, 1f, this.transitionTime / this.targetTransitionTime);
-				this.spriteRenderer.color = new Color(0f, 0f, 0f, opacity);
+				float a = Mathf.Lerp(0f, 1f, this.transitionTime / this.targetTransitionTime);
+				this.spriteRenderer.color = new Color(0f, 0f, 0f, a);
 				yield return null;
 			}
 			GameController.GoToExitScene(false);
@@ -72,7 +72,7 @@ namespace MaidDereMinigame
 
 		private IEnumerator SlowPitch()
 		{
-			GameStarter starter = UnityEngine.Object.FindObjectOfType<GameStarter>();
+			GameStarter starter = Object.FindObjectOfType<GameStarter>();
 			float timeToZero = 5f;
 			while (timeToZero > 0f)
 			{

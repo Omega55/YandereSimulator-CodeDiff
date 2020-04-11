@@ -92,7 +92,7 @@ public class LifeNoteScript : MonoBehaviour
 						this.Darkness.color = new Color(0f, 0f, 0f, this.Alpha);
 						this.Typewriter.ResetToBeginning();
 						this.Typewriter.mFullText = this.Lines[this.ID];
-						this.Label.text = string.Empty;
+						this.Label.text = "";
 						this.Spoke = false;
 						this.Frame = 0;
 						if (this.Alphas[this.ID] == 1)
@@ -170,16 +170,21 @@ public class LifeNoteScript : MonoBehaviour
 					this.Label.gameObject.SetActive(true);
 					this.Controls.SetActive(true);
 					this.Timer = 0f;
+					return;
 				}
 			}
-			else if (this.Timer > 2f)
+			else
 			{
-				this.BackgroundArt.localScale = Vector3.Lerp(this.BackgroundArt.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * (this.Timer - 2f));
-				this.BackgroundArt.localPosition = Vector3.Lerp(this.BackgroundArt.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * (this.Timer - 2f));
-			}
-			else if (this.Timer > 0f)
-			{
-				this.Darkness.color = new Color(0f, 0f, 0f, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+				if (this.Timer > 2f)
+				{
+					this.BackgroundArt.localScale = Vector3.Lerp(this.BackgroundArt.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * (this.Timer - 2f));
+					this.BackgroundArt.localPosition = Vector3.Lerp(this.BackgroundArt.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * (this.Timer - 2f));
+					return;
+				}
+				if (this.Timer > 0f)
+				{
+					this.Darkness.color = new Color(0f, 0f, 0f, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+				}
 			}
 		}
 	}

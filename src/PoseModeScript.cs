@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 public class PoseModeScript : MonoBehaviour
@@ -188,6 +187,7 @@ public class PoseModeScript : MonoBehaviour
 				if (Input.GetButtonDown("B"))
 				{
 					this.Exit();
+					return;
 				}
 			}
 			else if (this.ChoosingBodyRegion)
@@ -219,6 +219,7 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateLabels();
 					this.Selected = 1;
 					this.UpdateHighlight();
+					return;
 				}
 			}
 			else if (this.ChoosingBone)
@@ -274,6 +275,7 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateLabels();
 					this.Selected = 1;
 					this.UpdateHighlight();
+					return;
 				}
 			}
 			else if (this.Posing)
@@ -355,6 +357,7 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateLabels();
 					this.Selected = 1;
 					this.UpdateHighlight();
+					return;
 				}
 			}
 			else if (this.Customizing)
@@ -444,7 +447,7 @@ public class PoseModeScript : MonoBehaviour
 						this.Student.Cosmetic.Accessory--;
 						if (this.Student.Cosmetic.Accessory < 0)
 						{
-							this.Student.Cosmetic.Accessory = ((!this.Student.Male) ? (this.Student.Cosmetic.FemaleAccessories.Length - 1) : (this.Student.Cosmetic.MaleAccessories.Length - 1));
+							this.Student.Cosmetic.Accessory = (this.Student.Male ? (this.Student.Cosmetic.MaleAccessories.Length - 1) : (this.Student.Cosmetic.FemaleAccessories.Length - 1));
 						}
 						this.Student.Cosmetic.Start();
 						this.UpdateLabels();
@@ -568,6 +571,7 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateLabels();
 					this.Selected = 1;
 					this.UpdateHighlight();
+					return;
 				}
 			}
 			else if (this.Animating)
@@ -597,6 +601,7 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateLabels();
 					this.Selected = 1;
 					this.UpdateHighlight();
+					return;
 				}
 			}
 			else if (this.EditingFace)
@@ -662,6 +667,7 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateLabels();
 					this.Selected = 1;
 					this.UpdateHighlight();
+					return;
 				}
 			}
 			else if (this.SavingLoading)
@@ -686,14 +692,14 @@ public class PoseModeScript : MonoBehaviour
 				{
 					if (this.Selected == 2)
 					{
-						PoseSerializer.SerializePose(this.Student.Cosmetic, this.Student.transform, string.Empty + this.SaveSlot);
+						PoseSerializer.SerializePose(this.Student.Cosmetic, this.Student.transform, string.Concat(this.SaveSlot));
 						this.Yandere.NotificationManager.CustomText = "Pose Saved!";
 						this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 					}
 					else if (this.Selected == 3)
 					{
 						Debug.Log("Our intention is to change the Cosmetic data for: " + this.Student.Name);
-						PoseSerializer.DeserializePose(this.Student.Cosmetic, this.Student.transform, string.Empty + this.SaveSlot);
+						PoseSerializer.DeserializePose(this.Student.Cosmetic, this.Student.transform, string.Concat(this.SaveSlot));
 					}
 				}
 				if (Input.GetButtonDown("B"))
@@ -707,6 +713,7 @@ public class PoseModeScript : MonoBehaviour
 					this.UpdateLabels();
 					this.Selected = 1;
 					this.UpdateHighlight();
+					return;
 				}
 			}
 		}
@@ -798,230 +805,252 @@ public class PoseModeScript : MonoBehaviour
 			if (this.Student.Male)
 			{
 				this.OptionLabels[6].color = new Color(1f, 1f, 1f, 0.5f);
+				return;
 			}
 		}
-		else if (this.ChoosingBodyRegion)
+		else
 		{
-			this.HeaderLabel.text = "Choose Body Region";
-			this.OptionLabels[1].text = "Root";
-			this.OptionLabels[2].text = "Spine";
-			this.OptionLabels[3].text = "Right Leg";
-			this.OptionLabels[4].text = "Left Leg";
-			this.OptionLabels[5].text = "Right Arm";
-			this.OptionLabels[6].text = "Left Arm";
-			this.OptionLabels[7].text = "Right Fingers";
-			this.OptionLabels[8].text = "Left Fingers";
-			this.OptionLabels[9].text = "Face";
-			this.OptionLabels[10].text = "Female Only";
-			this.Limit = 10;
-			UILabel uilabel2 = this.OptionLabels[10];
-			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, (!this.Student.Male) ? 1f : 0.5f);
-		}
-		else if (this.ChoosingBone)
-		{
-			this.HeaderLabel.text = "Choose Bone";
-			if (this.Region == 2)
+			if (this.ChoosingBodyRegion)
 			{
-				this.OptionLabels[1].text = "Hips";
-				this.OptionLabels[2].text = "Spine 1";
-				this.OptionLabels[3].text = "Spine 2";
-				this.OptionLabels[4].text = "Spine 3";
-				this.OptionLabels[5].text = "Spine 4";
-				this.OptionLabels[6].text = "Neck";
-				this.OptionLabels[7].text = "Head";
-				this.Limit = 7;
+				this.HeaderLabel.text = "Choose Body Region";
+				this.OptionLabels[1].text = "Root";
+				this.OptionLabels[2].text = "Spine";
+				this.OptionLabels[3].text = "Right Leg";
+				this.OptionLabels[4].text = "Left Leg";
+				this.OptionLabels[5].text = "Right Arm";
+				this.OptionLabels[6].text = "Left Arm";
+				this.OptionLabels[7].text = "Right Fingers";
+				this.OptionLabels[8].text = "Left Fingers";
+				this.OptionLabels[9].text = "Face";
+				this.OptionLabels[10].text = "Female Only";
+				this.Limit = 10;
+				UILabel uilabel2 = this.OptionLabels[10];
+				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, this.Student.Male ? 0.5f : 1f);
+				return;
 			}
-			else if (this.Region == 3)
+			if (this.ChoosingBone)
 			{
-				this.OptionLabels[1].text = "Right Leg";
-				this.OptionLabels[2].text = "Right Knee";
-				this.OptionLabels[3].text = "Right Foot";
-				this.OptionLabels[4].text = "Right Toe";
-				this.Limit = 4;
-			}
-			else if (this.Region == 4)
-			{
-				this.OptionLabels[1].text = "Left Leg";
-				this.OptionLabels[2].text = "Left Knee";
-				this.OptionLabels[3].text = "Left Foot";
-				this.OptionLabels[4].text = "Left Toe";
-				this.Limit = 4;
-			}
-			else if (this.Region == 5)
-			{
-				this.OptionLabels[1].text = "Right Clavicle";
-				this.OptionLabels[2].text = "Right Arm";
-				this.OptionLabels[3].text = "Right Elbow";
-				this.OptionLabels[4].text = "Right Wrist";
-				this.Limit = 4;
-			}
-			else if (this.Region == 6)
-			{
-				this.OptionLabels[1].text = "Left Clavicle";
-				this.OptionLabels[2].text = "Left Arm";
-				this.OptionLabels[3].text = "Left Elbow";
-				this.OptionLabels[4].text = "Left Wrist";
-				this.Limit = 4;
-			}
-			else if (this.Region == 7)
-			{
-				this.OptionLabels[1].text = "Right Pinky 1";
-				this.OptionLabels[2].text = "Right Pinky 2";
-				this.OptionLabels[3].text = "Right Pinky 3";
-				this.OptionLabels[4].text = "Right Ring 1";
-				this.OptionLabels[5].text = "Right Ring 2";
-				this.OptionLabels[6].text = "Right Ring 3";
-				this.OptionLabels[7].text = "Right Middle 1";
-				this.OptionLabels[8].text = "Right Middle 2";
-				this.OptionLabels[9].text = "Right Middle 3";
-				this.OptionLabels[10].text = "Right Index 1";
-				this.OptionLabels[11].text = "Right Index 2";
-				this.OptionLabels[12].text = "Right Index 3";
-				this.OptionLabels[13].text = "Right Thumb 1";
-				this.OptionLabels[14].text = "Right Thumb 2";
-				this.OptionLabels[15].text = "Right Thumb 3";
-				this.Limit = 15;
-			}
-			else if (this.Region == 8)
-			{
-				this.OptionLabels[1].text = "Left Pinky 1";
-				this.OptionLabels[2].text = "Left Pinky 2";
-				this.OptionLabels[3].text = "Left Pinky 3";
-				this.OptionLabels[4].text = "Left Ring 1";
-				this.OptionLabels[5].text = "Left Ring 2";
-				this.OptionLabels[6].text = "Left Ring 3";
-				this.OptionLabels[7].text = "Left Middle 1";
-				this.OptionLabels[8].text = "Left Middle 2";
-				this.OptionLabels[9].text = "Left Middle 3";
-				this.OptionLabels[10].text = "Left Index 1";
-				this.OptionLabels[11].text = "Left Index 2";
-				this.OptionLabels[12].text = "Left Index 3";
-				this.OptionLabels[13].text = "Left Thumb 1";
-				this.OptionLabels[14].text = "Left Thumb 2";
-				this.OptionLabels[15].text = "Left Thumb 3";
-				this.Limit = 15;
-			}
-			else if (this.Region == 9)
-			{
-				this.OptionLabels[1].text = "Right Eye";
-				this.OptionLabels[2].text = "Left Eye";
-				this.OptionLabels[3].text = "Right Eyebrow";
-				this.OptionLabels[4].text = "Left Eyebrow";
-				this.OptionLabels[5].text = "Jaw";
-				this.Limit = 5;
-			}
-			else if (this.Region == 10)
-			{
-				this.OptionLabels[1].text = "Front Skirt 1";
-				this.OptionLabels[2].text = "Front Skirt 2";
-				this.OptionLabels[3].text = "Front Skirt 3";
-				this.OptionLabels[4].text = "Back Skirt 1";
-				this.OptionLabels[5].text = "Back Skirt 2";
-				this.OptionLabels[6].text = "Back Skirt 3";
-				this.OptionLabels[7].text = "Right Skirt 1";
-				this.OptionLabels[8].text = "Right Skirt 2";
-				this.OptionLabels[9].text = "Right Skirt 3";
-				this.OptionLabels[10].text = "Left Skirt 1";
-				this.OptionLabels[11].text = "Left Skirt 2";
-				this.OptionLabels[12].text = "Left Skirt 3";
-				this.OptionLabels[13].text = "Right Breast";
-				this.OptionLabels[14].text = "Right Nipple";
-				this.OptionLabels[15].text = "Left Breast";
-				this.OptionLabels[16].text = "Left Nipple";
-				this.Limit = 16;
-			}
-		}
-		else if (this.Posing)
-		{
-			this.HeaderLabel.text = "Pose Bone";
-			this.OptionLabels[1].text = "Position X";
-			this.OptionLabels[2].text = "Position Y";
-			this.OptionLabels[3].text = "Position Z";
-			this.OptionLabels[4].text = "Rotation X";
-			this.OptionLabels[5].text = "Rotation Y";
-			this.OptionLabels[6].text = "Rotation Z";
-			this.OptionLabels[7].text = "Scale X";
-			this.OptionLabels[8].text = "Scale Y";
-			this.OptionLabels[9].text = "Scale Z";
-			this.OptionLabels[10].text = "Degree of Change: " + this.Degree.ToString();
-			this.OptionLabels[11].text = "Reset";
-			this.Limit = 11;
-		}
-		else if (this.Customizing)
-		{
-			this.HeaderLabel.text = "Customize";
-			this.OptionLabels[1].text = "Hairstyle: " + this.Student.Cosmetic.Hairstyle.ToString();
-			this.OptionLabels[2].text = "Accessory: " + this.Student.Cosmetic.Accessory.ToString();
-			this.OptionLabels[3].text = "Clothing: " + this.Student.Schoolwear.ToString();
-			this.OptionLabels[4].text = "Hair R: " + (this.Student.Cosmetic.HairRenderer.material.color.r * 255f).ToString();
-			this.OptionLabels[5].text = "Hair G: " + (this.Student.Cosmetic.HairRenderer.material.color.g * 255f).ToString();
-			this.OptionLabels[6].text = "Hair B: " + (this.Student.Cosmetic.HairRenderer.material.color.b * 255f).ToString();
-			this.OptionLabels[7].text = "Eye R: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.r * 255f).ToString();
-			this.OptionLabels[8].text = "Eye G: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.g * 255f).ToString();
-			this.OptionLabels[9].text = "Eye B: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.b * 255f).ToString();
-			this.OptionLabels[10].text = "Degree of Change: " + this.Degree.ToString();
-			this.OptionLabels[11].text = "Stockings: " + this.Student.Cosmetic.Stockings;
-			this.OptionLabels[12].text = "Blood: " + this.Student.LiquidProjector.enabled;
-			this.Limit = 12;
-			UILabel uilabel3 = this.OptionLabels[3];
-			UILabel uilabel4 = this.OptionLabels[11];
-			if (!this.Student.Male)
-			{
-				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
-				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
+				this.HeaderLabel.text = "Choose Bone";
+				if (this.Region == 2)
+				{
+					this.OptionLabels[1].text = "Hips";
+					this.OptionLabels[2].text = "Spine 1";
+					this.OptionLabels[3].text = "Spine 2";
+					this.OptionLabels[4].text = "Spine 3";
+					this.OptionLabels[5].text = "Spine 4";
+					this.OptionLabels[6].text = "Neck";
+					this.OptionLabels[7].text = "Head";
+					this.Limit = 7;
+					return;
+				}
+				if (this.Region == 3)
+				{
+					this.OptionLabels[1].text = "Right Leg";
+					this.OptionLabels[2].text = "Right Knee";
+					this.OptionLabels[3].text = "Right Foot";
+					this.OptionLabels[4].text = "Right Toe";
+					this.Limit = 4;
+					return;
+				}
+				if (this.Region == 4)
+				{
+					this.OptionLabels[1].text = "Left Leg";
+					this.OptionLabels[2].text = "Left Knee";
+					this.OptionLabels[3].text = "Left Foot";
+					this.OptionLabels[4].text = "Left Toe";
+					this.Limit = 4;
+					return;
+				}
+				if (this.Region == 5)
+				{
+					this.OptionLabels[1].text = "Right Clavicle";
+					this.OptionLabels[2].text = "Right Arm";
+					this.OptionLabels[3].text = "Right Elbow";
+					this.OptionLabels[4].text = "Right Wrist";
+					this.Limit = 4;
+					return;
+				}
+				if (this.Region == 6)
+				{
+					this.OptionLabels[1].text = "Left Clavicle";
+					this.OptionLabels[2].text = "Left Arm";
+					this.OptionLabels[3].text = "Left Elbow";
+					this.OptionLabels[4].text = "Left Wrist";
+					this.Limit = 4;
+					return;
+				}
+				if (this.Region == 7)
+				{
+					this.OptionLabels[1].text = "Right Pinky 1";
+					this.OptionLabels[2].text = "Right Pinky 2";
+					this.OptionLabels[3].text = "Right Pinky 3";
+					this.OptionLabels[4].text = "Right Ring 1";
+					this.OptionLabels[5].text = "Right Ring 2";
+					this.OptionLabels[6].text = "Right Ring 3";
+					this.OptionLabels[7].text = "Right Middle 1";
+					this.OptionLabels[8].text = "Right Middle 2";
+					this.OptionLabels[9].text = "Right Middle 3";
+					this.OptionLabels[10].text = "Right Index 1";
+					this.OptionLabels[11].text = "Right Index 2";
+					this.OptionLabels[12].text = "Right Index 3";
+					this.OptionLabels[13].text = "Right Thumb 1";
+					this.OptionLabels[14].text = "Right Thumb 2";
+					this.OptionLabels[15].text = "Right Thumb 3";
+					this.Limit = 15;
+					return;
+				}
+				if (this.Region == 8)
+				{
+					this.OptionLabels[1].text = "Left Pinky 1";
+					this.OptionLabels[2].text = "Left Pinky 2";
+					this.OptionLabels[3].text = "Left Pinky 3";
+					this.OptionLabels[4].text = "Left Ring 1";
+					this.OptionLabels[5].text = "Left Ring 2";
+					this.OptionLabels[6].text = "Left Ring 3";
+					this.OptionLabels[7].text = "Left Middle 1";
+					this.OptionLabels[8].text = "Left Middle 2";
+					this.OptionLabels[9].text = "Left Middle 3";
+					this.OptionLabels[10].text = "Left Index 1";
+					this.OptionLabels[11].text = "Left Index 2";
+					this.OptionLabels[12].text = "Left Index 3";
+					this.OptionLabels[13].text = "Left Thumb 1";
+					this.OptionLabels[14].text = "Left Thumb 2";
+					this.OptionLabels[15].text = "Left Thumb 3";
+					this.Limit = 15;
+					return;
+				}
+				if (this.Region == 9)
+				{
+					this.OptionLabels[1].text = "Right Eye";
+					this.OptionLabels[2].text = "Left Eye";
+					this.OptionLabels[3].text = "Right Eyebrow";
+					this.OptionLabels[4].text = "Left Eyebrow";
+					this.OptionLabels[5].text = "Jaw";
+					this.Limit = 5;
+					return;
+				}
+				if (this.Region == 10)
+				{
+					this.OptionLabels[1].text = "Front Skirt 1";
+					this.OptionLabels[2].text = "Front Skirt 2";
+					this.OptionLabels[3].text = "Front Skirt 3";
+					this.OptionLabels[4].text = "Back Skirt 1";
+					this.OptionLabels[5].text = "Back Skirt 2";
+					this.OptionLabels[6].text = "Back Skirt 3";
+					this.OptionLabels[7].text = "Right Skirt 1";
+					this.OptionLabels[8].text = "Right Skirt 2";
+					this.OptionLabels[9].text = "Right Skirt 3";
+					this.OptionLabels[10].text = "Left Skirt 1";
+					this.OptionLabels[11].text = "Left Skirt 2";
+					this.OptionLabels[12].text = "Left Skirt 3";
+					this.OptionLabels[13].text = "Right Breast";
+					this.OptionLabels[14].text = "Right Nipple";
+					this.OptionLabels[15].text = "Left Breast";
+					this.OptionLabels[16].text = "Left Nipple";
+					this.Limit = 16;
+					return;
+				}
 			}
 			else
 			{
-				uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0.5f);
-			}
-		}
-		else if (this.Animating)
-		{
-			this.HeaderLabel.text = "Choose Animation";
-			for (int j = 1; j < 19; j++)
-			{
-				this.OptionLabels[j].text = string.Concat(new string[]
+				if (this.Posing)
 				{
-					"(",
-					(j + this.Offset).ToString(),
-					"/",
-					this.AnimID.ToString(),
-					") ",
-					this.AnimationArray[j + this.Offset]
-				});
+					this.HeaderLabel.text = "Pose Bone";
+					this.OptionLabels[1].text = "Position X";
+					this.OptionLabels[2].text = "Position Y";
+					this.OptionLabels[3].text = "Position Z";
+					this.OptionLabels[4].text = "Rotation X";
+					this.OptionLabels[5].text = "Rotation Y";
+					this.OptionLabels[6].text = "Rotation Z";
+					this.OptionLabels[7].text = "Scale X";
+					this.OptionLabels[8].text = "Scale Y";
+					this.OptionLabels[9].text = "Scale Z";
+					this.OptionLabels[10].text = "Degree of Change: " + this.Degree.ToString();
+					this.OptionLabels[11].text = "Reset";
+					this.Limit = 11;
+					return;
+				}
+				if (this.Customizing)
+				{
+					this.HeaderLabel.text = "Customize";
+					this.OptionLabels[1].text = "Hairstyle: " + this.Student.Cosmetic.Hairstyle.ToString();
+					this.OptionLabels[2].text = "Accessory: " + this.Student.Cosmetic.Accessory.ToString();
+					this.OptionLabels[3].text = "Clothing: " + this.Student.Schoolwear.ToString();
+					this.OptionLabels[4].text = "Hair R: " + (this.Student.Cosmetic.HairRenderer.material.color.r * 255f).ToString();
+					this.OptionLabels[5].text = "Hair G: " + (this.Student.Cosmetic.HairRenderer.material.color.g * 255f).ToString();
+					this.OptionLabels[6].text = "Hair B: " + (this.Student.Cosmetic.HairRenderer.material.color.b * 255f).ToString();
+					this.OptionLabels[7].text = "Eye R: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.r * 255f).ToString();
+					this.OptionLabels[8].text = "Eye G: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.g * 255f).ToString();
+					this.OptionLabels[9].text = "Eye B: " + (this.Student.Cosmetic.RightEyeRenderer.material.color.b * 255f).ToString();
+					this.OptionLabels[10].text = "Degree of Change: " + this.Degree.ToString();
+					this.OptionLabels[11].text = "Stockings: " + this.Student.Cosmetic.Stockings;
+					this.OptionLabels[12].text = "Blood: " + this.Student.LiquidProjector.enabled.ToString();
+					this.Limit = 12;
+					UILabel uilabel3 = this.OptionLabels[3];
+					UILabel uilabel4 = this.OptionLabels[11];
+					if (!this.Student.Male)
+					{
+						uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
+						uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 1f);
+						return;
+					}
+					uilabel4.color = new Color(uilabel4.color.r, uilabel4.color.g, uilabel4.color.b, 0.5f);
+					return;
+				}
+				else
+				{
+					if (this.Animating)
+					{
+						this.HeaderLabel.text = "Choose Animation";
+						for (int j = 1; j < 19; j++)
+						{
+							this.OptionLabels[j].text = string.Concat(new string[]
+							{
+								"(",
+								(j + this.Offset).ToString(),
+								"/",
+								this.AnimID.ToString(),
+								") ",
+								this.AnimationArray[j + this.Offset]
+							});
+						}
+						this.Limit = 18;
+						return;
+					}
+					if (this.EditingFace)
+					{
+						this.HeaderLabel.text = "Edit Face";
+						this.OptionLabels[1].text = "Smile Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(0) + ")";
+						this.OptionLabels[2].text = "Angry Eyebrows (" + this.Student.MyRenderer.GetBlendShapeWeight(1) + ")";
+						this.OptionLabels[3].text = "Open Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(2) + ")";
+						this.OptionLabels[4].text = "Ear Size (" + this.Student.MyRenderer.GetBlendShapeWeight(3) + ")";
+						this.OptionLabels[5].text = "Nose Size (" + this.Student.MyRenderer.GetBlendShapeWeight(4) + ")";
+						this.OptionLabels[6].text = "Close Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(5) + ")";
+						this.OptionLabels[7].text = "Sad Face (" + this.Student.MyRenderer.GetBlendShapeWeight(6) + ")";
+						this.OptionLabels[8].text = "(Unavailable) (" + this.Student.MyRenderer.GetBlendShapeWeight(7) + ")";
+						this.OptionLabels[9].text = "Thin Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(8) + ")";
+						this.OptionLabels[10].text = "Round Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(9) + ")";
+						this.OptionLabels[11].text = "Evil Face (" + this.Student.MyRenderer.GetBlendShapeWeight(10) + ")";
+						this.OptionLabels[12].text = "Naughty Face (" + this.Student.MyRenderer.GetBlendShapeWeight(11) + ")";
+						this.OptionLabels[13].text = "Gentle Face (" + this.Student.MyRenderer.GetBlendShapeWeight(12) + ")";
+						this.OptionLabels[14].text = "Thick Body (" + this.Student.MyRenderer.GetBlendShapeWeight(13) + ")";
+						this.OptionLabels[15].text = "Slim Body (" + this.Student.MyRenderer.GetBlendShapeWeight(14) + ")";
+						this.OptionLabels[16].text = "Long Skirt (" + this.Student.MyRenderer.GetBlendShapeWeight(15) + ")";
+						this.OptionLabels[17].text = "Short Skirt (" + this.Student.MyRenderer.GetBlendShapeWeight(16) + ")";
+						this.OptionLabels[18].text = "Degree of Change: " + this.Degree.ToString();
+						this.Limit = 18;
+						return;
+					}
+					if (this.SavingLoading)
+					{
+						this.HeaderLabel.text = "Save / Load";
+						this.OptionLabels[1].text = "Save Slot: " + this.SaveSlot;
+						this.OptionLabels[2].text = "Save";
+						this.OptionLabels[3].text = "Load";
+						this.Limit = 3;
+					}
+				}
 			}
-			this.Limit = 18;
-		}
-		else if (this.EditingFace)
-		{
-			this.HeaderLabel.text = "Edit Face";
-			this.OptionLabels[1].text = "Smile Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(0) + ")";
-			this.OptionLabels[2].text = "Angry Eyebrows (" + this.Student.MyRenderer.GetBlendShapeWeight(1) + ")";
-			this.OptionLabels[3].text = "Open Mouth (" + this.Student.MyRenderer.GetBlendShapeWeight(2) + ")";
-			this.OptionLabels[4].text = "Ear Size (" + this.Student.MyRenderer.GetBlendShapeWeight(3) + ")";
-			this.OptionLabels[5].text = "Nose Size (" + this.Student.MyRenderer.GetBlendShapeWeight(4) + ")";
-			this.OptionLabels[6].text = "Close Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(5) + ")";
-			this.OptionLabels[7].text = "Sad Face (" + this.Student.MyRenderer.GetBlendShapeWeight(6) + ")";
-			this.OptionLabels[8].text = "(Unavailable) (" + this.Student.MyRenderer.GetBlendShapeWeight(7) + ")";
-			this.OptionLabels[9].text = "Thin Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(8) + ")";
-			this.OptionLabels[10].text = "Round Eyes (" + this.Student.MyRenderer.GetBlendShapeWeight(9) + ")";
-			this.OptionLabels[11].text = "Evil Face (" + this.Student.MyRenderer.GetBlendShapeWeight(10) + ")";
-			this.OptionLabels[12].text = "Naughty Face (" + this.Student.MyRenderer.GetBlendShapeWeight(11) + ")";
-			this.OptionLabels[13].text = "Gentle Face (" + this.Student.MyRenderer.GetBlendShapeWeight(12) + ")";
-			this.OptionLabels[14].text = "Thick Body (" + this.Student.MyRenderer.GetBlendShapeWeight(13) + ")";
-			this.OptionLabels[15].text = "Slim Body (" + this.Student.MyRenderer.GetBlendShapeWeight(14) + ")";
-			this.OptionLabels[16].text = "Long Skirt (" + this.Student.MyRenderer.GetBlendShapeWeight(15) + ")";
-			this.OptionLabels[17].text = "Short Skirt (" + this.Student.MyRenderer.GetBlendShapeWeight(16) + ")";
-			this.OptionLabels[18].text = "Degree of Change: " + this.Degree.ToString();
-			this.Limit = 18;
-		}
-		else if (this.SavingLoading)
-		{
-			this.HeaderLabel.text = "Save / Load";
-			this.OptionLabels[1].text = "Save Slot: " + this.SaveSlot;
-			this.OptionLabels[2].text = "Save";
-			this.OptionLabels[3].text = "Load";
-			this.Limit = 3;
 		}
 	}
 
@@ -1097,24 +1126,11 @@ public class PoseModeScript : MonoBehaviour
 	private void CreateAnimationArray()
 	{
 		this.AnimID = 1;
-		IEnumerator enumerator = this.Student.CharacterAnimation.GetEnumerator();
-		try
+		foreach (object obj in this.Student.CharacterAnimation)
 		{
-			while (enumerator.MoveNext())
-			{
-				object obj = enumerator.Current;
-				AnimationState animationState = (AnimationState)obj;
-				this.AnimationArray[this.AnimID] = animationState.name;
-				this.AnimID++;
-			}
-		}
-		finally
-		{
-			IDisposable disposable;
-			if ((disposable = (enumerator as IDisposable)) != null)
-			{
-				disposable.Dispose();
-			}
+			AnimationState animationState = (AnimationState)obj;
+			this.AnimationArray[this.AnimID] = animationState.name;
+			this.AnimID++;
 		}
 		this.AnimID--;
 	}
@@ -1126,26 +1142,25 @@ public class PoseModeScript : MonoBehaviour
 			if (Input.GetAxis("Horizontal") > 0.5f)
 			{
 				this.Value = 1;
+				return;
 			}
-			else
-			{
-				this.Value = -1;
-			}
-		}
-		else if (Input.GetAxis("DpadX") > 0.5f || Input.GetAxis("DpadX") < -0.5f)
-		{
-			if (Input.GetAxis("DpadX") > 0.5f)
-			{
-				this.Value = 1;
-			}
-			else
-			{
-				this.Value = -1;
-			}
+			this.Value = -1;
+			return;
 		}
 		else
 		{
-			this.Value = ((!Input.GetKey(KeyCode.RightArrow)) ? -1 : 1);
+			if (Input.GetAxis("DpadX") <= 0.5f && Input.GetAxis("DpadX") >= -0.5f)
+			{
+				this.Value = (Input.GetKey(KeyCode.RightArrow) ? 1 : -1);
+				return;
+			}
+			if (Input.GetAxis("DpadX") > 0.5f)
+			{
+				this.Value = 1;
+				return;
+			}
+			this.Value = -1;
+			return;
 		}
 	}
 

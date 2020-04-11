@@ -151,6 +151,7 @@ public class ClassScript : MonoBehaviour
 						this.SubjectTemp[i] = 0;
 					}
 					this.CheckForGradeUp();
+					return;
 				}
 			}
 		}
@@ -190,13 +191,15 @@ public class ClassScript : MonoBehaviour
 								this.CutsceneManager.gameObject.SetActive(true);
 								this.Schemes.UpdateInstructions();
 								base.gameObject.SetActive(false);
+								return;
 							}
-							else if (!this.Portal.FadeOut)
+							if (!this.Portal.FadeOut)
 							{
 								this.Portal.Yandere.PhysicalGrade = ClassGlobals.PhysicalGrade;
 								this.PromptBar.Show = false;
 								this.Portal.Proceed = true;
 								base.gameObject.SetActive(false);
+								return;
 							}
 						}
 					}
@@ -262,12 +265,10 @@ public class ClassScript : MonoBehaviour
 		{
 			this.PromptBar.Label[0].text = "Confirm";
 			this.PromptBar.UpdateButtons();
+			return;
 		}
-		else
-		{
-			this.PromptBar.Label[0].text = string.Empty;
-			this.PromptBar.UpdateButtons();
-		}
+		this.PromptBar.Label[0].text = string.Empty;
+		this.PromptBar.UpdateButtons();
 	}
 
 	private void UpdateBars()
@@ -362,57 +363,65 @@ public class ClassScript : MonoBehaviour
 			this.GradeUpSubject = 1;
 			this.GradeUp = true;
 			this.Grade = 1;
+			return;
 		}
-		else if (ClassGlobals.Chemistry >= 20 && ClassGlobals.ChemistryGrade < 1)
+		if (ClassGlobals.Chemistry >= 20 && ClassGlobals.ChemistryGrade < 1)
 		{
 			ClassGlobals.ChemistryGrade = 1;
 			this.GradeUpSubject = 2;
 			this.GradeUp = true;
 			this.Grade = 1;
+			return;
 		}
-		else if (ClassGlobals.Language >= 20 && ClassGlobals.LanguageGrade < 1)
+		if (ClassGlobals.Language >= 20 && ClassGlobals.LanguageGrade < 1)
 		{
 			ClassGlobals.LanguageGrade = 1;
 			this.GradeUpSubject = 3;
 			this.GradeUp = true;
 			this.Grade = 1;
+			return;
 		}
-		else if (ClassGlobals.Physical >= 20 && ClassGlobals.PhysicalGrade < 1)
+		if (ClassGlobals.Physical >= 20 && ClassGlobals.PhysicalGrade < 1)
 		{
 			ClassGlobals.PhysicalGrade = 1;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 1;
+			return;
 		}
-		else if (ClassGlobals.Physical >= 40 && ClassGlobals.PhysicalGrade < 2)
+		if (ClassGlobals.Physical >= 40 && ClassGlobals.PhysicalGrade < 2)
 		{
 			ClassGlobals.PhysicalGrade = 2;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 2;
+			return;
 		}
-		else if (ClassGlobals.Physical >= 60 && ClassGlobals.PhysicalGrade < 3)
+		if (ClassGlobals.Physical >= 60 && ClassGlobals.PhysicalGrade < 3)
 		{
 			ClassGlobals.PhysicalGrade = 3;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 3;
+			return;
 		}
-		else if (ClassGlobals.Physical >= 80 && ClassGlobals.PhysicalGrade < 4)
+		if (ClassGlobals.Physical >= 80 && ClassGlobals.PhysicalGrade < 4)
 		{
 			ClassGlobals.PhysicalGrade = 4;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 4;
+			return;
 		}
-		else if (ClassGlobals.Physical == 100 && ClassGlobals.PhysicalGrade < 5)
+		if (ClassGlobals.Physical == 100 && ClassGlobals.PhysicalGrade < 5)
 		{
 			ClassGlobals.PhysicalGrade = 5;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 5;
+			return;
 		}
-		else if (ClassGlobals.Psychology >= 20 && ClassGlobals.PsychologyGrade < 1)
+		if (ClassGlobals.Psychology >= 20 && ClassGlobals.PsychologyGrade < 1)
 		{
 			ClassGlobals.PsychologyGrade = 1;
 			this.GradeUpSubject = 5;

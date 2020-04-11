@@ -210,7 +210,7 @@ public class StreetShopScript : MonoBehaviour
 			this.StreetShopInterface.PricesLabel[i].text = "$" + this.Costs[i];
 			if (this.StreetShopInterface.PricesLabel[i].text == "$0")
 			{
-				this.StreetShopInterface.PricesLabel[i].text = string.Empty;
+				this.StreetShopInterface.PricesLabel[i].text = "";
 			}
 			if (this.StoreType == ShopType.Salon)
 			{

@@ -28,55 +28,59 @@ public class TitleSaveFilesScript : MonoBehaviour
 		if (!this.Show)
 		{
 			base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 1050f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+			return;
 		}
-		else
+		base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+		if (!this.ConfirmationWindow.activeInHierarchy)
 		{
-			base.transform.localPosition = new Vector3(Mathf.Lerp(base.transform.localPosition.x, 0f, Time.deltaTime * 10f), base.transform.localPosition.y, base.transform.localPosition.z);
+			if (this.InputManager.TappedDown)
+			{
+				this.ID++;
+				if (this.ID > 3)
+				{
+					this.ID = 1;
+				}
+				this.UpdateHighlight();
+			}
+			if (this.InputManager.TappedUp)
+			{
+				this.ID--;
+				if (this.ID < 1)
+				{
+					this.ID = 3;
+				}
+				this.UpdateHighlight();
+			}
+		}
+		if (base.transform.localPosition.x < 50f)
+		{
 			if (!this.ConfirmationWindow.activeInHierarchy)
 			{
-				if (this.InputManager.TappedDown)
+				if (Input.GetButtonDown("A"))
 				{
-					this.ID++;
-					if (this.ID > 3)
-					{
-						this.ID = 1;
-					}
-					this.UpdateHighlight();
+					GameGlobals.Profile = this.ID;
+					Globals.DeleteAll();
+					GameGlobals.Profile = this.ID;
+					this.Menu.FadeOut = true;
+					this.Menu.Fading = true;
+					return;
 				}
-				if (this.InputManager.TappedUp)
+				if (Input.GetButtonDown("X"))
 				{
-					this.ID--;
-					if (this.ID < 1)
-					{
-						this.ID = 3;
-					}
-					this.UpdateHighlight();
+					this.ConfirmationWindow.SetActive(true);
+					return;
 				}
 			}
-			if (base.transform.localPosition.x < 50f)
+			else
 			{
-				if (!this.ConfirmationWindow.activeInHierarchy)
-				{
-					if (Input.GetButtonDown("A"))
-					{
-						GameGlobals.Profile = this.ID;
-						Globals.DeleteAll();
-						GameGlobals.Profile = this.ID;
-						this.Menu.FadeOut = true;
-						this.Menu.Fading = true;
-					}
-					else if (Input.GetButtonDown("X"))
-					{
-						this.ConfirmationWindow.SetActive(true);
-					}
-				}
-				else if (Input.GetButtonDown("A"))
+				if (Input.GetButtonDown("A"))
 				{
 					PlayerPrefs.SetInt("ProfileCreated_" + this.ID, 0);
 					this.ConfirmationWindow.SetActive(false);
 					this.SaveDatas[this.ID].Start();
+					return;
 				}
-				else if (Input.GetButtonDown("B"))
+				if (Input.GetButtonDown("B"))
 				{
 					this.ConfirmationWindow.SetActive(false);
 				}

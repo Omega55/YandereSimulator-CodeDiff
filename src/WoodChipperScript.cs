@@ -185,8 +185,9 @@ public class WoodChipperScript : MonoBehaviour
 				this.Shredding = false;
 				this.Occupied = false;
 				this.Timer = 0f;
+				return;
 			}
-			else if (this.Timer >= 9f)
+			if (this.Timer >= 9f)
 			{
 				if (this.Bucket != null)
 				{
@@ -194,6 +195,7 @@ public class WoodChipperScript : MonoBehaviour
 					this.Bucket.Bucket.FillSpeed = 1f;
 					this.Bucket = null;
 					this.BloodSpray.Stop();
+					return;
 				}
 			}
 			else if (this.Timer >= 0.33333f && !this.Bucket.Bucket.Full)
@@ -209,9 +211,10 @@ public class WoodChipperScript : MonoBehaviour
 
 	public void SetVictimsMissing()
 	{
-		foreach (int studentID in this.VictimList)
+		int[] victimList = this.VictimList;
+		for (int i = 0; i < victimList.Length; i++)
 		{
-			StudentGlobals.SetStudentMissing(studentID, true);
+			StudentGlobals.SetStudentMissing(victimList[i], true);
 		}
 	}
 }

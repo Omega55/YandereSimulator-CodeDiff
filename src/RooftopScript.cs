@@ -13,9 +13,10 @@ public class RooftopScript : MonoBehaviour
 	{
 		if (SchoolGlobals.RoofFence)
 		{
-			foreach (GameObject gameObject in this.DumpPoints)
+			GameObject[] dumpPoints = this.DumpPoints;
+			for (int i = 0; i < dumpPoints.Length; i++)
 			{
-				gameObject.SetActive(false);
+				dumpPoints[i].SetActive(false);
 			}
 			this.Railing.SetActive(false);
 			this.Fence.SetActive(true);

@@ -65,14 +65,12 @@ public class AlphabetScript : MonoBehaviour
 			this.PuzzleCube.SetActive(true);
 			this.WeaponBag.SetActive(true);
 			ClassGlobals.PhysicalGrade = 5;
+			return;
 		}
-		else
-		{
-			this.TargetLabel.transform.parent.gameObject.SetActive(false);
-			this.BombLabel.transform.parent.gameObject.SetActive(false);
-			base.gameObject.SetActive(false);
-			base.enabled = false;
-		}
+		this.TargetLabel.transform.parent.gameObject.SetActive(false);
+		this.BombLabel.transform.parent.gameObject.SetActive(false);
+		base.gameObject.SetActive(false);
+		base.enabled = false;
 	}
 
 	private void Update()
@@ -83,9 +81,9 @@ public class AlphabetScript : MonoBehaviour
 			{
 				if (this.StudentManager.Yandere.Inventory.SmokeBomb)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.SmokeBomb, this.Yandere.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.SmokeBomb, this.Yandere.position, Quaternion.identity);
 					this.RemainingBombs--;
-					this.BombLabel.text = string.Empty + this.RemainingBombs;
+					this.BombLabel.text = string.Concat(this.RemainingBombs);
 					if (this.RemainingBombs == 0)
 					{
 						this.StudentManager.Yandere.Inventory.SmokeBomb = false;
@@ -93,9 +91,9 @@ public class AlphabetScript : MonoBehaviour
 				}
 				else if (this.StudentManager.Yandere.Inventory.StinkBomb)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.StinkBomb, this.Yandere.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.StinkBomb, this.Yandere.position, Quaternion.identity);
 					this.RemainingBombs--;
-					this.BombLabel.text = string.Empty + this.RemainingBombs;
+					this.BombLabel.text = string.Concat(this.RemainingBombs);
 					if (this.RemainingBombs == 0)
 					{
 						this.StudentManager.Yandere.Inventory.StinkBomb = false;
@@ -103,9 +101,9 @@ public class AlphabetScript : MonoBehaviour
 				}
 				else if (this.StudentManager.Yandere.Inventory.AmnesiaBomb)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.AmnesiaBomb, this.Yandere.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.AmnesiaBomb, this.Yandere.position, Quaternion.identity);
 					this.RemainingBombs--;
-					this.BombLabel.text = string.Empty + this.RemainingBombs;
+					this.BombLabel.text = string.Concat(this.RemainingBombs);
 					if (this.RemainingBombs == 0)
 					{
 						this.StudentManager.Yandere.Inventory.AmnesiaBomb = false;

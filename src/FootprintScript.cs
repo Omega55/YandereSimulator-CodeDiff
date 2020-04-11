@@ -20,6 +20,6 @@ public class FootprintScript : MonoBehaviour
 			base.GetComponent<Renderer>().material.mainTexture = this.Flower;
 			base.transform.localScale = new Vector3(0.2f, 0.2f, 1f);
 		}
-		UnityEngine.Object.Destroy(this);
+		Object.Destroy(this);
 	}
 }

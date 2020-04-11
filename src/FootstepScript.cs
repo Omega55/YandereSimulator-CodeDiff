@@ -32,6 +32,7 @@ public class FootstepScript : MonoBehaviour
 			if (base.transform.position.y > this.Student.transform.position.y + this.UpThreshold)
 			{
 				this.FootUp = true;
+				return;
 			}
 		}
 		else if (base.transform.position.y < this.Student.transform.position.y + this.DownThreshold)
@@ -40,12 +41,12 @@ public class FootstepScript : MonoBehaviour
 			{
 				if (this.Student.Pathfinding.speed > 1f)
 				{
-					this.MyAudio.clip = this.RunFootsteps[UnityEngine.Random.Range(0, this.RunFootsteps.Length)];
+					this.MyAudio.clip = this.RunFootsteps[Random.Range(0, this.RunFootsteps.Length)];
 					this.MyAudio.volume = 0.2f;
 				}
 				else
 				{
-					this.MyAudio.clip = this.WalkFootsteps[UnityEngine.Random.Range(0, this.WalkFootsteps.Length)];
+					this.MyAudio.clip = this.WalkFootsteps[Random.Range(0, this.WalkFootsteps.Length)];
 					this.MyAudio.volume = 0.1f;
 				}
 				this.MyAudio.Play();

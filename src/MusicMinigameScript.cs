@@ -195,6 +195,7 @@ public class MusicMinigameScript : MonoBehaviour
 					if (this.Alpha == 1f)
 					{
 						this.Quit();
+						return;
 					}
 				}
 			}
@@ -414,7 +415,7 @@ public class MusicMinigameScript : MonoBehaviour
 				{
 					if (this.CringeTimer > 0f)
 					{
-						this.ChibiRenderer[this.ID].transform.localPosition = new Vector3(UnityEngine.Random.Range(-0.01f, 0.01f), 0.15f + UnityEngine.Random.Range(-0.01f, 0.01f), 0f);
+						this.ChibiRenderer[this.ID].transform.localPosition = new Vector3(Random.Range(-0.01f, 0.01f), 0.15f + Random.Range(-0.01f, 0.01f), 0f);
 						this.CringeTimer = Mathf.MoveTowards(this.CringeTimer, 0f, Time.deltaTime);
 						if (this.CringeTimer == 0f)
 						{
@@ -503,8 +504,9 @@ public class MusicMinigameScript : MonoBehaviour
 						this.Phase2Notes[this.Note] = 1;
 					}
 					this.Note++;
+					return;
 				}
-				else if (Input.GetKeyDown("right"))
+				if (Input.GetKeyDown("right"))
 				{
 					if (this.Phase == 1)
 					{
@@ -517,8 +519,9 @@ public class MusicMinigameScript : MonoBehaviour
 						this.Phase2Notes[this.Note] = 2;
 					}
 					this.Note++;
+					return;
 				}
-				else if (Input.GetKeyDown("left"))
+				if (Input.GetKeyDown("left"))
 				{
 					if (this.Phase == 1)
 					{
@@ -531,8 +534,9 @@ public class MusicMinigameScript : MonoBehaviour
 						this.Phase2Notes[this.Note] = 3;
 					}
 					this.Note++;
+					return;
 				}
-				else if (Input.GetKeyDown("down"))
+				if (Input.GetKeyDown("down"))
 				{
 					if (this.Phase == 1)
 					{
@@ -545,6 +549,7 @@ public class MusicMinigameScript : MonoBehaviour
 						this.Phase2Notes[this.Note] = 4;
 					}
 					this.Note++;
+					return;
 				}
 			}
 			else
@@ -559,7 +564,7 @@ public class MusicMinigameScript : MonoBehaviour
 				}
 				if (this.Note < this.Notes.Length && this.Notes[this.Note] > 0 && this.Timer + 2f > this.Times[this.Note])
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.NoteIcons[this.Notes[this.Note]], base.transform.position, Quaternion.identity);
+					GameObject gameObject = Object.Instantiate<GameObject>(this.NoteIcons[this.Notes[this.Note]], base.transform.position, Quaternion.identity);
 					gameObject.GetComponent<MusicNoteScript>().InputManager = this.InputManager;
 					gameObject.GetComponent<MusicNoteScript>().MusicMinigame = this;
 					gameObject.GetComponent<MusicNoteScript>().ID = this.Note;
@@ -583,6 +588,7 @@ public class MusicMinigameScript : MonoBehaviour
 					gameObject.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 					gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 					this.Note++;
+					return;
 				}
 			}
 		}
@@ -608,7 +614,7 @@ public class MusicMinigameScript : MonoBehaviour
 				if (this.Timer == 0f)
 				{
 					this.StartRep = PlayerPrefs.GetFloat("TempReputation");
-					this.CurrentRep.text = string.Empty + this.StartRep;
+					this.CurrentRep.text = string.Concat(this.StartRep);
 					if (this.Health > 100f)
 					{
 						this.RepBonus.text = "+" + (this.Health - 100f);
@@ -624,7 +630,7 @@ public class MusicMinigameScript : MonoBehaviour
 					{
 						num = 100f;
 					}
-					this.CurrentRep.text = string.Empty + num;
+					this.CurrentRep.text = string.Concat(num);
 					this.Power += Time.deltaTime;
 					this.ReputationMarker.localPosition = Vector3.Lerp(this.ReputationMarker.localPosition, new Vector3(num * 0.01f, 0f, -0.0002f), this.Power);
 				}
@@ -694,11 +700,9 @@ public class MusicMinigameScript : MonoBehaviour
 		if (this.Health == 200f)
 		{
 			this.Stars[5].material.mainTexture = this.GoldStar;
+			return;
 		}
-		else
-		{
-			this.Stars[5].material.mainTexture = this.EmptyStar;
-		}
+		this.Stars[5].material.mainTexture = this.EmptyStar;
 	}
 
 	public void Cringe()
@@ -725,9 +729,10 @@ public class MusicMinigameScript : MonoBehaviour
 		{
 			PlayerPrefs.SetFloat("TempReputation", 0f);
 		}
-		foreach (GameObject gameObject in SceneManager.GetActiveScene().GetRootGameObjects())
+		GameObject[] rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+		for (int i = 0; i < rootGameObjects.Length; i++)
 		{
-			gameObject.SetActive(true);
+			rootGameObjects[i].SetActive(true);
 		}
 		SceneManager.UnloadSceneAsync(22);
 	}

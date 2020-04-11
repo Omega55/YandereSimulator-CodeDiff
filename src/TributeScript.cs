@@ -47,8 +47,9 @@ public class TributeScript : MonoBehaviour
 			this.RiggedAttacher.newRenderer.SetBlendShapeWeight(0, 100f);
 			this.RiggedAttacher.newRenderer.SetBlendShapeWeight(1, 100f);
 			base.enabled = false;
+			return;
 		}
-		else if (!this.Yandere.PauseScreen.Show && this.Yandere.CanMove)
+		if (!this.Yandere.PauseScreen.Show && this.Yandere.CanMove)
 		{
 			if (Input.GetKeyDown(this.Letter[this.ID]))
 			{

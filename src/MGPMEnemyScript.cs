@@ -147,7 +147,7 @@ public class MGPMEnemyScript : MonoBehaviour
 					this.Speed += Time.deltaTime;
 					if (base.transform.localPosition.y > 288f)
 					{
-						UnityEngine.Object.Destroy(base.gameObject);
+						Object.Destroy(base.gameObject);
 					}
 				}
 				break;
@@ -171,14 +171,14 @@ public class MGPMEnemyScript : MonoBehaviour
 				}
 				if (base.transform.localPosition.y < -288f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 3:
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y - this.Speed * Time.deltaTime, 0f);
 				if (base.transform.localPosition.y < -288f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 4:
@@ -186,7 +186,7 @@ public class MGPMEnemyScript : MonoBehaviour
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x, base.transform.localPosition.y - this.Speed * Time.deltaTime, 0f);
 				if (base.transform.localPosition.y < -288f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 5:
@@ -207,7 +207,7 @@ public class MGPMEnemyScript : MonoBehaviour
 				}
 				if (base.transform.localPosition.y < -288f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 6:
@@ -218,7 +218,7 @@ public class MGPMEnemyScript : MonoBehaviour
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x - this.Speed * Time.deltaTime, base.transform.localPosition.y - this.Speed * 0.25f * Time.deltaTime, base.transform.localPosition.z);
 				if (base.transform.localPosition.x < -160f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 8:
@@ -226,7 +226,7 @@ public class MGPMEnemyScript : MonoBehaviour
 				base.transform.localPosition = new Vector3(base.transform.localPosition.x + this.Speed * Time.deltaTime, base.transform.localPosition.y - this.Speed * 0.25f * Time.deltaTime, base.transform.localPosition.z);
 				if (base.transform.localPosition.x > 160f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 9:
@@ -257,7 +257,7 @@ public class MGPMEnemyScript : MonoBehaviour
 				}
 				if (base.transform.localPosition.y < -288f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 10:
@@ -272,7 +272,7 @@ public class MGPMEnemyScript : MonoBehaviour
 				}
 				if (base.transform.localPosition.y < -288f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 				break;
 			case 11:
@@ -385,7 +385,7 @@ public class MGPMEnemyScript : MonoBehaviour
 		}
 		else if (this.Pattern < 11)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = base.transform.parent;
 			if (this.Pattern == 6 || this.Pattern == 9 || this.Pattern == 12)
 			{
@@ -397,12 +397,12 @@ public class MGPMEnemyScript : MonoBehaviour
 			}
 			if (GameGlobals.EasyMode)
 			{
-				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.PickUp, base.transform.position, Quaternion.identity);
+				GameObject gameObject2 = Object.Instantiate<GameObject>(this.PickUp, base.transform.position, Quaternion.identity);
 				gameObject2.transform.parent = base.transform.parent;
 				gameObject2.transform.localScale = new Vector3(16f, 16f, 1f);
 			}
 			this.GameplayManager.Score += 100;
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 		else
 		{
@@ -414,9 +414,9 @@ public class MGPMEnemyScript : MonoBehaviour
 			{
 				if (this.ExplosionTimer == 0f)
 				{
-					GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+					GameObject gameObject3 = Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
 					gameObject3.transform.parent = base.transform.parent;
-					gameObject3.transform.localPosition += new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0f);
+					gameObject3.transform.localPosition += new Vector3(Random.Range(-100f, 100f), Random.Range(-50f, 50f), 0f);
 					gameObject3.transform.localScale = new Vector3(128f, 128f, 1f);
 					this.GameplayManager.Score += 100;
 					this.ExplosionTimer = 0.1f;
@@ -428,12 +428,12 @@ public class MGPMEnemyScript : MonoBehaviour
 			}
 			else
 			{
-				GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.FinalBossExplosion, base.transform.position, Quaternion.identity);
+				GameObject gameObject4 = Object.Instantiate<GameObject>(this.FinalBossExplosion, base.transform.position, Quaternion.identity);
 				gameObject4.transform.parent = base.transform.parent;
 				gameObject4.transform.localScale = new Vector3(256f, 256f, 1f);
 				this.GameplayManager.StageClear = true;
 				this.GameplayManager.Score += 1000;
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
 			}
 		}
 		if (this.FlashWhite > 0f)
@@ -452,7 +452,7 @@ public class MGPMEnemyScript : MonoBehaviour
 
 	private void Attack(float AttackSpeed, float AttackRotation)
 	{
-		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Projectile, base.transform.position, Quaternion.identity);
+		GameObject gameObject = Object.Instantiate<GameObject>(this.Projectile, base.transform.position, Quaternion.identity);
 		gameObject.transform.parent = base.transform.parent;
 		gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
 		gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, 1f);
@@ -471,7 +471,7 @@ public class MGPMEnemyScript : MonoBehaviour
 	{
 		if (collision.gameObject.layer == 8)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Impact, base.transform.position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.Impact, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = base.transform.parent;
 			gameObject.transform.localScale = new Vector3(32f, 32f, 32f);
 			gameObject.transform.localPosition = new Vector3(collision.gameObject.transform.localPosition.x, collision.gameObject.transform.localPosition.y, 1f);
@@ -480,7 +480,7 @@ public class MGPMEnemyScript : MonoBehaviour
 			{
 				this.ExtraRenderer.material.SetColor("_EmissionColor", new Color(1f, 1f, 1f, 1f));
 			}
-			UnityEngine.Object.Destroy(collision.gameObject);
+			Object.Destroy(collision.gameObject);
 			this.FlashWhite = 0.05f;
 			this.Health--;
 			if (this.Health == 0)

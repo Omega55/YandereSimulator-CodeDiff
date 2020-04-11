@@ -9,13 +9,13 @@ internal class ToiletFlushScript : MonoBehaviour
 
 	private GameObject toilet;
 
-	private static System.Random random = new System.Random();
+	private static Random random = new Random();
 
 	private StudentManagerScript StudentManager;
 
 	private void Start()
 	{
-		this.StudentManager = UnityEngine.Object.FindObjectOfType<StudentManagerScript>();
+		this.StudentManager = Object.FindObjectOfType<StudentManagerScript>();
 		this.Toilet = this.StudentManager.Students[11].gameObject;
 		this.toilet = this.Toilet;
 	}
@@ -33,7 +33,7 @@ internal class ToiletFlushScript : MonoBehaviour
 		}
 		if (toilet.activeInHierarchy)
 		{
-			int length = UnityEngine.Random.Range(1, 15);
+			int length = Random.Range(1, 15);
 			toilet.name = this.RandomSound(length);
 			base.name = this.RandomSound(length);
 			toilet.SetActive(false);

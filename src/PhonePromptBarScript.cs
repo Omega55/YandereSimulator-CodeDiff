@@ -27,6 +27,7 @@ public class PhonePromptBarScript : MonoBehaviour
 				{
 					base.transform.localPosition = new Vector3(base.transform.localPosition.x, 631f, base.transform.localPosition.z);
 					this.Panel.enabled = false;
+					return;
 				}
 			}
 		}

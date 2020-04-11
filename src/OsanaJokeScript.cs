@@ -35,11 +35,13 @@ public class OsanaJokeScript : MonoBehaviour
 				{
 					this.Jukebox.clip = this.VictoryMusic;
 					this.Jukebox.Play();
+					return;
 				}
 			}
 			else if (this.Timer > 14f)
 			{
 				Application.Quit();
+				return;
 			}
 		}
 		else if (Input.GetKeyDown("f"))
@@ -52,11 +54,11 @@ public class OsanaJokeScript : MonoBehaviour
 			this.Rotation[5].enabled = false;
 			this.Rotation[6].enabled = false;
 			this.Rotation[7].enabled = false;
-			UnityEngine.Object.Instantiate<GameObject>(this.BloodSplatterEffect, this.Head.position, Quaternion.identity);
+			Object.Instantiate<GameObject>(this.BloodSplatterEffect, this.Head.position, Quaternion.identity);
 			this.Head.localScale = new Vector3(0f, 0f, 0f);
 			this.Jukebox.clip = this.BloodSplatterSFX;
 			this.Jukebox.Play();
-			this.Label.text = string.Empty;
+			this.Label.text = "";
 			this.Advance = true;
 		}
 	}

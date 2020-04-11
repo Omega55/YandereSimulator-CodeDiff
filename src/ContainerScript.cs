@@ -125,7 +125,7 @@ public class ContainerScript : MonoBehaviour
 				this.UpdatePrompts();
 			}
 		}
-		this.Lid.localEulerAngles = new Vector3(this.Lid.localEulerAngles.x, this.Lid.localEulerAngles.y, Mathf.Lerp(this.Lid.localEulerAngles.z, (!this.Open) ? 0f : 90f, Time.deltaTime * 10f));
+		this.Lid.localEulerAngles = new Vector3(this.Lid.localEulerAngles.x, this.Lid.localEulerAngles.y, Mathf.Lerp(this.Lid.localEulerAngles.z, this.Open ? 90f : 0f, Time.deltaTime * 10f));
 		if (this.Weapon != null)
 		{
 			this.Weapon.transform.localPosition = Vector3.zero;
@@ -161,67 +161,63 @@ public class ContainerScript : MonoBehaviour
 
 	public void UpdatePrompts()
 	{
-		if (this.Open)
+		if (!this.Open)
 		{
-			this.Prompt.Label[0].text = "     Close";
-			if (this.Contents > 0)
+			if (this.Prompt.Label[0] != null)
 			{
-				this.Prompt.Label[3].text = "     Remove";
+				this.Prompt.Label[0].text = "     Open";
+				this.Prompt.HideButton[1] = true;
+				this.Prompt.Label[3].text = "     Wear";
 				this.Prompt.HideButton[3] = false;
 			}
-			else
-			{
-				this.Prompt.HideButton[3] = true;
-			}
-			if (this.Prompt.Yandere.Armed)
-			{
-				if (!this.Prompt.Yandere.EquippedWeapon.Concealable)
-				{
-					if (this.Weapon == null)
-					{
-						this.Prompt.Label[1].text = "     Insert";
-						this.Prompt.HideButton[1] = false;
-					}
-					else
-					{
-						this.Prompt.HideButton[1] = true;
-					}
-				}
-				else
-				{
-					this.Prompt.HideButton[1] = true;
-				}
-			}
-			else if (this.Prompt.Yandere.PickUp != null)
-			{
-				if (this.Prompt.Yandere.PickUp.BodyPart != null)
-				{
-					if (this.BodyParts[this.Prompt.Yandere.PickUp.gameObject.GetComponent<BodyPartScript>().Type] == null)
-					{
-						this.Prompt.Label[1].text = "     Insert";
-						this.Prompt.HideButton[1] = false;
-					}
-					else
-					{
-						this.Prompt.HideButton[1] = true;
-					}
-				}
-				else
-				{
-					this.Prompt.HideButton[1] = true;
-				}
-			}
-			else
+			return;
+		}
+		this.Prompt.Label[0].text = "     Close";
+		if (this.Contents > 0)
+		{
+			this.Prompt.Label[3].text = "     Remove";
+			this.Prompt.HideButton[3] = false;
+		}
+		else
+		{
+			this.Prompt.HideButton[3] = true;
+		}
+		if (this.Prompt.Yandere.Armed)
+		{
+			if (this.Prompt.Yandere.EquippedWeapon.Concealable)
 			{
 				this.Prompt.HideButton[1] = true;
+				return;
 			}
-		}
-		else if (this.Prompt.Label[0] != null)
-		{
-			this.Prompt.Label[0].text = "     Open";
+			if (this.Weapon == null)
+			{
+				this.Prompt.Label[1].text = "     Insert";
+				this.Prompt.HideButton[1] = false;
+				return;
+			}
 			this.Prompt.HideButton[1] = true;
-			this.Prompt.Label[3].text = "     Wear";
-			this.Prompt.HideButton[3] = false;
+			return;
+		}
+		else
+		{
+			if (!(this.Prompt.Yandere.PickUp != null))
+			{
+				this.Prompt.HideButton[1] = true;
+				return;
+			}
+			if (!(this.Prompt.Yandere.PickUp.BodyPart != null))
+			{
+				this.Prompt.HideButton[1] = true;
+				return;
+			}
+			if (this.BodyParts[this.Prompt.Yandere.PickUp.gameObject.GetComponent<BodyPartScript>().Type] == null)
+			{
+				this.Prompt.Label[1].text = "     Insert";
+				this.Prompt.HideButton[1] = false;
+				return;
+			}
+			this.Prompt.HideButton[1] = true;
+			return;
 		}
 	}
 }

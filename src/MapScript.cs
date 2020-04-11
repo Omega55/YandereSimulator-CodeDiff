@@ -175,6 +175,7 @@ public class MapScript : MonoBehaviour
 					this.PromptBar.Show = false;
 					this.Yandere.RPGCamera.enabled = true;
 					this.Show = false;
+					return;
 				}
 			}
 		}

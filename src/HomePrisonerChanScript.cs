@@ -98,30 +98,29 @@ public class HomePrisonerChanScript : MonoBehaviour
 			}
 			this.PermanentAngleR = this.TwintailR.eulerAngles;
 			this.PermanentAngleL = this.TwintailL.eulerAngles;
-			if (!StudentGlobals.GetStudentArrested(this.StudentID) && !StudentGlobals.GetStudentDead(this.StudentID))
-			{
-				this.Cosmetic.StudentID = this.StudentID;
-				this.Cosmetic.enabled = true;
-				this.BreastSize = this.JSON.Students[this.StudentID].BreastSize;
-				this.RightEyeRotOrigin = this.RightEye.localEulerAngles;
-				this.LeftEyeRotOrigin = this.LeftEye.localEulerAngles;
-				this.RightEyeOrigin = this.RightEye.localPosition;
-				this.LeftEyeOrigin = this.LeftEye.localPosition;
-				this.UpdateSanity();
-				this.TwintailR.transform.localEulerAngles = new Vector3(0f, 180f, -90f);
-				this.TwintailL.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
-				this.Blindfold.SetActive(false);
-				this.Tripod.SetActive(false);
-				if (this.StudentID == 81 && !StudentGlobals.GetStudentBroken(81) && SchemeGlobals.GetSchemeStage(6) > 4)
-				{
-					this.Blindfold.SetActive(true);
-					this.Tripod.SetActive(true);
-				}
-			}
-			else
+			if (StudentGlobals.GetStudentArrested(this.StudentID) || StudentGlobals.GetStudentDead(this.StudentID))
 			{
 				SchoolGlobals.KidnapVictim = 0;
 				base.gameObject.SetActive(false);
+				return;
+			}
+			this.Cosmetic.StudentID = this.StudentID;
+			this.Cosmetic.enabled = true;
+			this.BreastSize = this.JSON.Students[this.StudentID].BreastSize;
+			this.RightEyeRotOrigin = this.RightEye.localEulerAngles;
+			this.LeftEyeRotOrigin = this.LeftEye.localEulerAngles;
+			this.RightEyeOrigin = this.RightEye.localPosition;
+			this.LeftEyeOrigin = this.LeftEye.localPosition;
+			this.UpdateSanity();
+			this.TwintailR.transform.localEulerAngles = new Vector3(0f, 180f, -90f);
+			this.TwintailL.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
+			this.Blindfold.SetActive(false);
+			this.Tripod.SetActive(false);
+			if (this.StudentID == 81 && !StudentGlobals.GetStudentBroken(81) && SchemeGlobals.GetSchemeStage(6) > 4)
+			{
+				this.Blindfold.SetActive(true);
+				this.Tripod.SetActive(true);
+				return;
 			}
 		}
 		else
@@ -187,8 +186,8 @@ public class HomePrisonerChanScript : MonoBehaviour
 			this.TwitchTimer += Time.deltaTime;
 			if (this.TwitchTimer > this.NextTwitch)
 			{
-				this.Twitch = new Vector3((1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f));
-				this.NextTwitch = UnityEngine.Random.Range(0f, 1f);
+				this.Twitch = new Vector3((1f - this.Sanity / 100f) * Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * Random.Range(-10f, 10f));
+				this.NextTwitch = Random.Range(0f, 1f);
 				this.TwitchTimer = 0f;
 			}
 			this.Twitch = Vector3.Lerp(this.Twitch, Vector3.zero, Time.deltaTime * 10f);

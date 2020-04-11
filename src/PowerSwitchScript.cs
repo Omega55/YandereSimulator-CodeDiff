@@ -51,6 +51,7 @@ public class PowerSwitchScript : MonoBehaviour
 			if (this.DrinkingFountain.Puddle != null && this.DrinkingFountain.Puddle.gameObject.activeInHierarchy && this.PowerOutlet.SabotagedOutlet.activeInHierarchy)
 			{
 				this.Electricity.SetActive(true);
+				return;
 			}
 		}
 		else

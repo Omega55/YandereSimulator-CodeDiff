@@ -113,20 +113,7 @@ public class NoteWindowScript : MonoBehaviour
 	private void Update()
 	{
 		float t = Time.unscaledDeltaTime * 10f;
-		if (!this.Show)
-		{
-			if (this.Rotation > -90f)
-			{
-				base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(455f, -965f, 0f), t);
-				this.Rotation = Mathf.Lerp(this.Rotation, -91f, t);
-				base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, this.Rotation);
-			}
-			else
-			{
-				base.gameObject.SetActive(false);
-			}
-		}
-		else
+		if (this.Show)
 		{
 			base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, Vector3.zero, t);
 			this.Rotation = Mathf.Lerp(this.Rotation, 0f, t);
@@ -340,6 +327,7 @@ public class NoteWindowScript : MonoBehaviour
 				if (uisprite.color.a >= 0.5f)
 				{
 					this.Fade = true;
+					return;
 				}
 			}
 			else
@@ -350,7 +338,16 @@ public class NoteWindowScript : MonoBehaviour
 					this.Fade = false;
 				}
 			}
+			return;
 		}
+		if (this.Rotation > -90f)
+		{
+			base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(455f, -965f, 0f), t);
+			this.Rotation = Mathf.Lerp(this.Rotation, -91f, t);
+			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, this.Rotation);
+			return;
+		}
+		base.gameObject.SetActive(false);
 	}
 
 	private void UpdateHighlights()
@@ -377,37 +374,42 @@ public class NoteWindowScript : MonoBehaviour
 			if (!EventGlobals.Event1)
 			{
 				this.SubLabels[10].text = "??????????";
+				return;
 			}
 		}
-		else if (this.Slot == 2)
+		else
 		{
-			this.ID = 1;
-			while (this.ID < this.SubLabels.Length)
+			if (this.Slot == 2)
 			{
-				UILabel uilabel2 = this.SubLabels[this.ID];
-				uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
-				if (this.LifeNote)
+				this.ID = 1;
+				while (this.ID < this.SubLabels.Length)
 				{
-					uilabel2.text = this.MurderMethods[this.ID];
+					UILabel uilabel2 = this.SubLabels[this.ID];
+					uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 1f);
+					if (this.LifeNote)
+					{
+						uilabel2.text = this.MurderMethods[this.ID];
+					}
+					else
+					{
+						uilabel2.text = this.Locations[this.ID];
+					}
+					this.ID++;
 				}
-				else
-				{
-					uilabel2.text = this.Locations[this.ID];
-				}
-				this.ID++;
+				return;
 			}
-		}
-		else if (this.Slot == 3)
-		{
-			this.ID = 1;
-			while (this.ID < this.SubLabels.Length)
+			if (this.Slot == 3)
 			{
-				UILabel uilabel3 = this.SubLabels[this.ID];
-				uilabel3.text = this.Times[this.ID];
-				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
-				this.ID++;
+				this.ID = 1;
+				while (this.ID < this.SubLabels.Length)
+				{
+					UILabel uilabel3 = this.SubLabels[this.ID];
+					uilabel3.text = this.Times[this.ID];
+					uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
+					this.ID++;
+				}
+				this.DisableOptions();
 			}
-			this.DisableOptions();
 		}
 	}
 

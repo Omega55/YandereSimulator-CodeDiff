@@ -27,14 +27,14 @@ public class BlasterScript : MonoBehaviour
 		}
 		if (animationState.time >= animationState.length)
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 
 	private void LateUpdate()
 	{
 		AnimationState animationState = base.GetComponent<Animation>()["Blast"];
-		this.Size = ((animationState.time >= 1.5f) ? Mathf.Lerp(this.Size, 0f, Time.deltaTime * 10f) : Mathf.Lerp(this.Size, 2f, Time.deltaTime * 5f));
+		this.Size = ((animationState.time < 1.5f) ? Mathf.Lerp(this.Size, 2f, Time.deltaTime * 5f) : Mathf.Lerp(this.Size, 0f, Time.deltaTime * 10f));
 		this.Skull.localScale = new Vector3(this.Size, this.Size, this.Size);
 	}
 }

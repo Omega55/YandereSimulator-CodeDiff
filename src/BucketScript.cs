@@ -233,8 +233,7 @@ public class BucketScript : MonoBehaviour
 				this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().enabled = true;
 				this.Dumbbell[this.Dumbbells].GetComponent<PromptScript>().enabled = true;
 				this.Dumbbell[this.Dumbbells].GetComponent<WeaponScript>().Prompt.Circle[3].fillAmount = 0f;
-				Rigidbody component2 = this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>();
-				component2.isKinematic = false;
+				this.Dumbbell[this.Dumbbells].GetComponent<Rigidbody>().isKinematic = false;
 				this.Dumbbell[this.Dumbbells] = null;
 				this.Dumbbells--;
 			}
@@ -325,17 +324,17 @@ public class BucketScript : MonoBehaviour
 					{
 						if (!this.Gasoline)
 						{
-							this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.SpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+							this.Effect = Object.Instantiate<GameObject>(this.SpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 						}
 						else
 						{
-							this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.GasSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+							this.Effect = Object.Instantiate<GameObject>(this.GasSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 							this.Gasoline = false;
 						}
 					}
 					else
 					{
-						this.Effect = UnityEngine.Object.Instantiate<GameObject>(this.BloodSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
+						this.Effect = Object.Instantiate<GameObject>(this.BloodSpillEffect, base.transform.position + base.transform.forward * 0.5f + base.transform.up * 0.5f, base.transform.rotation);
 						this.Bloodiness = 0f;
 					}
 					if (this.Trap)
@@ -344,9 +343,9 @@ public class BucketScript : MonoBehaviour
 					}
 					else
 					{
-						Rigidbody component3 = base.GetComponent<Rigidbody>();
-						component3.AddRelativeForce(Vector3.forward * 150f);
-						component3.AddRelativeForce(Vector3.up * 250f);
+						Rigidbody component2 = base.GetComponent<Rigidbody>();
+						component2.AddRelativeForce(Vector3.forward * 150f);
+						component2.AddRelativeForce(Vector3.up * 250f);
 						base.transform.Translate(Vector3.forward * 0.5f);
 					}
 				}
@@ -418,7 +417,7 @@ public class BucketScript : MonoBehaviour
 				component.BecomeRagdoll();
 				this.Dropped = false;
 				GameObjectUtils.SetLayerRecursively(base.gameObject, 15);
-				Debug.Log(component.Name + "'s ''Alive'' variable is: " + component.Alive);
+				Debug.Log(component.Name + "'s ''Alive'' variable is: " + component.Alive.ToString());
 			}
 		}
 	}

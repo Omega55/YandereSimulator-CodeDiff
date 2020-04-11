@@ -111,6 +111,7 @@ public class MGPMManagerScript : MonoBehaviour
 				if (this.Black.material.color.a == 1f)
 				{
 					SceneManager.LoadScene("MiyukiThanksScene");
+					return;
 				}
 			}
 		}
@@ -176,6 +177,7 @@ public class MGPMManagerScript : MonoBehaviour
 					if (GameGlobals.HardMode)
 					{
 						this.Jukebox.pitch = 0.2f;
+						return;
 					}
 				}
 			}

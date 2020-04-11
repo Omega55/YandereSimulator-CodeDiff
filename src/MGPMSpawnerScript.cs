@@ -50,7 +50,7 @@ public class MGPMSpawnerScript : MonoBehaviour
 		{
 			if (this.Timer > this.SpawnTimers[this.ID])
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Enemy[this.SpawnEnemies[this.ID]], base.transform.position, Quaternion.identity);
+				GameObject gameObject = Object.Instantiate<GameObject>(this.Enemy[this.SpawnEnemies[this.ID]], base.transform.position, Quaternion.identity);
 				gameObject.transform.parent = base.transform.parent;
 				if (this.SpawnEnemies[this.ID] == 4 || this.SpawnEnemies[this.ID] == 11)
 				{
@@ -72,7 +72,7 @@ public class MGPMSpawnerScript : MonoBehaviour
 				{
 					if (this.ID < 100)
 					{
-						this.SpawnPositions[this.ID].localPosition = new Vector3(UnityEngine.Random.Range(-100f, 100f), 0f, 0f);
+						this.SpawnPositions[this.ID].localPosition = new Vector3(Random.Range(-100f, 100f), 0f, 0f);
 					}
 					else if (this.ID == 100)
 					{
@@ -84,6 +84,7 @@ public class MGPMSpawnerScript : MonoBehaviour
 					}
 				}
 				this.ID++;
+				return;
 			}
 		}
 		else if (this.Wave == 9 && this.LoadBearer[1] == null && this.LoadBearer[2] == null)
@@ -91,7 +92,7 @@ public class MGPMSpawnerScript : MonoBehaviour
 			this.GameplayManager.Jukebox.volume = Mathf.MoveTowards(this.GameplayManager.Jukebox.volume, 0f, Time.deltaTime * 0.5f);
 			if (this.GameplayManager.Jukebox.volume == 0f)
 			{
-				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.Enemy[this.SpawnEnemies[this.ID]], base.transform.position, Quaternion.identity);
+				GameObject gameObject2 = Object.Instantiate<GameObject>(this.Enemy[this.SpawnEnemies[this.ID]], base.transform.position, Quaternion.identity);
 				gameObject2.transform.parent = base.transform.parent;
 				gameObject2.transform.localScale = new Vector3(256f, 128f, 1f);
 				gameObject2.transform.position = this.SpawnPositions[this.ID].position;

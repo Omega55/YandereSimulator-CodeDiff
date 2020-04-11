@@ -7,7 +7,7 @@ namespace YandereSimulator.Yancord
 	{
 		public static void SetBool(string name, bool flag)
 		{
-			PlayerPrefs.SetInt(name, (!flag) ? 0 : 1);
+			PlayerPrefs.SetInt(name, flag ? 1 : 0);
 		}
 
 		public static bool GetBool(string name)

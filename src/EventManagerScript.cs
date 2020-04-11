@@ -81,7 +81,7 @@ public class EventManagerScript : MonoBehaviour
 		this.NoteLocker.CanLeaveNote = true;
 		if (this.EventStudent1 == 11)
 		{
-			UnityEngine.Object.Destroy(this);
+			Object.Destroy(this);
 		}
 	}
 
@@ -142,125 +142,121 @@ public class EventManagerScript : MonoBehaviour
 			if (this.Clock.HourTime > this.EndTime || this.EventStudent[1].WitnessedCorpse || this.EventStudent[2].WitnessedCorpse || this.EventStudent[1].Dying || this.EventStudent[2].Dying || this.EventStudent[1].Splashed || this.EventStudent[2].Splashed || this.EventStudent[1].Alarmed || this.EventStudent[2].Alarmed)
 			{
 				this.EndEvent();
+				return;
 			}
-			else
+			if (this.Osana && this.EventStudent[1].DistanceToDestination < 1f)
 			{
-				if (this.Osana && this.EventStudent[1].DistanceToDestination < 1f)
-				{
-					this.EventStudent[2].CurrentDestination = this.EventLocation[2];
-					this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
-					this.EventStudent[2].EventManager = this;
-					this.EventStudent[2].InEvent = true;
-				}
-				if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[1].Private)
+				this.EventStudent[2].CurrentDestination = this.EventLocation[2];
+				this.EventStudent[2].Pathfinding.target = this.EventLocation[2];
+				this.EventStudent[2].EventManager = this;
+				this.EventStudent[2].InEvent = true;
+			}
+			if (!this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[1].Private)
+			{
+				this.EventStudent[1].CharacterAnimation.CrossFade(this.EventStudent[1].IdleAnim);
+				this.EventStudent[1].Private = true;
+				this.StudentManager.UpdateStudents(0);
+			}
+			if (Vector3.Distance(this.EventStudent[2].transform.position, this.EventLocation[2].position) < 1f && !this.EventStudent[2].Pathfinding.canMove && !this.StopWalking)
+			{
+				this.StopWalking = true;
+				this.EventStudent[2].CharacterAnimation.CrossFade(this.EventStudent[2].IdleAnim);
+				this.EventStudent[2].Private = true;
+				this.StudentManager.UpdateStudents(0);
+			}
+			if (this.StopWalking && this.EventPhase == 1)
+			{
+				this.EventStudent[2].CharacterAnimation.CrossFade(this.EventStudent[2].IdleAnim);
+			}
+			if (Vector3.Distance(this.EventStudent[1].transform.position, this.EventLocation[1].position) < 1f && !this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
+			{
+				if (this.EventPhase == 1)
 				{
 					this.EventStudent[1].CharacterAnimation.CrossFade(this.EventStudent[1].IdleAnim);
-					this.EventStudent[1].Private = true;
-					this.StudentManager.UpdateStudents(0);
 				}
-				if (Vector3.Distance(this.EventStudent[2].transform.position, this.EventLocation[2].position) < 1f && !this.EventStudent[2].Pathfinding.canMove && !this.StopWalking)
+				if (this.Osana)
 				{
-					this.StopWalking = true;
-					this.EventStudent[2].CharacterAnimation.CrossFade(this.EventStudent[2].IdleAnim);
-					this.EventStudent[2].Private = true;
-					this.StudentManager.UpdateStudents(0);
+					this.SettleFriend();
 				}
-				if (this.StopWalking && this.EventPhase == 1)
+				if (!this.Spoken)
 				{
-					this.EventStudent[2].CharacterAnimation.CrossFade(this.EventStudent[2].IdleAnim);
-				}
-				if (Vector3.Distance(this.EventStudent[1].transform.position, this.EventLocation[1].position) < 1f && !this.EventStudent[1].Pathfinding.canMove && !this.EventStudent[2].Pathfinding.canMove)
-				{
-					if (this.EventPhase == 1)
+					this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation.CrossFade(this.EventAnim[this.EventPhase]);
+					if (num < 10f)
 					{
-						this.EventStudent[1].CharacterAnimation.CrossFade(this.EventStudent[1].IdleAnim);
+						this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
 					}
-					if (this.Osana)
+					AudioClipPlayer.Play(this.EventClip[this.EventPhase], this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip, this.Yandere.transform.position.y);
+					this.Spoken = true;
+				}
+				else
+				{
+					this.Timer += Time.deltaTime;
+					if (this.Timer > this.EventClip[this.EventPhase].length)
 					{
-						this.SettleFriend();
+						this.EventSubtitle.text = string.Empty;
 					}
-					if (!this.Spoken)
+					if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - 1f)
 					{
-						this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation.CrossFade(this.EventAnim[this.EventPhase]);
-						if (num < 10f)
+						this.EventSubtitle.transform.localScale = Vector3.zero;
+					}
+					else if (num < 10f)
+					{
+						this.Scale = Mathf.Abs((num - 10f) * 0.2f);
+						if (this.Scale < 0f)
 						{
-							this.EventSubtitle.text = this.EventSpeech[this.EventPhase];
+							this.Scale = 0f;
 						}
-						AudioClipPlayer.Play(this.EventClip[this.EventPhase], this.EventStudent[this.EventSpeaker[this.EventPhase]].transform.position + Vector3.up * 1.5f, 5f, 10f, out this.VoiceClip, this.Yandere.transform.position.y);
-						this.Spoken = true;
+						if (this.Scale > 1f)
+						{
+							this.Scale = 1f;
+						}
+						this.Jukebox.Dip = 1f - 0.5f * this.Scale;
+						this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
 					}
 					else
 					{
-						this.Timer += Time.deltaTime;
-						if (this.Timer > this.EventClip[this.EventPhase].length)
+						this.EventSubtitle.transform.localScale = Vector3.zero;
+					}
+					Animation characterAnimation = this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation;
+					if (characterAnimation[this.EventAnim[this.EventPhase]].time >= characterAnimation[this.EventAnim[this.EventPhase]].length - 1f)
+					{
+						characterAnimation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim, 1f);
+					}
+					if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
+					{
+						this.Spoken = false;
+						this.EventPhase++;
+						this.Timer = 0f;
+						if (this.EventPhase == this.EventSpeech.Length)
 						{
-							this.EventSubtitle.text = string.Empty;
+							this.EndEvent();
 						}
-						if (this.Yandere.transform.position.y < this.EventStudent[1].transform.position.y - 1f)
+					}
+					if (!this.Suitor && this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f)
+					{
+						if (this.EventStudent1 == 25)
 						{
-							this.EventSubtitle.transform.localScale = Vector3.zero;
-						}
-						else if (num < 10f)
-						{
-							this.Scale = Mathf.Abs((num - 10f) * 0.2f);
-							if (this.Scale < 0f)
-							{
-								this.Scale = 0f;
-							}
-							if (this.Scale > 1f)
-							{
-								this.Scale = 1f;
-							}
-							this.Jukebox.Dip = 1f - 0.5f * this.Scale;
-							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
-						}
-						else
-						{
-							this.EventSubtitle.transform.localScale = Vector3.zero;
-						}
-						Animation characterAnimation = this.EventStudent[this.EventSpeaker[this.EventPhase]].CharacterAnimation;
-						if (characterAnimation[this.EventAnim[this.EventPhase]].time >= characterAnimation[this.EventAnim[this.EventPhase]].length - 1f)
-						{
-							characterAnimation.CrossFade(this.EventStudent[this.EventSpeaker[this.EventPhase]].IdleAnim, 1f);
-						}
-						if (this.Timer > this.EventClip[this.EventPhase].length + 1f)
-						{
-							this.Spoken = false;
-							this.EventPhase++;
-							this.Timer = 0f;
-							if (this.EventPhase == this.EventSpeech.Length)
-							{
-								this.EndEvent();
-							}
-						}
-						if (!this.Suitor && this.Yandere.transform.position.y > this.EventStudent[1].transform.position.y - 1f && this.EventPhase == 7 && num < 5f)
-						{
-							if (this.EventStudent1 == 25)
-							{
-								if (!EventGlobals.Event1)
-								{
-									this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-									EventGlobals.Event1 = true;
-								}
-							}
-							else if (this.OsanaID < 2 && !EventGlobals.OsanaEvent2)
+							if (!EventGlobals.Event1)
 							{
 								this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
-								EventGlobals.OsanaEvent2 = true;
+								EventGlobals.Event1 = true;
 							}
 						}
+						else if (this.OsanaID < 2 && !EventGlobals.OsanaEvent2)
+						{
+							this.Yandere.NotificationManager.DisplayNotification(NotificationType.Info);
+							EventGlobals.OsanaEvent2 = true;
+						}
 					}
-					if (base.enabled)
+				}
+				if (base.enabled)
+				{
+					if (num < 3f)
 					{
-						if (num < 3f)
-						{
-							this.Yandere.Eavesdropping = true;
-						}
-						else
-						{
-							this.Yandere.Eavesdropping = false;
-						}
+						this.Yandere.Eavesdropping = true;
+						return;
 					}
+					this.Yandere.Eavesdropping = false;
 				}
 			}
 		}
@@ -269,8 +265,7 @@ public class EventManagerScript : MonoBehaviour
 	private void SettleFriend()
 	{
 		this.EventStudent[2].MoveTowardsTarget(this.EventLocation[2].position);
-		float num = Quaternion.Angle(this.EventStudent[2].transform.rotation, this.EventLocation[2].rotation);
-		if (num > 1f)
+		if (Quaternion.Angle(this.EventStudent[2].transform.rotation, this.EventLocation[2].rotation) > 1f)
 		{
 			this.EventStudent[2].transform.rotation = Quaternion.Slerp(this.EventStudent[2].transform.rotation, this.EventLocation[2].rotation, 10f * Time.deltaTime);
 		}
@@ -280,7 +275,7 @@ public class EventManagerScript : MonoBehaviour
 	{
 		if (this.VoiceClip != null)
 		{
-			UnityEngine.Object.Destroy(this.VoiceClip);
+			Object.Destroy(this.VoiceClip);
 		}
 		this.EventStudent[1].CurrentDestination = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
 		this.EventStudent[1].Pathfinding.target = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];

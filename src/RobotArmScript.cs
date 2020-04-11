@@ -70,27 +70,7 @@ public class RobotArmScript : MonoBehaviour
 		}
 		if (this.Work)
 		{
-			if (this.StartWorkTimer > 0f)
-			{
-				this.ID = 1;
-				while (this.ID < 9)
-				{
-					this.ArmValue[this.ID] = Mathf.Lerp(this.ArmValue[this.ID], 100f, Time.deltaTime * 5f);
-					this.RobotArms.SetBlendShapeWeight(this.ID, this.ArmValue[this.ID]);
-					this.ID += 2;
-				}
-				this.StartWorkTimer -= Time.deltaTime;
-				if (this.StartWorkTimer < 0f)
-				{
-					this.ID = 1;
-					while (this.ID < 9)
-					{
-						this.RobotArms.SetBlendShapeWeight(this.ID, 100f);
-						this.ID += 2;
-					}
-				}
-			}
-			else
+			if (this.StartWorkTimer <= 0f)
 			{
 				this.ID = 1;
 				while (this.ID < 9)
@@ -100,8 +80,7 @@ public class RobotArmScript : MonoBehaviour
 					{
 						this.Sparks[this.ID].Stop();
 						this.Sparks[this.ID + 1].Stop();
-						int num = UnityEngine.Random.Range(0, 2);
-						if (num == 1)
+						if (Random.Range(0, 2) == 1)
 						{
 							this.On[this.ID] = true;
 						}
@@ -109,7 +88,7 @@ public class RobotArmScript : MonoBehaviour
 						{
 							this.On[this.ID] = false;
 						}
-						this.Timer[this.ID] = UnityEngine.Random.Range(1f, 2f);
+						this.Timer[this.ID] = Random.Range(1f, 2f);
 					}
 					if (this.On[this.ID])
 					{
@@ -143,6 +122,25 @@ public class RobotArmScript : MonoBehaviour
 					}
 					this.ID += 2;
 				}
+				return;
+			}
+			this.ID = 1;
+			while (this.ID < 9)
+			{
+				this.ArmValue[this.ID] = Mathf.Lerp(this.ArmValue[this.ID], 100f, Time.deltaTime * 5f);
+				this.RobotArms.SetBlendShapeWeight(this.ID, this.ArmValue[this.ID]);
+				this.ID += 2;
+			}
+			this.StartWorkTimer -= Time.deltaTime;
+			if (this.StartWorkTimer < 0f)
+			{
+				this.ID = 1;
+				while (this.ID < 9)
+				{
+					this.RobotArms.SetBlendShapeWeight(this.ID, 100f);
+					this.ID += 2;
+				}
+				return;
 			}
 		}
 		else if (this.StopWorkTimer > 0f)

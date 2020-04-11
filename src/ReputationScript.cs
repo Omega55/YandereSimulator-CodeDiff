@@ -103,23 +103,25 @@ public class ReputationScript : MonoBehaviour
 			if (this.PendingRep > 0f)
 			{
 				this.PendingRepLabel.text = "+" + this.PendingRep.ToString();
+				return;
 			}
-			else if (this.PendingRep < 0f)
+			if (this.PendingRep < 0f)
 			{
 				this.PendingRepLabel.text = this.PendingRep.ToString();
+				return;
 			}
-			else
-			{
-				this.PendingRepLabel.text = string.Empty;
-			}
-		}
-		else if (this.PendingRep < 0f)
-		{
-			this.PendingRepLabel.text = (-this.PendingRep).ToString();
+			this.PendingRepLabel.text = string.Empty;
+			return;
 		}
 		else
 		{
+			if (this.PendingRep < 0f)
+			{
+				this.PendingRepLabel.text = (-this.PendingRep).ToString();
+				return;
+			}
 			this.PendingRepLabel.text = string.Empty;
+			return;
 		}
 	}
 

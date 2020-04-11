@@ -103,9 +103,6 @@ public class PortalScript : MonoBehaviour
 					{
 						flag2 = true;
 					}
-					if (flag2)
-					{
-					}
 					if (this.Late > 0 && flag2)
 					{
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.TeacherLateReaction, this.Late, 5.5f);
@@ -196,7 +193,7 @@ public class PortalScript : MonoBehaviour
 						this.PromptBar.Label[5].text = "Allocate";
 						this.PromptBar.UpdateButtons();
 						this.PromptBar.Show = true;
-						this.Class.StudyPoints = ((PlayerGlobals.PantiesEquipped != 11) ? 5 : 10);
+						this.Class.StudyPoints = ((PlayerGlobals.PantiesEquipped == 11) ? 10 : 5);
 						this.Class.StudyPoints -= this.Late;
 						this.Class.UpdateLabel();
 						this.Class.gameObject.SetActive(true);
@@ -272,13 +269,12 @@ public class PortalScript : MonoBehaviour
 					base.transform.position = new Vector3(0f, 1f, -75f);
 					this.Prompt.Label[0].text = "     Go Home";
 					this.Prompt.enabled = true;
+					return;
 				}
-				else
-				{
-					base.transform.position = new Vector3(0f, -10f, 0f);
-					this.Prompt.Hide();
-					this.Prompt.enabled = false;
-				}
+				base.transform.position = new Vector3(0f, -10f, 0f);
+				this.Prompt.Hide();
+				this.Prompt.enabled = false;
+				return;
 			}
 		}
 		else if (!this.Yandere.Police.FadeOut && Vector3.Distance(this.Yandere.transform.position, base.transform.position) < 1.4f)
@@ -335,6 +331,7 @@ public class PortalScript : MonoBehaviour
 				if (this.Timer > 5f)
 				{
 					this.Timer = 0f;
+					return;
 				}
 			}
 			else
@@ -410,9 +407,7 @@ public class PortalScript : MonoBehaviour
 			this.Late = 4;
 		}
 		this.Reputation.PendingRep -= (float)(5 * this.Late);
-		if (this.Late > 0)
-		{
-		}
+		int late = this.Late;
 	}
 
 	public void EndEvents()

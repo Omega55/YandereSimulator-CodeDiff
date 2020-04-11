@@ -22,15 +22,13 @@ public class TrashCompactorScript : MonoBehaviour
 		if (this.StudentManager.Students[10] != null || this.StudentManager.Students[11] != null)
 		{
 			this.CompactTrash();
+			return;
 		}
-		else
+		for (int i = 1; i < 101; i++)
 		{
-			for (int i = 1; i < 101; i++)
+			if (this.StudentManager.Students[i] != null && !this.StudentManager.Students[i].Male && (this.StudentManager.Students[i].Cosmetic.Hairstyle == 20 || this.StudentManager.Students[i].Cosmetic.Hairstyle == 21 || this.StudentManager.Students[i].Persona == PersonaType.Protective))
 			{
-				if (this.StudentManager.Students[i] != null && !this.StudentManager.Students[i].Male && (this.StudentManager.Students[i].Cosmetic.Hairstyle == 20 || this.StudentManager.Students[i].Cosmetic.Hairstyle == 21 || this.StudentManager.Students[i].Persona == PersonaType.Protective))
-				{
-					this.CompactTrash();
-				}
+				this.CompactTrash();
 			}
 		}
 	}

@@ -26,8 +26,7 @@ public class PeekScript : MonoBehaviour
 
 	private void Update()
 	{
-		float num = Vector3.Distance(base.transform.position, this.Prompt.Yandere.transform.position);
-		if (num < 2f)
+		if (Vector3.Distance(base.transform.position, this.Prompt.Yandere.transform.position) < 2f)
 		{
 			this.Prompt.Yandere.StudentManager.TutorialWindow.ShowInfoMessage = true;
 		}

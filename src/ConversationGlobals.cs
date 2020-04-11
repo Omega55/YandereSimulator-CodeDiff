@@ -44,7 +44,7 @@ public static class ConversationGlobals
 			GameGlobals.Profile,
 			"_TopicLearnedByStudent_",
 			topicID.ToString(),
-			'_',
+			"_",
 			studentID.ToString()
 		}));
 	}
@@ -53,14 +53,14 @@ public static class ConversationGlobals
 	{
 		string text = topicID.ToString();
 		string text2 = studentID.ToString();
-		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_TopicLearnedByStudent_", text + '^' + text2);
+		KeysHelper.AddIfMissing("Profile_" + GameGlobals.Profile + "_TopicLearnedByStudent_", text + "^" + text2);
 		GlobalsHelper.SetBool(string.Concat(new object[]
 		{
 			"Profile_",
 			GameGlobals.Profile,
 			"_TopicLearnedByStudent_",
 			text,
-			'_',
+			"_",
 			text2
 		}), value);
 	}
@@ -88,7 +88,7 @@ public static class ConversationGlobals
 				GameGlobals.Profile,
 				"_TopicLearnedByStudent_",
 				intAndIntPair.first.ToString(),
-				'_',
+				"_",
 				intAndIntPair.second.ToString()
 			}));
 		}

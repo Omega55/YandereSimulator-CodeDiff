@@ -96,7 +96,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 			{
 				if (base.transform.position.z == 0f)
 				{
-					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, (this.Yanmont.transform.position.x <= base.transform.position.x) ? 90f : -90f, base.transform.localEulerAngles.z);
+					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, (this.Yanmont.transform.position.x > base.transform.position.x) ? -90f : 90f, base.transform.localEulerAngles.z);
 				}
 				if (this.NewTeleportEffect == null)
 				{
@@ -109,7 +109,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 						}
 						if (this.AttackID == 0)
 						{
-							this.AttackID = UnityEngine.Random.Range(1, 3);
+							this.AttackID = Random.Range(1, 3);
 							this.TeleportTimer = 5f;
 							if (this.AttackID == 1)
 							{
@@ -128,7 +128,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 							{
 								if (component["succubus_a_charm_02"].time > 4f && this.NewAttack == null)
 								{
-									this.NewAttack = UnityEngine.Object.Instantiate<GameObject>(this.TripleFireball, this.RightHand.position, Quaternion.identity);
+									this.NewAttack = Object.Instantiate<GameObject>(this.TripleFireball, this.RightHand.position, Quaternion.identity);
 									this.NewAttack.GetComponent<YanvaniaTripleFireballScript>().Dracula = base.transform;
 								}
 								if (component["succubus_a_charm_02"].time >= component["succubus_a_charm_02"].length)
@@ -140,7 +140,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 							{
 								if (component["succubus_a_charm_03"].time > 4f && this.NewAttack == null)
 								{
-									this.NewAttack = UnityEngine.Object.Instantiate<GameObject>(this.DoubleFireball, this.RightHand.position, Quaternion.identity);
+									this.NewAttack = Object.Instantiate<GameObject>(this.DoubleFireball, this.RightHand.position, Quaternion.identity);
 									this.NewAttack.GetComponent<YanvaniaDoubleFireballScript>().Dracula = base.transform;
 								}
 								if (component["succubus_a_charm_03"].time >= component["succubus_a_charm_03"].length)
@@ -159,7 +159,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 					{
 						if (base.transform.position.y < 0f)
 						{
-							base.transform.position = new Vector3(UnityEngine.Random.Range(-38.5f, -31f), base.transform.position.y, base.transform.position.z);
+							base.transform.position = new Vector3(Random.Range(-38.5f, -31f), base.transform.position.y, base.transform.position.z);
 						}
 						this.SpawnTeleportEffect();
 					}
@@ -192,9 +192,10 @@ public class YanvaniaDraculaScript : MonoBehaviour
 					this.FlashTimer -= Time.deltaTime;
 					if (!this.Red)
 					{
-						foreach (Material material in this.MyRenderer.materials)
+						Material[] materials = this.MyRenderer.materials;
+						for (int i = 0; i < materials.Length; i++)
 						{
-							material.color = new Color(1f, 0f, 0f, 1f);
+							materials[i].color = new Color(1f, 0f, 0f, 1f);
 						}
 						this.Frames++;
 						if (this.Frames == 5)
@@ -205,9 +206,10 @@ public class YanvaniaDraculaScript : MonoBehaviour
 					}
 					else
 					{
-						foreach (Material material2 in this.MyRenderer.materials)
+						Material[] materials = this.MyRenderer.materials;
+						for (int i = 0; i < materials.Length; i++)
 						{
-							material2.color = new Color(1f, 1f, 1f, 1f);
+							materials[i].color = new Color(1f, 1f, 1f, 1f);
 						}
 						this.Frames++;
 						if (this.Frames == 5)
@@ -219,9 +221,10 @@ public class YanvaniaDraculaScript : MonoBehaviour
 				}
 				else if (this.MyRenderer.materials[0].color != new Color(1f, 1f, 1f, 1f))
 				{
-					foreach (Material material3 in this.MyRenderer.materials)
+					Material[] materials = this.MyRenderer.materials;
+					for (int i = 0; i < materials.Length; i++)
 					{
-						material3.color = new Color(1f, 1f, 1f, 1f);
+						materials[i].color = new Color(1f, 1f, 1f, 1f);
 					}
 				}
 			}
@@ -244,7 +247,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 					}
 					if (this.ExplosionTimer > 0.1f)
 					{
-						UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(0f, 2.5f), UnityEngine.Random.Range(-1f, 1f)), Quaternion.identity);
+						Object.Instantiate<GameObject>(this.Explosion, base.transform.position + new Vector3(Random.Range(-1f, 1f), Random.Range(0f, 2.5f), Random.Range(-1f, 1f)), Quaternion.identity);
 						this.ExplosionTimer = 0f;
 					}
 				}
@@ -309,7 +312,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 		Animation component = this.Character.GetComponent<Animation>();
 		if (base.transform.position.y > 0f)
 		{
-			this.NewTeleportEffect = UnityEngine.Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
+			this.NewTeleportEffect = Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
 			component["DraculaTeleport"].time = component["DraculaTeleport"].length;
 			component["DraculaTeleport"].speed = -1f;
 			component.Play("DraculaTeleport");
@@ -318,7 +321,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 		else
 		{
 			this.Teleport();
-			this.NewTeleportEffect = UnityEngine.Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
+			this.NewTeleportEffect = Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
 			component["DraculaTeleport"].speed = 0.85f;
 			component["DraculaTeleport"].time = 0f;
 			component.Play("DraculaTeleport");
@@ -331,7 +334,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 
 	private void Teleport()
 	{
-		base.transform.position = new Vector3(base.transform.position.x, (base.transform.position.y <= 0f) ? 6.5f : -10f, 0f);
+		base.transform.position = new Vector3(base.transform.position.x, (base.transform.position.y > 0f) ? -10f : 6.5f, 0f);
 	}
 
 	public void TakeDamage()
@@ -341,22 +344,20 @@ public class YanvaniaDraculaScript : MonoBehaviour
 		{
 			this.YanvaniaCamera.StopMusic = true;
 			this.Health = 0f;
+			return;
 		}
-		else
-		{
-			this.FlashTimer = 1f;
-			this.Injured = true;
-			AudioSource component = base.GetComponent<AudioSource>();
-			component.clip = this.Injuries[UnityEngine.Random.Range(0, this.Injuries.Length)];
-			component.Play();
-		}
+		this.FlashTimer = 1f;
+		this.Injured = true;
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.Injuries[Random.Range(0, this.Injuries.Length)];
+		component.Play();
 	}
 
 	private IEnumerator ApplyScreenshot()
 	{
 		this.PhotoTaken = true;
-		string path = "file:///" + Application.streamingAssetsPath + "/Dracula.png";
-		WWW www = new WWW(path);
+		string url = "file:///" + Application.streamingAssetsPath + "/Dracula.png";
+		WWW www = new WWW(url);
 		yield return www;
 		this.Photograph.mainTexture = www.texture;
 		this.MainCamera.SetActive(false);

@@ -14,14 +14,12 @@ public class RandomStabScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.Biting)
 		{
-			component.clip = this.Stabs[UnityEngine.Random.Range(0, this.Stabs.Length)];
+			component.clip = this.Stabs[Random.Range(0, this.Stabs.Length)];
 			component.Play();
+			return;
 		}
-		else
-		{
-			component.clip = this.Bite;
-			component.pitch = UnityEngine.Random.Range(0.5f, 1f);
-			component.Play();
-		}
+		component.clip = this.Bite;
+		component.pitch = Random.Range(0.5f, 1f);
+		component.Play();
 	}
 }

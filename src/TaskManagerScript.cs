@@ -33,7 +33,7 @@ public class TaskManagerScript : MonoBehaviour
 			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Opinion);
 			ConversationGlobals.SetTopicLearnedByStudent(15, 11, true);
 			TaskGlobals.SetTaskStatus(11, 2);
-			UnityEngine.Object.Destroy(this.TaskObjects[11]);
+			Object.Destroy(this.TaskObjects[11]);
 		}
 		if (TaskGlobals.GetTaskStatus(25) == 1 && this.Prompts[25].Circle[3].fillAmount == 0f)
 		{
@@ -42,7 +42,7 @@ public class TaskManagerScript : MonoBehaviour
 				this.StudentManager.Students[25].TaskPhase = 5;
 			}
 			TaskGlobals.SetTaskStatus(25, 2);
-			UnityEngine.Object.Destroy(this.TaskObjects[25]);
+			Object.Destroy(this.TaskObjects[25]);
 		}
 		if (TaskGlobals.GetTaskStatus(37) == 1 && this.Prompts[37].Circle[3] != null && this.Prompts[37].Circle[3].fillAmount == 0f)
 		{
@@ -51,7 +51,7 @@ public class TaskManagerScript : MonoBehaviour
 				this.StudentManager.Students[37].TaskPhase = 5;
 			}
 			TaskGlobals.SetTaskStatus(37, 2);
-			UnityEngine.Object.Destroy(this.TaskObjects[37]);
+			Object.Destroy(this.TaskObjects[37]);
 		}
 	}
 
@@ -189,8 +189,6 @@ public class TaskManagerScript : MonoBehaviour
 				}
 			}
 		}
-		if (TaskGlobals.GetTaskStatus(81) == 3)
-		{
-		}
+		TaskGlobals.GetTaskStatus(81);
 	}
 }

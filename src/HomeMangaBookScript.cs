@@ -16,7 +16,7 @@ public class HomeMangaBookScript : MonoBehaviour
 
 	private void Update()
 	{
-		float y = (this.Manga.Selected != this.ID) ? 0f : (base.transform.eulerAngles.y + Time.deltaTime * this.RotationSpeed);
+		float y = (this.Manga.Selected == this.ID) ? (base.transform.eulerAngles.y + Time.deltaTime * this.RotationSpeed) : 0f;
 		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, y, base.transform.eulerAngles.z);
 	}
 }

@@ -319,6 +319,7 @@ public class DatingMinigameScript : MonoBehaviour
 					this.Rotation = -45f;
 					this.Timer = 0f;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 2)
@@ -342,6 +343,7 @@ public class DatingMinigameScript : MonoBehaviour
 						this.DatingSimHUD.gameObject.SetActive(true);
 						this.Timer = 0f;
 						this.Phase++;
+						return;
 					}
 				}
 			}
@@ -364,6 +366,7 @@ public class DatingMinigameScript : MonoBehaviour
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 4)
@@ -379,7 +382,7 @@ public class DatingMinigameScript : MonoBehaviour
 				for (int i = 1; i < this.Options.Length; i++)
 				{
 					Transform transform = this.Options[i];
-					transform.localPosition = new Vector3(Mathf.Lerp(transform.localPosition.x, (i != this.Selected) ? 800f : 750f, Time.deltaTime * 10f), transform.localPosition.y, transform.localPosition.z);
+					transform.localPosition = new Vector3(Mathf.Lerp(transform.localPosition.x, (i == this.Selected) ? 750f : 800f, Time.deltaTime * 10f), transform.localPosition.y, transform.localPosition.z);
 				}
 				this.AffectionBar.localScale = new Vector3(Mathf.Lerp(this.AffectionBar.localScale.x, this.Affection / 100f, Time.deltaTime * 10f), this.AffectionBar.localScale.y, this.AffectionBar.localScale.z);
 				if (!this.SelectingTopic && !this.Complimenting && !this.ShowingOff && !this.GivingGift)
@@ -404,25 +407,30 @@ public class DatingMinigameScript : MonoBehaviour
 						{
 							this.SelectingTopic = true;
 							this.Negative = true;
+							return;
 						}
-						else if (this.Selected == 2)
+						if (this.Selected == 2)
 						{
 							this.SelectingTopic = true;
 							this.Negative = false;
+							return;
 						}
-						else if (this.Selected == 3)
+						if (this.Selected == 3)
 						{
 							this.Complimenting = true;
+							return;
 						}
-						else if (this.Selected == 4)
+						if (this.Selected == 4)
 						{
 							this.ShowingOff = true;
+							return;
 						}
-						else if (this.Selected == 5)
+						if (this.Selected == 5)
 						{
 							this.GivingGift = true;
+							return;
 						}
-						else if (this.Selected == 6)
+						if (this.Selected == 6)
 						{
 							this.PromptBar.ClearButtons();
 							this.PromptBar.Label[0].text = "Confirm";
@@ -430,6 +438,7 @@ public class DatingMinigameScript : MonoBehaviour
 							this.CalculateAffection();
 							this.DialogueLabel.text = this.Farewells[this.AffectionLevel];
 							this.Phase++;
+							return;
 						}
 					}
 				}
@@ -529,6 +538,7 @@ public class DatingMinigameScript : MonoBehaviour
 					if (Input.GetButtonDown("B"))
 					{
 						this.SelectingTopic = false;
+						return;
 					}
 				}
 				else if (this.Complimenting)
@@ -587,6 +597,7 @@ public class DatingMinigameScript : MonoBehaviour
 					if (Input.GetButtonDown("B"))
 					{
 						this.Complimenting = false;
+						return;
 					}
 				}
 				else if (this.ShowingOff)
@@ -651,6 +662,7 @@ public class DatingMinigameScript : MonoBehaviour
 					if (Input.GetButtonDown("B"))
 					{
 						this.ShowingOff = false;
+						return;
 					}
 				}
 				else if (this.GivingGift)
@@ -704,6 +716,7 @@ public class DatingMinigameScript : MonoBehaviour
 					if (Input.GetButtonDown("B"))
 					{
 						this.GivingGift = false;
+						return;
 					}
 				}
 			}
@@ -715,6 +728,7 @@ public class DatingMinigameScript : MonoBehaviour
 				if (this.Speed > 100f && Input.GetButtonDown("A"))
 				{
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 6)
@@ -724,6 +738,7 @@ public class DatingMinigameScript : MonoBehaviour
 				{
 					this.DatingSimHUD.gameObject.SetActive(false);
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 7)
@@ -786,9 +801,7 @@ public class DatingMinigameScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.Phase == 4)
-		{
-		}
+		int phase = this.Phase;
 	}
 
 	private void CalculateMultiplier()
@@ -869,7 +882,7 @@ public class DatingMinigameScript : MonoBehaviour
 		}
 		this.TopicHighlight.localPosition = new Vector3((float)(-375 + 125 * this.Column), (float)(375 - 125 * this.Row), this.TopicHighlight.localPosition.z);
 		this.TopicSelected = (this.Row - 1) * 5 + this.Column;
-		this.TopicNameLabel.text = ((!ConversationGlobals.GetTopicDiscovered(this.TopicSelected)) ? "??????????" : this.TopicNames[this.TopicSelected]);
+		this.TopicNameLabel.text = (ConversationGlobals.GetTopicDiscovered(this.TopicSelected) ? this.TopicNames[this.TopicSelected] : "??????????");
 	}
 
 	private void DetermineOpinion()

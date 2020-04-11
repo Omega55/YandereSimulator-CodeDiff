@@ -42,7 +42,7 @@ public class PoisonBottleScript : MonoBehaviour
 				this.Prompt.Yandere.Inventory.Sedative = true;
 			}
 			this.Prompt.Yandere.StudentManager.UpdateAllBentos();
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

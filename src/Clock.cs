@@ -82,7 +82,11 @@ public class Clock
 		get
 		{
 			int num = this.hours % 12;
-			return (num != 0) ? num : 12;
+			if (num != 0)
+			{
+				return num;
+			}
+			return 12;
 		}
 	}
 

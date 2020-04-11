@@ -49,8 +49,7 @@ public class StreetCivilianScript : MonoBehaviour
 	public void MoveTowardsTarget(Vector3 target)
 	{
 		Vector3 a = target - base.transform.position;
-		float sqrMagnitude = a.sqrMagnitude;
-		if (sqrMagnitude > 1E-06f)
+		if (a.sqrMagnitude > 1E-06f)
 		{
 			this.MyController.Move(a * (Time.deltaTime * 1f / Time.timeScale));
 		}

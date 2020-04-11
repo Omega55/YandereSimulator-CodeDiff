@@ -15,7 +15,7 @@ public class BucketWeights : BucketContents
 		}
 		set
 		{
-			this.count = ((value >= 0) ? value : 0);
+			this.count = ((value < 0) ? 0 : value);
 		}
 	}
 

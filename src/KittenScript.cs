@@ -39,14 +39,12 @@ public class KittenScript : MonoBehaviour
 		{
 			if (!this.Yandere.Aiming)
 			{
-				Vector3 b = (this.Yandere.Head.transform.position.x >= base.transform.position.x) ? (base.transform.position + base.transform.forward + base.transform.up * 0.139854f) : this.Yandere.Head.transform.position;
+				Vector3 b = (this.Yandere.Head.transform.position.x < base.transform.position.x) ? this.Yandere.Head.transform.position : (base.transform.position + base.transform.forward + base.transform.up * 0.139854f);
 				this.Target.position = Vector3.Lerp(this.Target.position, b, Time.deltaTime * 5f);
 				this.Head.transform.LookAt(this.Target);
+				return;
 			}
-			else
-			{
-				this.Head.transform.LookAt(this.Yandere.transform.position + Vector3.up * this.Head.position.y);
-			}
+			this.Head.transform.LookAt(this.Yandere.transform.position + Vector3.up * this.Head.position.y);
 		}
 	}
 }

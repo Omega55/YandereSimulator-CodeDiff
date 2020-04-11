@@ -178,7 +178,7 @@ public class IncineratorScript : MonoBehaviour
 			Time.timeScale = 1f;
 			if (this.Yandere.Ragdoll != null)
 			{
-				this.Yandere.Character.GetComponent<Animation>().CrossFade((!this.Yandere.Carrying) ? "f02_dragIdle_00" : "f02_carryIdleA_00");
+				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.Carrying ? "f02_carryIdleA_00" : "f02_dragIdle_00");
 				this.Yandere.YandereVision = false;
 				this.Yandere.CanMove = false;
 				this.Yandere.Dumping = true;
@@ -292,9 +292,10 @@ public class IncineratorScript : MonoBehaviour
 
 	public void SetVictimsMissing()
 	{
-		foreach (int studentID in this.ConfirmedDead)
+		int[] confirmedDead = this.ConfirmedDead;
+		for (int i = 0; i < confirmedDead.Length; i++)
 		{
-			StudentGlobals.SetStudentMissing(studentID, true);
+			StudentGlobals.SetStudentMissing(confirmedDead[i], true);
 		}
 	}
 }

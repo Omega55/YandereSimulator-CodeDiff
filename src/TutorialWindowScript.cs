@@ -159,26 +159,24 @@ public class TutorialWindowScript : MonoBehaviour
 		if (OptionGlobals.TutorialsOff)
 		{
 			base.enabled = false;
+			return;
 		}
-		else
-		{
-			this.IgnoreClothing = TutorialGlobals.IgnoreClothing;
-			this.IgnoreCouncil = TutorialGlobals.IgnoreCouncil;
-			this.IgnoreTeacher = TutorialGlobals.IgnoreTeacher;
-			this.IgnoreLocker = TutorialGlobals.IgnoreLocker;
-			this.IgnorePolice = TutorialGlobals.IgnorePolice;
-			this.IgnoreSanity = TutorialGlobals.IgnoreSanity;
-			this.IgnoreSenpai = TutorialGlobals.IgnoreSenpai;
-			this.IgnoreVision = TutorialGlobals.IgnoreVision;
-			this.IgnoreWeapon = TutorialGlobals.IgnoreWeapon;
-			this.IgnoreBlood = TutorialGlobals.IgnoreBlood;
-			this.IgnoreClass = TutorialGlobals.IgnoreClass;
-			this.IgnorePhoto = TutorialGlobals.IgnorePhoto;
-			this.IgnoreClub = TutorialGlobals.IgnoreClub;
-			this.IgnoreInfo = TutorialGlobals.IgnoreInfo;
-			this.IgnorePool = TutorialGlobals.IgnorePool;
-			this.IgnoreRep = TutorialGlobals.IgnoreRep;
-		}
+		this.IgnoreClothing = TutorialGlobals.IgnoreClothing;
+		this.IgnoreCouncil = TutorialGlobals.IgnoreCouncil;
+		this.IgnoreTeacher = TutorialGlobals.IgnoreTeacher;
+		this.IgnoreLocker = TutorialGlobals.IgnoreLocker;
+		this.IgnorePolice = TutorialGlobals.IgnorePolice;
+		this.IgnoreSanity = TutorialGlobals.IgnoreSanity;
+		this.IgnoreSenpai = TutorialGlobals.IgnoreSenpai;
+		this.IgnoreVision = TutorialGlobals.IgnoreVision;
+		this.IgnoreWeapon = TutorialGlobals.IgnoreWeapon;
+		this.IgnoreBlood = TutorialGlobals.IgnoreBlood;
+		this.IgnoreClass = TutorialGlobals.IgnoreClass;
+		this.IgnorePhoto = TutorialGlobals.IgnorePhoto;
+		this.IgnoreClub = TutorialGlobals.IgnoreClub;
+		this.IgnoreInfo = TutorialGlobals.IgnoreInfo;
+		this.IgnorePool = TutorialGlobals.IgnorePool;
+		this.IgnoreRep = TutorialGlobals.IgnoreRep;
 	}
 
 	private void Update()

@@ -17,11 +17,11 @@ namespace MaidDereMinigame
 			{
 				base.gameObject.SetActive(false);
 			}
-			string text = string.Format("{0:#.00}", tip).Replace(".", string.Empty);
-			string text2 = string.Empty;
+			string text = string.Format("{0:#.00}", tip).Replace(".", "");
+			string text2 = "";
 			for (int i = text.Length - 1; i >= 0; i--)
 			{
-				text2 += text[i];
+				text2 += text[i].ToString();
 			}
 			for (int j = 0; j < text2.Length; j++)
 			{

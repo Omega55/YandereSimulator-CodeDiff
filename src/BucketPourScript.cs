@@ -94,12 +94,11 @@ public class BucketPourScript : MonoBehaviour
 				{
 					this.SplashCamera.transform.position = new Vector3(32.1f, 0.8f, 26.9f);
 					this.SplashCamera.transform.eulerAngles = new Vector3(0f, -45f, 0f);
+					return;
 				}
-				else
-				{
-					this.SplashCamera.transform.position = new Vector3(1.1f, 0.8f, 32.1f);
-					this.SplashCamera.transform.eulerAngles = new Vector3(0f, -135f, 0f);
-				}
+				this.SplashCamera.transform.position = new Vector3(1.1f, 0.8f, 32.1f);
+				this.SplashCamera.transform.eulerAngles = new Vector3(0f, -135f, 0f);
+				return;
 			}
 		}
 		else if (this.Yandere.BucketDropping && Input.GetButtonDown("B") && this.Prompt.DistanceSqr < 1f)
@@ -110,12 +109,10 @@ public class BucketPourScript : MonoBehaviour
 			{
 				this.SplashCamera.transform.position = new Vector3(32.1f, 0.8f, 26.9f);
 				this.SplashCamera.transform.eulerAngles = new Vector3(0f, -45f, 0f);
+				return;
 			}
-			else
-			{
-				this.SplashCamera.transform.position = new Vector3(1.1f, 0.8f, 32.1f);
-				this.SplashCamera.transform.eulerAngles = new Vector3(0f, -135f, 0f);
-			}
+			this.SplashCamera.transform.position = new Vector3(1.1f, 0.8f, 32.1f);
+			this.SplashCamera.transform.eulerAngles = new Vector3(0f, -135f, 0f);
 		}
 	}
 }

@@ -60,6 +60,7 @@ public class DrinkingFountainScript : MonoBehaviour
 				this.Leak.SetActive(true);
 				this.MyAudio.Play();
 				this.PowerSwitch.CheckPuddle();
+				return;
 			}
 		}
 		else if (this.Prompt.enabled)

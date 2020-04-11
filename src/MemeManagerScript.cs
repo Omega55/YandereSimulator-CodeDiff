@@ -10,9 +10,10 @@ public class MemeManagerScript : MonoBehaviour
 	{
 		if (GameGlobals.LoveSick)
 		{
-			foreach (GameObject gameObject in this.Memes)
+			GameObject[] memes = this.Memes;
+			for (int i = 0; i < memes.Length; i++)
 			{
-				gameObject.SetActive(false);
+				memes[i].SetActive(false);
 			}
 		}
 	}

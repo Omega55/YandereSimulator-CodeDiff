@@ -39,270 +39,283 @@ public class CleaningManagerScript : MonoBehaviour
 		case 1:
 			this.Role = 4;
 			this.Spot = this.Toilets[0];
-			break;
+			return;
 		case 2:
 			this.Role = 1;
 			this.Spot = this.Windows[4];
-			break;
+			return;
 		case 3:
 			this.Role = 2;
 			this.Spot = this.Desks[4];
-			break;
+			return;
 		case 4:
 			this.Role = 3;
 			this.Spot = this.Floors[4];
-			break;
+			return;
 		case 5:
 			this.Role = 5;
 			this.Spot = this.Rooftops[4];
-			break;
+			return;
 		case 6:
 			this.Role = 3;
 			this.Spot = this.Floors[12];
-			break;
+			return;
 		case 7:
 			this.Role = 3;
 			this.Spot = this.Floors[13];
-			break;
+			return;
 		case 8:
 			this.Role = 3;
 			this.Spot = this.Floors[14];
-			break;
+			return;
 		case 9:
 			this.Role = 3;
 			this.Spot = this.Floors[15];
-			break;
+			return;
 		case 10:
 			if (this.StudentManager.Students[11] != null)
 			{
 				this.Role = 3;
 				this.Spot = this.StudentManager.Students[11].transform;
+				return;
 			}
 			break;
 		case 11:
 			this.Role = 4;
 			this.Spot = this.Toilets[0];
+			return;
+		case 12:
+		case 13:
+		case 14:
+		case 15:
+		case 16:
+		case 17:
+		case 18:
+		case 19:
+		case 20:
 			break;
 		case 21:
 			this.Role = 1;
 			this.Spot = this.Windows[6];
-			break;
+			return;
 		case 22:
 			this.Role = 1;
 			this.Spot = this.Windows[5];
-			break;
+			return;
 		case 23:
 			this.Role = 1;
 			this.Spot = this.Windows[3];
-			break;
+			return;
 		case 24:
 			this.Role = 1;
 			this.Spot = this.Windows[2];
-			break;
+			return;
 		case 25:
 			this.Role = 1;
 			this.Spot = this.Windows[1];
-			break;
+			return;
 		case 26:
 			this.Role = 2;
 			this.Spot = this.Desks[6];
-			break;
+			return;
 		case 27:
 			this.Role = 2;
 			this.Spot = this.Desks[5];
-			break;
+			return;
 		case 28:
 			this.Role = 2;
 			this.Spot = this.Desks[3];
-			break;
+			return;
 		case 29:
 			this.Role = 2;
 			this.Spot = this.Desks[2];
-			break;
+			return;
 		case 30:
 			this.Role = 2;
 			this.Spot = this.Desks[1];
-			break;
+			return;
 		case 31:
 			this.Role = 3;
 			this.Spot = this.Floors[6];
-			break;
+			return;
 		case 32:
 			this.Role = 3;
 			this.Spot = this.Floors[5];
-			break;
+			return;
 		case 33:
 			this.Role = 3;
 			this.Spot = this.Floors[3];
-			break;
+			return;
 		case 34:
 			this.Role = 3;
 			this.Spot = this.Floors[2];
-			break;
+			return;
 		case 35:
 			this.Role = 3;
 			this.Spot = this.Floors[1];
-			break;
+			return;
 		case 36:
 			this.Role = 3;
 			this.Spot = this.Floors[7];
-			break;
+			return;
 		case 37:
 			this.Role = 3;
 			this.Spot = this.Floors[8];
-			break;
+			return;
 		case 38:
 			this.Role = 3;
 			this.Spot = this.Floors[9];
-			break;
+			return;
 		case 39:
 			this.Role = 3;
 			this.Spot = this.Floors[10];
-			break;
+			return;
 		case 40:
 			this.Role = 3;
 			this.Spot = this.Floors[11];
-			break;
+			return;
 		case 41:
 			this.Role = 5;
 			this.Spot = this.Rooftops[6];
-			break;
+			return;
 		case 42:
 			this.Role = 5;
 			this.Spot = this.Rooftops[5];
-			break;
+			return;
 		case 43:
 			this.Role = 5;
 			this.Spot = this.Rooftops[3];
-			break;
+			return;
 		case 44:
 			this.Role = 5;
 			this.Spot = this.Rooftops[2];
-			break;
+			return;
 		case 45:
 			this.Role = 5;
 			this.Spot = this.Rooftops[1];
-			break;
+			return;
 		case 46:
 			this.Role = 4;
 			this.Spot = this.Toilets[1];
-			break;
+			return;
 		case 47:
 			this.Role = 4;
 			this.Spot = this.Toilets[2];
-			break;
+			return;
 		case 48:
 			this.Role = 4;
 			this.Spot = this.Toilets[3];
-			break;
+			return;
 		case 49:
 			this.Role = 3;
 			this.Spot = this.Floors[16];
-			break;
+			return;
 		case 50:
 			this.Role = 3;
 			this.Spot = this.Floors[17];
-			break;
+			return;
 		case 51:
 			this.Role = 4;
 			this.Spot = this.Toilets[7];
-			break;
+			return;
 		case 52:
 			this.Role = 4;
 			this.Spot = this.Toilets[8];
-			break;
+			return;
 		case 53:
 			this.Role = 4;
 			this.Spot = this.Toilets[9];
-			break;
+			return;
 		case 54:
 			this.Role = 4;
 			this.Spot = this.Toilets[10];
-			break;
+			return;
 		case 55:
 			this.Role = 4;
 			this.Spot = this.Toilets[11];
-			break;
+			return;
 		case 56:
 			this.Role = 4;
 			this.Spot = this.Toilets[4];
-			break;
+			return;
 		case 57:
 			this.Role = 4;
 			this.Spot = this.Toilets[5];
-			break;
+			return;
 		case 58:
 			this.Role = 4;
 			this.Spot = this.Toilets[6];
-			break;
+			return;
 		case 59:
 			this.Role = 3;
 			this.Spot = this.Floors[18];
-			break;
+			return;
 		case 60:
 			this.Role = 3;
 			this.Spot = this.Floors[19];
-			break;
+			return;
 		case 61:
 			this.Role = 3;
 			this.Spot = this.Floors[20];
-			break;
+			return;
 		case 62:
 			this.Role = 3;
 			this.Spot = this.Floors[21];
-			break;
+			return;
 		case 63:
 			this.Role = 3;
 			this.Spot = this.Floors[22];
-			break;
+			return;
 		case 64:
 			this.Role = 3;
 			this.Spot = this.Floors[23];
-			break;
+			return;
 		case 65:
 			this.Role = 3;
 			this.Spot = this.Floors[24];
-			break;
+			return;
 		case 66:
 			this.Role = 3;
 			this.Spot = this.Floors[25];
-			break;
+			return;
 		case 67:
 			this.Role = 3;
 			this.Spot = this.Floors[26];
-			break;
+			return;
 		case 68:
 			this.Role = 3;
 			this.Spot = this.Floors[27];
-			break;
+			return;
 		case 69:
 			this.Role = 3;
 			this.Spot = this.Floors[28];
-			break;
+			return;
 		case 70:
 			this.Role = 3;
 			this.Spot = this.Floors[29];
-			break;
+			return;
 		case 71:
 			this.Role = 3;
 			this.Spot = this.Floors[30];
-			break;
+			return;
 		case 72:
 			this.Role = 3;
 			this.Spot = this.Floors[31];
-			break;
+			return;
 		case 73:
 			this.Role = 3;
 			this.Spot = this.Floors[32];
-			break;
+			return;
 		case 74:
 			this.Role = 3;
 			this.Spot = this.Floors[33];
-			break;
+			return;
 		case 75:
 			this.Role = 3;
 			this.Spot = this.Floors[34];
 			break;
+		default:
+			return;
 		}
 	}
 }

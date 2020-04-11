@@ -10,7 +10,7 @@ public static class GlobalsHelper
 
 	public static void SetBool(string key, bool value)
 	{
-		PlayerPrefs.SetInt(key, (!value) ? 0 : 1);
+		PlayerPrefs.SetInt(key, value ? 1 : 0);
 	}
 
 	public static T GetEnum<T>(string key) where T : struct, IConvertible

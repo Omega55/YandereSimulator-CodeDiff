@@ -246,7 +246,7 @@ public class ToiletEventScript : MonoBehaviour
 		{
 			if (this.VoiceClip != null)
 			{
-				UnityEngine.Object.Destroy(this.VoiceClip);
+				Object.Destroy(this.VoiceClip);
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];

@@ -42,33 +42,33 @@ public class DemonArmScript : MonoBehaviour
 			if (!this.Attacking)
 			{
 				this.MyAnimation.CrossFade(this.IdleAnim);
+				return;
+			}
+			this.AnimTime += 0.0166666675f;
+			this.MyAnimation[this.AttackAnim].time = this.AnimTime;
+			if (!this.Attacked)
+			{
+				if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length * 0.15f)
+				{
+					this.ClawCollider.enabled = true;
+					this.Attacked = true;
+					return;
+				}
 			}
 			else
 			{
-				this.AnimTime += 0.0166666675f;
-				this.MyAnimation[this.AttackAnim].time = this.AnimTime;
-				if (!this.Attacked)
+				if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length * 0.4f)
 				{
-					if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length * 0.15f)
-					{
-						this.ClawCollider.enabled = true;
-						this.Attacked = true;
-					}
+					this.ClawCollider.enabled = false;
 				}
-				else
+				if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length)
 				{
-					if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length * 0.4f)
-					{
-						this.ClawCollider.enabled = false;
-					}
-					if (this.MyAnimation[this.AttackAnim].time >= this.MyAnimation[this.AttackAnim].length)
-					{
-						this.MyAnimation.CrossFade(this.IdleAnim);
-						this.ClawCollider.enabled = false;
-						this.Attacking = false;
-						this.Attacked = false;
-						this.AnimTime = 0f;
-					}
+					this.MyAnimation.CrossFade(this.IdleAnim);
+					this.ClawCollider.enabled = false;
+					this.Attacking = false;
+					this.Attacked = false;
+					this.AnimTime = 0f;
+					return;
 				}
 			}
 		}
@@ -85,7 +85,7 @@ public class DemonArmScript : MonoBehaviour
 		{
 			AudioSource component2 = base.GetComponent<AudioSource>();
 			component2.clip = this.Whoosh;
-			component2.pitch = UnityEngine.Random.Range(-0.9f, 1.1f);
+			component2.pitch = Random.Range(-0.9f, 1.1f);
 			component2.Play();
 			base.GetComponent<Animation>().CrossFade(this.AttackAnim);
 			this.Attacking = true;

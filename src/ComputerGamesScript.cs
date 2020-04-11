@@ -57,11 +57,9 @@ public class ComputerGamesScript : MonoBehaviour
 		if (ClubGlobals.Club == ClubType.Gaming)
 		{
 			this.EnableGames();
+			return;
 		}
-		else
-		{
-			this.DisableGames();
-		}
+		this.DisableGames();
 	}
 
 	private void Update()

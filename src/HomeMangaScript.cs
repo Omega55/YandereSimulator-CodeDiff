@@ -96,11 +96,11 @@ public class HomeMangaScript : MonoBehaviour
 		{
 			if (CollectibleGlobals.GetMangaCollected(i + 1))
 			{
-				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MangaModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
+				this.NewManga = Object.Instantiate<GameObject>(this.MangaModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
 			else
 			{
-				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MysteryManga, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
+				this.NewManga = Object.Instantiate<GameObject>(this.MysteryManga, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
 			this.NewManga.transform.parent = this.MangaParent;
 			this.NewManga.GetComponent<HomeMangaBookScript>().Manga = this;
@@ -182,6 +182,7 @@ public class HomeMangaScript : MonoBehaviour
 					{
 						CollectibleGlobals.SetMangaCollected(i + 1, true);
 					}
+					return;
 				}
 			}
 			else
@@ -207,6 +208,7 @@ public class HomeMangaScript : MonoBehaviour
 				{
 					this.MangaGroup.SetActive(true);
 					this.AreYouSure.SetActive(false);
+					return;
 				}
 			}
 		}
@@ -287,13 +289,11 @@ public class HomeMangaScript : MonoBehaviour
 			this.MangaNameLabel.text = this.MangaNames[this.Selected];
 			this.MangaDescLabel.text = this.MangaDescs[this.Selected];
 			this.MangaBuffLabel.text = this.MangaBuffs[this.Selected];
+			return;
 		}
-		else
-		{
-			this.MangaNameLabel.text = "?????";
-			this.MangaDescLabel.text = "?????";
-			this.MangaBuffLabel.text = "?????";
-		}
+		this.MangaNameLabel.text = "?????";
+		this.MangaDescLabel.text = "?????";
+		this.MangaBuffLabel.text = "?????";
 	}
 
 	private void UpdateCurrentLabel()
@@ -309,8 +309,9 @@ public class HomeMangaScript : MonoBehaviour
 				this.Title,
 				")"
 			});
+			return;
 		}
-		else if (this.Selected < 10)
+		if (this.Selected < 10)
 		{
 			this.Title = HomeMangaScript.NumbnessStrings[PlayerGlobals.Numbness];
 			this.CurrentLabel.text = string.Concat(new string[]
@@ -321,18 +322,16 @@ public class HomeMangaScript : MonoBehaviour
 				this.Title,
 				")"
 			});
+			return;
 		}
-		else
+		this.Title = HomeMangaScript.EnlightenmentStrings[PlayerGlobals.Enlightenment];
+		this.CurrentLabel.text = string.Concat(new string[]
 		{
-			this.Title = HomeMangaScript.EnlightenmentStrings[PlayerGlobals.Enlightenment];
-			this.CurrentLabel.text = string.Concat(new string[]
-			{
-				"Current Enlightenment Level: ",
-				PlayerGlobals.Enlightenment.ToString(),
-				" (",
-				this.Title,
-				")"
-			});
-		}
+			"Current Enlightenment Level: ",
+			PlayerGlobals.Enlightenment.ToString(),
+			" (",
+			this.Title,
+			")"
+		});
 	}
 }

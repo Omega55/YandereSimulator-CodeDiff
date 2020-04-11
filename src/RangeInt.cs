@@ -56,7 +56,11 @@ public class RangeInt
 	{
 		get
 		{
-			return (this.value != this.max) ? (this.value + 1) : this.min;
+			if (this.value != this.max)
+			{
+				return this.value + 1;
+			}
+			return this.min;
 		}
 	}
 
@@ -64,7 +68,11 @@ public class RangeInt
 	{
 		get
 		{
-			return (this.value != this.min) ? (this.value - 1) : this.max;
+			if (this.value != this.min)
+			{
+				return this.value - 1;
+			}
+			return this.max;
 		}
 	}
 }

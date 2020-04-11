@@ -47,10 +47,11 @@ public class YanvaniaTryAgainScript : MonoBehaviour
 				}
 				if (Input.GetButtonDown("A") || Input.GetKeyDown("z") || Input.GetKeyDown("x"))
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
+					GameObject gameObject = Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
 					gameObject.transform.parent = this.Highlight;
 					gameObject.transform.localPosition = Vector3.zero;
 					this.FadeOut = true;
+					return;
 				}
 			}
 		}
@@ -62,11 +63,9 @@ public class YanvaniaTryAgainScript : MonoBehaviour
 				if (this.Selected == 1)
 				{
 					SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+					return;
 				}
-				else
-				{
-					SceneManager.LoadScene("YanvaniaTitleScene");
-				}
+				SceneManager.LoadScene("YanvaniaTitleScene");
 			}
 		}
 	}

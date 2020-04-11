@@ -239,11 +239,13 @@ public class WeaponMenuScript : MonoBehaviour
 			if (this.KeyboardMenu.localScale.x > 0.1f)
 			{
 				this.KeyboardMenu.localScale = Vector3.Lerp(this.KeyboardMenu.localScale, Vector3.zero, Time.deltaTime * 10f);
+				return;
 			}
-			else if (this.KeyboardPanel.enabled)
+			if (this.KeyboardPanel.enabled)
 			{
 				this.KeyboardMenu.localScale = Vector3.zero;
 				this.KeyboardPanel.enabled = false;
+				return;
 			}
 		}
 		else
@@ -427,12 +429,10 @@ public class WeaponMenuScript : MonoBehaviour
 		{
 			this.KeyboardBG[4].color = new Color(1f, 1f, 1f, 1f);
 			this.BG[4].color = new Color(1f, 1f, 1f, 1f);
+			return;
 		}
-		else
-		{
-			this.KeyboardBG[4].color = this.OriginalColor;
-			this.BG[4].color = this.OriginalColor;
-		}
+		this.KeyboardBG[4].color = this.OriginalColor;
+		this.BG[4].color = this.OriginalColor;
 	}
 
 	private void DropMask()
@@ -445,12 +445,10 @@ public class WeaponMenuScript : MonoBehaviour
 				this.Yandere.Mask.Drop();
 				this.UpdateSprites();
 				this.StudentManager.UpdateStudents(0);
+				return;
 			}
-			else
-			{
-				this.Yandere.NotificationManager.CustomText = "Not now. Too suspicious.";
-				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
-			}
+			this.Yandere.NotificationManager.CustomText = "Not now. Too suspicious.";
+			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 		}
 	}
 }

@@ -13,7 +13,7 @@ public class YanvaniaCutsceneTriggerScript : MonoBehaviour
 		{
 			this.BossBattleWall.SetActive(true);
 			this.Yanmont.EnterCutscene = true;
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 }

@@ -31,7 +31,7 @@ public class PodScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > this.FireRate)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, base.transform.rotation);
+				Object.Instantiate<GameObject>(this.Projectile, this.SpawnPoint.position, base.transform.rotation);
 				this.Timer = 0f;
 			}
 		}

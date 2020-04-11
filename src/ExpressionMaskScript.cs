@@ -23,16 +23,18 @@ public class ExpressionMaskScript : MonoBehaviour
 			{
 			case 0:
 				this.Mask.material.mainTextureOffset = Vector2.zero;
-				break;
+				return;
 			case 1:
 				this.Mask.material.mainTextureOffset = new Vector2(0f, 0.5f);
-				break;
+				return;
 			case 2:
 				this.Mask.material.mainTextureOffset = new Vector2(0.5f, 0f);
-				break;
+				return;
 			case 3:
 				this.Mask.material.mainTextureOffset = new Vector2(0.5f, 0.5f);
 				break;
+			default:
+				return;
 			}
 		}
 	}

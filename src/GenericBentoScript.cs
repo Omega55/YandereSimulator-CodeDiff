@@ -37,8 +37,9 @@ public class GenericBentoScript : MonoBehaviour
 			}
 			this.Emetic = true;
 			this.ShutOff();
+			return;
 		}
-		else if (this.Prompt.Circle[1].fillAmount == 0f)
+		if (this.Prompt.Circle[1].fillAmount == 0f)
 		{
 			if (this.Prompt.Yandere.Inventory.Sedative)
 			{
@@ -51,8 +52,9 @@ public class GenericBentoScript : MonoBehaviour
 			this.Prompt.Yandere.PoisonType = 4;
 			this.Tranquil = true;
 			this.ShutOff();
+			return;
 		}
-		else if (this.Prompt.Circle[2].fillAmount == 0f)
+		if (this.Prompt.Circle[2].fillAmount == 0f)
 		{
 			if (this.Prompt.Yandere.Inventory.LethalPoison)
 			{
@@ -66,8 +68,9 @@ public class GenericBentoScript : MonoBehaviour
 			}
 			this.Lethal = true;
 			this.ShutOff();
+			return;
 		}
-		else if (this.Prompt.Circle[3].fillAmount == 0f)
+		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Yandere.Inventory.HeadachePoison = false;
 			this.Prompt.Yandere.PoisonType = 5;
@@ -78,7 +81,7 @@ public class GenericBentoScript : MonoBehaviour
 
 	private void ShutOff()
 	{
-		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
+		GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
 		this.PoisonSpot = gameObject.transform;
 		this.PoisonSpot.position = new Vector3(this.PoisonSpot.position.x, this.Prompt.Yandere.transform.position.y, this.PoisonSpot.position.z);
 		this.PoisonSpot.LookAt(this.Prompt.Yandere.transform.position);

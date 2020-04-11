@@ -15,7 +15,7 @@ public class MusicAudienceScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.JumpStrength += UnityEngine.Random.Range(-0.0001f, 0.0001f);
+		this.JumpStrength += Random.Range(-0.0001f, 0.0001f);
 	}
 
 	private void Update()

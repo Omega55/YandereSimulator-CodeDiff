@@ -28,7 +28,7 @@ public class SmokeBombScript : MonoBehaviour
 					}
 				}
 			}
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -42,17 +42,15 @@ public class SmokeBombScript : MonoBehaviour
 				if (this.Stink)
 				{
 					this.GoAway(component);
+					return;
 				}
-				else
+				if (this.Amnesia && !component.Chasing)
 				{
-					if (this.Amnesia && !component.Chasing)
-					{
-						component.ReturnToNormal();
-					}
-					this.Students[this.ID] = component;
-					component.Blind = true;
-					this.ID++;
+					component.ReturnToNormal();
 				}
+				this.Students[this.ID] = component;
+				component.Blind = true;
+				this.ID++;
 			}
 		}
 	}
@@ -67,6 +65,7 @@ public class SmokeBombScript : MonoBehaviour
 				if (component != null)
 				{
 					this.GoAway(component);
+					return;
 				}
 			}
 		}

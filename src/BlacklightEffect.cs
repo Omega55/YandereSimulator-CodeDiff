@@ -96,7 +96,7 @@ public class BlacklightEffect : MonoBehaviour
 			this.post.SetFloat("_GlowBias", this.glowBias);
 			this.post.SetColor("_GlowColor", this.glowColor);
 			this.post.SetColor("_GlowColor2", this.glowColorSecondary);
-			this.post.SetFloat("_GlowAmount", (float)((!this.glow) ? 0 : 1));
+			this.post.SetFloat("_GlowAmount", (float)(this.glow ? 1 : 0));
 			this.post.SetColor("_EdgeColor", this.edgeColor);
 			this.post.SetFloat("_EdgeThreshold", this.threshold);
 			this.post.SetFloat("_EdgeStrength", this.edgeOpacity);
@@ -129,21 +129,19 @@ public class BlacklightEffect : MonoBehaviour
 		if (this.camera == null)
 		{
 			this.camera = base.GetComponent<Camera>();
+			return;
 		}
-		else
+		if (this.post == null)
 		{
-			if (this.post == null)
-			{
-				this.post = new Material(Shader.Find("Abcight/BlacklightPost"));
-			}
-			Graphics.Blit(source, destination, this.post);
+			this.post = new Material(Shader.Find("Abcight/BlacklightPost"));
 		}
+		Graphics.Blit(source, destination, this.post);
 	}
 
 	[ContextMenu("Refresh")]
 	public void Refresh()
 	{
-		UnityEngine.Object.DestroyImmediate(this.post);
+		Object.DestroyImmediate(this.post);
 		this.post = null;
 	}
 }

@@ -50,11 +50,9 @@ public class FanCoverScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			base.enabled = false;
+			return;
 		}
-		else
-		{
-			this.Rival = this.StudentManager.Students[this.RivalID];
-		}
+		this.Rival = this.StudentManager.Students[this.RivalID];
 	}
 
 	private void Update()
@@ -122,6 +120,7 @@ public class FanCoverScript : MonoBehaviour
 					this.BloodEffects.transform.localPosition = new Vector3(0f, 0.1f, 0f);
 					this.BloodEffects.Play();
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase < 10)
@@ -153,6 +152,7 @@ public class FanCoverScript : MonoBehaviour
 					this.Smoke.SetActive(true);
 					this.Fan.enabled = false;
 					this.Phase = 10;
+					return;
 				}
 			}
 			else if (this.Yandere.CharacterAnimation["f02_fanMurderA_00"].time >= this.Yandere.CharacterAnimation["f02_fanMurderA_00"].length)

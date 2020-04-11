@@ -70,42 +70,45 @@ public class RPG_Animation : MonoBehaviour
 			if (flag3)
 			{
 				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeForwardLeft;
+				return;
 			}
-			else if (flag4)
+			if (flag4)
 			{
 				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeForwardRight;
+				return;
 			}
-			else
-			{
-				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.Forward;
-			}
+			this.currentMoveDir = RPG_Animation.CharacterMoveDirection.Forward;
+			return;
 		}
 		else if (flag2)
 		{
 			if (flag3)
 			{
 				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeBackLeft;
+				return;
 			}
-			else if (flag4)
+			if (flag4)
 			{
 				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeBackRight;
+				return;
 			}
-			else
-			{
-				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.Backward;
-			}
-		}
-		else if (flag3)
-		{
-			this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeLeft;
-		}
-		else if (flag4)
-		{
-			this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeRight;
+			this.currentMoveDir = RPG_Animation.CharacterMoveDirection.Backward;
+			return;
 		}
 		else
 		{
+			if (flag3)
+			{
+				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeLeft;
+				return;
+			}
+			if (flag4)
+			{
+				this.currentMoveDir = RPG_Animation.CharacterMoveDirection.StrafeRight;
+				return;
+			}
 			this.currentMoveDir = RPG_Animation.CharacterMoveDirection.None;
+			return;
 		}
 	}
 
@@ -117,31 +120,33 @@ public class RPG_Animation : MonoBehaviour
 			{
 			case RPG_Animation.CharacterMoveDirection.None:
 				this.currentState = RPG_Animation.CharacterState.Idle;
-				break;
+				return;
 			case RPG_Animation.CharacterMoveDirection.Forward:
 				this.currentState = RPG_Animation.CharacterState.Walk;
-				break;
+				return;
 			case RPG_Animation.CharacterMoveDirection.Backward:
 				this.currentState = RPG_Animation.CharacterState.WalkBack;
-				break;
+				return;
 			case RPG_Animation.CharacterMoveDirection.StrafeLeft:
 				this.currentState = RPG_Animation.CharacterState.StrafeLeft;
-				break;
+				return;
 			case RPG_Animation.CharacterMoveDirection.StrafeRight:
 				this.currentState = RPG_Animation.CharacterState.StrafeRight;
 				break;
 			case RPG_Animation.CharacterMoveDirection.StrafeForwardLeft:
 				this.currentState = RPG_Animation.CharacterState.Walk;
-				break;
+				return;
 			case RPG_Animation.CharacterMoveDirection.StrafeForwardRight:
 				this.currentState = RPG_Animation.CharacterState.Walk;
-				break;
+				return;
 			case RPG_Animation.CharacterMoveDirection.StrafeBackLeft:
 				this.currentState = RPG_Animation.CharacterState.WalkBack;
-				break;
+				return;
 			case RPG_Animation.CharacterMoveDirection.StrafeBackRight:
 				this.currentState = RPG_Animation.CharacterState.WalkBack;
-				break;
+				return;
+			default:
+				return;
 			}
 		}
 	}
@@ -152,41 +157,41 @@ public class RPG_Animation : MonoBehaviour
 		{
 		case RPG_Animation.CharacterState.Idle:
 			this.Idle();
-			break;
+			return;
 		case RPG_Animation.CharacterState.Walk:
 			if (this.currentMoveDir == RPG_Animation.CharacterMoveDirection.StrafeForwardLeft)
 			{
 				this.StrafeForwardLeft();
+				return;
 			}
-			else if (this.currentMoveDir == RPG_Animation.CharacterMoveDirection.StrafeForwardRight)
+			if (this.currentMoveDir == RPG_Animation.CharacterMoveDirection.StrafeForwardRight)
 			{
 				this.StrafeForwardRight();
+				return;
 			}
-			else
-			{
-				this.Walk();
-			}
-			break;
+			this.Walk();
+			return;
 		case RPG_Animation.CharacterState.WalkBack:
 			if (this.currentMoveDir == RPG_Animation.CharacterMoveDirection.StrafeBackLeft)
 			{
 				this.StrafeBackLeft();
+				return;
 			}
-			else if (this.currentMoveDir == RPG_Animation.CharacterMoveDirection.StrafeBackRight)
+			if (this.currentMoveDir == RPG_Animation.CharacterMoveDirection.StrafeBackRight)
 			{
 				this.StrafeBackRight();
+				return;
 			}
-			else
-			{
-				this.WalkBack();
-			}
-			break;
+			this.WalkBack();
+			return;
 		case RPG_Animation.CharacterState.StrafeLeft:
 			this.StrafeLeft();
-			break;
+			return;
 		case RPG_Animation.CharacterState.StrafeRight:
 			this.StrafeRight();
-			break;
+			return;
+		default:
+			return;
 		}
 	}
 

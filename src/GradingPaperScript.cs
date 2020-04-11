@@ -53,6 +53,7 @@ public class GradingPaperScript : MonoBehaviour
 			if (Vector3.Distance(this.Chair.position, this.OriginalPosition) > 0.01f)
 			{
 				this.Chair.position = Vector3.Lerp(this.Chair.position, this.OriginalPosition, Time.deltaTime * 10f);
+				return;
 			}
 		}
 		else if (this.Character != null)

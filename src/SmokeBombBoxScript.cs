@@ -22,12 +22,12 @@ public class SmokeBombBoxScript : MonoBehaviour
 			if (!this.Amnesia)
 			{
 				this.Alphabet.RemainingBombs = 5;
-				this.Alphabet.BombLabel.text = string.Empty + 5;
+				this.Alphabet.BombLabel.text = string.Concat(5);
 			}
 			else
 			{
 				this.Alphabet.RemainingBombs = 1;
-				this.Alphabet.BombLabel.text = string.Empty + 1;
+				this.Alphabet.BombLabel.text = string.Concat(1);
 			}
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (this.Stink)

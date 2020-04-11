@@ -31,10 +31,11 @@ public class NotificationScript : MonoBehaviour
 	{
 		if (!this.Display)
 		{
-			this.Panel.alpha -= Time.deltaTime * ((this.NotificationManager.NotificationsSpawned <= this.ID + 2) ? 1f : 3f);
+			this.Panel.alpha -= Time.deltaTime * ((this.NotificationManager.NotificationsSpawned > this.ID + 2) ? 3f : 1f);
 			if (this.Panel.alpha <= 0f)
 			{
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
+				return;
 			}
 		}
 		else

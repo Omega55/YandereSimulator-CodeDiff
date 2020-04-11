@@ -74,6 +74,7 @@ public class PromoCameraScript : MonoBehaviour
 			{
 				this.ID = 3;
 				this.UpdatePosition();
+				return;
 			}
 		}
 		else if (this.Timer > 5f)

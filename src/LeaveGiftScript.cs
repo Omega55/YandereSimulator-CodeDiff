@@ -35,6 +35,7 @@ public class LeaveGiftScript : MonoBehaviour
 					this.Prompt.enabled = false;
 					this.Box.SetActive(true);
 					base.enabled = false;
+					return;
 				}
 			}
 			else

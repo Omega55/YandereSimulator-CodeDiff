@@ -69,12 +69,10 @@ public class YandereShowerScript : MonoBehaviour
 			{
 				this.OpenValue = Mathf.Lerp(this.OpenValue, 0f, Time.deltaTime * 10f);
 				this.Curtain.SetBlendShapeWeight(0, this.OpenValue);
+				return;
 			}
-			else
-			{
-				this.OpenValue = Mathf.Lerp(this.OpenValue, 100f, Time.deltaTime * 10f);
-				this.Curtain.SetBlendShapeWeight(0, this.OpenValue);
-			}
+			this.OpenValue = Mathf.Lerp(this.OpenValue, 100f, Time.deltaTime * 10f);
+			this.Curtain.SetBlendShapeWeight(0, this.OpenValue);
 		}
 	}
 }

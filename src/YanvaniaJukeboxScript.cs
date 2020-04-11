@@ -18,7 +18,7 @@ public class YanvaniaJukeboxScript : MonoBehaviour
 		AudioSource component = base.GetComponent<AudioSource>();
 		if (component.time + Time.deltaTime > component.clip.length)
 		{
-			component.clip = ((!this.Boss) ? this.ApproachMain : this.BossMain);
+			component.clip = (this.Boss ? this.BossMain : this.ApproachMain);
 			component.loop = true;
 			component.Play();
 		}

@@ -20,12 +20,10 @@ public class SakeScript : MonoBehaviour
 		{
 			this.Prompt.enabled = false;
 			this.Prompt.Hide();
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
+			return;
 		}
-		else
-		{
-			this.Prompt.enabled = true;
-			this.Prompt.Hide();
-		}
+		this.Prompt.enabled = true;
+		this.Prompt.Hide();
 	}
 }

@@ -102,7 +102,7 @@ public class SkullScript : MonoBehaviour
 						this.DebugMenu.SetActive(false);
 						this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 						this.Yandere.CanMove = false;
-						UnityEngine.Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+						Object.Instantiate<GameObject>(this.DarkAura, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 						this.Timer += Time.deltaTime;
 						this.Clock.StopTime = true;
 						if (this.StudentManager.Students[21] == null || this.StudentManager.Students[26] == null || this.StudentManager.Students[31] == null || this.StudentManager.Students[36] == null || this.StudentManager.Students[41] == null || this.StudentManager.Students[46] == null || this.StudentManager.Students[51] == null || this.StudentManager.Students[56] == null || this.StudentManager.Students[61] == null || this.StudentManager.Students[66] == null || this.StudentManager.Students[71] == null)

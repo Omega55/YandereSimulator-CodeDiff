@@ -154,7 +154,7 @@ public class StudentEditorScript : MonoBehaviour
 		for (int j = 0; j < this.students.Length; j++)
 		{
 			StudentEditorScript.StudentData studentData = this.students[j];
-			UILabel uilabel = UnityEngine.Object.Instantiate<UILabel>(this.studentLabelTemplate, this.listLabelsOrigin);
+			UILabel uilabel = Object.Instantiate<UILabel>(this.studentLabelTemplate, this.listLabelsOrigin);
 			uilabel.text = "(" + studentData.id.ToString() + ") " + studentData.name;
 			Transform transform = uilabel.transform;
 			transform.localPosition = new Vector3(transform.localPosition.x + (float)(uilabel.width / 2), transform.localPosition.y - (float)(j * uilabel.height), transform.localPosition.z);
@@ -162,7 +162,7 @@ public class StudentEditorScript : MonoBehaviour
 		}
 		this.studentIndex = 0;
 		this.bodyLabel.text = StudentEditorScript.GetStudentText(this.students[this.studentIndex]);
-		this.inputManager = UnityEngine.Object.FindObjectOfType<InputManagerScript>();
+		this.inputManager = Object.FindObjectOfType<InputManagerScript>();
 	}
 
 	private void OnEnable()
@@ -204,7 +204,7 @@ public class StudentEditorScript : MonoBehaviour
 			data.id,
 			"):\n"
 		}));
-		stringBuilder.Append("- Gender: " + ((!data.isMale) ? "Female" : "Male") + "\n");
+		stringBuilder.Append("- Gender: " + (data.isMale ? "Male" : "Female") + "\n");
 		stringBuilder.Append("- Class: " + data.attendanceInfo.classNumber + "\n");
 		stringBuilder.Append("- Seat: " + data.attendanceInfo.seatNumber + "\n");
 		stringBuilder.Append("- Club: " + data.attendanceInfo.club + "\n");
@@ -238,8 +238,7 @@ public class StudentEditorScript : MonoBehaviour
 
 	private void HandleInput()
 	{
-		bool buttonDown = Input.GetButtonDown("B");
-		if (buttonDown)
+		if (Input.GetButtonDown("B"))
 		{
 			this.mainPanel.gameObject.SetActive(true);
 			this.studentPanel.gameObject.SetActive(false);
@@ -250,14 +249,13 @@ public class StudentEditorScript : MonoBehaviour
 		bool tappedDown = this.inputManager.TappedDown;
 		if (tappedUp)
 		{
-			this.studentIndex = ((this.studentIndex <= num) ? num2 : (this.studentIndex - 1));
+			this.studentIndex = ((this.studentIndex > num) ? (this.studentIndex - 1) : num2);
 		}
 		else if (tappedDown)
 		{
-			this.studentIndex = ((this.studentIndex >= num2) ? num : (this.studentIndex + 1));
+			this.studentIndex = ((this.studentIndex < num2) ? (this.studentIndex + 1) : num);
 		}
-		bool flag = tappedUp || tappedDown;
-		if (flag)
+		if (tappedUp || tappedDown)
 		{
 			this.bodyLabel.text = StudentEditorScript.GetStudentText(this.students[this.studentIndex]);
 		}

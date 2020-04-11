@@ -29,36 +29,41 @@ public class RivalPoseScript : MonoBehaviour
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			return;
 		}
-		else if (femaleUniform == 2)
+		if (femaleUniform == 2)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[2].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[3].mainTexture = this.HairTexture;
+			return;
 		}
-		else if (femaleUniform == 3)
+		if (femaleUniform == 3)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			return;
 		}
-		else if (femaleUniform == 4)
+		if (femaleUniform == 4)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			return;
 		}
-		else if (femaleUniform == 5)
+		if (femaleUniform == 5)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[1].mainTexture = this.HairTexture;
 			this.MyRenderer.materials[2].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[3].mainTexture = this.FemaleUniformTextures[femaleUniform];
+			return;
 		}
-		else if (femaleUniform == 6)
+		if (femaleUniform == 6)
 		{
 			this.MyRenderer.materials[0].mainTexture = this.FemaleUniformTextures[femaleUniform];
 			this.MyRenderer.materials[1].mainTexture = this.FemaleUniformTextures[femaleUniform];

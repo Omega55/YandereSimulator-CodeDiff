@@ -41,7 +41,7 @@ namespace MaidDereMinigame
 			{
 				if (Chef.instance == null)
 				{
-					Chef.instance = UnityEngine.Object.FindObjectOfType<Chef>();
+					Chef.instance = Object.FindObjectOfType<Chef>();
 				}
 				return Chef.instance;
 			}
@@ -68,7 +68,7 @@ namespace MaidDereMinigame
 		public void Pause(bool toPause)
 		{
 			this.isPaused = toPause;
-			this.animator.speed = (float)((!this.isPaused) ? 1 : 0);
+			this.animator.speed = (float)(this.isPaused ? 0 : 1);
 		}
 
 		public static void AddToQueue(Food foodItem)
@@ -92,20 +92,19 @@ namespace MaidDereMinigame
 			Chef.ChefState chefState = this.state;
 			if (chefState != Chef.ChefState.Queueing)
 			{
-				if (chefState == Chef.ChefState.Cooking)
+				if (chefState != Chef.ChefState.Cooking)
 				{
-					if (this.timeToFinishDish <= 0f)
-					{
-						this.state = Chef.ChefState.Delivering;
-						this.animator.SetTrigger("PlateCooked");
-						this.cookMeter.gameObject.SetActive(false);
-					}
-					else
-					{
-						this.timeToFinishDish -= Time.deltaTime;
-						this.cookMeter.SetFill(1f - this.timeToFinishDish / (this.currentPlate.cookTimeMultiplier * this.cookTime));
-					}
+					return;
 				}
+				if (this.timeToFinishDish <= 0f)
+				{
+					this.state = Chef.ChefState.Delivering;
+					this.animator.SetTrigger("PlateCooked");
+					this.cookMeter.gameObject.SetActive(false);
+					return;
+				}
+				this.timeToFinishDish -= Time.deltaTime;
+				this.cookMeter.SetFill(1f - this.timeToFinishDish / (this.currentPlate.cookTimeMultiplier * this.cookTime));
 			}
 			else if (this.cookQueue.Count > 0)
 			{
@@ -113,12 +112,13 @@ namespace MaidDereMinigame
 				this.timeToFinishDish = this.currentPlate.cookTimeMultiplier * this.cookTime;
 				this.state = Chef.ChefState.Cooking;
 				this.cookMeter.gameObject.SetActive(true);
+				return;
 			}
 		}
 
 		public void Deliver()
 		{
-			UnityEngine.Object.FindObjectOfType<ServingCounter>().AddPlate(this.currentPlate);
+			Object.FindObjectOfType<ServingCounter>().AddPlate(this.currentPlate);
 		}
 
 		public void Queue()

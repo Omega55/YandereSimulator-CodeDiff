@@ -14,6 +14,6 @@ public class HomeWindowScript : MonoBehaviour
 
 	private void Update()
 	{
-		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, Mathf.Lerp(this.Sprite.color.a, (!this.Show) ? 0f : 1f, Time.deltaTime * 10f));
+		this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, Mathf.Lerp(this.Sprite.color.a, this.Show ? 1f : 0f, Time.deltaTime * 10f));
 	}
 }

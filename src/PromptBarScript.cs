@@ -43,6 +43,7 @@ public class PromptBarScript : MonoBehaviour
 					if (this.Panel != null)
 					{
 						this.Panel.enabled = false;
+						return;
 					}
 				}
 			}

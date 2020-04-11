@@ -118,6 +118,7 @@ public class ChallengeScript : MonoBehaviour
 				if (this.ChallengePanel.alpha <= 0f)
 				{
 					this.Phase++;
+					return;
 				}
 			}
 			else

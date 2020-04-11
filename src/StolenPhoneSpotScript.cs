@@ -36,6 +36,7 @@ public class StolenPhoneSpotScript : MonoBehaviour
 				this.RivalPhone.transform.eulerAngles = base.transform.eulerAngles;
 				this.RivalPhone.gameObject.SetActive(true);
 				base.gameObject.SetActive(false);
+				return;
 			}
 		}
 		else if (this.Prompt.enabled)

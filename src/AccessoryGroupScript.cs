@@ -7,9 +7,10 @@ public class AccessoryGroupScript : MonoBehaviour
 
 	public void SetPartsActive(bool active)
 	{
-		foreach (GameObject gameObject in this.Parts)
+		GameObject[] parts = this.Parts;
+		for (int i = 0; i < parts.Length; i++)
 		{
-			gameObject.SetActive(active);
+			parts[i].SetActive(active);
 		}
 	}
 }

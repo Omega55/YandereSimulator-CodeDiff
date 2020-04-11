@@ -33,25 +33,22 @@ public class PickpocketScript : MonoBehaviour
 		{
 			this.Prompt.transform.parent.gameObject.SetActive(false);
 			base.enabled = false;
+			return;
 		}
-		else
+		this.PickpocketMinigame = this.Student.StudentManager.PickpocketMinigame;
+		if (this.Student.StudentID == this.Student.StudentManager.NurseID)
 		{
-			this.PickpocketMinigame = this.Student.StudentManager.PickpocketMinigame;
-			if (this.Student.StudentID == this.Student.StudentManager.NurseID)
-			{
-				this.ID = 2;
-			}
-			else if (ClubGlobals.GetClubClosed(this.Student.OriginalClub))
-			{
-				this.Prompt.transform.parent.gameObject.SetActive(false);
-				base.enabled = false;
-			}
-			else
-			{
-				this.Prompt.Label[3].text = "     Steal Shed Key";
-				this.NotNurse = true;
-			}
+			this.ID = 2;
+			return;
 		}
+		if (ClubGlobals.GetClubClosed(this.Student.OriginalClub))
+		{
+			this.Prompt.transform.parent.gameObject.SetActive(false);
+			base.enabled = false;
+			return;
+		}
+		this.Prompt.Label[3].text = "     Steal Shed Key";
+		this.NotNurse = true;
 	}
 
 	private void Update()
@@ -157,6 +154,7 @@ public class PickpocketScript : MonoBehaviour
 				this.Prompt.gameObject.GetComponent<Rigidbody>().useGravity = true;
 				this.Prompt.enabled = true;
 				base.transform.parent = null;
+				return;
 			}
 		}
 		else if (this.Prompt.Circle[3].fillAmount == 0f)
@@ -174,8 +172,7 @@ public class PickpocketScript : MonoBehaviour
 	private void Punish()
 	{
 		Debug.Log("Punishing Yandere-chan for pickpocketing.");
-		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, this.Student.Yandere.transform.position + Vector3.up, Quaternion.identity);
-		gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
+		Object.Instantiate<GameObject>(this.AlarmDisc, this.Student.Yandere.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>().NoScream = true;
 		if (!this.NotNurse && !this.Prompt.Yandere.Egg)
 		{
 			Debug.Log("A faculty member saw pickpocketing.");
@@ -206,12 +203,10 @@ public class PickpocketScript : MonoBehaviour
 			this.Student.StudentManager.ShedDoor.Locked = false;
 			this.Student.ClubManager.Padlock.SetActive(false);
 			this.Student.Yandere.Inventory.ShedKey = true;
+			return;
 		}
-		else
-		{
-			this.Student.StudentManager.CabinetDoor.Prompt.Label[0].text = "     Open";
-			this.Student.StudentManager.CabinetDoor.Locked = false;
-			this.Student.Yandere.Inventory.CabinetKey = true;
-		}
+		this.Student.StudentManager.CabinetDoor.Prompt.Label[0].text = "     Open";
+		this.Student.StudentManager.CabinetDoor.Locked = false;
+		this.Student.Yandere.Inventory.CabinetKey = true;
 	}
 }

@@ -20,7 +20,7 @@ public class WritheScript : MonoBehaviour
 	private void Start()
 	{
 		this.StartTime = Time.time;
-		this.Duration = UnityEngine.Random.Range(1f, 5f);
+		this.Duration = Random.Range(1f, 5f);
 	}
 
 	private void Update()
@@ -28,9 +28,9 @@ public class WritheScript : MonoBehaviour
 		if (this.Rotation == this.EndValue)
 		{
 			this.StartValue = this.EndValue;
-			this.EndValue = UnityEngine.Random.Range(-45f, 45f);
+			this.EndValue = Random.Range(-45f, 45f);
 			this.StartTime = Time.time;
-			this.Duration = UnityEngine.Random.Range(1f, 5f);
+			this.Duration = Random.Range(1f, 5f);
 		}
 		float t = (Time.time - this.StartTime) / this.Duration;
 		this.Rotation = Mathf.SmoothStep(this.StartValue, this.EndValue, t);
@@ -38,17 +38,19 @@ public class WritheScript : MonoBehaviour
 		{
 		case 1:
 			base.transform.localEulerAngles = new Vector3(this.Rotation, base.transform.localEulerAngles.y, base.transform.localEulerAngles.z);
-			break;
+			return;
 		case 2:
 			if (this.SpecialCase)
 			{
 				this.Rotation += 180f;
 			}
 			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, this.Rotation, base.transform.localEulerAngles.z);
-			break;
+			return;
 		case 3:
 			base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, this.Rotation);
-			break;
+			return;
+		default:
+			return;
 		}
 	}
 }

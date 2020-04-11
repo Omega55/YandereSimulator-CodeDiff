@@ -137,7 +137,7 @@ public class DoorScript : MonoBehaviour
 			}
 			this.TimeLimit = 1f;
 		}
-		if (this.Labels.Length > 0)
+		if (this.Labels.Length != 0)
 		{
 			this.Labels[0].text = this.RoomName;
 			this.Labels[1].text = this.RoomName;
@@ -269,9 +269,9 @@ public class DoorScript : MonoBehaviour
 				for (int i = 0; i < this.Doors.Length; i++)
 				{
 					Transform transform = this.Doors[i];
-					transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, Mathf.Lerp(transform.localPosition.z, this.OriginX[i] + ((!this.North) ? this.ShiftNorth : this.ShiftSouth), Time.deltaTime * 3.6f));
-					this.Rotation = Mathf.Lerp(this.Rotation, (!this.North) ? this.TrapSwing : (-this.TrapSwing), Time.deltaTime * 3.6f);
-					transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (i != 0) ? (-this.Rotation) : this.Rotation, transform.localEulerAngles.z);
+					transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, Mathf.Lerp(transform.localPosition.z, this.OriginX[i] + (this.North ? this.ShiftSouth : this.ShiftNorth), Time.deltaTime * 3.6f));
+					this.Rotation = Mathf.Lerp(this.Rotation, this.North ? (-this.TrapSwing) : this.TrapSwing, Time.deltaTime * 3.6f);
+					transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (i == 0) ? this.Rotation : (-this.Rotation), transform.localEulerAngles.z);
 				}
 			}
 			else if (!this.Open)
@@ -287,7 +287,7 @@ public class DoorScript : MonoBehaviour
 					{
 						this.Rotation = Mathf.Lerp(this.Rotation, 0f, Time.deltaTime * 3.6f);
 						transform2.localPosition = new Vector3(transform2.localPosition.x, transform2.localPosition.y, Mathf.Lerp(transform2.localPosition.z, this.OriginX[j], Time.deltaTime * 3.6f));
-						transform2.localEulerAngles = new Vector3(transform2.localEulerAngles.x, (j != 0) ? (-this.Rotation) : this.Rotation, transform2.localEulerAngles.z);
+						transform2.localEulerAngles = new Vector3(transform2.localEulerAngles.x, (j == 0) ? this.Rotation : (-this.Rotation), transform2.localEulerAngles.z);
 					}
 				}
 			}
@@ -302,9 +302,9 @@ public class DoorScript : MonoBehaviour
 					}
 					else
 					{
-						transform3.localPosition = new Vector3(transform3.localPosition.x, transform3.localPosition.y, Mathf.Lerp(transform3.localPosition.z, this.OriginX[k] + ((!this.North) ? this.ShiftSouth : this.ShiftNorth), Time.deltaTime * 3.6f));
-						this.Rotation = Mathf.Lerp(this.Rotation, (!this.North) ? (-this.Swing) : this.Swing, Time.deltaTime * 3.6f);
-						transform3.localEulerAngles = new Vector3(transform3.localEulerAngles.x, (k != 0) ? (-this.Rotation) : this.Rotation, transform3.localEulerAngles.z);
+						transform3.localPosition = new Vector3(transform3.localPosition.x, transform3.localPosition.y, Mathf.Lerp(transform3.localPosition.z, this.OriginX[k] + (this.North ? this.ShiftNorth : this.ShiftSouth), Time.deltaTime * 3.6f));
+						this.Rotation = Mathf.Lerp(this.Rotation, this.North ? this.Swing : (-this.Swing), Time.deltaTime * 3.6f);
+						transform3.localEulerAngles = new Vector3(transform3.localEulerAngles.x, (k == 0) ? this.Rotation : (-this.Rotation), transform3.localEulerAngles.z);
 					}
 				}
 			}
@@ -378,7 +378,7 @@ public class DoorScript : MonoBehaviour
 		this.UpdateLabel();
 		if (this.HidingSpot)
 		{
-			UnityEngine.Object.Destroy(this.HideCollider.GetComponent<BoxCollider>());
+			Object.Destroy(this.HideCollider.GetComponent<BoxCollider>());
 		}
 		this.CheckDirection();
 		if (this.BucketSet)
@@ -391,7 +391,7 @@ public class DoorScript : MonoBehaviour
 			this.Bucket.Fly = true;
 			this.Prompt.HideButton[0] = false;
 			this.Prompt.HideButton[1] = true;
-			this.Prompt.Label[1].text = string.Empty;
+			this.Prompt.Label[1].text = "";
 			this.Prompt.enabled = true;
 			this.BucketSet = false;
 		}
@@ -407,7 +407,7 @@ public class DoorScript : MonoBehaviour
 	private void CheckDirection()
 	{
 		this.North = false;
-		this.RelativeCharacter = ((!(this.Student != null)) ? this.Yandere.transform : this.Student.transform);
+		this.RelativeCharacter = ((this.Student != null) ? this.Student.transform : this.Yandere.transform);
 		if (this.Facing == "North")
 		{
 			if (this.RelativeCharacter.position.z < base.transform.position.z)
@@ -461,11 +461,9 @@ public class DoorScript : MonoBehaviour
 		if (this.Open)
 		{
 			this.Prompt.Label[0].text = "     Close";
+			return;
 		}
-		else
-		{
-			this.Prompt.Label[0].text = "     Open";
-		}
+		this.Prompt.Label[0].text = "     Open";
 	}
 
 	private void UpdatePlate()
@@ -475,139 +473,141 @@ public class DoorScript : MonoBehaviour
 		case 1:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.75f);
-			break;
+			return;
 		case 2:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.5f);
-			break;
+			return;
 		case 3:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.25f);
-			break;
+			return;
 		case 4:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0f);
-			break;
+			return;
 		case 5:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.75f);
-			break;
+			return;
 		case 6:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.5f);
-			break;
+			return;
 		case 7:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.25f);
-			break;
+			return;
 		case 8:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0f);
-			break;
+			return;
 		case 9:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.75f);
-			break;
+			return;
 		case 10:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.5f);
-			break;
+			return;
 		case 11:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.25f);
-			break;
+			return;
 		case 12:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0f);
-			break;
+			return;
 		case 13:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.75f);
-			break;
+			return;
 		case 14:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.5f);
-			break;
+			return;
 		case 15:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.25f);
-			break;
+			return;
 		case 16:
 			this.Sign.material.mainTexture = this.Plates[1];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0f);
-			break;
+			return;
 		case 17:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.75f);
-			break;
+			return;
 		case 18:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.5f);
-			break;
+			return;
 		case 19:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.25f);
-			break;
+			return;
 		case 20:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0f);
-			break;
+			return;
 		case 21:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.75f);
-			break;
+			return;
 		case 22:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.5f);
-			break;
+			return;
 		case 23:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0.25f);
-			break;
+			return;
 		case 24:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.25f, 0f);
-			break;
+			return;
 		case 25:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.75f);
-			break;
+			return;
 		case 26:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.5f);
-			break;
+			return;
 		case 27:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0.25f);
-			break;
+			return;
 		case 28:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.5f, 0f);
-			break;
+			return;
 		case 29:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.75f);
-			break;
+			return;
 		case 30:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.5f);
-			break;
+			return;
 		case 31:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0.25f);
-			break;
+			return;
 		case 32:
 			this.Sign.material.mainTexture = this.Plates[2];
 			this.Sign.material.mainTextureOffset = new Vector2(0.75f, 0f);
-			break;
+			return;
 		case 33:
 			this.Sign.material.mainTexture = this.Plates[3];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.75f);
-			break;
+			return;
 		case 34:
 			this.Sign.material.mainTexture = this.Plates[3];
 			this.Sign.material.mainTextureOffset = new Vector2(0f, 0.5f);
-			break;
+			return;
+		default:
+			return;
 		}
 	}
 
@@ -619,12 +619,38 @@ public class DoorScript : MonoBehaviour
 		}
 		switch (this.RoomID)
 		{
+		case 1:
+		case 2:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 14:
+		case 15:
+		case 16:
+		case 17:
+		case 18:
+		case 19:
+		case 20:
+		case 21:
+		case 23:
+		case 24:
+		case 25:
+		case 33:
+		case 37:
+			break;
 		case 3:
 			if (!ConversationGlobals.GetTopicDiscovered(22))
 			{
 				ConversationGlobals.SetTopicDiscovered(22, true);
 				this.Yandere.NotificationManager.TopicName = "School";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 13:
@@ -633,6 +659,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(18, true);
 				this.Yandere.NotificationManager.TopicName = "Reading";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 22:
@@ -650,6 +677,7 @@ public class DoorScript : MonoBehaviour
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 				this.Yandere.NotificationManager.TopicName = "Memes";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 26:
@@ -658,6 +686,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(1, true);
 				this.Yandere.NotificationManager.TopicName = "Cooking";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 27:
@@ -666,6 +695,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(2, true);
 				this.Yandere.NotificationManager.TopicName = "Drama";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 28:
@@ -674,6 +704,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(3, true);
 				this.Yandere.NotificationManager.TopicName = "Occult";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 29:
@@ -682,6 +713,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(4, true);
 				this.Yandere.NotificationManager.TopicName = "Art";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 30:
@@ -690,6 +722,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(5, true);
 				this.Yandere.NotificationManager.TopicName = "Music";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 31:
@@ -698,6 +731,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(6, true);
 				this.Yandere.NotificationManager.TopicName = "Martial Arts";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 32:
@@ -706,6 +740,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(7, true);
 				this.Yandere.NotificationManager.TopicName = "Photography";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 34:
@@ -714,6 +749,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(8, true);
 				this.Yandere.NotificationManager.TopicName = "Science";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 35:
@@ -722,6 +758,7 @@ public class DoorScript : MonoBehaviour
 				ConversationGlobals.SetTopicDiscovered(9, true);
 				this.Yandere.NotificationManager.TopicName = "Sports";
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
+				return;
 			}
 			break;
 		case 36:
@@ -738,6 +775,8 @@ public class DoorScript : MonoBehaviour
 				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Topic);
 			}
 			break;
+		default:
+			return;
 		}
 	}
 }

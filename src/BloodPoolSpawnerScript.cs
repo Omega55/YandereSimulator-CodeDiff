@@ -107,21 +107,23 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 						this.Timer = 0.1f;
 						if (this.PoolsSpawned < 10)
 						{
-							GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
-							gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+							GameObject gameObject = Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
+							gameObject.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
 							gameObject.transform.parent = this.BloodParent;
 							this.PoolsSpawned++;
+							return;
 						}
-						else if (this.PoolsSpawned < 20)
+						if (this.PoolsSpawned < 20)
 						{
-							GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
-							gameObject2.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+							GameObject gameObject2 = Object.Instantiate<GameObject>(this.BloodPool, new Vector3(position.x, this.Height + 0.012f, position.z), Quaternion.identity);
+							gameObject2.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
 							gameObject2.transform.parent = this.BloodParent;
 							this.PoolsSpawned++;
 							gameObject2.GetComponent<BloodPoolScript>().TargetSize = 1f - (float)(this.PoolsSpawned - 10) * 0.1f;
 							if (this.PoolsSpawned == 20)
 							{
 								base.gameObject.SetActive(false);
+								return;
 							}
 						}
 					}
@@ -144,8 +146,8 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 		Vector3 a = new Vector3(this.Hips.position.x, this.Height + 0.012f, this.Hips.position.z);
 		for (int i = 0; i < 5; i++)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, a + this.Positions[i], Quaternion.identity);
-			gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.BloodPool, a + this.Positions[i], Quaternion.identity);
+			gameObject.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
 			gameObject.transform.parent = this.BloodParent;
 		}
 	}
@@ -154,21 +156,21 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	{
 		Vector3 position = Location.position;
 		Vector3 forward = Location.forward;
-		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, position + forward * 2f, Quaternion.identity);
-		gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+		GameObject gameObject = Object.Instantiate<GameObject>(this.BloodPool, position + forward * 2f, Quaternion.identity);
+		gameObject.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
 		gameObject.transform.parent = this.BloodParent;
-		gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, position + forward * 2.5f, Quaternion.identity);
-		gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
-		gameObject.transform.parent = this.BloodParent;
-		gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, position + forward * 3f, Quaternion.identity);
-		gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
-		gameObject.transform.parent = this.BloodParent;
+		GameObject gameObject2 = Object.Instantiate<GameObject>(this.BloodPool, position + forward * 2.5f, Quaternion.identity);
+		gameObject2.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
+		gameObject2.transform.parent = this.BloodParent;
+		GameObject gameObject3 = Object.Instantiate<GameObject>(this.BloodPool, position + forward * 3f, Quaternion.identity);
+		gameObject3.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
+		gameObject3.transform.parent = this.BloodParent;
 	}
 
 	public void SpawnPool(Transform Location)
 	{
-		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodPool, Location.position + Location.forward + new Vector3(0f, 0.0001f, 0f), Quaternion.identity);
-		gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+		GameObject gameObject = Object.Instantiate<GameObject>(this.BloodPool, Location.position + Location.forward + new Vector3(0f, 0.0001f, 0f), Quaternion.identity);
+		gameObject.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
 		gameObject.transform.parent = this.BloodParent;
 	}
 
@@ -178,18 +180,18 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 		if (y < 4f)
 		{
 			this.Height = 0f;
+			return;
 		}
-		else if (y < 8f)
+		if (y < 8f)
 		{
 			this.Height = 4f;
+			return;
 		}
-		else if (y < 12f)
+		if (y < 12f)
 		{
 			this.Height = 8f;
+			return;
 		}
-		else
-		{
-			this.Height = 12f;
-		}
+		this.Height = 12f;
 	}
 }

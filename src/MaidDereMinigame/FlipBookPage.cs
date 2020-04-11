@@ -21,7 +21,7 @@ namespace MaidDereMinigame
 
 		public void Transition(bool toOpen)
 		{
-			this.animator.SetTrigger((!toOpen) ? "ClosePage" : "OpenPage");
+			this.animator.SetTrigger(toOpen ? "OpenPage" : "ClosePage");
 			if (this.objectToActivate != null)
 			{
 				this.objectToActivate.SetActive(false);

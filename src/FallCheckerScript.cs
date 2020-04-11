@@ -36,13 +36,11 @@ public class FallCheckerScript : MonoBehaviour
 				this.Ragdoll.AllColliders[2].transform.localEulerAngles = Vector3.zero;
 				this.Ragdoll.AllColliders[7].transform.localEulerAngles = new Vector3(0f, 0f, -80f);
 				this.Ragdoll.Prompt.transform.position = new Vector3(this.Dumpster.transform.position.x, this.Ragdoll.Prompt.transform.position.y, this.Dumpster.transform.position.z);
+				return;
 			}
-			else
-			{
-				base.GetComponent<AudioSource>().Play();
-				this.Dumpster.Slide = true;
-				this.Ragdoll = null;
-			}
+			base.GetComponent<AudioSource>().Play();
+			this.Dumpster.Slide = true;
+			this.Ragdoll = null;
 		}
 	}
 }

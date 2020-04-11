@@ -36,7 +36,7 @@ public class HomeTriggerScript : MonoBehaviour
 
 	private void Update()
 	{
-		this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, Mathf.MoveTowards(this.Label.color.a, (!this.FadeIn) ? 0f : 1f, Time.deltaTime * 10f));
+		this.Label.color = new Color(this.Label.color.r, this.Label.color.g, this.Label.color.b, Mathf.MoveTowards(this.Label.color.a, this.FadeIn ? 1f : 0f, Time.deltaTime * 10f));
 	}
 
 	public void Disable()

@@ -280,8 +280,8 @@ public class DDRManager : MonoBehaviour
 
 	private IEnumerator fadeGameUI(bool fadein)
 	{
-		float destination = (float)((!fadein) ? 0 : 1);
-		float amount = (float)((!fadein) ? 1 : 0);
+		float destination = (float)(fadein ? 1 : 0);
+		float amount = (float)(fadein ? 0 : 1);
 		while (amount != destination)
 		{
 			amount = Mathf.Lerp(amount, destination, 10f * Time.deltaTime);
@@ -298,8 +298,8 @@ public class DDRManager : MonoBehaviour
 
 	private IEnumerator fade(bool fadein, MaskableGraphic graphic, float speed = 1f)
 	{
-		float destination = (float)((!fadein) ? 0 : 1);
-		float amount = (float)((!fadein) ? 1 : 0);
+		float destination = (float)(fadein ? 1 : 0);
+		float amount = (float)(fadein ? 0 : 1);
 		while (amount != destination)
 		{
 			amount = Mathf.Lerp(amount, destination, speed * Time.deltaTime);

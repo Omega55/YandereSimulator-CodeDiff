@@ -53,11 +53,9 @@ namespace MaidDereMinigame
 			if (num == -1)
 			{
 				Debug.LogError("Scene could not be found. Is it in the Scene Wrapper?");
+				return;
 			}
-			else
-			{
-				SceneManager.LoadScene(num);
-			}
+			SceneManager.LoadScene(num);
 		}
 
 		public int GetSceneID(SceneObject scene)

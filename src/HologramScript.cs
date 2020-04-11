@@ -7,14 +7,15 @@ public class HologramScript : MonoBehaviour
 
 	public void UpdateHolograms()
 	{
-		foreach (GameObject gameObject in this.Holograms)
+		GameObject[] holograms = this.Holograms;
+		for (int i = 0; i < holograms.Length; i++)
 		{
-			gameObject.SetActive(this.TrueFalse());
+			holograms[i].SetActive(this.TrueFalse());
 		}
 	}
 
 	private bool TrueFalse()
 	{
-		return UnityEngine.Random.value >= 0.5f;
+		return Random.value >= 0.5f;
 	}
 }

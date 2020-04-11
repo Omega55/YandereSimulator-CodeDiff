@@ -35,6 +35,7 @@ public class WitnessCameraScript : MonoBehaviour
 			{
 				this.WitnessTimer = 0f;
 				this.Show = false;
+				return;
 			}
 		}
 		else

@@ -53,6 +53,7 @@ public class BodyHidingLockerScript : MonoBehaviour
 				this.Corpse.enabled = false;
 				this.Corpse.Hidden = true;
 				this.Rotation = -180f;
+				return;
 			}
 		}
 		else if (this.Prompt.enabled)

@@ -61,6 +61,7 @@ public class MiyukiEnemyScript : MonoBehaviour
 			if (this.Enemy.transform.position.y < this.SpawnPoints[this.ID].position.y + 0.5f)
 			{
 				this.Enemy.transform.position = new Vector3(this.Enemy.transform.position.x, this.SpawnPoints[this.ID].position.y + 0.5f, this.Enemy.transform.position.z);
+				return;
 			}
 		}
 		else
@@ -80,12 +81,12 @@ public class MiyukiEnemyScript : MonoBehaviour
 	{
 		if (this.Enemy.activeInHierarchy && other.gameObject.tag == "missile")
 		{
-			UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
-			UnityEngine.Object.Destroy(other.gameObject);
+			Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
+			Object.Destroy(other.gameObject);
 			this.Health -= 1f;
 			if (this.Health == 0f)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.DeathEffect, other.transform.position, Quaternion.identity);
+				Object.Instantiate<GameObject>(this.DeathEffect, other.transform.position, Quaternion.identity);
 				this.Enemy.SetActive(false);
 				this.Health = 50f;
 				this.ID++;

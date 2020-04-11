@@ -93,15 +93,10 @@ public class StatsScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (File.Exists(Application.streamingAssetsPath + "/CustomPortrait.txt"))
+		if (File.Exists(Application.streamingAssetsPath + "/CustomPortrait.txt") && File.ReadAllText(Application.streamingAssetsPath + "/CustomPortrait.txt") == "1")
 		{
-			string a = File.ReadAllText(Application.streamingAssetsPath + "/CustomPortrait.txt");
-			if (a == "1")
-			{
-				string url = "file:///" + Application.streamingAssetsPath + "/CustomPortrait.png";
-				WWW www = new WWW(url);
-				this.Portrait.mainTexture = www.texture;
-			}
+			WWW www = new WWW("file:///" + Application.streamingAssetsPath + "/CustomPortrait.png");
+			this.Portrait.mainTexture = www.texture;
 		}
 	}
 
@@ -153,7 +148,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (ClassGlobals.BiologyGrade < 5)
 		{
-			this.Subject1Bars[ClassGlobals.BiologyGrade + 1].color = ((ClassGlobals.BiologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject1Bars[ClassGlobals.BiologyGrade + 1].color = ((ClassGlobals.BiologyBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Grade = ClassGlobals.ChemistryGrade;
 		this.BarID = 1;
@@ -173,7 +168,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (ClassGlobals.ChemistryGrade < 5)
 		{
-			this.Subject2Bars[ClassGlobals.ChemistryGrade + 1].color = ((ClassGlobals.ChemistryBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject2Bars[ClassGlobals.ChemistryGrade + 1].color = ((ClassGlobals.ChemistryBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Grade = ClassGlobals.LanguageGrade;
 		this.BarID = 1;
@@ -193,7 +188,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (ClassGlobals.LanguageGrade < 5)
 		{
-			this.Subject3Bars[ClassGlobals.LanguageGrade + 1].color = ((ClassGlobals.LanguageBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject3Bars[ClassGlobals.LanguageGrade + 1].color = ((ClassGlobals.LanguageBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Grade = ClassGlobals.PhysicalGrade;
 		this.BarID = 1;
@@ -213,7 +208,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (ClassGlobals.PhysicalGrade < 5)
 		{
-			this.Subject4Bars[ClassGlobals.PhysicalGrade + 1].color = ((ClassGlobals.PhysicalBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject4Bars[ClassGlobals.PhysicalGrade + 1].color = ((ClassGlobals.PhysicalBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Grade = ClassGlobals.PsychologyGrade;
 		this.BarID = 1;
@@ -233,7 +228,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (ClassGlobals.PsychologyGrade < 5)
 		{
-			this.Subject5Bars[ClassGlobals.PsychologyGrade + 1].color = ((ClassGlobals.PsychologyBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject5Bars[ClassGlobals.PsychologyGrade + 1].color = ((ClassGlobals.PsychologyBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Grade = PlayerGlobals.Seduction;
 		this.BarID = 1;
@@ -253,7 +248,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (PlayerGlobals.Seduction < 5)
 		{
-			this.Subject6Bars[PlayerGlobals.Seduction + 1].color = ((PlayerGlobals.SeductionBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject6Bars[PlayerGlobals.Seduction + 1].color = ((PlayerGlobals.SeductionBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Grade = PlayerGlobals.Numbness;
 		this.BarID = 1;
@@ -273,7 +268,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (PlayerGlobals.Numbness < 5)
 		{
-			this.Subject7Bars[PlayerGlobals.Numbness + 1].color = ((PlayerGlobals.NumbnessBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject7Bars[PlayerGlobals.Numbness + 1].color = ((PlayerGlobals.NumbnessBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Grade = PlayerGlobals.Enlightenment;
 		this.BarID = 1;
@@ -293,7 +288,7 @@ public class StatsScript : MonoBehaviour
 		}
 		if (PlayerGlobals.Enlightenment < 5)
 		{
-			this.Subject8Bars[PlayerGlobals.Enlightenment + 1].color = ((PlayerGlobals.EnlightenmentBonus <= 0) ? new Color(1f, 1f, 1f, 0.5f) : new Color(1f, 0f, 0f, 1f));
+			this.Subject8Bars[PlayerGlobals.Enlightenment + 1].color = ((PlayerGlobals.EnlightenmentBonus > 0) ? new Color(1f, 0f, 0f, 1f) : new Color(1f, 1f, 1f, 0.5f));
 		}
 		this.Ranks[1].text = "Rank: " + ClassGlobals.BiologyGrade.ToString();
 		this.Ranks[2].text = "Rank: " + ClassGlobals.ChemistryGrade.ToString();
@@ -305,7 +300,7 @@ public class StatsScript : MonoBehaviour
 		this.Ranks[8].text = "Rank: " + PlayerGlobals.Enlightenment.ToString();
 		ClubType club = ClubGlobals.Club;
 		string str;
-		bool flag = this.ClubLabels.TryGetValue(club, out str);
+		this.ClubLabels.TryGetValue(club, out str);
 		this.ClubLabel.text = "Club: " + str;
 	}
 }

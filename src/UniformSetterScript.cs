@@ -57,7 +57,7 @@ public class UniformSetterScript : MonoBehaviour
 		}
 		if (this.AttachHair)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Hair[this.HairID], base.transform.position, base.transform.rotation);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.Hair[this.HairID], base.transform.position, base.transform.rotation);
 			this.Head = base.transform.Find("Character/PelvisRoot/Hips/Spine/Spine1/Spine2/Spine3/Neck/Head").transform;
 			gameObject.transform.parent = this.Head;
 		}
@@ -97,14 +97,13 @@ public class UniformSetterScript : MonoBehaviour
 		if (this.StudentID == 0)
 		{
 			this.MyRenderer.materials[2].mainTexture = this.RyobaFace;
+			return;
 		}
-		else if (this.StudentID == 1)
+		if (this.StudentID == 1)
 		{
 			this.MyRenderer.materials[2].mainTexture = this.AyanoFace;
+			return;
 		}
-		else
-		{
-			this.MyRenderer.materials[2].mainTexture = this.OsanaFace;
-		}
+		this.MyRenderer.materials[2].mainTexture = this.OsanaFace;
 	}
 }

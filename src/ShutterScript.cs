@@ -169,9 +169,7 @@ public class ShutterScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!this.Yandere.Selfie)
-		{
-		}
+		bool selfie = this.Yandere.Selfie;
 		if (this.Snapping)
 		{
 			if (this.Yandere.Noticed)
@@ -192,10 +190,10 @@ public class ShutterScript : MonoBehaviour
 				{
 					this.StudentManager.GhostChan.gameObject.SetActive(true);
 					this.PhotoDescription.SetActive(false);
-					this.PhotoDescLabel.text = string.Empty;
+					this.PhotoDescLabel.text = "";
 					this.StudentManager.GhostChan.Look();
 					this.CheckPhoto();
-					if (this.PhotoDescLabel.text == string.Empty)
+					if (this.PhotoDescLabel.text == "")
 					{
 						this.PhotoDescLabel.text = "Cannot determine subject of photo. Try again.";
 					}
@@ -219,7 +217,7 @@ public class ShutterScript : MonoBehaviour
 					}
 					else if (this.PantiesX.activeInHierarchy)
 					{
-						this.PromptBar.Label[0].text = string.Empty;
+						this.PromptBar.Label[0].text = "";
 					}
 					this.PromptBar.UpdateButtons();
 					this.PromptBar.Show = true;
@@ -483,7 +481,7 @@ public class ShutterScript : MonoBehaviour
 					}
 					else
 					{
-						this.PromptBar.Label[3].text = string.Empty;
+						this.PromptBar.Label[3].text = "";
 					}
 					this.PromptBar.UpdateButtons();
 					if (!this.InfoX.activeInHierarchy)
@@ -509,11 +507,13 @@ public class ShutterScript : MonoBehaviour
 				if (Input.GetButtonDown("B"))
 				{
 					this.ResumeGameplay();
+					return;
 				}
 			}
 			else if (this.PhotoIcons.activeInHierarchy && Input.GetButtonDown("B"))
 			{
 				this.ResumeGameplay();
+				return;
 			}
 		}
 		else
@@ -662,9 +662,9 @@ public class ShutterScript : MonoBehaviour
 	{
 		if (this.NewMessage != null)
 		{
-			UnityEngine.Object.Destroy(this.NewMessage);
+			Object.Destroy(this.NewMessage);
 		}
-		this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.Message);
+		this.NewMessage = Object.Instantiate<GameObject>(this.Message);
 		this.NewMessage.transform.parent = this.TextMessages;
 		this.NewMessage.transform.localPosition = new Vector3(-225f, -275f, 0f);
 		this.NewMessage.transform.localEulerAngles = Vector3.zero;
@@ -845,7 +845,7 @@ public class ShutterScript : MonoBehaviour
 		this.PromptBar.Show = false;
 		if (this.NewMessage != null)
 		{
-			UnityEngine.Object.Destroy(this.NewMessage);
+			Object.Destroy(this.NewMessage);
 		}
 		if (!this.Yandere.CameraEffects.OneCamera)
 		{

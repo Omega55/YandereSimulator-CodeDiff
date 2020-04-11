@@ -41,7 +41,7 @@ namespace MaidDereMinigame
 			{
 				if (YandereController.instance == null)
 				{
-					YandereController.instance = UnityEngine.Object.FindObjectOfType<YandereController>();
+					YandereController.instance = Object.FindObjectOfType<YandereController>();
 				}
 				return YandereController.instance;
 			}
@@ -73,7 +73,7 @@ namespace MaidDereMinigame
 			{
 				this.animator.SetBool("Moving", false);
 			}
-			this.animator.speed = (float)((!this.isPaused) ? 1 : 0);
+			this.animator.speed = (float)(this.isPaused ? 0 : 1);
 		}
 
 		private void Update()
@@ -128,11 +128,9 @@ namespace MaidDereMinigame
 			{
 				this.interactionIndicator.gameObject.SetActive(true);
 				this.interactionIndicator.position = new Vector3(this.aiTarget.transform.position.x, this.aiTarget.transform.position.y + 0.6f, this.aiTarget.transform.position.z);
+				return;
 			}
-			else
-			{
-				this.interactionIndicator.gameObject.SetActive(false);
-			}
+			this.interactionIndicator.gameObject.SetActive(false);
 		}
 
 		public override ControlInput GetInput()
@@ -151,15 +149,17 @@ namespace MaidDereMinigame
 			{
 				horizontal = -1f;
 			}
-			ControlInput result = default(ControlInput);
-			result.horizontal = horizontal;
-			if (result.horizontal != 0f)
+			ControlInput controlInput = new ControlInput
 			{
-				if (result.horizontal < 0f)
+				horizontal = horizontal
+			};
+			if (controlInput.horizontal != 0f)
+			{
+				if (controlInput.horizontal < 0f)
 				{
 					this.spriteRenderer.flipX = true;
 				}
-				else if (result.horizontal > 0f)
+				else if (controlInput.horizontal > 0f)
 				{
 					this.spriteRenderer.flipX = false;
 				}
@@ -169,7 +169,7 @@ namespace MaidDereMinigame
 			{
 				this.animator.SetBool("Moving", false);
 			}
-			return result;
+			return controlInput;
 		}
 
 		public void PickUpTray(Food plate)
@@ -231,7 +231,7 @@ namespace MaidDereMinigame
 			float.TryParse(array[0], out num);
 			float y;
 			float.TryParse(array[1], out y);
-			this.plateTransform.localPosition = new Vector3((!this.spriteRenderer.flipX) ? num : (-num), y, 0f);
+			this.plateTransform.localPosition = new Vector3(this.spriteRenderer.flipX ? (-num) : num, y, 0f);
 		}
 	}
 }

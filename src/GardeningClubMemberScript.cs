@@ -74,7 +74,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 		component["f02_angryFace_00"].weight = 0f;
 		if (!this.Leader && GameObject.Find("DetectionCamera") != null)
 		{
-			this.DetectionMarker = UnityEngine.Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
+			this.DetectionMarker = Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
 			this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
 			this.DetectionMarker.Target = base.transform;
 		}
@@ -90,11 +90,11 @@ public class GardeningClubMemberScript : MonoBehaviour
 				{
 					if (this.ID == 1)
 					{
-						this.Destination.position = new Vector3(UnityEngine.Random.Range(-61f, -71f), this.Destination.position.y, UnityEngine.Random.Range(-14f, 14f));
+						this.Destination.position = new Vector3(Random.Range(-61f, -71f), this.Destination.position.y, Random.Range(-14f, 14f));
 					}
 					else
 					{
-						this.Destination.position = new Vector3(UnityEngine.Random.Range(-28f, -23f), this.Destination.position.y, UnityEngine.Random.Range(-15f, -7f));
+						this.Destination.position = new Vector3(Random.Range(-28f, -23f), this.Destination.position.y, Random.Range(-15f, -7f));
 					}
 				}
 				base.GetComponent<Animation>().CrossFade(this.WalkAnim);
@@ -217,12 +217,10 @@ public class GardeningClubMemberScript : MonoBehaviour
 			if (this.Yandere.PickUp == null && this.Yandere.Pursuer == null)
 			{
 				this.Prompt.enabled = true;
+				return;
 			}
-			else
-			{
-				this.Prompt.enabled = false;
-				this.Prompt.Hide();
-			}
+			this.Prompt.enabled = false;
+			this.Prompt.Hide();
 		}
 	}
 
@@ -246,8 +244,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 		float num = Vector3.Distance(base.transform.position, this.Yandere.transform.position);
 		if (num < this.VisionCone.farClipPlane)
 		{
-			Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.VisionCone);
-			if (GeometryUtility.TestPlanesAABB(planes, this.Yandere.GetComponent<Collider>().bounds))
+			if (GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(this.VisionCone), this.Yandere.GetComponent<Collider>().bounds))
 			{
 				Vector3 end = new Vector3(this.Yandere.transform.position.x, this.Yandere.Head.position.y, this.Yandere.transform.position.z);
 				RaycastHit raycastHit;
@@ -300,8 +297,9 @@ public class GardeningClubMemberScript : MonoBehaviour
 				this.DetectionMarker.Tex.enabled = true;
 			}
 			this.DetectionMarker.Tex.color = new Color(this.DetectionMarker.Tex.color.r, this.DetectionMarker.Tex.color.g, this.DetectionMarker.Tex.color.b, this.Alarm / 100f);
+			return;
 		}
-		else if (this.DetectionMarker.Tex.color.a != 0f)
+		if (this.DetectionMarker.Tex.color.a != 0f)
 		{
 			this.DetectionMarker.Tex.enabled = false;
 			this.DetectionMarker.Tex.color = new Color(this.DetectionMarker.Tex.color.r, this.DetectionMarker.Tex.color.g, this.DetectionMarker.Tex.color.b, 0f);

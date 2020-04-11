@@ -31,8 +31,9 @@ public class RummageSpotScript : MonoBehaviour
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
 				base.gameObject.SetActive(false);
+				return;
 			}
-			else if (DateGlobals.Weekday == DayOfWeek.Friday && this.Clock.HourTime > 13.5f)
+			if (DateGlobals.Weekday == DayOfWeek.Friday && this.Clock.HourTime > 13.5f)
 			{
 				this.Prompt.Hide();
 				this.Prompt.enabled = false;
@@ -60,7 +61,7 @@ public class RummageSpotScript : MonoBehaviour
 		}
 		if (this.Yandere.Rummaging)
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position, Quaternion.identity);
 			gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
 			gameObject.transform.localScale = new Vector3(750f, gameObject.transform.localScale.y, 750f);
 		}
@@ -83,8 +84,9 @@ public class RummageSpotScript : MonoBehaviour
 				this.Prompt.enabled = false;
 				this.DoorGap.Prompt.enabled = true;
 				this.Phase++;
+				return;
 			}
-			else if (this.Phase == 2)
+			if (this.Phase == 2)
 			{
 				SchemeGlobals.SetSchemeStage(5, 8);
 				this.Schemes.UpdateInstructions();

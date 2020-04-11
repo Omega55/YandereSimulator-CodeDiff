@@ -240,21 +240,17 @@ public class PhotoGalleryScript : MonoBehaviour
 				}
 				this.UpdateButtonPrompts();
 			}
-			else
+			else if (this.Photographs[this.CurrentIndex].mainTexture != this.NoPhoto && PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
 			{
-				UITexture uitexture2 = this.Photographs[this.CurrentIndex];
-				if (uitexture2.mainTexture != this.NoPhoto && PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
-				{
-					this.Yandere.Police.EndOfDay.FragileTarget = PlayerGlobals.GetBullyPhoto(this.CurrentIndex);
-					this.Yandere.StudentManager.FragileOfferHelp.Continue();
-					this.PauseScreen.MainMenu.SetActive(true);
-					this.Yandere.RPGCamera.enabled = true;
-					base.gameObject.SetActive(false);
-					this.PauseScreen.Show = false;
-					this.PromptBar.Show = false;
-					this.NamingBully = false;
-					Time.timeScale = 1f;
-				}
+				this.Yandere.Police.EndOfDay.FragileTarget = PlayerGlobals.GetBullyPhoto(this.CurrentIndex);
+				this.Yandere.StudentManager.FragileOfferHelp.Continue();
+				this.PauseScreen.MainMenu.SetActive(true);
+				this.Yandere.RPGCamera.enabled = true;
+				base.gameObject.SetActive(false);
+				this.PauseScreen.Show = false;
+				this.PromptBar.Show = false;
+				this.NamingBully = false;
+				Time.timeScale = 1f;
 			}
 		}
 		if (!this.NamingBully && Input.GetButtonDown("B"))
@@ -305,23 +301,23 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.CanAdjust = false;
 			this.Yandere.Sanity += 20f;
 			this.UpdateButtonPrompts();
-			AudioSource.PlayClipAtPoint(this.Sighs[UnityEngine.Random.Range(0, this.Sighs.Length)], this.Yandere.Head.position);
+			AudioSource.PlayClipAtPoint(this.Sighs[Random.Range(0, this.Sighs.Length)], this.Yandere.Head.position);
 		}
 		if (this.InputManager.TappedRight)
 		{
-			this.Column = ((this.Column >= 5) ? 1 : (this.Column + 1));
+			this.Column = ((this.Column < 5) ? (this.Column + 1) : 1);
 		}
 		if (this.InputManager.TappedLeft)
 		{
-			this.Column = ((this.Column <= 1) ? 5 : (this.Column - 1));
+			this.Column = ((this.Column > 1) ? (this.Column - 1) : 5);
 		}
 		if (this.InputManager.TappedUp)
 		{
-			this.Row = ((this.Row <= 1) ? 5 : (this.Row - 1));
+			this.Row = ((this.Row > 1) ? (this.Row - 1) : 5);
 		}
 		if (this.InputManager.TappedDown)
 		{
-			this.Row = ((this.Row >= 5) ? 1 : (this.Row + 1));
+			this.Row = ((this.Row < 5) ? (this.Row + 1) : 1);
 		}
 		bool flag = this.InputManager.TappedRight || this.InputManager.TappedLeft;
 		bool flag2 = this.InputManager.TappedUp || this.InputManager.TappedDown;
@@ -340,12 +336,11 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	private void UpdatePhotoViewing()
 	{
-		this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, (!this.Corkboard) ? new Vector3(6.5f, 6.5f, 6.5f) : new Vector3(5.8f, 5.8f, 5.8f), this.LerpSpeed);
+		this.ViewPhoto.transform.localScale = Vector3.Lerp(this.ViewPhoto.transform.localScale, this.Corkboard ? new Vector3(5.8f, 5.8f, 5.8f) : new Vector3(6.5f, 6.5f, 6.5f), this.LerpSpeed);
 		this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, Vector3.zero, this.LerpSpeed);
-		bool flag = this.Corkboard && Input.GetButtonDown("A");
-		if (flag)
+		if (this.Corkboard && Input.GetButtonDown("A"))
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = this.CorkboardPanel;
 			gameObject.transform.localEulerAngles = Vector3.zero;
 			gameObject.transform.localPosition = Vector3.zero;
@@ -468,8 +463,9 @@ public class PhotoGalleryScript : MonoBehaviour
 			if (this.StringPhase == 0)
 			{
 				this.StringPhase++;
+				return;
 			}
-			else if (this.StringPhase == 1)
+			if (this.StringPhase == 1)
 			{
 				this.Cursor.transform.localPosition = transform.localPosition;
 				this.Cursor.gameObject.SetActive(true);
@@ -495,7 +491,7 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("Y"))
 		{
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = this.StringParent;
 			gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -526,7 +522,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			{
 				this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
 				this.Shuffle(this.Cursor.Photograph.GetComponent<HomeCorkboardPhotoScript>().ArrayID);
-				UnityEngine.Object.Destroy(this.Cursor.Photograph);
+				Object.Destroy(this.Cursor.Photograph);
 				this.Photos--;
 				this.Cursor.Photograph = null;
 				this.UpdateButtonPrompts();
@@ -535,7 +531,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			{
 				this.Cursor.CircleHighlight.transform.position = new Vector3(this.Cursor.CircleHighlight.transform.position.x, 100f, this.Cursor.CircleHighlight.transform.position.z);
 				this.ShuffleStrings(this.Cursor.Tack.transform.parent.GetComponent<StringScript>().ArrayID);
-				UnityEngine.Object.Destroy(this.Cursor.Tack.transform.parent.gameObject);
+				Object.Destroy(this.Cursor.Tack.transform.parent.gameObject);
 				this.Strings--;
 				this.Cursor.Tack = null;
 				this.UpdateButtonPrompts();
@@ -611,11 +607,12 @@ public class PhotoGalleryScript : MonoBehaviour
 				this.Hearts[i].gameObject.SetActive(false);
 			}
 		}
-		for (int ID = 1; ID < 26; ID++)
+		int num;
+		for (int ID = 1; ID < 26; ID = num + 1)
 		{
 			if (PlayerGlobals.GetPhoto(ID))
 			{
-				string path = string.Concat(new object[]
+				string url = string.Concat(new object[]
 				{
 					"file:///",
 					Application.streamingAssetsPath,
@@ -623,7 +620,7 @@ public class PhotoGalleryScript : MonoBehaviour
 					ID,
 					".png"
 				});
-				WWW www = new WWW(path);
+				WWW www = new WWW(url);
 				yield return www;
 				if (www.error == null)
 				{
@@ -645,7 +642,9 @@ public class PhotoGalleryScript : MonoBehaviour
 					}));
 					PlayerGlobals.SetPhoto(ID, false);
 				}
+				www = null;
 			}
+			num = ID;
 		}
 		this.LoadingScreen.SetActive(false);
 		if (!this.Corkboard)
@@ -663,8 +662,7 @@ public class PhotoGalleryScript : MonoBehaviour
 	{
 		if (this.NamingBully)
 		{
-			UITexture uitexture = this.Photographs[this.CurrentIndex];
-			if (uitexture.mainTexture != this.NoPhoto && PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
+			if (this.Photographs[this.CurrentIndex].mainTexture != this.NoPhoto && PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
 			{
 				if (PlayerGlobals.GetBullyPhoto(this.CurrentIndex) > 0)
 				{
@@ -737,7 +735,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			}
 			if (!this.Corkboard)
 			{
-				this.PromptBar.Label[3].text = ((!PlayerGlobals.GetSenpaiPhoto(currentIndex)) ? string.Empty : "Use");
+				this.PromptBar.Label[3].text = (PlayerGlobals.GetSenpaiPhoto(currentIndex) ? "Use" : string.Empty);
 			}
 			else
 			{
@@ -912,7 +910,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				"_Exists"
 			})) == 1)
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
+				GameObject gameObject = Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
 				gameObject.transform.parent = this.CorkboardPanel;
 				gameObject.transform.localPosition = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
 				{
@@ -1095,7 +1093,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				"_Exists"
 			})) == 1)
 			{
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
+				GameObject gameObject = Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
 				gameObject.transform.parent = this.StringParent;
 				gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
 				gameObject.transform.localScale = new Vector3(1f, 1f, 1f);

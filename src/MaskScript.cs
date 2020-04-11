@@ -59,12 +59,10 @@ public class MaskScript : MonoBehaviour
 				this.Yandere.Mask = this;
 				this.ClubManager.UpdateMasks();
 				this.StudentManager.UpdateStudents(0);
+				return;
 			}
-			else
-			{
-				this.Yandere.NotificationManager.CustomText = "Not now. Too suspicious.";
-				this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
-			}
+			this.Yandere.NotificationManager.CustomText = "Not now. Too suspicious.";
+			this.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 		}
 	}
 

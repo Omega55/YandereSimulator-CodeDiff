@@ -49,12 +49,12 @@ public class EyeShapeScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.PosOffsetX = UnityEngine.Random.Range(-0.002f, 0.002f);
-		this.PosOffsetY = UnityEngine.Random.Range(-0.002f, 0.002f);
-		this.PosOffsetZ = UnityEngine.Random.Range(-0.002f, 0.002f);
-		this.RotOffsetX = UnityEngine.Random.Range(-15f, 15f);
-		this.RotOffsetY = UnityEngine.Random.Range(-15f, 15f);
-		this.RotOffsetZ = UnityEngine.Random.Range(-15f, 15f);
+		this.PosOffsetX = Random.Range(-0.002f, 0.002f);
+		this.PosOffsetY = Random.Range(-0.002f, 0.002f);
+		this.PosOffsetZ = Random.Range(-0.002f, 0.002f);
+		this.RotOffsetX = Random.Range(-15f, 15f);
+		this.RotOffsetY = Random.Range(-15f, 15f);
+		this.RotOffsetZ = Random.Range(-15f, 15f);
 	}
 
 	private void LateUpdate()

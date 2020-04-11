@@ -38,9 +38,10 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public void UpdateLabels()
 	{
-		foreach (WeaponScript weaponScript in this.Weapons)
+		WeaponScript[] weapons = this.Weapons;
+		for (int i = 0; i < weapons.Length; i++)
 		{
-			weaponScript.UpdateLabel();
+			weapons[i].UpdateLabel();
 		}
 	}
 

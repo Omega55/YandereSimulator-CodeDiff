@@ -15,7 +15,7 @@ public class MusicRatingScript : MonoBehaviour
 	{
 		if (this.SFX != null)
 		{
-			this.SFX.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+			this.SFX.pitch = Random.Range(0.9f, 1.1f);
 		}
 	}
 
@@ -29,7 +29,7 @@ public class MusicRatingScript : MonoBehaviour
 			this.MyRenderer.material.color = new Color(1f, 1f, 1f, 2f - this.Timer);
 			if (this.MyRenderer.material.color.a <= 0f)
 			{
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
 			}
 		}
 	}

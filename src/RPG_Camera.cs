@@ -151,9 +151,10 @@ public class RPG_Camera : MonoBehaviour
 		{
 			this.camBottom = Physics.Linecast(base.transform.position, base.transform.position - Vector3.up * this.camBottomDistance);
 		}
-		bool flag = this.camBottom && base.transform.position.y - this.cameraPivot.transform.position.y <= 0f;
+		object obj = this.camBottom && base.transform.position.y - this.cameraPivot.transform.position.y <= 0f;
 		this.mouseX += Input.GetAxis("Mouse X") * this.mouseSpeed * (Time.deltaTime / Mathf.Clamp(Time.timeScale, 1E-10f, 1E+10f)) * this.sensitivity * 10f;
-		if (flag)
+		object obj2 = obj;
+		if (obj2 != null)
 		{
 			if (Input.GetAxis("Mouse Y") < 0f)
 			{
@@ -186,7 +187,7 @@ public class RPG_Camera : MonoBehaviour
 		this.mouseY = this.ClampAngle(this.mouseY, -89.5f, 89.5f);
 		this.mouseXSmooth = Mathf.SmoothDamp(this.mouseXSmooth, this.mouseX, ref this.mouseXVel, this.mouseSmoothingFactor);
 		this.mouseYSmooth = Mathf.SmoothDamp(this.mouseYSmooth, this.mouseY, ref this.mouseYVel, this.mouseSmoothingFactor);
-		if (flag)
+		if (obj2 != null)
 		{
 			this.mouseYMin = this.mouseY;
 		}
@@ -253,14 +254,16 @@ public class RPG_Camera : MonoBehaviour
 		if (this.distance < this.firstPersonThreshold)
 		{
 			RPG_Animation.instance.GetComponent<Renderer>().enabled = false;
+			return;
 		}
-		else if (this.distance < this.characterFadeThreshold)
+		if (this.distance < this.characterFadeThreshold)
 		{
 			RPG_Animation.instance.GetComponent<Renderer>().enabled = true;
 			float num = 1f - (this.characterFadeThreshold - this.distance) / (this.characterFadeThreshold - this.firstPersonThreshold);
 			if (RPG_Animation.instance.GetComponent<Renderer>().material.color.a != num)
 			{
 				RPG_Animation.instance.GetComponent<Renderer>().material.color = new Color(RPG_Animation.instance.GetComponent<Renderer>().material.color.r, RPG_Animation.instance.GetComponent<Renderer>().material.color.g, RPG_Animation.instance.GetComponent<Renderer>().material.color.b, num);
+				return;
 			}
 		}
 		else

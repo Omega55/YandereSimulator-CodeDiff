@@ -51,8 +51,9 @@ public class ClubWindowScript : MonoBehaviour
 		if (SchoolGlobals.SchoolAtmosphere <= 0.9f)
 		{
 			this.ActivityDescs[7] = this.LowAtmosphereDesc;
+			return;
 		}
-		else if (SchoolGlobals.SchoolAtmosphere <= 0.8f)
+		if (SchoolGlobals.SchoolAtmosphere <= 0.8f)
 		{
 			this.ActivityDescs[7] = this.MedAtmosphereDesc;
 		}
@@ -134,12 +135,14 @@ public class ClubWindowScript : MonoBehaviour
 		if (this.PerformingActivity)
 		{
 			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+			return;
 		}
-		else if (this.ActivityWindow.localScale.x > 0.1f)
+		if (this.ActivityWindow.localScale.x > 0.1f)
 		{
 			this.ActivityWindow.localScale = Vector3.Lerp(this.ActivityWindow.localScale, Vector3.zero, Time.deltaTime * 10f);
+			return;
 		}
-		else if (this.ActivityWindow.localScale.x != 0f)
+		if (this.ActivityWindow.localScale.x != 0f)
 		{
 			this.ActivityWindow.localScale = Vector3.zero;
 		}

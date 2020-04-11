@@ -79,12 +79,14 @@ public class StruggleBarScript : MonoBehaviour
 				this.Student.Lost = true;
 				this.Struggling = false;
 				this.Victory = 0f;
+				return;
 			}
-			else if (this.Victory == -100f)
+			if (this.Victory == -100f)
 			{
 				if (!this.Invincible)
 				{
 					this.HeroWins();
+					return;
 				}
 			}
 			else
@@ -95,52 +97,53 @@ public class StruggleBarScript : MonoBehaviour
 					this.ChooseButton();
 					this.ButtonTimer = 0f;
 					this.Intensity = 0f;
+					return;
 				}
 			}
 		}
-		else if (base.transform.localScale.x > 0.1f)
-		{
-			base.transform.localScale = Vector3.Lerp(base.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
-		}
 		else
 		{
+			if (base.transform.localScale.x > 0.1f)
+			{
+				base.transform.localScale = Vector3.Lerp(base.transform.localScale, Vector3.zero, Time.deltaTime * 10f);
+				return;
+			}
 			base.transform.localScale = Vector3.zero;
 			if (!this.Yandere.AttackManager.Censor)
 			{
 				base.gameObject.SetActive(false);
+				return;
+			}
+			if (this.AttackTimer == 0f)
+			{
+				this.Yandere.Blur.enabled = true;
+				this.Yandere.Blur.blurSize = 0f;
+				this.Yandere.Blur.blurIterations = 0;
+			}
+			this.AttackTimer += Time.deltaTime;
+			if (this.AttackTimer < 2.5f)
+			{
+				this.Yandere.Blur.blurSize = Mathf.MoveTowards(this.Yandere.Blur.blurSize, 10f, Time.deltaTime * 10f);
+				if (this.Yandere.Blur.blurSize > (float)this.Yandere.Blur.blurIterations)
+				{
+					this.Yandere.Blur.blurIterations++;
+					return;
+				}
 			}
 			else
 			{
-				if (this.AttackTimer == 0f)
+				this.Yandere.Blur.blurSize = Mathf.Lerp(this.Yandere.Blur.blurSize, 0f, Time.deltaTime * 10f);
+				if (this.Yandere.Blur.blurSize < (float)this.Yandere.Blur.blurIterations)
 				{
-					this.Yandere.Blur.enabled = true;
+					this.Yandere.Blur.blurIterations--;
+				}
+				if (this.AttackTimer >= 3f)
+				{
+					base.gameObject.SetActive(false);
+					this.Yandere.Blur.enabled = false;
 					this.Yandere.Blur.blurSize = 0f;
 					this.Yandere.Blur.blurIterations = 0;
-				}
-				this.AttackTimer += Time.deltaTime;
-				if (this.AttackTimer < 2.5f)
-				{
-					this.Yandere.Blur.blurSize = Mathf.MoveTowards(this.Yandere.Blur.blurSize, 10f, Time.deltaTime * 10f);
-					if (this.Yandere.Blur.blurSize > (float)this.Yandere.Blur.blurIterations)
-					{
-						this.Yandere.Blur.blurIterations++;
-					}
-				}
-				else
-				{
-					this.Yandere.Blur.blurSize = Mathf.Lerp(this.Yandere.Blur.blurSize, 0f, Time.deltaTime * 10f);
-					if (this.Yandere.Blur.blurSize < (float)this.Yandere.Blur.blurIterations)
-					{
-						this.Yandere.Blur.blurIterations--;
-					}
-					if (this.AttackTimer >= 3f)
-					{
-						base.gameObject.SetActive(false);
-						this.Yandere.Blur.enabled = false;
-						this.Yandere.Blur.blurSize = 0f;
-						this.Yandere.Blur.blurIterations = 0;
-						this.AttackTimer = 0f;
-					}
+					this.AttackTimer = 0f;
 				}
 			}
 		}
@@ -169,7 +172,7 @@ public class StruggleBarScript : MonoBehaviour
 		}
 		while (this.ButtonID == buttonID)
 		{
-			this.ButtonID = UnityEngine.Random.Range(1, 5);
+			this.ButtonID = Random.Range(1, 5);
 		}
 		if (this.ButtonID == 1)
 		{

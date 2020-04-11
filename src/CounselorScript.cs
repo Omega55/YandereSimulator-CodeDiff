@@ -48,14 +48,14 @@ public class CounselorScript : MonoBehaviour
 
 	public readonly string[] CounselorGreetingText = new string[]
 	{
-		string.Empty,
+		"",
 		"What can I help you with?",
 		"Can I help you?"
 	};
 
 	public readonly string[] CounselorLectureText = new string[]
 	{
-		string.Empty,
+		"",
 		"May I see your phone for a moment? ...what is THIS?! Would you care to explain why something like this is on your phone?",
 		"May I take a look inside your bag? ...this doesn't belong to you, does it?! What are you doing with someone else's property?",
 		"I need to take a look in your bag. ...cigarettes?! You have absolutely no excuse to be carrying something like this around!",
@@ -66,7 +66,7 @@ public class CounselorScript : MonoBehaviour
 
 	public readonly string[] CounselorReportText = new string[]
 	{
-		string.Empty,
+		"",
 		"That's a very serious accusation. I hope you're not lying to me. Hopefully, it's just a misunderstanding. I'll investigate the matter.",
 		"Is that true? I'd hate to think we have a thief here at school. Don't worry - I'll get to the bottom of this.",
 		"That's a clear violation of school rules, not to mention completely illegal. If what you're saying is true, she will face serious consequences. I'll confront her about this.",
@@ -76,7 +76,7 @@ public class CounselorScript : MonoBehaviour
 
 	public readonly string[] LectureIntro = new string[]
 	{
-		string.Empty,
+		"",
 		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana...",
 		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana...",
 		"During class, the guidance counselor enters the classroom and says that she needs to speak with Osana...",
@@ -86,7 +86,7 @@ public class CounselorScript : MonoBehaviour
 
 	public readonly string[] RivalText = new string[]
 	{
-		string.Empty,
+		"",
 		"What?! I've never taken and pictures like that! How did this get on my phone?!",
 		"No! I'm not the one who did this! I would never steal from anyone!",
 		"Huh? I don't smoke! I don't know why something like this was in my desk!",
@@ -375,7 +375,7 @@ public class CounselorScript : MonoBehaviour
 				this.TalkTimer = Mathf.MoveTowards(this.TalkTimer, 1f, Time.deltaTime);
 				if (this.TalkTimer == 1f)
 				{
-					int num = UnityEngine.Random.Range(1, 3);
+					int num = Random.Range(1, 3);
 					this.CounselorSubtitle.text = this.CounselorGreetingText[num];
 					this.MyAudio.clip = this.CounselorGreetingClips[num];
 					this.MyAudio.Play();
@@ -474,8 +474,9 @@ public class CounselorScript : MonoBehaviour
 				}
 			}
 		}
-		else if (!this.Interrogating)
+		else
 		{
+			bool interrogating = this.Interrogating;
 		}
 		if (this.ShowWindow)
 		{
@@ -793,7 +794,7 @@ public class CounselorScript : MonoBehaviour
 					this.MouthTimer += Time.deltaTime;
 					if (this.MouthTimer > this.TimerLimit)
 					{
-						this.MouthTarget = UnityEngine.Random.Range(0f, 100f);
+						this.MouthTarget = Random.Range(0f, 100f);
 						this.MouthTimer = 0f;
 					}
 					this.MouthOpen = Mathf.Lerp(this.MouthOpen, this.MouthTarget, Time.deltaTime * this.TalkSpeed);
@@ -808,7 +809,7 @@ public class CounselorScript : MonoBehaviour
 				this.MouthOpen = Mathf.Lerp(this.MouthOpen, 0f, Time.deltaTime * this.TalkSpeed);
 			}
 			this.Face.SetBlendShapeWeight(2, this.MouthOpen);
-			this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, (!this.LookAtPlayer) ? this.Default.position : this.Yandere.Head.position, Time.deltaTime * 2f);
+			this.LookAtTarget = Vector3.Lerp(this.LookAtTarget, this.LookAtPlayer ? this.Yandere.Head.position : this.Default.position, Time.deltaTime * 2f);
 			this.Head.LookAt(this.LookAtTarget);
 		}
 	}
@@ -906,11 +907,11 @@ public class CounselorScript : MonoBehaviour
 				}
 				if (this.Yandere.Subtitle.CurrentClip != null)
 				{
-					UnityEngine.Object.Destroy(this.Yandere.Subtitle.CurrentClip);
+					Object.Destroy(this.Yandere.Subtitle.CurrentClip);
 				}
 				this.GenkaChibi.mainTexture = this.AnnoyedChibi;
 				this.CounselorBar.SetActive(true);
-				this.Subtitle.Label.text = string.Empty;
+				this.Subtitle.Label.text = "";
 				this.InterrogationPhase++;
 				Time.timeScale = 1f;
 				this.Timer = 0f;
@@ -1029,7 +1030,7 @@ public class CounselorScript : MonoBehaviour
 				this.Reticle.transform.localPosition = new Vector3(0f, 0f, 0f);
 				this.CounselorOptions.SetActive(true);
 				this.CounselorBar.SetActive(false);
-				this.CounselorSubtitle.text = string.Empty;
+				this.CounselorSubtitle.text = "";
 				this.MyAudio.clip = this.Countdown;
 				this.MyAudio.Play();
 				Cursor.lockState = CursorLockMode.None;
@@ -1200,7 +1201,7 @@ public class CounselorScript : MonoBehaviour
 			{
 				if (this.SilentTreatment)
 				{
-					int num = UnityEngine.Random.Range(0, 3);
+					int num = Random.Range(0, 3);
 					this.MyAudio.clip = this.SilentClips[num];
 					this.CounselorSubtitle.text = this.Silents[num];
 					this.Patience--;
@@ -1250,7 +1251,7 @@ public class CounselorScript : MonoBehaviour
 					else
 					{
 						Debug.Log("Yandere-chan's excuse has been deemed invalid.");
-						int num2 = UnityEngine.Random.Range(0, 3);
+						int num2 = Random.Range(0, 3);
 						this.MyAudio.clip = this.RejectExcuseClips[num2];
 						this.CounselorSubtitle.text = this.RejectExcuses[num2];
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1270,7 +1271,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
-						int num3 = UnityEngine.Random.Range(0, 3);
+						int num3 = Random.Range(0, 3);
 						this.MyAudio.clip = this.RejectApologyClips[num3];
 						this.CounselorSubtitle.text = this.RejectApologies[num3];
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1279,7 +1280,7 @@ public class CounselorScript : MonoBehaviour
 				}
 				else if (this.Answer == 3)
 				{
-					int num4 = UnityEngine.Random.Range(0, 5);
+					int num4 = Random.Range(0, 5);
 					this.MyAudio.clip = this.RejectLieClips[num4];
 					this.CounselorSubtitle.text = this.RejectLies[num4];
 					this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1419,7 +1420,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
-						int num6 = UnityEngine.Random.Range(0, 3);
+						int num6 = Random.Range(0, 3);
 						this.MyAudio.clip = this.RejectBlameClips[num6];
 						this.CounselorSubtitle.text = this.RejectBlames[num6];
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1428,7 +1429,7 @@ public class CounselorScript : MonoBehaviour
 				}
 				else if (this.Answer == 5)
 				{
-					int num7 = UnityEngine.Random.Range(0, 3);
+					int num7 = Random.Range(0, 3);
 					this.MyAudio.clip = this.RejectFlirtClips[num7];
 					this.CounselorSubtitle.text = this.RejectFlirts[num7];
 					this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1471,7 +1472,7 @@ public class CounselorScript : MonoBehaviour
 			{
 				if (this.Patience < 0)
 				{
-					int num8 = UnityEngine.Random.Range(0, 3);
+					int num8 = Random.Range(0, 3);
 					this.MyAudio.clip = this.BadClosingClips[num8];
 					this.CounselorSubtitle.text = this.BadClosings[num8];
 					this.MyAnimation.CrossFade("CounselorArmsCrossed", 1f);
@@ -1498,7 +1499,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
-						int num9 = UnityEngine.Random.Range(0, 3);
+						int num9 = Random.Range(0, 3);
 						this.MyAudio.clip = this.FreeToLeaveClips[num9];
 						this.CounselorSubtitle.text = this.FreeToLeaves[num9];
 						this.MyAnimation.CrossFade("CounselorArmsCrossed", 1f);

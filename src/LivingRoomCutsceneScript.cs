@@ -173,9 +173,9 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				gameObject10.SetActive(false);
 			}
 		}
-		for (int n = 0; n < 10; n++)
+		for (int j = 0; j < 10; j++)
 		{
-			this.YandereCosmetic.Fingernails[n].gameObject.SetActive(false);
+			this.YandereCosmetic.Fingernails[j].gameObject.SetActive(false);
 		}
 		this.ID = 0;
 		this.YandereCosmetic.FemaleHair[1].SetActive(true);
@@ -386,7 +386,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 	{
 		if (this.Phase > 2)
 		{
-			base.transform.localPosition = new Vector3(-0.65f + this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f));
+			base.transform.localPosition = new Vector3(-0.65f + this.ShakeStrength * Random.Range(-1f, 1f), this.ShakeStrength * Random.Range(-1f, 1f), this.ShakeStrength * Random.Range(-1f, 1f));
 			this.CutsceneCamera.position = new Vector3(this.CutsceneCamera.position.x + this.xOffset, this.CutsceneCamera.position.y, this.CutsceneCamera.position.z + this.zOffset);
 			this.LeftEye.localPosition = new Vector3(this.LeftEye.localPosition.x, this.LeftEye.localPosition.y, this.LeftEyeOrigin.z - this.EyeShrink * 0.01f);
 			this.RightEye.localPosition = new Vector3(this.RightEye.localPosition.x, this.RightEye.localPosition.y, this.RightEyeOrigin.z + this.EyeShrink * 0.01f);

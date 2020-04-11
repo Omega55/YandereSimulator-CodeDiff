@@ -41,17 +41,12 @@ namespace MaidDereMinigame
 			{
 				return;
 			}
-			switch (num)
+			if (num - 1 <= 2)
 			{
-			case 1:
-			case 2:
-			case 3:
 				this.spriteRenderer.sprite = this.numbers[num];
-				break;
-			default:
-				this.EndGame();
-				break;
+				return;
 			}
+			this.EndGame();
 		}
 
 		public void EndGame()
@@ -81,7 +76,7 @@ namespace MaidDereMinigame
 			GameController.SetPause(true);
 			this.spriteRenderer.sprite = this.timeUp;
 			yield return new WaitForSeconds(1f);
-			UnityEngine.Object.FindObjectOfType<InteractionMenu>().gameObject.SetActive(false);
+			Object.FindObjectOfType<InteractionMenu>().gameObject.SetActive(false);
 			GameController.TimeUp();
 			yield break;
 		}

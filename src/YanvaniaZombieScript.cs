@@ -63,14 +63,14 @@ public class YanvaniaZombieScript : MonoBehaviour
 
 	private void Start()
 	{
-		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, (this.Yanmont.transform.position.x <= base.transform.position.x) ? -90f : 90f, base.transform.eulerAngles.z);
-		UnityEngine.Object.Instantiate<GameObject>(this.ZombieEffect, base.transform.position, Quaternion.identity);
+		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, (this.Yanmont.transform.position.x > base.transform.position.x) ? 90f : -90f, base.transform.eulerAngles.z);
+		Object.Instantiate<GameObject>(this.ZombieEffect, base.transform.position, Quaternion.identity);
 		base.transform.position = new Vector3(base.transform.position.x, -0.63f, base.transform.position.z);
 		Animation component = this.Character.GetComponent<Animation>();
 		component["getup1"].speed = 2f;
 		component.Play("getup1");
 		base.GetComponent<AudioSource>().PlayOneShot(this.RisingSound);
-		this.MyRenderer.material.mainTexture = this.Textures[UnityEngine.Random.Range(0, 22)];
+		this.MyRenderer.material.mainTexture = this.Textures[Random.Range(0, 22)];
 		this.MyCollider.enabled = false;
 	}
 
@@ -84,14 +84,14 @@ public class YanvaniaZombieScript : MonoBehaviour
 			{
 				if (!this.EffectSpawned)
 				{
-					UnityEngine.Object.Instantiate<GameObject>(this.ZombieEffect, base.transform.position, Quaternion.identity);
+					Object.Instantiate<GameObject>(this.ZombieEffect, base.transform.position, Quaternion.identity);
 					component.PlayOneShot(this.SinkingSound);
 					this.EffectSpawned = true;
 				}
 				base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y - Time.deltaTime, base.transform.position.z);
 				if (base.transform.position.y < -0.4f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 			}
 		}
@@ -103,7 +103,7 @@ public class YanvaniaZombieScript : MonoBehaviour
 				base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y - Time.deltaTime * 0.74f, base.transform.position.z);
 				if (base.transform.position.y < -0.63f)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 			}
 			else if (this.Walk)
@@ -139,7 +139,7 @@ public class YanvaniaZombieScript : MonoBehaviour
 				{
 					this.Walk = true;
 					this.MyCollider.enabled = true;
-					this.WalkType = UnityEngine.Random.Range(1, 3);
+					this.WalkType = Random.Range(1, 3);
 				}
 			}
 			if (base.transform.position.x < this.LeftBoundary)
@@ -154,7 +154,7 @@ public class YanvaniaZombieScript : MonoBehaviour
 			}
 			if (this.HP <= 0)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.DeathEffect, new Vector3(base.transform.position.x, base.transform.position.y + 1f, base.transform.position.z), Quaternion.identity);
+				Object.Instantiate<GameObject>(this.DeathEffect, new Vector3(base.transform.position.x, base.transform.position.y + 1f, base.transform.position.z), Quaternion.identity);
 				component2.Play("die");
 				component.PlayOneShot(this.DeathSound);
 				this.MyCollider.enabled = false;
@@ -179,9 +179,8 @@ public class YanvaniaZombieScript : MonoBehaviour
 		component["getup1"].time = component["getup1"].length;
 		component["getup1"].speed = -2f;
 		component.Play("getup1");
-		AudioSource component2 = base.GetComponent<AudioSource>();
-		component2.PlayOneShot(this.SinkingSound);
-		UnityEngine.Object.Instantiate<GameObject>(this.ZombieEffect, base.transform.position, Quaternion.identity);
+		base.GetComponent<AudioSource>().PlayOneShot(this.SinkingSound);
+		Object.Instantiate<GameObject>(this.ZombieEffect, base.transform.position, Quaternion.identity);
 		this.MyCollider.enabled = false;
 		this.Sink = true;
 	}
@@ -196,9 +195,8 @@ public class YanvaniaZombieScript : MonoBehaviour
 			}
 			if (other.gameObject.name == "Heart" && this.HitReactTimer >= 1f)
 			{
-				UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
-				AudioSource component = base.GetComponent<AudioSource>();
-				component.PlayOneShot(this.HitSound);
+				Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
+				base.GetComponent<AudioSource>().PlayOneShot(this.HitSound);
 				this.HitReactTimer = 0f;
 				this.HP -= 20 + (this.Yanmont.Level * 5 - 5);
 			}

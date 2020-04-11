@@ -32,7 +32,7 @@ public class TornadoScript : MonoBehaviour
 			StudentScript component = other.gameObject.GetComponent<StudentScript>();
 			if (component != null && component.StudentID > 1)
 			{
-				this.Scream = UnityEngine.Object.Instantiate<GameObject>((!component.Male) ? this.FemaleBloodyScream : this.MaleBloodyScream, component.transform.position + Vector3.up, Quaternion.identity);
+				this.Scream = Object.Instantiate<GameObject>(component.Male ? this.MaleBloodyScream : this.FemaleBloodyScream, component.transform.position + Vector3.up, Quaternion.identity);
 				this.Scream.transform.parent = component.HipCollider.transform;
 				this.Scream.transform.localPosition = Vector3.zero;
 				component.DeathType = DeathType.EasterEgg;

@@ -56,12 +56,14 @@ public class PassTimeScript : MonoBehaviour
 		if (this.Selected == 1)
 		{
 			this.Highlight.localPosition = new Vector3(-130f, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+			return;
 		}
-		else if (this.Selected == 2)
+		if (this.Selected == 2)
 		{
 			this.Highlight.localPosition = new Vector3(-40f, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+			return;
 		}
-		else if (this.Selected == 3)
+		if (this.Selected == 3)
 		{
 			this.Highlight.localPosition = new Vector3(15f, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 		}

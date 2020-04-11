@@ -19,7 +19,7 @@ public class PromptSwapScript : MonoBehaviour
 	{
 		if (this.InputDevice == null)
 		{
-			this.InputDevice = UnityEngine.Object.FindObjectOfType<InputDeviceScript>();
+			this.InputDevice = Object.FindObjectOfType<InputDeviceScript>();
 		}
 	}
 
@@ -27,14 +27,15 @@ public class PromptSwapScript : MonoBehaviour
 	{
 		if (this.InputDevice == null)
 		{
-			this.InputDevice = UnityEngine.Object.FindObjectOfType<InputDeviceScript>();
+			this.InputDevice = Object.FindObjectOfType<InputDeviceScript>();
 		}
 		if (deviceType == InputDeviceType.Gamepad)
 		{
 			this.MySprite.spriteName = this.GamepadName;
 			if (this.MyLetter != null)
 			{
-				this.MyLetter.text = string.Empty;
+				this.MyLetter.text = "";
+				return;
 			}
 		}
 		else

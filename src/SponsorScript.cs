@@ -26,14 +26,12 @@ public class SponsorScript : MonoBehaviour
 		if (this.Timer < 3.2f)
 		{
 			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 0f, Time.deltaTime));
+			return;
 		}
-		else
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+		if (this.Darkness.color.a == 1f)
 		{
-			this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
-			if (this.Darkness.color.a == 1f)
-			{
-				SceneManager.LoadScene("TitleScene");
-			}
+			SceneManager.LoadScene("TitleScene");
 		}
 	}
 }

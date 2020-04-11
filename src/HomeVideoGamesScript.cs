@@ -54,48 +54,47 @@ public class HomeVideoGamesScript : MonoBehaviour
 			this.TV.localScale = Vector3.Lerp(this.TV.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
 			if (!this.HomeYandere.CanMove)
 			{
-				if (!this.HomeDarkness.FadeOut)
+				if (this.HomeDarkness.FadeOut)
 				{
-					if (this.InputManager.TappedDown)
-					{
-						this.ID++;
-						if (this.ID > 5)
-						{
-							this.ID = 1;
-						}
-						this.TitleScreen.mainTexture = this.TitleScreens[this.ID];
-						this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 150f - (float)this.ID * 50f, this.Highlight.localPosition.z);
-					}
-					if (this.InputManager.TappedUp)
-					{
-						this.ID--;
-						if (this.ID < 1)
-						{
-							this.ID = 5;
-						}
-						this.TitleScreen.mainTexture = this.TitleScreens[this.ID];
-						this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 150f - (float)this.ID * 50f, this.Highlight.localPosition.z);
-					}
-					if (Input.GetButtonDown("A") && this.GameTitles[this.ID].color.a == 1f)
-					{
-						Transform transform = this.HomeCamera.Targets[5];
-						transform.localPosition = new Vector3(transform.localPosition.x, 1.153333f, transform.localPosition.z);
-						this.HomeDarkness.Sprite.color = new Color(this.HomeDarkness.Sprite.color.r, this.HomeDarkness.Sprite.color.g, this.HomeDarkness.Sprite.color.b, -1f);
-						this.HomeDarkness.FadeOut = true;
-						this.HomeWindow.Show = false;
-						this.PromptBar.Show = false;
-						this.HomeCamera.ID = 5;
-					}
-					if (Input.GetButtonDown("B"))
-					{
-						this.Quit();
-					}
+					Transform transform = this.HomeCamera.Destinations[5];
+					Transform transform2 = this.HomeCamera.Targets[5];
+					transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform2.position.x, Time.deltaTime * 0.75f), Mathf.Lerp(transform.position.y, transform2.position.y, Time.deltaTime * 10f), Mathf.Lerp(transform.position.z, transform2.position.z, Time.deltaTime * 10f));
+					return;
 				}
-				else
+				if (this.InputManager.TappedDown)
 				{
-					Transform transform2 = this.HomeCamera.Destinations[5];
+					this.ID++;
+					if (this.ID > 5)
+					{
+						this.ID = 1;
+					}
+					this.TitleScreen.mainTexture = this.TitleScreens[this.ID];
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 150f - (float)this.ID * 50f, this.Highlight.localPosition.z);
+				}
+				if (this.InputManager.TappedUp)
+				{
+					this.ID--;
+					if (this.ID < 1)
+					{
+						this.ID = 5;
+					}
+					this.TitleScreen.mainTexture = this.TitleScreens[this.ID];
+					this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 150f - (float)this.ID * 50f, this.Highlight.localPosition.z);
+				}
+				if (Input.GetButtonDown("A") && this.GameTitles[this.ID].color.a == 1f)
+				{
 					Transform transform3 = this.HomeCamera.Targets[5];
-					transform2.position = new Vector3(Mathf.Lerp(transform2.position.x, transform3.position.x, Time.deltaTime * 0.75f), Mathf.Lerp(transform2.position.y, transform3.position.y, Time.deltaTime * 10f), Mathf.Lerp(transform2.position.z, transform3.position.z, Time.deltaTime * 10f));
+					transform3.localPosition = new Vector3(transform3.localPosition.x, 1.153333f, transform3.localPosition.z);
+					this.HomeDarkness.Sprite.color = new Color(this.HomeDarkness.Sprite.color.r, this.HomeDarkness.Sprite.color.g, this.HomeDarkness.Sprite.color.b, -1f);
+					this.HomeDarkness.FadeOut = true;
+					this.HomeWindow.Show = false;
+					this.PromptBar.Show = false;
+					this.HomeCamera.ID = 5;
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.Quit();
+					return;
 				}
 			}
 		}

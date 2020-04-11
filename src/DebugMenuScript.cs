@@ -168,8 +168,7 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					GameGlobals.CensorBlood = !GameGlobals.CensorBlood;
 					this.WeaponManager.ChangeBloodTexture();
-					YandereScript yandere = this.Yandere;
-					yandere.Bloodiness = yandere.Bloodiness;
+					this.Yandere.Bloodiness += 0f;
 					this.Window.SetActive(false);
 				}
 				else if (Input.GetKeyDown(KeyCode.F9))
@@ -272,8 +271,7 @@ public class DebugMenuScript : MonoBehaviour
 							studentScript3.ShoeRemoval.Start();
 							studentScript3.ShoeRemoval.PutOnShoes();
 							studentScript3.Phase = 2;
-							ScheduleBlock scheduleBlock = studentScript3.ScheduleBlocks[2];
-							scheduleBlock.action = "Stand";
+							studentScript3.ScheduleBlocks[2].action = "Stand";
 							studentScript3.GetDestinations();
 							studentScript3.CurrentDestination = this.MidoriSpot;
 							studentScript3.Pathfinding.target = this.MidoriSpot;
@@ -500,8 +498,7 @@ public class DebugMenuScript : MonoBehaviour
 							this.ID = 2;
 							while (this.ID < 93)
 							{
-								StudentScript x = this.StudentManager.Students[this.ID];
-								if (x != null)
+								if (this.StudentManager.Students[this.ID] != null)
 								{
 									StudentGlobals.SetStudentMissing(this.ID, true);
 								}
@@ -792,8 +789,7 @@ public class DebugMenuScript : MonoBehaviour
 				{
 					GameGlobals.CensorBlood = !GameGlobals.CensorBlood;
 					this.WeaponManager.ChangeBloodTexture();
-					YandereScript yandere2 = this.Yandere;
-					yandere2.Bloodiness = yandere2.Bloodiness;
+					this.Yandere.Bloodiness += 0f;
 				}
 				if (Input.GetKeyDown(KeyCode.Alpha3))
 				{
@@ -811,8 +807,9 @@ public class DebugMenuScript : MonoBehaviour
 				this.Counselor.CutsceneManager.Scheme = 1;
 				this.Counselor.LectureID = 1;
 				this.WaitingForNumber = false;
+				return;
 			}
-			else if (Input.GetKey("2"))
+			if (Input.GetKey("2"))
 			{
 				Debug.Log("Going to class should trigger theft lecture.");
 				SchemeGlobals.SetSchemeStage(2, 100);
@@ -820,8 +817,9 @@ public class DebugMenuScript : MonoBehaviour
 				this.Counselor.CutsceneManager.Scheme = 2;
 				this.Counselor.LectureID = 2;
 				this.WaitingForNumber = false;
+				return;
 			}
-			else if (Input.GetKey("3"))
+			if (Input.GetKey("3"))
 			{
 				Debug.Log("Going to class should trigger contraband lecture.");
 				SchemeGlobals.SetSchemeStage(3, 100);
@@ -829,8 +827,9 @@ public class DebugMenuScript : MonoBehaviour
 				this.Counselor.CutsceneManager.Scheme = 3;
 				this.Counselor.LectureID = 3;
 				this.WaitingForNumber = false;
+				return;
 			}
-			else if (Input.GetKey("4"))
+			if (Input.GetKey("4"))
 			{
 				Debug.Log("Going to class should trigger Vandalism lecture.");
 				SchemeGlobals.SetSchemeStage(4, 100);
@@ -838,8 +837,9 @@ public class DebugMenuScript : MonoBehaviour
 				this.Counselor.CutsceneManager.Scheme = 4;
 				this.Counselor.LectureID = 4;
 				this.WaitingForNumber = false;
+				return;
 			}
-			else if (Input.GetKey("5"))
+			if (Input.GetKey("5"))
 			{
 				Debug.Log("Going to class at lunchtime should get Osana expelled!");
 				SchemeGlobals.SetSchemeStage(5, 100);
@@ -897,34 +897,32 @@ public class DebugMenuScript : MonoBehaviour
 			}
 			this.StudentManager.Censor = true;
 			this.StudentManager.CensorStudents();
+			return;
+		}
+		Debug.Log("We're turning the censor OFF.");
+		this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
+		this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+		this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+		if (this.Yandere.MyRenderer.sharedMesh != this.Yandere.NudeMesh && this.Yandere.MyRenderer.sharedMesh != this.Yandere.SchoolSwimsuit)
+		{
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
+			this.Yandere.PantyAttacher.newRenderer.enabled = true;
+			this.EasterEggCheck();
 		}
 		else
 		{
-			Debug.Log("We're turning the censor OFF.");
-			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount1", 0f);
-			this.Yandere.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
-			this.Yandere.MyRenderer.materials[2].SetFloat("_BlendAmount", 0f);
-			if (this.Yandere.MyRenderer.sharedMesh != this.Yandere.NudeMesh && this.Yandere.MyRenderer.sharedMesh != this.Yandere.SchoolSwimsuit)
-			{
-				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 1f);
-				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
-				this.Yandere.PantyAttacher.newRenderer.enabled = true;
-				this.EasterEggCheck();
-			}
-			else
-			{
-				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
-				this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
-				this.Yandere.PantyAttacher.newRenderer.enabled = false;
-				this.EasterEggCheck();
-			}
-			if (this.Yandere.MiyukiCostume.activeInHierarchy)
-			{
-				this.Yandere.PantyAttacher.newRenderer.enabled = false;
-			}
-			this.StudentManager.Censor = false;
-			this.StudentManager.CensorStudents();
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount1", 0f);
+			this.Yandere.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+			this.Yandere.PantyAttacher.newRenderer.enabled = false;
+			this.EasterEggCheck();
 		}
+		if (this.Yandere.MiyukiCostume.activeInHierarchy)
+		{
+			this.Yandere.PantyAttacher.newRenderer.enabled = false;
+		}
+		this.StudentManager.Censor = false;
+		this.StudentManager.CensorStudents();
 	}
 
 	public void EasterEggCheck()
@@ -960,25 +958,21 @@ public class DebugMenuScript : MonoBehaviour
 			if (newRenderer == null)
 			{
 				this.TryNextFrame = true;
+				return;
 			}
-			else
+			this.TryNextFrame = false;
+			if (!this.StudentManager.Censor)
 			{
-				this.TryNextFrame = false;
-				if (!this.StudentManager.Censor)
-				{
-					newRenderer.materials[0].SetFloat("_BlendAmount", 1f);
-					newRenderer.materials[1].SetFloat("_BlendAmount", 1f);
-					newRenderer.materials[2].SetFloat("_BlendAmount", 1f);
-					newRenderer.materials[3].SetFloat("_BlendAmount", 1f);
-				}
-				else
-				{
-					newRenderer.materials[0].SetFloat("_BlendAmount", 0f);
-					newRenderer.materials[1].SetFloat("_BlendAmount", 0f);
-					newRenderer.materials[2].SetFloat("_BlendAmount", 0f);
-					newRenderer.materials[3].SetFloat("_BlendAmount", 0f);
-				}
+				newRenderer.materials[0].SetFloat("_BlendAmount", 1f);
+				newRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+				newRenderer.materials[2].SetFloat("_BlendAmount", 1f);
+				newRenderer.materials[3].SetFloat("_BlendAmount", 1f);
+				return;
 			}
+			newRenderer.materials[0].SetFloat("_BlendAmount", 0f);
+			newRenderer.materials[1].SetFloat("_BlendAmount", 0f);
+			newRenderer.materials[2].SetFloat("_BlendAmount", 0f);
+			newRenderer.materials[3].SetFloat("_BlendAmount", 0f);
 		}
 	}
 
@@ -996,8 +990,7 @@ public class DebugMenuScript : MonoBehaviour
 			studentScript.ShoeRemoval.Start();
 			studentScript.ShoeRemoval.PutOnShoes();
 			studentScript.Phase = 2;
-			ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[2];
-			scheduleBlock.action = "Stand";
+			studentScript.ScheduleBlocks[2].action = "Stand";
 			studentScript.GetDestinations();
 			studentScript.CurrentDestination = this.MidoriSpot;
 			studentScript.Pathfinding.target = this.MidoriSpot;

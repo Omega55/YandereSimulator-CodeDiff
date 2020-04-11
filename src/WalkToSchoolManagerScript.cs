@@ -132,7 +132,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 			this.Darkness.color = new Color(1f, 1f, 1f, 1f);
 		}
 		this.Window.localScale = new Vector3(0f, 0f, 0f);
-		this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].time = UnityEngine.Random.Range(0f, this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].length);
+		this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].time = Random.Range(0f, this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].length);
 		this.Yandere.WearOutdoorShoes();
 		this.Senpai.WearOutdoorShoes();
 		this.Rival.WearOutdoorShoes();
@@ -330,7 +330,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 				this.MouthTimer += Time.deltaTime;
 				if (this.MouthTimer > this.TimerLimit)
 				{
-					this.MouthTarget = UnityEngine.Random.Range(40f, 40f + this.MouthExtent);
+					this.MouthTarget = Random.Range(40f, 40f + this.MouthExtent);
 					this.MouthTimer = 0f;
 				}
 				if (this.Speakers[this.ID])
@@ -338,13 +338,11 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 					this.RivalJaw.localEulerAngles = new Vector3(this.RivalJaw.localEulerAngles.x, this.RivalJaw.localEulerAngles.y, Mathf.Lerp(this.RivalJaw.localEulerAngles.z, this.MouthTarget, Time.deltaTime * this.TalkSpeed));
 					this.RivalLipL.localPosition = new Vector3(this.RivalLipL.localPosition.x, Mathf.Lerp(this.RivalLipL.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.RivalLipL.localPosition.z);
 					this.RivalLipR.localPosition = new Vector3(this.RivalLipR.localPosition.x, Mathf.Lerp(this.RivalLipR.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.RivalLipR.localPosition.z);
+					return;
 				}
-				else
-				{
-					this.SenpaiJaw.localEulerAngles = new Vector3(this.SenpaiJaw.localEulerAngles.x, this.SenpaiJaw.localEulerAngles.y, Mathf.Lerp(this.SenpaiJaw.localEulerAngles.z, this.MouthTarget, Time.deltaTime * this.TalkSpeed));
-					this.SenpaiLipL.localPosition = new Vector3(this.SenpaiLipL.localPosition.x, Mathf.Lerp(this.SenpaiLipL.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.SenpaiLipL.localPosition.z);
-					this.SenpaiLipR.localPosition = new Vector3(this.SenpaiLipR.localPosition.x, Mathf.Lerp(this.SenpaiLipR.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.SenpaiLipR.localPosition.z);
-				}
+				this.SenpaiJaw.localEulerAngles = new Vector3(this.SenpaiJaw.localEulerAngles.x, this.SenpaiJaw.localEulerAngles.y, Mathf.Lerp(this.SenpaiJaw.localEulerAngles.z, this.MouthTarget, Time.deltaTime * this.TalkSpeed));
+				this.SenpaiLipL.localPosition = new Vector3(this.SenpaiLipL.localPosition.x, Mathf.Lerp(this.SenpaiLipL.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.SenpaiLipL.localPosition.z);
+				this.SenpaiLipR.localPosition = new Vector3(this.SenpaiLipR.localPosition.x, Mathf.Lerp(this.SenpaiLipR.localPosition.y, 0.02632812f + this.MouthTarget * this.LipStrength, Time.deltaTime * this.TalkSpeed), this.SenpaiLipR.localPosition.z);
 			}
 		}
 	}
@@ -354,11 +352,9 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 		if (this.Speakers[this.ID])
 		{
 			this.NameLabel.text = "Osana-chan";
+			return;
 		}
-		else
-		{
-			this.NameLabel.text = "Senpai-kun";
-		}
+		this.NameLabel.text = "Senpai-kun";
 	}
 
 	public void End()

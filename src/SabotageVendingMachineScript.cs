@@ -36,11 +36,12 @@ public class SabotageVendingMachineScript : MonoBehaviour
 						this.Yandere.StudentManager.Students[11].Hungry = true;
 						this.Yandere.StudentManager.Students[11].Fed = false;
 					}
-					UnityEngine.Object.Instantiate<GameObject>(this.SabotageSparks, new Vector3(-2.5f, 5.3605f, -32.982f), Quaternion.identity);
+					Object.Instantiate<GameObject>(this.SabotageSparks, new Vector3(-2.5f, 5.3605f, -32.982f), Quaternion.identity);
 					this.VendingMachine.Sabotaged = true;
 					this.Prompt.enabled = false;
 					this.Prompt.Hide();
 					base.enabled = false;
+					return;
 				}
 			}
 		}

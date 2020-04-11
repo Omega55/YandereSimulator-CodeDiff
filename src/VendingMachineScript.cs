@@ -37,8 +37,7 @@ public class VendingMachineScript : MonoBehaviour
 			{
 				if (!this.Sabotaged)
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Cans[UnityEngine.Random.Range(0, this.Cans.Length)], this.CanSpawn.position, this.CanSpawn.rotation);
-					gameObject.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+					Object.Instantiate<GameObject>(this.Cans[Random.Range(0, this.Cans.Length)], this.CanSpawn.position, this.CanSpawn.rotation).GetComponent<AudioSource>().pitch = Random.Range(0.9f, 1.1f);
 				}
 				if (this.SnackMachine && SchemeGlobals.GetSchemeStage(4) == 3)
 				{
@@ -47,12 +46,10 @@ public class VendingMachineScript : MonoBehaviour
 				}
 				this.Prompt.Yandere.Inventory.Money -= (float)this.Price;
 				this.Prompt.Yandere.Inventory.UpdateMoney();
+				return;
 			}
-			else
-			{
-				this.Prompt.Yandere.NotificationManager.CustomText = "Not enough money!";
-				this.Prompt.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
-			}
+			this.Prompt.Yandere.NotificationManager.CustomText = "Not enough money!";
+			this.Prompt.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 		}
 	}
 }

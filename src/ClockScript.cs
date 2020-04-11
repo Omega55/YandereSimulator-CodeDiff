@@ -356,9 +356,9 @@ public class ClockScript : MonoBehaviour
 			if (this.PresentTime > 930f)
 			{
 				this.DayProgress = (this.PresentTime - 930f) / 150f;
-				this.MainLight.color = new Color(1f - 0.149019614f * this.DayProgress, 1f - 0.403921574f * this.DayProgress, 1f - 0.709803939f * this.DayProgress);
-				RenderSettings.ambientLight = new Color(1f - 0.149019614f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress));
-				this.SkyboxColor = new Color(1f - 0.149019614f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.403921574f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - 0.5f * (1f - this.DayProgress));
+				this.MainLight.color = new Color(1f - 0.1490196f * this.DayProgress, 1f - 0.403921545f * this.DayProgress, 1f - 0.709803939f * this.DayProgress);
+				RenderSettings.ambientLight = new Color(1f - 0.1490196f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.403921545f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - (1f - this.AmbientLightDim) * (1f - this.DayProgress));
+				this.SkyboxColor = new Color(1f - 0.1490196f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.403921545f * this.DayProgress - 0.5f * (1f - this.DayProgress), 1f - 0.709803939f * this.DayProgress - 0.5f * (1f - this.DayProgress));
 				RenderSettings.skybox.SetColor("_Tint", new Color(this.SkyboxColor.r, this.SkyboxColor.g, this.SkyboxColor.b));
 			}
 			else
@@ -456,9 +456,10 @@ public class ClockScript : MonoBehaviour
 		{
 			this.SchoolBell.Play();
 		}
-		foreach (Collider collider in this.TrespassZones)
+		Collider[] trespassZones = this.TrespassZones;
+		for (int i = 0; i < trespassZones.Length; i++)
 		{
-			collider.enabled = true;
+			trespassZones[i].enabled = true;
 		}
 	}
 
@@ -521,7 +522,7 @@ public class ClockScript : MonoBehaviour
 		{
 			this.MinuteNumber = this.Minute.ToString("f0");
 		}
-		this.TimeText = this.HourNumber + ":" + this.MinuteNumber + ((this.Hour >= 12f) ? " PM" : " AM");
+		this.TimeText = this.HourNumber + ":" + this.MinuteNumber + ((this.Hour < 12f) ? " AM" : " PM");
 		this.TimeLabel.text = this.TimeText;
 	}
 }

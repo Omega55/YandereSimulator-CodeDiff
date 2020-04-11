@@ -54,11 +54,11 @@ public class RPG_Controller : MonoBehaviour
 		float d2 = 0f;
 		if (Input.GetButton("Horizontal Strafe"))
 		{
-			d = ((Input.GetAxis("Horizontal Strafe") >= 0f) ? ((Input.GetAxis("Horizontal Strafe") <= 0f) ? 0f : 1f) : -1f);
+			d = ((Input.GetAxis("Horizontal Strafe") < 0f) ? -1f : ((Input.GetAxis("Horizontal Strafe") > 0f) ? 1f : 0f));
 		}
 		if (Input.GetButton("Vertical"))
 		{
-			d2 = ((Input.GetAxis("Vertical") >= 0f) ? ((Input.GetAxis("Vertical") <= 0f) ? 0f : 1f) : -1f);
+			d2 = ((Input.GetAxis("Vertical") < 0f) ? -1f : ((Input.GetAxis("Vertical") > 0f) ? 1f : 0f));
 		}
 		if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
 		{

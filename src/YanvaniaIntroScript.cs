@@ -67,7 +67,7 @@ public class YanvaniaIntroScript : MonoBehaviour
 		}
 		if (this.Timer > this.LeaveTime)
 		{
-			this.Position += ((this.Position != 0f) ? (this.Position * 0.1f) : Time.deltaTime);
+			this.Position += ((this.Position == 0f) ? Time.deltaTime : (this.Position * 0.1f));
 			if (this.BlackLeft.localPosition.x > -2100f)
 			{
 				this.BlackRight.localPosition = new Vector3(this.BlackRight.localPosition.x + this.Position, this.BlackRight.localPosition.y, this.BlackRight.localPosition.z);
@@ -88,6 +88,6 @@ public class YanvaniaIntroScript : MonoBehaviour
 		}
 		this.ZombieSpawner.enabled = true;
 		this.Yanmont.CanMove = true;
-		UnityEngine.Object.Destroy(base.gameObject);
+		Object.Destroy(base.gameObject);
 	}
 }

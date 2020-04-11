@@ -78,19 +78,19 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 				this.LeftDoor.localEulerAngles = new Vector3(this.LeftDoor.localEulerAngles.x, -this.Rotation, this.LeftDoor.localEulerAngles.z);
 				if (this.InputManager.TappedUp)
 				{
-					this.Y = ((this.Y <= 0) ? (this.Rows - 1) : (this.Y - 1));
+					this.Y = ((this.Y > 0) ? (this.Y - 1) : (this.Rows - 1));
 				}
 				if (this.InputManager.TappedDown)
 				{
-					this.Y = ((this.Y >= this.Rows - 1) ? 0 : (this.Y + 1));
+					this.Y = ((this.Y < this.Rows - 1) ? (this.Y + 1) : 0);
 				}
 				if (this.InputManager.TappedRight && !this.InUpperHalf())
 				{
-					this.X = ((this.X >= this.Columns - 1) ? 0 : (this.X + 1));
+					this.X = ((this.X < this.Columns - 1) ? (this.X + 1) : 0);
 				}
 				if (this.InputManager.TappedLeft && !this.InUpperHalf())
 				{
-					this.X = ((this.X <= 0) ? (this.Columns - 1) : (this.X - 1));
+					this.X = ((this.X > 0) ? (this.X - 1) : (this.Columns - 1));
 				}
 				if (this.InUpperHalf())
 				{
@@ -99,8 +99,7 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 				int currentIndex = this.GetCurrentIndex();
 				this.HomeCamera.Destination = this.Destinations[currentIndex];
 				this.HomeCamera.Target = this.Targets[currentIndex];
-				bool flag = this.InputManager.TappedUp || this.InputManager.TappedDown || this.InputManager.TappedRight || this.InputManager.TappedLeft;
-				if (flag)
+				if (this.InputManager.TappedUp || this.InputManager.TappedDown || this.InputManager.TappedRight || this.InputManager.TappedLeft)
 				{
 					this.UpdateText(currentIndex - 1);
 				}
@@ -111,6 +110,7 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 					this.HomeYandere.CanMove = true;
 					this.HomeYandere.gameObject.SetActive(true);
 					this.HomeWindow.Show = false;
+					return;
 				}
 			}
 		}
@@ -132,16 +132,15 @@ public class HomeSenpaiShrineScript : MonoBehaviour
 		{
 			this.NameLabel.text = this.Names[newIndex];
 			this.DescLabel.text = this.Descs[newIndex];
+			return;
 		}
-		else if (PlayerGlobals.GetShrineCollectible(newIndex))
+		if (PlayerGlobals.GetShrineCollectible(newIndex))
 		{
 			this.NameLabel.text = this.Names[newIndex];
 			this.DescLabel.text = this.Descs[newIndex];
+			return;
 		}
-		else
-		{
-			this.NameLabel.text = "???";
-			this.DescLabel.text = "I'd like to find something that Senpai touched and keep it here...";
-		}
+		this.NameLabel.text = "???";
+		this.DescLabel.text = "I'd like to find something that Senpai touched and keep it here...";
 	}
 }

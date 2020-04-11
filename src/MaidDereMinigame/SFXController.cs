@@ -38,7 +38,7 @@ namespace MaidDereMinigame
 			{
 				if (SFXController.instance == null)
 				{
-					SFXController.instance = UnityEngine.Object.FindObjectOfType<SFXController>();
+					SFXController.instance = Object.FindObjectOfType<SFXController>();
 				}
 				return SFXController.instance;
 			}
@@ -48,12 +48,10 @@ namespace MaidDereMinigame
 		{
 			if (SFXController.Instance != this)
 			{
-				UnityEngine.Object.Destroy(base.gameObject);
+				Object.Destroy(base.gameObject);
+				return;
 			}
-			else
-			{
-				UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
-			}
+			Object.DontDestroyOnLoad(base.gameObject);
 		}
 
 		public static void PlaySound(SFXController.Sounds sound)
@@ -82,7 +80,7 @@ namespace MaidDereMinigame
 
 		private AudioClip GetRandomClip(SoundEmitter emitter)
 		{
-			int index = UnityEngine.Random.Range(0, emitter.clips.Count);
+			int index = Random.Range(0, emitter.clips.Count);
 			return emitter.clips[index];
 		}
 	}

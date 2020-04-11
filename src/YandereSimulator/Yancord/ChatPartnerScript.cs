@@ -42,12 +42,10 @@ namespace YandereSimulator.Yancord
 					this.StatusTexture.mainTexture = this.GetStatusTexture(this.MyProfile.CurrentStatus);
 				}
 				base.gameObject.name = this.MyProfile.FirstName + "_Profile";
+				return;
 			}
-			else
-			{
-				Debug.LogError("[ChatPartnerScript] MyProfile wasn't assgined!");
-				UnityEngine.Object.Destroy(base.gameObject);
-			}
+			Debug.LogError("[ChatPartnerScript] MyProfile wasn't assgined!");
+			Object.Destroy(base.gameObject);
 		}
 
 		private Texture2D GetStatusTexture(Status currentStatus)

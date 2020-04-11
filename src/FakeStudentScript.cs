@@ -35,7 +35,7 @@ public class FakeStudentScript : MonoBehaviour
 	{
 		if (!this.Student.Talking)
 		{
-			if (this.LeaderAnim != string.Empty)
+			if (this.LeaderAnim != "")
 			{
 				base.GetComponent<Animation>().CrossFade(this.LeaderAnim);
 			}

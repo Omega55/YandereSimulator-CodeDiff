@@ -46,35 +46,37 @@ namespace MaidDereMinigame
 			{
 			case MenuButton.ButtonType.Start:
 				this.menu.flipBook.FlipToPage(2);
-				break;
+				return;
 			case MenuButton.ButtonType.Controls:
 				this.menu.flipBook.FlipToPage(3);
-				break;
+				return;
 			case MenuButton.ButtonType.Credits:
 				this.menu.flipBook.FlipToPage(4);
-				break;
+				return;
 			case MenuButton.ButtonType.Exit:
 				this.menu.StopInputs();
 				GameController.GoToExitScene(true);
-				break;
+				return;
 			case MenuButton.ButtonType.Easy:
 				this.menu.StopInputs();
 				GameController.Instance.activeDifficultyVariables = GameController.Instance.easyVariables;
 				GameController.Instance.LoadScene(this.targetScene);
 				SFXController.PlaySound(SFXController.Sounds.MenuConfirm);
-				break;
+				return;
 			case MenuButton.ButtonType.Medium:
 				this.menu.StopInputs();
 				GameController.Instance.activeDifficultyVariables = GameController.Instance.mediumVariables;
 				GameController.Instance.LoadScene(this.targetScene);
 				SFXController.PlaySound(SFXController.Sounds.MenuConfirm);
-				break;
+				return;
 			case MenuButton.ButtonType.Hard:
 				this.menu.StopInputs();
 				GameController.Instance.activeDifficultyVariables = GameController.Instance.hardVariables;
 				GameController.Instance.LoadScene(this.targetScene);
 				SFXController.PlaySound(SFXController.Sounds.MenuConfirm);
-				break;
+				return;
+			default:
+				return;
 			}
 		}
 	}

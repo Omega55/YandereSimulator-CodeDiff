@@ -22,14 +22,12 @@ public class PhotographyClubScript : MonoBehaviour
 			this.CrimeScene.SetActive(true);
 			this.StraightTables.SetActive(true);
 			this.CrookedTables.SetActive(false);
+			return;
 		}
-		else
-		{
-			this.InvestigationPhotos.SetActive(false);
-			this.ArtsyPhotos.SetActive(true);
-			this.CrimeScene.SetActive(false);
-			this.StraightTables.SetActive(false);
-			this.CrookedTables.SetActive(true);
-		}
+		this.InvestigationPhotos.SetActive(false);
+		this.ArtsyPhotos.SetActive(true);
+		this.CrimeScene.SetActive(false);
+		this.StraightTables.SetActive(false);
+		this.CrookedTables.SetActive(true);
 	}
 }

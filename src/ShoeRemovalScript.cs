@@ -79,10 +79,10 @@ public class ShoeRemovalScript : MonoBehaviour
 		{
 			this.GetHeight(this.Student.StudentID);
 			this.Locker = this.Student.StudentManager.Lockers.List[this.Student.StudentID];
-			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.NewPairOfShoes, base.transform.position, Quaternion.identity);
+			GameObject gameObject = Object.Instantiate<GameObject>(this.NewPairOfShoes, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = this.Locker;
 			gameObject.transform.localEulerAngles = new Vector3(0f, -180f, 0f);
-			gameObject.transform.localPosition = new Vector3(0f, -0.29f + 0.3f * (float)this.Height, (!this.Male) ? 0.05f : 0.04f);
+			gameObject.transform.localPosition = new Vector3(0f, -0.29f + 0.3f * (float)this.Height, this.Male ? 0.04f : 0.05f);
 			this.LeftSchoolShoe = gameObject.transform.GetChild(0);
 			this.RightSchoolShoe = gameObject.transform.GetChild(1);
 			this.RemovalAnim = this.RemoveCasualAnim;
@@ -113,11 +113,9 @@ public class ShoeRemovalScript : MonoBehaviour
 			{
 				this.MyRenderer.materials[0].mainTexture = this.Socks;
 				this.MyRenderer.materials[1].mainTexture = this.Socks;
+				return;
 			}
-			else
-			{
-				this.MyRenderer.materials[this.Student.Cosmetic.UniformID].mainTexture = this.Socks;
-			}
+			this.MyRenderer.materials[this.Student.Cosmetic.UniformID].mainTexture = this.Socks;
 		}
 	}
 
@@ -140,6 +138,7 @@ public class ShoeRemovalScript : MonoBehaviour
 				{
 					this.ShoeParent.parent = this.LeftHand;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 2)
@@ -151,6 +150,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.Y = this.ShoeParent.localEulerAngles.y;
 					this.Z = this.ShoeParent.localEulerAngles.z;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 3)
@@ -165,6 +165,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.ShoeParent.localPosition = new Vector3(0.272f, 0f, 0.552f);
 					this.ShoeParent.localEulerAngles = new Vector3(0f, 186.878f, 0f);
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 4)
@@ -175,6 +176,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.RightCurrentShoe.position = new Vector3(this.RightCurrentShoe.position.x, 0.05f, this.RightCurrentShoe.position.z);
 					this.RightCurrentShoe.localEulerAngles = new Vector3(0f, this.RightCurrentShoe.localEulerAngles.y, 0f);
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 5)
@@ -185,6 +187,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.LeftCurrentShoe.position = new Vector3(this.LeftCurrentShoe.position.x, 0.05f, this.LeftCurrentShoe.position.z);
 					this.LeftCurrentShoe.localEulerAngles = new Vector3(0f, this.LeftCurrentShoe.localEulerAngles.y, 0f);
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 6)
@@ -195,6 +198,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.LeftNewShoe.localPosition = this.LeftShoePosition;
 					this.LeftNewShoe.localEulerAngles = Vector3.zero;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 7)
@@ -219,6 +223,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.RightNewShoe.gameObject.SetActive(false);
 					this.LeftNewShoe.gameObject.SetActive(false);
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 8)
@@ -230,6 +235,7 @@ public class ShoeRemovalScript : MonoBehaviour
 					this.LeftCurrentShoe.parent = this.ShoeParent;
 					this.ShoeParent.parent = this.RightHand;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 9)
@@ -237,13 +243,14 @@ public class ShoeRemovalScript : MonoBehaviour
 				if (this.Student.CharacterAnimation[this.RemovalAnim].time >= 8.5f)
 				{
 					this.ShoeParent.parent = this.Locker;
-					this.ShoeParent.localPosition = new Vector3(0f, ((!(this.TargetShoes == this.IndoorShoes)) ? -0.29f : -0.14f) + 0.3f * (float)this.Height, -0.01f);
+					this.ShoeParent.localPosition = new Vector3(0f, ((this.TargetShoes == this.IndoorShoes) ? -0.14f : -0.29f) + 0.3f * (float)this.Height, -0.01f);
 					this.ShoeParent.localEulerAngles = new Vector3(0f, 180f, 0f);
 					this.RightCurrentShoe.localPosition = new Vector3(0.041f, 0.04271515f, 0f);
 					this.LeftCurrentShoe.localPosition = new Vector3(-0.041f, 0.04271515f, 0f);
 					this.RightCurrentShoe.localEulerAngles = Vector3.zero;
 					this.LeftCurrentShoe.localEulerAngles = Vector3.zero;
 					this.Phase++;
+					return;
 				}
 			}
 			else if (this.Phase == 10 && this.Student.CharacterAnimation[this.RemovalAnim].time >= this.Student.CharacterAnimation[this.RemovalAnim].length)
@@ -263,25 +270,24 @@ public class ShoeRemovalScript : MonoBehaviour
 					}
 					this.Student.Indoors = true;
 					this.Student.CanTalk = true;
+					return;
+				}
+				if (this.Student.Destinations[this.Student.Phase + 1] != null)
+				{
+					this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase + 1];
+					this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase + 1];
 				}
 				else
 				{
-					if (this.Student.Destinations[this.Student.Phase + 1] != null)
-					{
-						this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase + 1];
-						this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase + 1];
-					}
-					else
-					{
-						this.Student.CurrentDestination = this.Student.StudentManager.Hangouts.List[0];
-						this.Student.Pathfinding.target = this.Student.StudentManager.Hangouts.List[0];
-					}
-					this.Student.CanTalk = false;
-					this.Student.Leaving = true;
-					this.Student.Phase++;
-					base.enabled = false;
-					this.Phase++;
+					this.Student.CurrentDestination = this.Student.StudentManager.Hangouts.List[0];
+					this.Student.Pathfinding.target = this.Student.StudentManager.Hangouts.List[0];
 				}
+				this.Student.CanTalk = false;
+				this.Student.Leaving = true;
+				this.Student.Phase++;
+				base.enabled = false;
+				this.Phase++;
+				return;
 			}
 		}
 		else
@@ -338,7 +344,7 @@ public class ShoeRemovalScript : MonoBehaviour
 		this.LeftCurrentShoe.parent = this.ShoeParent;
 		this.ShoeParent.parent = this.RightHand;
 		this.ShoeParent.parent = this.Locker;
-		this.ShoeParent.localPosition = new Vector3(0f, ((!(this.TargetShoes == this.IndoorShoes)) ? -0.29f : -0.14f) + 0.3f * (float)this.Height, -0.01f);
+		this.ShoeParent.localPosition = new Vector3(0f, ((this.TargetShoes == this.IndoorShoes) ? -0.14f : -0.29f) + 0.3f * (float)this.Height, -0.01f);
 		this.ShoeParent.localEulerAngles = new Vector3(0f, 180f, 0f);
 		this.RightCurrentShoe.localPosition = new Vector3(0.041f, 0.04271515f, 0f);
 		this.LeftCurrentShoe.localPosition = new Vector3(-0.041f, 0.04271515f, 0f);
@@ -364,11 +370,9 @@ public class ShoeRemovalScript : MonoBehaviour
 			{
 				this.MyRenderer.materials[0].mainTexture = this.IndoorShoes;
 				this.MyRenderer.materials[1].mainTexture = this.IndoorShoes;
+				return;
 			}
-			else
-			{
-				this.MyRenderer.materials[this.Student.Cosmetic.UniformID].mainTexture = this.IndoorShoes;
-			}
+			this.MyRenderer.materials[this.Student.Cosmetic.UniformID].mainTexture = this.IndoorShoes;
 		}
 	}
 

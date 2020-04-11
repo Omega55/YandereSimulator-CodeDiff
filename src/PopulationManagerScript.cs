@@ -14,14 +14,14 @@ public class PopulationManagerScript : MonoBehaviour
 	{
 		AreaScript crowdedArea = this.GetCrowdedArea();
 		Vector3 position = crowdedArea.transform.position;
-		Vector3 a = new Vector3(0f, 0f, 0f);
+		Vector3 vector = new Vector3(0f, 0f, 0f);
 		float num = 0f;
 		foreach (StudentScript studentScript in crowdedArea.Students)
 		{
-			a += new Vector3(studentScript.transform.position.x, 0f, studentScript.transform.position.z);
+			vector += new Vector3(studentScript.transform.position.x, 0f, studentScript.transform.position.z);
 			num += 1f;
 		}
-		a /= num;
+		vector /= num;
 		int num2;
 		if (position.y >= 0f && position.y < 4f)
 		{
@@ -39,7 +39,7 @@ public class PopulationManagerScript : MonoBehaviour
 		{
 			num2 = 12;
 		}
-		return new Vector3(a.x, (float)num2, a.z);
+		return new Vector3(vector.x, (float)num2, vector.z);
 	}
 
 	public AreaScript GetCrowdedArea()

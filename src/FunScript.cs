@@ -51,7 +51,7 @@ public class FunScript : MonoBehaviour
 		{
 			if (this.DebugNumber != -1)
 			{
-				this.Text = string.Empty + this.DebugNumber;
+				this.Text = string.Concat(this.DebugNumber);
 			}
 			else
 			{
@@ -178,6 +178,7 @@ public class FunScript : MonoBehaviour
 					this.Girl.mainTexture = this.Portraits[this.ID];
 					this.Typewriter.ResetToBeginning();
 					this.Typewriter.mFullText = this.Lines[this.ID];
+					return;
 				}
 			}
 			else if (Input.GetButtonDown("A"))
@@ -187,18 +188,17 @@ public class FunScript : MonoBehaviour
 					if (this.Typewriter.mCurrentOffset < this.Typewriter.mFullText.Length)
 					{
 						this.Typewriter.Finish();
+						return;
 					}
-					else
+					this.ID++;
+					if (this.ID == 19)
 					{
-						this.ID++;
-						if (this.ID == 19)
-						{
-							this.Skip.SetActive(false);
-						}
-						this.Girl.mainTexture = this.Portraits[this.ID];
-						this.Typewriter.ResetToBeginning();
-						this.Typewriter.mFullText = this.Lines[this.ID];
+						this.Skip.SetActive(false);
 					}
+					this.Girl.mainTexture = this.Portraits[this.ID];
+					this.Typewriter.ResetToBeginning();
+					this.Typewriter.mFullText = this.Lines[this.ID];
+					return;
 				}
 				else
 				{

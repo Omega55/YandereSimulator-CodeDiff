@@ -30,7 +30,7 @@ public class SithBeamScript : MonoBehaviour
 		this.Lifespan = Mathf.MoveTowards(this.Lifespan, 0f, Time.deltaTime);
 		if (this.Lifespan == 0f)
 		{
-			UnityEngine.Object.Destroy(base.gameObject);
+			Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -42,8 +42,8 @@ public class SithBeamScript : MonoBehaviour
 			if (component != null && component.StudentID > 1)
 			{
 				AudioSource.PlayClipAtPoint(this.Hit, base.transform.position);
-				this.RandomNumber = UnityEngine.Random.Range(0, 3);
-				if (this.MalePain.Length > 0)
+				this.RandomNumber = Random.Range(0, 3);
+				if (this.MalePain.Length != 0)
 				{
 					if (component.Male)
 					{
@@ -54,7 +54,7 @@ public class SithBeamScript : MonoBehaviour
 						AudioSource.PlayClipAtPoint(this.FemalePain[this.RandomNumber], base.transform.position);
 					}
 				}
-				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+				Object.Instantiate<GameObject>(this.BloodEffect, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 				component.Health -= this.Damage;
 				component.HealthBar.transform.parent.gameObject.SetActive(true);
 				component.HealthBar.transform.localScale = new Vector3(component.Health / 100f, 1f, 1f);
@@ -64,8 +64,7 @@ public class SithBeamScript : MonoBehaviour
 					component.DeathType = DeathType.EasterEgg;
 					component.HealthBar.transform.parent.gameObject.SetActive(false);
 					component.BecomeRagdoll();
-					Rigidbody rigidbody = component.Ragdoll.AllRigidbodies[0];
-					rigidbody.isKinematic = false;
+					component.Ragdoll.AllRigidbodies[0].isKinematic = false;
 				}
 				else
 				{
@@ -79,7 +78,7 @@ public class SithBeamScript : MonoBehaviour
 				}
 				if (this.Projectile)
 				{
-					UnityEngine.Object.Destroy(base.gameObject);
+					Object.Destroy(base.gameObject);
 				}
 			}
 		}

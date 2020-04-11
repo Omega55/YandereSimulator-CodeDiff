@@ -51,20 +51,24 @@ public class PhoneMinigameScript : MonoBehaviour
 				if (this.PickpocketMinigame.Progress == 1)
 				{
 					this.Smartphone.position = Vector3.Lerp(this.Smartphone.position, new Vector3(0.4f, this.Smartphone.position.y, this.Smartphone.position.z), Time.deltaTime * 10f);
+					return;
 				}
-				else if (this.PickpocketMinigame.Progress == 2)
+				if (this.PickpocketMinigame.Progress == 2)
 				{
 					this.Smartphone.eulerAngles = Vector3.Lerp(this.Smartphone.eulerAngles, new Vector3(0f, 180f, 0f), Time.deltaTime * 10f);
+					return;
 				}
-				else if (this.PickpocketMinigame.Progress == 3)
+				if (this.PickpocketMinigame.Progress == 3)
 				{
 					this.SmartPhoneScreen.material.mainTexture = this.AlarmOff;
+					return;
 				}
-				else if (this.PickpocketMinigame.Progress == 4)
+				if (this.PickpocketMinigame.Progress == 4)
 				{
 					this.Smartphone.eulerAngles = Vector3.Lerp(this.Smartphone.eulerAngles, new Vector3(this.OriginalRotation.x, this.OriginalRotation.y, this.OriginalRotation.z), Time.deltaTime * 10f);
+					return;
 				}
-				else if (!this.PickpocketMinigame.Show)
+				if (!this.PickpocketMinigame.Show)
 				{
 					this.Smartphone.position = Vector3.Lerp(this.Smartphone.position, new Vector3(this.OriginalPosition.x, this.OriginalPosition.y, this.OriginalPosition.z), Time.deltaTime * 10f);
 					this.Timer += Time.deltaTime;
@@ -72,6 +76,7 @@ public class PhoneMinigameScript : MonoBehaviour
 					{
 						this.Event.Sabotaged = true;
 						this.End();
+						return;
 					}
 				}
 			}

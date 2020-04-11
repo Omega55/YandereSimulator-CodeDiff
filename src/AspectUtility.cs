@@ -35,7 +35,7 @@ public class AspectUtility : MonoBehaviour
 			AspectUtility.cam.rect = new Rect(0f, 0f, 1f, 1f);
 			if (AspectUtility.backgroundCam)
 			{
-				UnityEngine.Object.Destroy(AspectUtility.backgroundCam.gameObject);
+				Object.Destroy(AspectUtility.backgroundCam.gameObject);
 			}
 			return;
 		}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public static class KeysHelper
@@ -11,38 +10,24 @@ public static class KeysHelper
 
 	public const char PairSeparator = '^';
 
-	[CompilerGenerated]
-	private static Converter<string, int> <>f__mg$cache0;
-
 	public static int[] GetIntegerKeys(string key)
 	{
-		string keyList = KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key));
-		string[] array = KeysHelper.SplitList(keyList);
-		string[] array2 = array;
-		if (KeysHelper.<>f__mg$cache0 == null)
-		{
-			KeysHelper.<>f__mg$cache0 = new Converter<string, int>(int.Parse);
-		}
-		return Array.ConvertAll<string, int>(array2, KeysHelper.<>f__mg$cache0);
+		return Array.ConvertAll<string, int>(KeysHelper.SplitList(KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key))), (string str) => int.Parse(str));
 	}
 
 	public static string[] GetStringKeys(string key)
 	{
-		string keyList = KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key));
-		return KeysHelper.SplitList(keyList);
+		return KeysHelper.SplitList(KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key)));
 	}
 
 	public static T[] GetEnumKeys<T>(string key) where T : struct, IConvertible
 	{
-		string keyList = KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key));
-		string[] array = KeysHelper.SplitList(keyList);
-		return Array.ConvertAll<string, T>(array, (string str) => (T)((object)Enum.Parse(typeof(T), str)));
+		return Array.ConvertAll<string, T>(KeysHelper.SplitList(KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key))), (string str) => (T)((object)Enum.Parse(typeof(T), str)));
 	}
 
 	public static KeyValuePair<T, U>[] GetKeys<T, U>(string key) where T : struct where U : struct
 	{
-		string keyList = KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key));
-		string[] array = KeysHelper.SplitList(keyList);
+		string[] array = KeysHelper.SplitList(KeysHelper.GetKeyList(KeysHelper.GetKeyListKey(key)));
 		KeyValuePair<T, U>[] array2 = new KeyValuePair<T, U>[array.Length];
 		for (int i = 0; i < array.Length; i++)
 		{
@@ -59,8 +44,7 @@ public static class KeysHelper
 	{
 		string keyListKey = KeysHelper.GetKeyListKey(key);
 		string keyList = KeysHelper.GetKeyList(keyListKey);
-		string[] keyListStrings = KeysHelper.SplitList(keyList);
-		if (!KeysHelper.HasKey(keyListStrings, id))
+		if (!KeysHelper.HasKey(KeysHelper.SplitList(keyList), id))
 		{
 			KeysHelper.AppendKey(keyListKey, keyList, id);
 		}
@@ -68,8 +52,7 @@ public static class KeysHelper
 
 	public static void Delete(string key)
 	{
-		string keyListKey = KeysHelper.GetKeyListKey(key);
-		Globals.Delete(keyListKey);
+		Globals.Delete(KeysHelper.GetKeyListKey(key));
 	}
 
 	private static string GetKeyListKey(string key)
@@ -84,7 +67,11 @@ public static class KeysHelper
 
 	private static string[] SplitList(string keyList)
 	{
-		return (keyList.Length <= 0) ? new string[0] : keyList.Split(new char[]
+		if (keyList.Length <= 0)
+		{
+			return new string[0];
+		}
+		return keyList.Split(new char[]
 		{
 			'|'
 		});
@@ -102,7 +89,7 @@ public static class KeysHelper
 
 	private static void AppendKey(string keyListKey, string keyList, string key)
 	{
-		string value = (keyList.Length != 0) ? (keyList + '|' + key) : (keyList + key);
+		string value = (keyList.Length == 0) ? (keyList + key) : (keyList + "|" + key);
 		PlayerPrefs.SetString(keyListKey, value);
 	}
 }
