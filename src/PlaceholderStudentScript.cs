@@ -21,7 +21,7 @@ public class PlaceholderStudentScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.Target = Object.Instantiate<GameObject>(this.EmptyGameObject).transform;
+		this.Target = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject).transform;
 		this.ChooseNewDestination();
 	}
 
@@ -75,22 +75,22 @@ public class PlaceholderStudentScript : MonoBehaviour
 	{
 		if (this.NESW == 1)
 		{
-			this.Target.position = new Vector3(Random.Range(-21f, 21f), base.transform.position.y, Random.Range(21f, 19f));
+			this.Target.position = new Vector3(UnityEngine.Random.Range(-21f, 21f), base.transform.position.y, UnityEngine.Random.Range(21f, 19f));
 			return;
 		}
 		if (this.NESW == 2)
 		{
-			this.Target.position = new Vector3(Random.Range(19f, 21f), base.transform.position.y, Random.Range(29f, -37f));
+			this.Target.position = new Vector3(UnityEngine.Random.Range(19f, 21f), base.transform.position.y, UnityEngine.Random.Range(29f, -37f));
 			return;
 		}
 		if (this.NESW == 3)
 		{
-			this.Target.position = new Vector3(Random.Range(-21f, 21f), base.transform.position.y, Random.Range(-21f, -19f));
+			this.Target.position = new Vector3(UnityEngine.Random.Range(-21f, 21f), base.transform.position.y, UnityEngine.Random.Range(-21f, -19f));
 			return;
 		}
 		if (this.NESW == 4)
 		{
-			this.Target.position = new Vector3(Random.Range(-19f, -21f), base.transform.position.y, Random.Range(29f, -37f));
+			this.Target.position = new Vector3(UnityEngine.Random.Range(-19f, -21f), base.transform.position.y, UnityEngine.Random.Range(29f, -37f));
 		}
 	}
 }

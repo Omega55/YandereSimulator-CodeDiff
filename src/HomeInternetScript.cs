@@ -556,7 +556,7 @@ public class HomeInternetScript : MonoBehaviour
 					}
 				}
 				this.Shake = Mathf.MoveTowards(this.Shake, 0f, Time.deltaTime * 10f);
-				this.MoneyLabel.transform.localPosition = new Vector3(445f + Random.Range(this.Shake * -1f, this.Shake * 1f), 410f + Random.Range(this.Shake * -1f, this.Shake * 1f), 0f);
+				this.MoneyLabel.transform.localPosition = new Vector3(445f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 410f + UnityEngine.Random.Range(this.Shake * -1f, this.Shake * 1f), 0f);
 				if (Input.GetButtonDown("B"))
 				{
 					if (!this.AreYouSure.activeInHierarchy)

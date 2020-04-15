@@ -151,7 +151,7 @@ public class JukeboxScript : MonoBehaviour
 	{
 		if (this.BGM == 0)
 		{
-			this.BGM = Random.Range(0, 8);
+			this.BGM = UnityEngine.Random.Range(0, 8);
 		}
 		else
 		{

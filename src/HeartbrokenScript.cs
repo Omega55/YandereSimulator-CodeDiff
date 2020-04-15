@@ -356,7 +356,7 @@ public class HeartbrokenScript : MonoBehaviour
 			{
 				UILabel uilabel3 = this.Letters[this.ShakeID];
 				Vector3 vector = this.Origins[this.ShakeID];
-				uilabel3.transform.localPosition = new Vector3(vector.x + Random.Range(-5f, 5f), vector.y + Random.Range(-5f, 5f), uilabel3.transform.localPosition.z);
+				uilabel3.transform.localPosition = new Vector3(vector.x + UnityEngine.Random.Range(-5f, 5f), vector.y + UnityEngine.Random.Range(-5f, 5f), uilabel3.transform.localPosition.z);
 				this.ShakeID++;
 			}
 		}

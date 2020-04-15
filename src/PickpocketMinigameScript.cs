@@ -135,7 +135,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 		int buttonID = this.ButtonID;
 		while (this.ButtonID == buttonID)
 		{
-			this.ButtonID = Random.Range(1, 5);
+			this.ButtonID = UnityEngine.Random.Range(1, 5);
 		}
 		if (this.ButtonID == 1)
 		{

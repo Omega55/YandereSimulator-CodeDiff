@@ -919,7 +919,7 @@ public class CustomizationScript : MonoBehaviour
 
 	private void LoveSickColorSwap()
 	{
-		foreach (GameObject gameObject in Object.FindObjectsOfType<GameObject>())
+		foreach (GameObject gameObject in UnityEngine.Object.FindObjectsOfType<GameObject>())
 		{
 			UISprite component = gameObject.GetComponent<UISprite>();
 			if (component != null && component.color != Color.black && component.transform.parent != this.Highlight && component.transform.parent != this.UniformHighlight)

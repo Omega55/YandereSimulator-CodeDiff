@@ -87,7 +87,7 @@ public class BrokenScript : MonoBehaviour
 					{
 						if (this.VoiceClip != null)
 						{
-							Object.Destroy(this.VoiceClip);
+							UnityEngine.Object.Destroy(this.VoiceClip);
 						}
 						this.Subtitle.text = "Do it.";
 						AudioClipPlayer.PlayAttached(this.DoIt, base.transform.position, base.transform, 1f, 5f, out this.VoiceClip, this.Yandere.transform.position.y);

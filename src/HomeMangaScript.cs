@@ -96,11 +96,11 @@ public class HomeMangaScript : MonoBehaviour
 		{
 			if (CollectibleGlobals.GetMangaCollected(i + 1))
 			{
-				this.NewManga = Object.Instantiate<GameObject>(this.MangaModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
+				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MangaModels[i], new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
 			else
 			{
-				this.NewManga = Object.Instantiate<GameObject>(this.MysteryManga, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
+				this.NewManga = UnityEngine.Object.Instantiate<GameObject>(this.MysteryManga, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - 1f), Quaternion.identity);
 			}
 			this.NewManga.transform.parent = this.MangaParent;
 			this.NewManga.GetComponent<HomeMangaBookScript>().Manga = this;

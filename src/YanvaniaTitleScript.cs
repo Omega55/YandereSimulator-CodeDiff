@@ -194,7 +194,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 							{
 								if (Input.GetButtonDown("A"))
 								{
-									Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
+									UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.Highlight.position, Quaternion.identity);
 									if (this.Selected == 1 || this.Selected == 4)
 									{
 										this.FadeOut = true;
@@ -243,7 +243,7 @@ public class YanvaniaTitleScript : MonoBehaviour
 						}
 						if ((this.Controls.alpha == 1f || this.Credits.alpha == 1f) && Input.GetButtonDown("B"))
 						{
-							Object.Instantiate<GameObject>(this.ButtonEffect, this.BackButtons[this.Selected].position, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.ButtonEffect, this.BackButtons[this.Selected].position, Quaternion.identity);
 							this.FadeButtons = false;
 							return;
 						}

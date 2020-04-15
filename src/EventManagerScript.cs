@@ -81,7 +81,7 @@ public class EventManagerScript : MonoBehaviour
 		this.NoteLocker.CanLeaveNote = true;
 		if (this.EventStudent1 == 11)
 		{
-			Object.Destroy(this);
+			UnityEngine.Object.Destroy(this);
 		}
 	}
 
@@ -275,7 +275,7 @@ public class EventManagerScript : MonoBehaviour
 	{
 		if (this.VoiceClip != null)
 		{
-			Object.Destroy(this.VoiceClip);
+			UnityEngine.Object.Destroy(this.VoiceClip);
 		}
 		this.EventStudent[1].CurrentDestination = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];
 		this.EventStudent[1].Pathfinding.target = this.EventStudent[1].Destinations[this.EventStudent[1].Phase];

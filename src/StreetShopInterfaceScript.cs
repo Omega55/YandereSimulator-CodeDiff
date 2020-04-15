@@ -132,7 +132,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 				}
 				else if (this.SpeechPhase == 2 && this.Timer > 10.1f)
 				{
-					int num = Random.Range(2, 4);
+					int num = UnityEngine.Random.Range(2, 4);
 					this.Shopkeeper.mainTexture = this.ShopkeeperPortraits[num];
 					this.Timer = 10f;
 				}

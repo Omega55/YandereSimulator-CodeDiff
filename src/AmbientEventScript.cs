@@ -171,7 +171,7 @@ public class AmbientEventScript : MonoBehaviour
 	{
 		if (this.VoiceClip != null)
 		{
-			Object.Destroy(this.VoiceClip);
+			UnityEngine.Object.Destroy(this.VoiceClip);
 		}
 		for (int i = 1; i < 3; i++)
 		{

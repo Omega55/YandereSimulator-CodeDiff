@@ -14,7 +14,7 @@ public class MaskingTapeScript : MonoBehaviour
 			this.Prompt.Yandere.Inventory.MaskingTape = true;
 			this.Box.Prompt.enabled = true;
 			this.Box.enabled = true;
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

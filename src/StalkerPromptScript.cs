@@ -22,8 +22,8 @@ public class StalkerPromptScript : MonoBehaviour
 				this.Yandere.MyAnimation.CrossFade("f02_climbTrellis_00");
 				this.Yandere.Climbing = true;
 				this.Yandere.CanMove = false;
-				Object.Destroy(base.gameObject);
-				Object.Destroy(this.MySprite);
+				UnityEngine.Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(this.MySprite);
 			}
 		}
 		else

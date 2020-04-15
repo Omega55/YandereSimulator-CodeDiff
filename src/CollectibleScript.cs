@@ -13,13 +13,13 @@ public class CollectibleScript : MonoBehaviour
 
 	private void Start()
 	{
-		if ((this.CollectibleType == CollectibleType.BasementTape && CollectibleGlobals.GetBasementTapeCollected(this.ID)) || (this.CollectibleType == CollectibleType.Manga && CollectibleGlobals.GetMangaCollected(this.ID)) || (this.CollectibleType == CollectibleType.Tape && CollectibleGlobals.GetTapeCollected(this.ID)))
+		if ((this.CollectibleType == CollectibleType.BasementTape && CollectibleGlobals.GetBasementTapeCollected(this.ID)) || (this.CollectibleType == CollectibleType.Manga && CollectibleGlobals.GetMangaCollected(this.ID)) || (this.CollectibleType == CollectibleType.Tape && CollectibleGlobals.GetTapeCollected(this.ID)) || (this.CollectibleType == CollectibleType.Panty && CollectibleGlobals.GetPantyPurchased(11)))
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 		if (GameGlobals.LoveSick || MissionModeGlobals.MissionMode)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -46,6 +46,10 @@ public class CollectibleScript : MonoBehaviour
 			if (this.Type == 5)
 			{
 				return CollectibleType.Key;
+			}
+			if (this.Type == 6)
+			{
+				return CollectibleType.Panty;
 			}
 			Debug.LogError("Unrecognized collectible \"" + this.Name + "\".", base.gameObject);
 			return CollectibleType.Tape;
@@ -76,11 +80,15 @@ public class CollectibleScript : MonoBehaviour
 			{
 				this.Prompt.Yandere.Inventory.MysteriousKeys++;
 			}
+			else if (this.CollectibleType == CollectibleType.Panty)
+			{
+				CollectibleGlobals.SetPantyPurchased(11, true);
+			}
 			else
 			{
 				Debug.LogError("Collectible \"" + this.Name + "\" not implemented.", base.gameObject);
 			}
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

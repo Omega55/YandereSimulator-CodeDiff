@@ -14,7 +14,7 @@ public class GentlemanScript : MonoBehaviour
 			AudioSource component = base.GetComponent<AudioSource>();
 			if (!component.isPlaying)
 			{
-				component.clip = this.Clips[Random.Range(0, this.Clips.Length - 1)];
+				component.clip = this.Clips[UnityEngine.Random.Range(0, this.Clips.Length - 1)];
 				component.Play();
 				this.Yandere.Sanity += 10f;
 			}

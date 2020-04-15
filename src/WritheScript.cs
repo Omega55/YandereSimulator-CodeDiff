@@ -20,7 +20,7 @@ public class WritheScript : MonoBehaviour
 	private void Start()
 	{
 		this.StartTime = Time.time;
-		this.Duration = Random.Range(1f, 5f);
+		this.Duration = UnityEngine.Random.Range(1f, 5f);
 	}
 
 	private void Update()
@@ -28,9 +28,9 @@ public class WritheScript : MonoBehaviour
 		if (this.Rotation == this.EndValue)
 		{
 			this.StartValue = this.EndValue;
-			this.EndValue = Random.Range(-45f, 45f);
+			this.EndValue = UnityEngine.Random.Range(-45f, 45f);
 			this.StartTime = Time.time;
-			this.Duration = Random.Range(1f, 5f);
+			this.Duration = UnityEngine.Random.Range(1f, 5f);
 		}
 		float t = (Time.time - this.StartTime) / this.Duration;
 		this.Rotation = Mathf.SmoothStep(this.StartValue, this.EndValue, t);

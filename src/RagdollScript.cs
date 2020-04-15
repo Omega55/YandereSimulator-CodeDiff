@@ -670,7 +670,7 @@ public class RagdollScript : MonoBehaviour
 	{
 		for (int i = 0; i < this.BodyParts.Length; i++)
 		{
-			GameObject gameObject = Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
 			gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
 			gameObject.GetComponent<PromptScript>().enabled = false;
 			gameObject.GetComponent<PickUpScript>().enabled = false;
@@ -701,7 +701,7 @@ public class RagdollScript : MonoBehaviour
 					i++;
 					this.Decapitated = false;
 				}
-				GameObject gameObject = Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BodyParts[i], this.SpawnPoints[i].position, Quaternion.identity);
 				gameObject.transform.parent = this.Yandere.LimbParent;
 				gameObject.transform.eulerAngles = this.SpawnPoints[i].eulerAngles;
 				BodyPartScript component = gameObject.GetComponent<BodyPartScript>();
@@ -822,9 +822,9 @@ public class RagdollScript : MonoBehaviour
 		{
 			if (this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>() != null)
 			{
-				Object.Destroy(this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>());
+				UnityEngine.Object.Destroy(this.AllRigidbodies[i].gameObject.GetComponent<CharacterJoint>());
 			}
-			Object.Destroy(this.AllRigidbodies[i]);
+			UnityEngine.Object.Destroy(this.AllRigidbodies[i]);
 			this.AllColliders[i].enabled = false;
 		}
 		this.Prompt.Hide();

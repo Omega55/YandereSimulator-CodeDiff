@@ -81,13 +81,13 @@ public class FootprintSpawnerScript : MonoBehaviour
 				AudioSource component = base.GetComponent<AudioSource>();
 				if (this.Yandere.Running)
 				{
-					component.clip = this.RunFootsteps[Random.Range(0, this.RunFootsteps.Length)];
+					component.clip = this.RunFootsteps[UnityEngine.Random.Range(0, this.RunFootsteps.Length)];
 					component.volume = 0.15f;
 					component.Play();
 				}
 				else
 				{
-					component.clip = this.WalkFootsteps[Random.Range(0, this.WalkFootsteps.Length)];
+					component.clip = this.WalkFootsteps[UnityEngine.Random.Range(0, this.WalkFootsteps.Length)];
 					component.volume = 0.1f;
 					component.Play();
 				}
@@ -111,7 +111,7 @@ public class FootprintSpawnerScript : MonoBehaviour
 				{
 					this.Height = 12f;
 				}
-				GameObject gameObject = Object.Instantiate<GameObject>(this.BloodyFootprint, new Vector3(base.transform.position.x, this.Height + 0.012f, base.transform.position.z), Quaternion.identity);
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodyFootprint, new Vector3(base.transform.position.x, this.Height + 0.012f, base.transform.position.z), Quaternion.identity);
 				gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, base.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
 				gameObject.transform.GetChild(0).GetComponent<FootprintScript>().Yandere = this.Yandere;
 				gameObject.transform.parent = this.BloodParent;

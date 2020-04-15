@@ -378,7 +378,7 @@ public class DoorScript : MonoBehaviour
 		this.UpdateLabel();
 		if (this.HidingSpot)
 		{
-			Object.Destroy(this.HideCollider.GetComponent<BoxCollider>());
+			UnityEngine.Object.Destroy(this.HideCollider.GetComponent<BoxCollider>());
 		}
 		this.CheckDirection();
 		if (this.BucketSet)

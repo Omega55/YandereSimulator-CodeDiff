@@ -66,7 +66,7 @@ public class HallucinationScript : MonoBehaviour
 			}
 			if (this.Timer > 6f)
 			{
-				this.Weapon = Random.Range(1, 6);
+				this.Weapon = UnityEngine.Random.Range(1, 6);
 				base.transform.position = this.Yandere.transform.position + this.Yandere.transform.forward;
 				base.transform.eulerAngles = this.Yandere.transform.eulerAngles;
 				this.YandereAnimation["f02_" + this.WeaponName[this.Weapon] + "LowSanityA_00"].time = 0f;

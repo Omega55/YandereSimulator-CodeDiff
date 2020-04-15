@@ -21,7 +21,7 @@ public class GazerHairScript : MonoBehaviour
 			this.Weight[this.ID] = Mathf.MoveTowards(this.Weight[this.ID], this.TargetWeight[this.ID], Time.deltaTime * this.Strength);
 			if (this.Weight[this.ID] == this.TargetWeight[this.ID])
 			{
-				this.TargetWeight[this.ID] = Random.Range(0f, 100f);
+				this.TargetWeight[this.ID] = UnityEngine.Random.Range(0f, 100f);
 			}
 			this.MyMesh.SetBlendShapeWeight(this.ID, this.Weight[this.ID]);
 			this.ID++;

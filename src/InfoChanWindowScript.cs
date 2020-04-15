@@ -36,7 +36,7 @@ public class InfoChanWindowScript : MonoBehaviour
 			{
 				if ((float)this.Orders > 0f)
 				{
-					Object.Instantiate<GameObject>(this.Drops[this.ItemsToDrop[this.Orders]], this.DropPoint.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.Drops[this.ItemsToDrop[this.Orders]], this.DropPoint.position, Quaternion.identity);
 					this.Timer = 0f;
 					this.Orders--;
 				}

@@ -400,6 +400,10 @@ public class ClockScript : MonoBehaviour
 
 	public void EndTimeSkip()
 	{
+		if (GameGlobals.AlphabetMode)
+		{
+			this.StopTime = true;
+		}
 		this.PromptParent.localScale = new Vector3(1f, 1f, 1f);
 		this.Yandere.Phone.SetActive(false);
 		this.Yandere.TimeSkipping = false;

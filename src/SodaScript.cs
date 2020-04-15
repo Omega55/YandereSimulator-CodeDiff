@@ -11,7 +11,7 @@ public class SodaScript : MonoBehaviour
 		{
 			this.Prompt.Yandere.Inventory.Soda = true;
 			this.Prompt.Yandere.StudentManager.TaskManager.UpdateTaskStatus();
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

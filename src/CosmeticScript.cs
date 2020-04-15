@@ -453,13 +453,13 @@ public class CosmeticScript : MonoBehaviour
 			this.Randomize = true;
 			if (!this.Male)
 			{
-				name = this.StudentManager.FirstNames[Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[Random.Range(0, this.StudentManager.LastNames.Length)];
+				name = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
 				this.JSON.Students[this.StudentID].Name = name;
 				this.Student.Name = name;
 			}
 			else
 			{
-				name = this.StudentManager.MaleNames[Random.Range(0, this.StudentManager.MaleNames.Length)] + " " + this.StudentManager.LastNames[Random.Range(0, this.StudentManager.LastNames.Length)];
+				name = this.StudentManager.MaleNames[UnityEngine.Random.Range(0, this.StudentManager.MaleNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
 				this.JSON.Students[this.StudentID].Name = name;
 				this.Student.Name = name;
 			}
@@ -473,7 +473,7 @@ public class CosmeticScript : MonoBehaviour
 		if (this.Randomize)
 		{
 			this.Teacher = false;
-			this.BreastSize = Random.Range(0.5f, 2f);
+			this.BreastSize = UnityEngine.Random.Range(0.5f, 2f);
 			this.Accessory = 0;
 			this.Club = ClubType.None;
 			if (!this.Male)
@@ -481,13 +481,13 @@ public class CosmeticScript : MonoBehaviour
 				this.Hairstyle = 1;
 				while (this.Hairstyle == 1 || this.Hairstyle == 20 || this.Hairstyle == 21)
 				{
-					this.Hairstyle = Random.Range(1, this.FemaleHair.Length);
+					this.Hairstyle = UnityEngine.Random.Range(1, this.FemaleHair.Length);
 				}
 			}
 			else
 			{
-				this.SkinColor = Random.Range(0, this.SkinTextures.Length);
-				this.Hairstyle = Random.Range(1, this.MaleHair.Length);
+				this.SkinColor = UnityEngine.Random.Range(0, this.SkinTextures.Length);
+				this.Hairstyle = UnityEngine.Random.Range(1, this.MaleHair.Length);
 			}
 		}
 		if (!this.Male)
@@ -1329,9 +1329,9 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
-			float r = Random.Range(0f, 1f);
-			float g = Random.Range(0f, 1f);
-			float b = Random.Range(0f, 1f);
+			float r = UnityEngine.Random.Range(0f, 1f);
+			float g = UnityEngine.Random.Range(0f, 1f);
+			float b = UnityEngine.Random.Range(0f, 1f);
 			this.RightEyeRenderer.material.color = new Color(r, g, b);
 			this.LeftEyeRenderer.material.color = new Color(r, g, b);
 		}
@@ -1447,7 +1447,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		else
 		{
-			this.HairRenderer.material.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+			this.HairRenderer.material.color = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
 		}
 		if (!this.Teacher)
 		{
@@ -1571,7 +1571,7 @@ public class CosmeticScript : MonoBehaviour
 		}
 		if (!this.Male && (this.Hairstyle == 20 || this.Hairstyle == 21))
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -1887,77 +1887,77 @@ public class CosmeticScript : MonoBehaviour
 		{
 			if (gameObject != null && !gameObject.activeInHierarchy)
 			{
-				Object.Destroy(gameObject);
+				UnityEngine.Object.Destroy(gameObject);
 			}
 		}
 		foreach (GameObject gameObject2 in this.MaleAccessories)
 		{
 			if (gameObject2 != null && !gameObject2.activeInHierarchy)
 			{
-				Object.Destroy(gameObject2);
+				UnityEngine.Object.Destroy(gameObject2);
 			}
 		}
 		foreach (GameObject gameObject3 in this.ClubAccessories)
 		{
 			if (gameObject3 != null && !gameObject3.activeInHierarchy)
 			{
-				Object.Destroy(gameObject3);
+				UnityEngine.Object.Destroy(gameObject3);
 			}
 		}
 		foreach (GameObject gameObject4 in this.TeacherAccessories)
 		{
 			if (gameObject4 != null && !gameObject4.activeInHierarchy)
 			{
-				Object.Destroy(gameObject4);
+				UnityEngine.Object.Destroy(gameObject4);
 			}
 		}
 		foreach (GameObject gameObject5 in this.TeacherHair)
 		{
 			if (gameObject5 != null && !gameObject5.activeInHierarchy)
 			{
-				Object.Destroy(gameObject5);
+				UnityEngine.Object.Destroy(gameObject5);
 			}
 		}
 		foreach (GameObject gameObject6 in this.FemaleHair)
 		{
 			if (gameObject6 != null && !gameObject6.activeInHierarchy)
 			{
-				Object.Destroy(gameObject6);
+				UnityEngine.Object.Destroy(gameObject6);
 			}
 		}
 		foreach (GameObject gameObject7 in this.MaleHair)
 		{
 			if (gameObject7 != null && !gameObject7.activeInHierarchy)
 			{
-				Object.Destroy(gameObject7);
+				UnityEngine.Object.Destroy(gameObject7);
 			}
 		}
 		foreach (GameObject gameObject8 in this.FacialHair)
 		{
 			if (gameObject8 != null && !gameObject8.activeInHierarchy)
 			{
-				Object.Destroy(gameObject8);
+				UnityEngine.Object.Destroy(gameObject8);
 			}
 		}
 		foreach (GameObject gameObject9 in this.Eyewear)
 		{
 			if (gameObject9 != null && !gameObject9.activeInHierarchy)
 			{
-				Object.Destroy(gameObject9);
+				UnityEngine.Object.Destroy(gameObject9);
 			}
 		}
 		foreach (GameObject gameObject10 in this.RightStockings)
 		{
 			if (gameObject10 != null && !gameObject10.activeInHierarchy)
 			{
-				Object.Destroy(gameObject10);
+				UnityEngine.Object.Destroy(gameObject10);
 			}
 		}
 		foreach (GameObject gameObject11 in this.LeftStockings)
 		{
 			if (gameObject11 != null && !gameObject11.activeInHierarchy)
 			{
-				Object.Destroy(gameObject11);
+				UnityEngine.Object.Destroy(gameObject11);
 			}
 		}
 	}

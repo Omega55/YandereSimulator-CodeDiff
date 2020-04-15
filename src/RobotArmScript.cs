@@ -80,7 +80,7 @@ public class RobotArmScript : MonoBehaviour
 					{
 						this.Sparks[this.ID].Stop();
 						this.Sparks[this.ID + 1].Stop();
-						if (Random.Range(0, 2) == 1)
+						if (UnityEngine.Random.Range(0, 2) == 1)
 						{
 							this.On[this.ID] = true;
 						}
@@ -88,7 +88,7 @@ public class RobotArmScript : MonoBehaviour
 						{
 							this.On[this.ID] = false;
 						}
-						this.Timer[this.ID] = Random.Range(1f, 2f);
+						this.Timer[this.ID] = UnityEngine.Random.Range(1f, 2f);
 					}
 					if (this.On[this.ID])
 					{

@@ -28,7 +28,7 @@ public class SmokeBombScript : MonoBehaviour
 					}
 				}
 			}
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 

@@ -93,7 +93,7 @@ public class DDRMinigame : MonoBehaviour
 			this.trackCache[i] = new Dictionary<float, RectTransform>();
 			foreach (float key in level.Tracks[i].Nodes)
 			{
-				RectTransform component = Object.Instantiate<GameObject>(this.arrowPrefab, this.uiTracks[i]).GetComponent<RectTransform>();
+				RectTransform component = UnityEngine.Object.Instantiate<GameObject>(this.arrowPrefab, this.uiTracks[i]).GetComponent<RectTransform>();
 				switch (i)
 				{
 				case 0:
@@ -120,7 +120,7 @@ public class DDRMinigame : MonoBehaviour
 		this.levels = levels;
 		for (int i = 0; i < levels.Length; i++)
 		{
-			RectTransform component = Object.Instantiate<GameObject>(this.levelIconPrefab, this.levelSelectParent).GetComponent<RectTransform>();
+			RectTransform component = UnityEngine.Object.Instantiate<GameObject>(this.levelIconPrefab, this.levelSelectParent).GetComponent<RectTransform>();
 			component.GetComponent<Image>().sprite = levels[i].LevelIcon;
 			this.levelSelectCache.Add(component, levels[i]);
 		}
@@ -131,7 +131,7 @@ public class DDRMinigame : MonoBehaviour
 	{
 		foreach (KeyValuePair<RectTransform, DDRLevel> keyValuePair in this.levelSelectCache)
 		{
-			Object.Destroy(keyValuePair.Key.gameObject);
+			UnityEngine.Object.Destroy(keyValuePair.Key.gameObject);
 		}
 		this.levelSelectCache = new Dictionary<RectTransform, DDRLevel>();
 	}
@@ -370,7 +370,7 @@ public class DDRMinigame : MonoBehaviour
 		Dictionary<float, RectTransform> dictionary = this.trackCache[trackId];
 		float[] array = dictionary.Keys.ToArray<float>();
 		Array.Sort<float>(array, (float a, float b) => a.CompareTo(b));
-		Object.Destroy(dictionary[array[0]].gameObject, delay);
+		UnityEngine.Object.Destroy(dictionary[array[0]].gameObject, delay);
 		dictionary.Remove(array[0]);
 	}
 
@@ -385,7 +385,7 @@ public class DDRMinigame : MonoBehaviour
 
 	private void displayHitRating(int track, DDRRating rating)
 	{
-		Text component = Object.Instantiate<GameObject>(this.ratingTextPrefab, this.uiTracks[track]).GetComponent<Text>();
+		Text component = UnityEngine.Object.Instantiate<GameObject>(this.ratingTextPrefab, this.uiTracks[track]).GetComponent<Text>();
 		component.rectTransform.anchoredPosition = new Vector2(0f, 280f);
 		switch (rating)
 		{
@@ -415,7 +415,7 @@ public class DDRMinigame : MonoBehaviour
 			component.color = this.earlyColor;
 			break;
 		}
-		Object.Destroy(component, 1f);
+		UnityEngine.Object.Destroy(component, 1f);
 	}
 
 	private void assignPoints(DDRRating rating)
@@ -451,7 +451,7 @@ public class DDRMinigame : MonoBehaviour
 
 	private void shakeUi(float factor)
 	{
-		Vector2 b = new Vector2(Random.Range(-factor, factor), Random.Range(-factor, factor));
+		Vector2 b = new Vector2(UnityEngine.Random.Range(-factor, factor), UnityEngine.Random.Range(-factor, factor));
 		this.gameplayUiParent.anchoredPosition += b;
 	}
 

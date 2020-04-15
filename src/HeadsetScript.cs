@@ -11,7 +11,7 @@ public class HeadsetScript : MonoBehaviour
 		{
 			this.Prompt.Yandere.Inventory.Schemes.UpdateInstructions();
 			this.Prompt.Yandere.Inventory.Headset = true;
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

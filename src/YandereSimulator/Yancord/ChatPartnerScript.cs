@@ -45,7 +45,7 @@ namespace YandereSimulator.Yancord
 				return;
 			}
 			Debug.LogError("[ChatPartnerScript] MyProfile wasn't assgined!");
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 
 		private Texture2D GetStatusTexture(Status currentStatus)

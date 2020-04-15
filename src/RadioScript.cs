@@ -68,7 +68,7 @@ public class RadioScript : MonoBehaviour
 			}
 			if (this.On && this.Victim == null && this.AlarmDisc != null)
 			{
-				AlarmDiscScript component = Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>();
+				AlarmDiscScript component = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>();
 				component.SourceRadio = this;
 				component.NoScream = true;
 				component.Radio = true;

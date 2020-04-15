@@ -61,7 +61,7 @@ public class RummageSpotScript : MonoBehaviour
 		}
 		if (this.Yandere.Rummaging)
 		{
-			GameObject gameObject = Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position, Quaternion.identity);
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position, Quaternion.identity);
 			gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
 			gameObject.transform.localScale = new Vector3(750f, gameObject.transform.localScale.y, 750f);
 		}

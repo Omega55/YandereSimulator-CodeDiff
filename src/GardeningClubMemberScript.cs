@@ -74,7 +74,7 @@ public class GardeningClubMemberScript : MonoBehaviour
 		component["f02_angryFace_00"].weight = 0f;
 		if (!this.Leader && GameObject.Find("DetectionCamera") != null)
 		{
-			this.DetectionMarker = Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
+			this.DetectionMarker = UnityEngine.Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
 			this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
 			this.DetectionMarker.Target = base.transform;
 		}
@@ -90,11 +90,11 @@ public class GardeningClubMemberScript : MonoBehaviour
 				{
 					if (this.ID == 1)
 					{
-						this.Destination.position = new Vector3(Random.Range(-61f, -71f), this.Destination.position.y, Random.Range(-14f, 14f));
+						this.Destination.position = new Vector3(UnityEngine.Random.Range(-61f, -71f), this.Destination.position.y, UnityEngine.Random.Range(-14f, 14f));
 					}
 					else
 					{
-						this.Destination.position = new Vector3(Random.Range(-28f, -23f), this.Destination.position.y, Random.Range(-15f, -7f));
+						this.Destination.position = new Vector3(UnityEngine.Random.Range(-28f, -23f), this.Destination.position.y, UnityEngine.Random.Range(-15f, -7f));
 					}
 				}
 				base.GetComponent<Animation>().CrossFade(this.WalkAnim);

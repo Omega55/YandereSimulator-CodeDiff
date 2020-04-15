@@ -21,7 +21,7 @@ public class TimePortalScript : MonoBehaviour
 		}
 		if (this.Suck)
 		{
-			Object.Instantiate<GameObject>(this.BlackHole, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.BlackHole, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 1.1f)
 			{

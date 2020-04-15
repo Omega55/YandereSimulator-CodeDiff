@@ -415,7 +415,7 @@ public class MusicMinigameScript : MonoBehaviour
 				{
 					if (this.CringeTimer > 0f)
 					{
-						this.ChibiRenderer[this.ID].transform.localPosition = new Vector3(Random.Range(-0.01f, 0.01f), 0.15f + Random.Range(-0.01f, 0.01f), 0f);
+						this.ChibiRenderer[this.ID].transform.localPosition = new Vector3(UnityEngine.Random.Range(-0.01f, 0.01f), 0.15f + UnityEngine.Random.Range(-0.01f, 0.01f), 0f);
 						this.CringeTimer = Mathf.MoveTowards(this.CringeTimer, 0f, Time.deltaTime);
 						if (this.CringeTimer == 0f)
 						{
@@ -564,7 +564,7 @@ public class MusicMinigameScript : MonoBehaviour
 				}
 				if (this.Note < this.Notes.Length && this.Notes[this.Note] > 0 && this.Timer + 2f > this.Times[this.Note])
 				{
-					GameObject gameObject = Object.Instantiate<GameObject>(this.NoteIcons[this.Notes[this.Note]], base.transform.position, Quaternion.identity);
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.NoteIcons[this.Notes[this.Note]], base.transform.position, Quaternion.identity);
 					gameObject.GetComponent<MusicNoteScript>().InputManager = this.InputManager;
 					gameObject.GetComponent<MusicNoteScript>().MusicMinigame = this;
 					gameObject.GetComponent<MusicNoteScript>().ID = this.Note;

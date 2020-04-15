@@ -638,6 +638,12 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform[] BullySnapPosition;
 
+	public OcclusionPortal WindowOccluder;
+
+	public bool OpaqueWindows;
+
+	public Renderer Window;
+
 	private void Start()
 	{
 		this.LoveSick = GameGlobals.LoveSick;
@@ -779,7 +785,7 @@ public class StudentManagerScript : MonoBehaviour
 				this.ID = 1;
 				while (this.ID < this.ShowerLockers.List.Length)
 				{
-					Transform transform = Object.Instantiate<GameObject>(this.EmptyObject, this.ShowerLockers.List[this.ID].position + this.ShowerLockers.List[this.ID].forward * 0.5f, this.ShowerLockers.List[this.ID].rotation).transform;
+					Transform transform = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, this.ShowerLockers.List[this.ID].position + this.ShowerLockers.List[this.ID].forward * 0.5f, this.ShowerLockers.List[this.ID].rotation).transform;
 					transform.parent = this.ShowerLockers.transform;
 					transform.transform.eulerAngles = new Vector3(transform.transform.eulerAngles.x, transform.transform.eulerAngles.y + 180f, transform.transform.eulerAngles.z);
 					this.StrippingPositions[this.ID] = transform;
@@ -790,10 +796,10 @@ public class StudentManagerScript : MonoBehaviour
 				{
 					if (this.HidingSpots.List[this.ID] == null)
 					{
-						GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f)), Quaternion.identity);
+						GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
 						while (gameObject.transform.position.x < 2.5f && gameObject.transform.position.x > -2.5f && gameObject.transform.position.z > -2.5f && gameObject.transform.position.z < 2.5f)
 						{
-							gameObject.transform.position = new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f));
+							gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
 						}
 						gameObject.transform.parent = this.HidingSpots.transform;
 						this.HidingSpots.List[this.ID] = gameObject.transform;
@@ -847,7 +853,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
 			this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
 			this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
-			this.AllDoors = (Object.FindSceneObjectsOfType(typeof(DoorScript)) as DoorScript[]);
+			this.AllDoors = (UnityEngine.Object.FindSceneObjectsOfType(typeof(DoorScript)) as DoorScript[]);
 		}
 	}
 
@@ -976,16 +982,16 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (this.NewStudent != null)
 				{
-					Object.Destroy(this.NewStudent);
+					UnityEngine.Object.Destroy(this.NewStudent);
 				}
 				if (this.Randomize)
 				{
-					int num = Random.Range(0, 2);
-					this.NewStudent = Object.Instantiate<GameObject>((num == 0) ? this.PortraitChan : this.PortraitKun, Vector3.zero, Quaternion.identity);
+					int num = UnityEngine.Random.Range(0, 2);
+					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((num == 0) ? this.PortraitChan : this.PortraitKun, Vector3.zero, Quaternion.identity);
 				}
 				else
 				{
-					this.NewStudent = Object.Instantiate<GameObject>((this.JSON.Students[this.NPCsSpawned + 1].Gender == 0) ? this.PortraitChan : this.PortraitKun, Vector3.zero, Quaternion.identity);
+					this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((this.JSON.Students[this.NPCsSpawned + 1].Gender == 0) ? this.PortraitChan : this.PortraitKun, Vector3.zero, Quaternion.identity);
 				}
 				CosmeticScript component = this.NewStudent.GetComponent<CosmeticScript>();
 				component.StudentID = this.NPCsSpawned + 1;
@@ -1234,7 +1240,7 @@ public class StudentManagerScript : MonoBehaviour
 					StudentScript studentScript8 = this.Students[this.ID];
 					if (studentScript8 != null && studentScript8.isActiveAndEnabled && studentScript8.DistanceToPlayer < 1f)
 					{
-						Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, studentScript8.transform.position + Vector3.up, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, studentScript8.transform.position + Vector3.up, Quaternion.identity);
 						studentScript8.SpawnAlarmDisc();
 						studentScript8.BecomeRagdoll();
 						studentScript8.DeathType = DeathType.EasterEgg;
@@ -1250,7 +1256,7 @@ public class StudentManagerScript : MonoBehaviour
 					StudentScript studentScript9 = this.Students[this.ID];
 					if (studentScript9 != null && studentScript9.isActiveAndEnabled && studentScript9.DistanceToPlayer < 5f)
 					{
-						Object.Instantiate<GameObject>(this.Yandere.DarkHelix, studentScript9.transform.position + Vector3.up, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.Yandere.DarkHelix, studentScript9.transform.position + Vector3.up, Quaternion.identity);
 						studentScript9.SpawnAlarmDisc();
 						studentScript9.BecomeRagdoll();
 						studentScript9.DeathType = DeathType.EasterEgg;
@@ -1286,27 +1292,27 @@ public class StudentManagerScript : MonoBehaviour
 			int num;
 			if (this.JSON.Students[spawnID].Name == "Random")
 			{
-				GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f)), Quaternion.identity);
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyObject, new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f)), Quaternion.identity);
 				while (gameObject.transform.position.x < 2.5f && gameObject.transform.position.x > -2.5f && gameObject.transform.position.z > -2.5f && gameObject.transform.position.z < 2.5f)
 				{
-					gameObject.transform.position = new Vector3(Random.Range(-17f, 17f), 0f, Random.Range(-17f, 17f));
+					gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-17f, 17f), 0f, UnityEngine.Random.Range(-17f, 17f));
 				}
 				gameObject.transform.parent = this.HidingSpots.transform;
 				this.HidingSpots.List[spawnID] = gameObject.transform;
-				GameObject gameObject2 = Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
+				GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
 				gameObject2.transform.parent = this.Patrols.transform;
 				this.Patrols.List[spawnID] = gameObject2.transform;
-				GameObject gameObject3 = Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
+				GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.RandomPatrol, Vector3.zero, Quaternion.identity);
 				gameObject3.transform.parent = this.CleaningSpots.transform;
 				this.CleaningSpots.List[spawnID] = gameObject3.transform;
-				num = ((MissionModeGlobals.MissionMode && MissionModeGlobals.MissionTarget == spawnID) ? 0 : Random.Range(0, 2));
+				num = ((MissionModeGlobals.MissionMode && MissionModeGlobals.MissionTarget == spawnID) ? 0 : UnityEngine.Random.Range(0, 2));
 				this.FindUnoccupiedSeat();
 			}
 			else
 			{
 				num = this.JSON.Students[spawnID].Gender;
 			}
-			this.NewStudent = Object.Instantiate<GameObject>((num == 0) ? this.StudentChan : this.StudentKun, this.SpawnPositions[spawnID].position, Quaternion.identity);
+			this.NewStudent = UnityEngine.Object.Instantiate<GameObject>((num == 0) ? this.StudentChan : this.StudentKun, this.SpawnPositions[spawnID].position, Quaternion.identity);
 			CosmeticScript component = this.NewStudent.GetComponent<CosmeticScript>();
 			component.LoveManager = this.LoveManager;
 			component.StudentManager = this;
@@ -1362,7 +1368,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (this.JSON.Students[spawnID].Persona == PersonaType.Protective || this.JSON.Students[spawnID].Hairstyle == "20" || this.JSON.Students[spawnID].Hairstyle == "21")
 			{
-				Object.Destroy(studentScript);
+				UnityEngine.Object.Destroy(studentScript);
 			}
 			if (num == 0)
 			{
@@ -1375,9 +1381,9 @@ public class StudentManagerScript : MonoBehaviour
 		this.ForceSpawn = false;
 		if (this.Students[10] != null || this.Students[11] != null)
 		{
-			Object.Destroy(this.Students[10].gameObject);
-			Object.Destroy(this.Students[11].gameObject);
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(this.Students[10].gameObject);
+			UnityEngine.Object.Destroy(this.Students[11].gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -2011,7 +2017,7 @@ public class StudentManagerScript : MonoBehaviour
 					Debug.Log("A mind-broken slave committed suicide.");
 					studentScript.Broken.Subtitle.text = string.Empty;
 					studentScript.Broken.Done = true;
-					Object.Destroy(studentScript.Broken);
+					UnityEngine.Object.Destroy(studentScript.Broken);
 					studentScript.BecomeRagdoll();
 					studentScript.Slave = false;
 					studentScript.Suicide = true;
@@ -3545,6 +3551,38 @@ public class StudentManagerScript : MonoBehaviour
 			this.Patrols.List[j].GetChild(1).position = this.BullySnapPosition[j].position;
 			this.Patrols.List[j].GetChild(2).position = this.BullySnapPosition[j].position;
 			this.Patrols.List[j].GetChild(3).position = this.BullySnapPosition[j].position;
+		}
+	}
+
+	public void SetWindowsOpaque()
+	{
+		this.WindowOccluder.open = !this.WindowOccluder.open;
+		if (this.WindowOccluder.open)
+		{
+			this.Window.sharedMaterial.color = new Color(1f, 1f, 1f, 0.5f);
+			this.Window.sharedMaterial.shader = Shader.Find("Transparent/Diffuse");
+			return;
+		}
+		this.Window.sharedMaterial.color = new Color(1f, 1f, 1f, 1f);
+		this.Window.sharedMaterial.shader = Shader.Find("Diffuse");
+	}
+
+	public void LateUpdate()
+	{
+		if (this.OpaqueWindows)
+		{
+			if (this.Yandere.transform.position.y > 0.1f && this.Yandere.transform.position.y < 11f)
+			{
+				if (this.WindowOccluder.open)
+				{
+					this.SetWindowsOpaque();
+					return;
+				}
+			}
+			else if (!this.WindowOccluder.open)
+			{
+				this.SetWindowsOpaque();
+			}
 		}
 	}
 }

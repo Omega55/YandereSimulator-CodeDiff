@@ -76,7 +76,7 @@ public class ChemistScannerScript : MonoBehaviour
 			{
 				while (this.ID == this.PreviousID)
 				{
-					this.ID = Random.Range(0, this.Textures.Length);
+					this.ID = UnityEngine.Random.Range(0, this.Textures.Length);
 				}
 				this.MyRenderer.materials[1].mainTexture = this.Textures[this.ID];
 				this.PreviousID = this.ID;

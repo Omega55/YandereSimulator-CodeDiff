@@ -142,13 +142,13 @@ public class PromptScript : MonoBehaviour
 			this.MainCamera = this.Yandere.MainCamera;
 			if (this.Noisy)
 			{
-				this.Speaker = Object.Instantiate<GameObject>(this.SpeakerObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+				this.Speaker = UnityEngine.Object.Instantiate<GameObject>(this.SpeakerObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
 				this.Speaker.transform.parent = this.PromptParent.transform;
 				this.Speaker.transform.localScale = new Vector3(1f, 1f, 1f);
 				this.Speaker.transform.localEulerAngles = Vector3.zero;
 				this.Speaker.enabled = false;
 			}
-			this.Square = Object.Instantiate<GameObject>(this.PromptParent.SquareObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+			this.Square = UnityEngine.Object.Instantiate<GameObject>(this.PromptParent.SquareObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
 			this.Square.transform.parent = this.PromptParent.transform;
 			this.Square.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.Square.transform.localEulerAngles = Vector3.zero;
@@ -161,21 +161,21 @@ public class PromptScript : MonoBehaviour
 			{
 				if (this.ButtonActive[this.ID])
 				{
-					this.Button[this.ID] = Object.Instantiate<GameObject>(this.ButtonObject[this.ID], base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+					this.Button[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.ButtonObject[this.ID], base.transform.position, Quaternion.identity).GetComponent<UISprite>();
 					UISprite uisprite = this.Button[this.ID];
 					uisprite.transform.parent = this.PromptParent.transform;
 					uisprite.transform.localScale = new Vector3(1f, 1f, 1f);
 					uisprite.transform.localEulerAngles = Vector3.zero;
 					uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0f);
 					uisprite.enabled = false;
-					this.Circle[this.ID] = Object.Instantiate<GameObject>(this.CircleObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
+					this.Circle[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.CircleObject, base.transform.position, Quaternion.identity).GetComponent<UISprite>();
 					UISprite uisprite2 = this.Circle[this.ID];
 					uisprite2.transform.parent = this.PromptParent.transform;
 					uisprite2.transform.localScale = new Vector3(1f, 1f, 1f);
 					uisprite2.transform.localEulerAngles = Vector3.zero;
 					uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0f);
 					uisprite2.enabled = false;
-					this.Label[this.ID] = Object.Instantiate<GameObject>(this.LabelObject, base.transform.position, Quaternion.identity).GetComponent<UILabel>();
+					this.Label[this.ID] = UnityEngine.Object.Instantiate<GameObject>(this.LabelObject, base.transform.position, Quaternion.identity).GetComponent<UILabel>();
 					UILabel uilabel = this.Label[this.ID];
 					uilabel.transform.parent = this.PromptParent.transform;
 					uilabel.transform.localScale = new Vector3(1f, 1f, 1f);

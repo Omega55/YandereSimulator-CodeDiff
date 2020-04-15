@@ -26,7 +26,7 @@ public class SmartphoneScript : MonoBehaviour
 			this.Prompt.Yandere.CrushingPhone = true;
 			this.Prompt.Yandere.PhoneToCrush = this;
 			this.Prompt.Yandere.CanMove = false;
-			GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
 			this.PhoneCrushingSpot = gameObject.transform;
 			this.PhoneCrushingSpot.position = new Vector3(this.PhoneCrushingSpot.position.x, this.Prompt.Yandere.transform.position.y, this.PhoneCrushingSpot.position.z);
 			this.PhoneCrushingSpot.LookAt(this.Prompt.Yandere.transform.position);

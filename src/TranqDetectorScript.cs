@@ -106,7 +106,7 @@ public class TranqDetectorScript : MonoBehaviour
 		if (!this.StopChecking && this.KidnappingLabel.text == "Kidnapping Checklist" && this.TranquilizerIcon.spriteName == "Yes" && this.FollowerIcon.spriteName == "Yes" && this.BiologyIcon.spriteName == "Yes" && this.SyringeIcon.spriteName == "Yes" && this.DoorIcon.spriteName == "Yes")
 		{
 			AudioSource component = base.GetComponent<AudioSource>();
-			component.clip = this.TranqClips[Random.Range(0, this.TranqClips.Length)];
+			component.clip = this.TranqClips[UnityEngine.Random.Range(0, this.TranqClips.Length)];
 			component.Play();
 			this.Door.Prompt.Hide();
 			this.Door.Prompt.enabled = false;

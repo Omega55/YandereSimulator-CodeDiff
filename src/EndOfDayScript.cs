@@ -187,9 +187,9 @@ public class EndOfDayScript : MonoBehaviour
 		RenderSettings.ambientLight = new Color(0.75f, 0.75f, 0.75f, 1f);
 		RenderSettings.skybox.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
 		this.UpdateScene();
-		this.CopAnimation[5]["idleShort_00"].speed = Random.Range(0.9f, 1.1f);
-		this.CopAnimation[6]["idleShort_00"].speed = Random.Range(0.9f, 1.1f);
-		this.CopAnimation[7]["idleShort_00"].speed = Random.Range(0.9f, 1.1f);
+		this.CopAnimation[5]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+		this.CopAnimation[6]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+		this.CopAnimation[7]["idleShort_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 		Time.timeScale = 1f;
 		for (int i = 1; i < 6; i++)
 		{
@@ -356,9 +356,9 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			if (this.Phase == 1)
 			{
-				this.CopAnimation[1]["walk_00"].speed = Random.Range(0.9f, 1.1f);
-				this.CopAnimation[2]["walk_00"].speed = Random.Range(0.9f, 1.1f);
-				this.CopAnimation[3]["walk_00"].speed = Random.Range(0.9f, 1.1f);
+				this.CopAnimation[1]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.CopAnimation[2]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
+				this.CopAnimation[3]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.Cops.SetActive(true);
 				if (this.Yandere.Egg)
 				{

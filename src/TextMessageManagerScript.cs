@@ -23,7 +23,7 @@ public class TextMessageManagerScript : MonoBehaviour
 	{
 		if (Input.GetButtonDown("B"))
 		{
-			Object.Destroy(this.NewMessage);
+			UnityEngine.Object.Destroy(this.NewMessage);
 			this.PromptBar.ClearButtons();
 			this.PromptBar.Label[0].text = "Accept";
 			this.PromptBar.Label[1].text = "Exit";
@@ -45,9 +45,9 @@ public class TextMessageManagerScript : MonoBehaviour
 		base.gameObject.SetActive(true);
 		if (this.NewMessage != null)
 		{
-			Object.Destroy(this.NewMessage);
+			UnityEngine.Object.Destroy(this.NewMessage);
 		}
-		this.NewMessage = Object.Instantiate<GameObject>(this.Message);
+		this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.Message);
 		this.NewMessage.transform.parent = base.transform;
 		this.NewMessage.transform.localPosition = new Vector3(-225f, -275f, 0f);
 		this.NewMessage.transform.localEulerAngles = Vector3.zero;

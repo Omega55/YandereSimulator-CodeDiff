@@ -224,7 +224,7 @@ public class PickUpScript : MonoBehaviour
 				{
 					this.Yandere.Incinerator.BodyParts++;
 				}
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 		if (this.Yandere.PickUp != this && !this.MyRigidbody.isKinematic)

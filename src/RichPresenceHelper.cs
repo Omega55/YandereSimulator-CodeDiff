@@ -19,7 +19,7 @@ public class RichPresenceHelper : MonoBehaviour
 	{
 		this.CompileDictionaries();
 		this._discordController = base.GetComponent<DiscordController>();
-		Object.DontDestroyOnLoad(base.gameObject);
+		UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
 		this._discordController.enabled = false;
 		this._discordController.presence.state = this.GetSceneDescription();
 		this._discordController.enabled = true;
@@ -29,9 +29,9 @@ public class RichPresenceHelper : MonoBehaviour
 
 	private void OnLevelWasLoaded(int level)
 	{
-		if (level == 11)
+		if (level == 12)
 		{
-			this._clockScript = Object.FindObjectOfType<ClockScript>();
+			this._clockScript = UnityEngine.Object.FindObjectOfType<ClockScript>();
 		}
 		this.UpdatePresence();
 	}

@@ -33,12 +33,12 @@ public class InputManagerScript : MonoBehaviour
 		this.TappedDown = false;
 		this.TappedRight = false;
 		this.TappedLeft = false;
-		if (Input.GetAxis("DpadY") > 0.5f)
+		if (Input.GetAxisRaw("DpadY") > 0.5f)
 		{
 			this.TappedUp = !this.DPadUp;
 			this.DPadUp = true;
 		}
-		else if (Input.GetAxis("DpadY") < -0.5f)
+		else if (Input.GetAxisRaw("DpadY") < -0.5f)
 		{
 			this.TappedDown = !this.DPadDown;
 			this.DPadDown = true;
@@ -50,12 +50,12 @@ public class InputManagerScript : MonoBehaviour
 		}
 		if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
 		{
-			if (Input.GetAxis("Vertical") > 0.5f)
+			if (Input.GetAxisRaw("Vertical") > 0.5f)
 			{
 				this.TappedUp = !this.StickUp;
 				this.StickUp = !this.TappedDown;
 			}
-			else if (Input.GetAxis("Vertical") < -0.5f)
+			else if (Input.GetAxisRaw("Vertical") < -0.5f)
 			{
 				this.TappedDown = !this.StickDown;
 				this.StickDown = !this.TappedUp;
@@ -66,12 +66,12 @@ public class InputManagerScript : MonoBehaviour
 				this.StickDown = false;
 			}
 		}
-		if (Input.GetAxis("DpadX") > 0.5f)
+		if (Input.GetAxisRaw("DpadX") > 0.5f)
 		{
 			this.TappedRight = !this.DPadRight;
 			this.DPadRight = true;
 		}
-		else if (Input.GetAxis("DpadX") < -0.5f)
+		else if (Input.GetAxisRaw("DpadX") < -0.5f)
 		{
 			this.TappedLeft = !this.DPadLeft;
 			this.DPadLeft = true;
@@ -83,12 +83,12 @@ public class InputManagerScript : MonoBehaviour
 		}
 		if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 		{
-			if (Input.GetAxis("Horizontal") > 0.5f)
+			if (Input.GetAxisRaw("Horizontal") > 0.5f)
 			{
 				this.TappedRight = !this.StickRight;
 				this.StickRight = true;
 			}
-			else if (Input.GetAxis("Horizontal") < -0.5f)
+			else if (Input.GetAxisRaw("Horizontal") < -0.5f)
 			{
 				this.TappedLeft = !this.StickLeft;
 				this.StickLeft = true;
@@ -99,12 +99,12 @@ public class InputManagerScript : MonoBehaviour
 				this.StickLeft = false;
 			}
 		}
-		if (Input.GetAxis("Horizontal") < 0.5f && Input.GetAxis("Horizontal") > -0.5f && Input.GetAxis("DpadX") < 0.5f && Input.GetAxis("DpadX") > -0.5f)
+		if (Input.GetAxisRaw("Horizontal") < 0.5f && Input.GetAxisRaw("Horizontal") > -0.5f && Input.GetAxisRaw("DpadX") < 0.5f && Input.GetAxisRaw("DpadX") > -0.5f)
 		{
 			this.TappedRight = false;
 			this.TappedLeft = false;
 		}
-		if (Input.GetAxis("Vertical") < 0.5f && Input.GetAxis("Vertical") > -0.5f && Input.GetAxis("DpadY") < 0.5f && Input.GetAxis("DpadY") > -0.5f)
+		if (Input.GetAxisRaw("Vertical") < 0.5f && Input.GetAxisRaw("Vertical") > -0.5f && Input.GetAxisRaw("DpadY") < 0.5f && Input.GetAxisRaw("DpadY") > -0.5f)
 		{
 			this.TappedUp = false;
 			this.TappedDown = false;

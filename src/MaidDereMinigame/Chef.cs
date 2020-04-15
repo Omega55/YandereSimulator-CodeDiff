@@ -41,7 +41,7 @@ namespace MaidDereMinigame
 			{
 				if (Chef.instance == null)
 				{
-					Chef.instance = Object.FindObjectOfType<Chef>();
+					Chef.instance = UnityEngine.Object.FindObjectOfType<Chef>();
 				}
 				return Chef.instance;
 			}
@@ -118,7 +118,7 @@ namespace MaidDereMinigame
 
 		public void Deliver()
 		{
-			Object.FindObjectOfType<ServingCounter>().AddPlate(this.currentPlate);
+			UnityEngine.Object.FindObjectOfType<ServingCounter>().AddPlate(this.currentPlate);
 		}
 
 		public void Queue()

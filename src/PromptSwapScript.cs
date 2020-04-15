@@ -19,7 +19,7 @@ public class PromptSwapScript : MonoBehaviour
 	{
 		if (this.InputDevice == null)
 		{
-			this.InputDevice = Object.FindObjectOfType<InputDeviceScript>();
+			this.InputDevice = UnityEngine.Object.FindObjectOfType<InputDeviceScript>();
 		}
 	}
 
@@ -27,7 +27,7 @@ public class PromptSwapScript : MonoBehaviour
 	{
 		if (this.InputDevice == null)
 		{
-			this.InputDevice = Object.FindObjectOfType<InputDeviceScript>();
+			this.InputDevice = UnityEngine.Object.FindObjectOfType<InputDeviceScript>();
 		}
 		if (deviceType == InputDeviceType.Gamepad)
 		{

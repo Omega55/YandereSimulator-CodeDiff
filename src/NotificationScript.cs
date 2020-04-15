@@ -34,7 +34,7 @@ public class NotificationScript : MonoBehaviour
 			this.Panel.alpha -= Time.deltaTime * ((this.NotificationManager.NotificationsSpawned > this.ID + 2) ? 3f : 1f);
 			if (this.Panel.alpha <= 0f)
 			{
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 				return;
 			}
 		}

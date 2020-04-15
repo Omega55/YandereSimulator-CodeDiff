@@ -99,7 +99,7 @@ public class DemonScript : MonoBehaviour
 			else if (this.Phase == 2)
 			{
 				Debug.Log("Demon Phase is 2.");
-				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-this.Intensity, this.Intensity), Random.Range(-this.Intensity, this.Intensity), Random.Range(-this.Intensity, this.Intensity));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-this.Intensity, this.Intensity), UnityEngine.Random.Range(-this.Intensity, this.Intensity), UnityEngine.Random.Range(-this.Intensity, this.Intensity));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				this.Button.color = new Color(this.Button.color.r, this.Button.color.g, this.Button.color.b, Mathf.MoveTowards(this.Button.color.a, 1f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a > 0.9f && Input.GetButtonDown("A"))
@@ -110,7 +110,7 @@ public class DemonScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-this.Intensity, this.Intensity), Random.Range(-this.Intensity, this.Intensity), Random.Range(-this.Intensity, this.Intensity));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-this.Intensity, this.Intensity), UnityEngine.Random.Range(-this.Intensity, this.Intensity), UnityEngine.Random.Range(-this.Intensity, this.Intensity));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 0f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 0f)
 				{

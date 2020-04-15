@@ -54,7 +54,7 @@ public class OsanaJokeScript : MonoBehaviour
 			this.Rotation[5].enabled = false;
 			this.Rotation[6].enabled = false;
 			this.Rotation[7].enabled = false;
-			Object.Instantiate<GameObject>(this.BloodSplatterEffect, this.Head.position, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.BloodSplatterEffect, this.Head.position, Quaternion.identity);
 			this.Head.localScale = new Vector3(0f, 0f, 0f);
 			this.Jukebox.clip = this.BloodSplatterSFX;
 			this.Jukebox.Play();

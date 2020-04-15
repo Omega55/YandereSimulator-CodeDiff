@@ -63,7 +63,7 @@ public class BloodCleanerScript : MonoBehaviour
 					Transform child = this.BloodParent.GetChild(0);
 					if (!(child.GetComponent("BloodPoolScript") != null))
 					{
-						Object.Destroy(child.gameObject);
+						UnityEngine.Object.Destroy(child.gameObject);
 						return;
 					}
 					child.localScale = new Vector3(child.localScale.x - Time.deltaTime, child.localScale.y - Time.deltaTime, child.localScale.z);
@@ -74,7 +74,7 @@ public class BloodCleanerScript : MonoBehaviour
 					}
 					if (child.transform.localScale.x < 0.1f)
 					{
-						Object.Destroy(child.gameObject);
+						UnityEngine.Object.Destroy(child.gameObject);
 						return;
 					}
 				}

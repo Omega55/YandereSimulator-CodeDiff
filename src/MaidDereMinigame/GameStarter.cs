@@ -76,7 +76,7 @@ namespace MaidDereMinigame
 			GameController.SetPause(true);
 			this.spriteRenderer.sprite = this.timeUp;
 			yield return new WaitForSeconds(1f);
-			Object.FindObjectOfType<InteractionMenu>().gameObject.SetActive(false);
+			UnityEngine.Object.FindObjectOfType<InteractionMenu>().gameObject.SetActive(false);
 			GameController.TimeUp();
 			yield break;
 		}

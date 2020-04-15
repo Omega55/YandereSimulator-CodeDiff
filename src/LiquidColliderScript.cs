@@ -39,14 +39,14 @@ public class LiquidColliderScript : MonoBehaviour
 			{
 				if (base.transform.position.y < 0f)
 				{
-					Object.Instantiate<GameObject>(this.GroundSplash, new Vector3(base.transform.position.x, 0f, base.transform.position.z), Quaternion.identity);
-					this.NewPool = Object.Instantiate<GameObject>(this.Pool, new Vector3(base.transform.position.x, 0.012f, base.transform.position.z), Quaternion.identity);
-					this.NewPool.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
+					UnityEngine.Object.Instantiate<GameObject>(this.GroundSplash, new Vector3(base.transform.position.x, 0f, base.transform.position.z), Quaternion.identity);
+					this.NewPool = UnityEngine.Object.Instantiate<GameObject>(this.Pool, new Vector3(base.transform.position.x, 0.012f, base.transform.position.z), Quaternion.identity);
+					this.NewPool.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
 					if (this.Blood)
 					{
 						this.NewPool.transform.parent = GameObject.Find("BloodParent").transform;
 					}
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 					return;
 				}
 			}
@@ -67,7 +67,7 @@ public class LiquidColliderScript : MonoBehaviour
 				if (!component.BeenSplashed && component.StudentID > 1 && component.StudentID != 10 && !component.Teacher && component.Club != ClubType.Council && !component.Fleeing && component.CurrentAction != StudentActionType.Sunbathe && !component.GasWarned)
 				{
 					AudioSource.PlayClipAtPoint(this.SplashSound, base.transform.position);
-					Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.Splash, new Vector3(base.transform.position.x, 1.5f, base.transform.position.z), Quaternion.identity);
 					if (this.Blood)
 					{
 						component.Bloody = true;
@@ -78,7 +78,7 @@ public class LiquidColliderScript : MonoBehaviour
 					}
 					component.GetWet();
 					this.AlreadyDoused = true;
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 					return;
 				}
 				if (!component.Wet && !component.Fleeing)

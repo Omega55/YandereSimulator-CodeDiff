@@ -576,6 +576,7 @@ public class PauseScreenScript : MonoBehaviour
 							this.PromptBar.Show = false;
 							this.Show = false;
 							this.Clock.TargetTime = (float)this.PassTime.TargetTime;
+							this.Clock.StopTime = false;
 							this.Clock.TimeSkip = true;
 							Time.timeScale = 1f;
 						}

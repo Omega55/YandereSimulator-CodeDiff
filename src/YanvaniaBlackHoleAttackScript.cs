@@ -17,7 +17,7 @@ public class YanvaniaBlackHoleAttackScript : MonoBehaviour
 		base.transform.position = Vector3.MoveTowards(base.transform.position, this.Yanmont.transform.position + Vector3.up, Time.deltaTime);
 		if (Vector3.Distance(base.transform.position, this.Yanmont.transform.position) > 10f || this.Yanmont.EnterCutscene)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -25,13 +25,13 @@ public class YanvaniaBlackHoleAttackScript : MonoBehaviour
 	{
 		if (other.gameObject.tag == "Player")
 		{
-			Object.Instantiate<GameObject>(this.BlackExplosion, base.transform.position, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.BlackExplosion, base.transform.position, Quaternion.identity);
 			this.Yanmont.TakeDamage(20);
 		}
 		if (other.gameObject.name == "Heart")
 		{
-			Object.Instantiate<GameObject>(this.BlackExplosion, base.transform.position, Quaternion.identity);
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Instantiate<GameObject>(this.BlackExplosion, base.transform.position, Quaternion.identity);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

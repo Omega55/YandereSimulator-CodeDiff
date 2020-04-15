@@ -27,7 +27,7 @@ public class GasterBeamScript : MonoBehaviour
 				this.Target = 0f;
 				if (base.transform.localScale.y < 0.1f)
 				{
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 			}
 		}

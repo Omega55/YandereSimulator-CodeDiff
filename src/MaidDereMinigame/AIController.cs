@@ -70,7 +70,7 @@ namespace MaidDereMinigame
 			this.collider2d.enabled = false;
 			if (this.targetChair == null)
 			{
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 			this.happinessMeter.gameObject.SetActive(false);
 			this.speechBubble.gameObject.SetActive(false);
@@ -163,7 +163,7 @@ namespace MaidDereMinigame
 			case AIController.AIState.Leaving:
 				if (Mathf.Abs(base.transform.position.x - this.leaveTarget.position.x) <= this.distanceThreshold)
 				{
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 					this.leaveTarget.GetComponent<CustomerSpawner>().OpenDoor();
 				}
 				break;

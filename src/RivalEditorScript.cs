@@ -19,7 +19,7 @@ public class RivalEditorScript : MonoBehaviour
 
 	private void Awake()
 	{
-		this.inputManager = Object.FindObjectOfType<InputManagerScript>();
+		this.inputManager = UnityEngine.Object.FindObjectOfType<InputManagerScript>();
 	}
 
 	private void OnEnable()

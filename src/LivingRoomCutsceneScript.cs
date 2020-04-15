@@ -386,7 +386,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 	{
 		if (this.Phase > 2)
 		{
-			base.transform.localPosition = new Vector3(-0.65f + this.ShakeStrength * Random.Range(-1f, 1f), this.ShakeStrength * Random.Range(-1f, 1f), this.ShakeStrength * Random.Range(-1f, 1f));
+			base.transform.localPosition = new Vector3(-0.65f + this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f));
 			this.CutsceneCamera.position = new Vector3(this.CutsceneCamera.position.x + this.xOffset, this.CutsceneCamera.position.y, this.CutsceneCamera.position.z + this.zOffset);
 			this.LeftEye.localPosition = new Vector3(this.LeftEye.localPosition.x, this.LeftEye.localPosition.y, this.LeftEyeOrigin.z - this.EyeShrink * 0.01f);
 			this.RightEye.localPosition = new Vector3(this.RightEye.localPosition.x, this.RightEye.localPosition.y, this.RightEyeOrigin.z + this.EyeShrink * 0.01f);

@@ -28,7 +28,7 @@ public class EditorManagerScript : MonoBehaviour
 	private void Awake()
 	{
 		this.buttonIndex = 0;
-		this.inputManager = Object.FindObjectOfType<InputManagerScript>();
+		this.inputManager = UnityEngine.Object.FindObjectOfType<InputManagerScript>();
 	}
 
 	private void Start()

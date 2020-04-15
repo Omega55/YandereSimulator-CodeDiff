@@ -37,7 +37,7 @@ public class VendingMachineScript : MonoBehaviour
 			{
 				if (!this.Sabotaged)
 				{
-					Object.Instantiate<GameObject>(this.Cans[Random.Range(0, this.Cans.Length)], this.CanSpawn.position, this.CanSpawn.rotation).GetComponent<AudioSource>().pitch = Random.Range(0.9f, 1.1f);
+					UnityEngine.Object.Instantiate<GameObject>(this.Cans[UnityEngine.Random.Range(0, this.Cans.Length)], this.CanSpawn.position, this.CanSpawn.rotation).GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 				}
 				if (this.SnackMachine && SchemeGlobals.GetSchemeStage(4) == 3)
 				{

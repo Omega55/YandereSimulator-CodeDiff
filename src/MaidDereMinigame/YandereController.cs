@@ -41,7 +41,7 @@ namespace MaidDereMinigame
 			{
 				if (YandereController.instance == null)
 				{
-					YandereController.instance = Object.FindObjectOfType<YandereController>();
+					YandereController.instance = UnityEngine.Object.FindObjectOfType<YandereController>();
 				}
 				return YandereController.instance;
 			}

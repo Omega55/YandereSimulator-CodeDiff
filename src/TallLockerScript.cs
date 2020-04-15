@@ -263,7 +263,7 @@ public class TallLockerScript : MonoBehaviour
 							PickUpScript component;
 							if (this.RemovingClubAttire)
 							{
-								component = Object.Instantiate<GameObject>(this.BloodyClubUniform[(int)ClubGlobals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity).GetComponent<PickUpScript>();
+								component = UnityEngine.Object.Instantiate<GameObject>(this.BloodyClubUniform[(int)ClubGlobals.Club], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity).GetComponent<PickUpScript>();
 								this.StudentManager.ChangingBooths[(int)ClubGlobals.Club].CannotChange = true;
 								this.StudentManager.ChangingBooths[(int)ClubGlobals.Club].CheckYandereClub();
 								this.Prompt.HideButton[1] = true;
@@ -273,7 +273,7 @@ public class TallLockerScript : MonoBehaviour
 							}
 							else
 							{
-								component = Object.Instantiate<GameObject>(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity).GetComponent<PickUpScript>();
+								component = UnityEngine.Object.Instantiate<GameObject>(this.BloodyUniform[this.Yandere.PreviousSchoolwear], this.Yandere.transform.position + Vector3.forward * 0.5f + Vector3.up, Quaternion.identity).GetComponent<PickUpScript>();
 								this.Prompt.HideButton[this.Yandere.PreviousSchoolwear] = true;
 								this.Bloody[this.Yandere.PreviousSchoolwear] = true;
 							}
@@ -285,7 +285,7 @@ public class TallLockerScript : MonoBehaviour
 					}
 					else
 					{
-						if (this.Student.Schoolwear == 0)
+						if (this.Student.Schoolwear == 0 && !this.RivalPhone.gameObject.activeInHierarchy && !this.Yandere.Inventory.RivalPhone)
 						{
 							this.RivalPhone.transform.parent = this.StudentManager.StrippingPositions[this.Student.GirlID];
 							this.RivalPhone.transform.localPosition = new Vector3(0f, 0.92f, 0.2375f);
@@ -319,13 +319,13 @@ public class TallLockerScript : MonoBehaviour
 		this.SteamCountdown = true;
 		if (this.YandereLocker)
 		{
-			Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 			this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_stripping_00");
 			this.Yandere.Stripping = true;
 			this.Yandere.CanMove = false;
 			return;
 		}
-		Object.Instantiate<GameObject>(this.SteamCloud, this.Student.transform.position + Vector3.up * 0.81f, Quaternion.identity).transform.parent = this.Student.transform;
+		UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Student.transform.position + Vector3.up * 0.81f, Quaternion.identity).transform.parent = this.Student.transform;
 		this.Student.CharacterAnimation.CrossFade(this.Student.StripAnim);
 		this.Student.Pathfinding.canSearch = false;
 		this.Student.Pathfinding.canMove = false;
@@ -334,7 +334,7 @@ public class TallLockerScript : MonoBehaviour
 	public void SpawnSteamNoSideEffects(StudentScript SteamStudent)
 	{
 		Debug.Log("Changing clothes, no strings attached.");
-		Object.Instantiate<GameObject>(this.SteamCloud, SteamStudent.transform.position + Vector3.up * 0.81f, Quaternion.identity).transform.parent = SteamStudent.transform;
+		UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, SteamStudent.transform.position + Vector3.up * 0.81f, Quaternion.identity).transform.parent = SteamStudent.transform;
 		SteamStudent.CharacterAnimation.CrossFade(SteamStudent.StripAnim);
 		SteamStudent.Pathfinding.canSearch = false;
 		SteamStudent.Pathfinding.canMove = false;
@@ -347,7 +347,7 @@ public class TallLockerScript : MonoBehaviour
 	{
 		if (this.DropCleanUniform)
 		{
-			Object.Instantiate<GameObject>(this.CleanUniform, this.Yandere.transform.position + Vector3.forward * -0.5f + Vector3.up, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.CleanUniform, this.Yandere.transform.position + Vector3.forward * -0.5f + Vector3.up, Quaternion.identity);
 			this.DropCleanUniform = false;
 		}
 		if (!this.Bloody[1])

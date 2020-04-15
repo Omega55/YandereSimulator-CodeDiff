@@ -10,8 +10,8 @@ public class YanvaniaBigFireballScript : MonoBehaviour
 		if (other.gameObject.name == "YanmontChan")
 		{
 			other.gameObject.GetComponent<YanvaniaYanmontScript>().TakeDamage(15);
-			Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position, Quaternion.identity);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

@@ -9,7 +9,7 @@ public class DoItScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.MyLabel.fontSize = Random.Range(50, 100);
+		this.MyLabel.fontSize = UnityEngine.Random.Range(50, 100);
 	}
 
 	private void Update()
@@ -29,7 +29,7 @@ public class DoItScript : MonoBehaviour
 			this.MyLabel.alpha -= Time.deltaTime;
 			if (this.MyLabel.alpha <= 0f)
 			{
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 	}

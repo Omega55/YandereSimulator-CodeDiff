@@ -109,7 +109,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 						}
 						if (this.AttackID == 0)
 						{
-							this.AttackID = Random.Range(1, 3);
+							this.AttackID = UnityEngine.Random.Range(1, 3);
 							this.TeleportTimer = 5f;
 							if (this.AttackID == 1)
 							{
@@ -128,7 +128,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 							{
 								if (component["succubus_a_charm_02"].time > 4f && this.NewAttack == null)
 								{
-									this.NewAttack = Object.Instantiate<GameObject>(this.TripleFireball, this.RightHand.position, Quaternion.identity);
+									this.NewAttack = UnityEngine.Object.Instantiate<GameObject>(this.TripleFireball, this.RightHand.position, Quaternion.identity);
 									this.NewAttack.GetComponent<YanvaniaTripleFireballScript>().Dracula = base.transform;
 								}
 								if (component["succubus_a_charm_02"].time >= component["succubus_a_charm_02"].length)
@@ -140,7 +140,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 							{
 								if (component["succubus_a_charm_03"].time > 4f && this.NewAttack == null)
 								{
-									this.NewAttack = Object.Instantiate<GameObject>(this.DoubleFireball, this.RightHand.position, Quaternion.identity);
+									this.NewAttack = UnityEngine.Object.Instantiate<GameObject>(this.DoubleFireball, this.RightHand.position, Quaternion.identity);
 									this.NewAttack.GetComponent<YanvaniaDoubleFireballScript>().Dracula = base.transform;
 								}
 								if (component["succubus_a_charm_03"].time >= component["succubus_a_charm_03"].length)
@@ -159,7 +159,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 					{
 						if (base.transform.position.y < 0f)
 						{
-							base.transform.position = new Vector3(Random.Range(-38.5f, -31f), base.transform.position.y, base.transform.position.z);
+							base.transform.position = new Vector3(UnityEngine.Random.Range(-38.5f, -31f), base.transform.position.y, base.transform.position.z);
 						}
 						this.SpawnTeleportEffect();
 					}
@@ -247,7 +247,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 					}
 					if (this.ExplosionTimer > 0.1f)
 					{
-						Object.Instantiate<GameObject>(this.Explosion, base.transform.position + new Vector3(Random.Range(-1f, 1f), Random.Range(0f, 2.5f), Random.Range(-1f, 1f)), Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.Explosion, base.transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(0f, 2.5f), UnityEngine.Random.Range(-1f, 1f)), Quaternion.identity);
 						this.ExplosionTimer = 0f;
 					}
 				}
@@ -312,7 +312,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 		Animation component = this.Character.GetComponent<Animation>();
 		if (base.transform.position.y > 0f)
 		{
-			this.NewTeleportEffect = Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
+			this.NewTeleportEffect = UnityEngine.Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
 			component["DraculaTeleport"].time = component["DraculaTeleport"].length;
 			component["DraculaTeleport"].speed = -1f;
 			component.Play("DraculaTeleport");
@@ -321,7 +321,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 		else
 		{
 			this.Teleport();
-			this.NewTeleportEffect = Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
+			this.NewTeleportEffect = UnityEngine.Object.Instantiate<GameObject>(this.TeleportEffect, new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z), Quaternion.identity);
 			component["DraculaTeleport"].speed = 0.85f;
 			component["DraculaTeleport"].time = 0f;
 			component.Play("DraculaTeleport");
@@ -349,7 +349,7 @@ public class YanvaniaDraculaScript : MonoBehaviour
 		this.FlashTimer = 1f;
 		this.Injured = true;
 		AudioSource component = base.GetComponent<AudioSource>();
-		component.clip = this.Injuries[Random.Range(0, this.Injuries.Length)];
+		component.clip = this.Injuries[UnityEngine.Random.Range(0, this.Injuries.Length)];
 		component.Play();
 	}
 

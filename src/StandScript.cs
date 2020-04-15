@@ -62,7 +62,7 @@ public class StandScript : MonoBehaviour
 					AudioSource.PlayClipAtPoint(this.SummonSFX, base.transform.position);
 					this.SFX = true;
 				}
-				Object.Instantiate<GameObject>(this.SummonEffect, this.SummonTransform.position, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.SummonEffect, this.SummonTransform.position, Quaternion.identity);
 			}
 			if (this.Stand.GetComponent<Animation>()["StandSummon"].time >= this.Stand.GetComponent<Animation>()["StandSummon"].length)
 			{
@@ -110,7 +110,7 @@ public class StandScript : MonoBehaviour
 					if (this.Phase == 1)
 					{
 						base.GetComponent<AudioSource>().Play();
-						this.Finisher = Random.Range(1, 3);
+						this.Finisher = UnityEngine.Random.Range(1, 3);
 						this.Stand.GetComponent<Animation>().CrossFade("StandFinisher" + this.Finisher.ToString());
 						this.Phase++;
 						return;

@@ -27,7 +27,7 @@ public class BlasterScript : MonoBehaviour
 		}
 		if (animationState.time >= animationState.length)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 

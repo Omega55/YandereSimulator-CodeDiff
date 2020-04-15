@@ -16,6 +16,6 @@ public class HologramScript : MonoBehaviour
 
 	private bool TrueFalse()
 	{
-		return Random.value >= 0.5f;
+		return UnityEngine.Random.value >= 0.5f;
 	}
 }

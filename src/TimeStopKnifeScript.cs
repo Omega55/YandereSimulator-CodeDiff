@@ -34,7 +34,7 @@ public class TimeStopKnifeScript : MonoBehaviour
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 5f)
 			{
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 		base.transform.Translate(Vector3.forward * this.Speed * Time.deltaTime, Space.Self);
@@ -49,11 +49,11 @@ public class TimeStopKnifeScript : MonoBehaviour
 			{
 				if (component.Male)
 				{
-					Object.Instantiate<GameObject>(this.MaleScream, base.transform.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.MaleScream, base.transform.position, Quaternion.identity);
 				}
 				else
 				{
-					Object.Instantiate<GameObject>(this.FemaleScream, base.transform.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.FemaleScream, base.transform.position, Quaternion.identity);
 				}
 				component.DeathType = DeathType.EasterEgg;
 				component.BecomeRagdoll();

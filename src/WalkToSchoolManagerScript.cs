@@ -132,7 +132,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 			this.Darkness.color = new Color(1f, 1f, 1f, 1f);
 		}
 		this.Window.localScale = new Vector3(0f, 0f, 0f);
-		this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].time = Random.Range(0f, this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].length);
+		this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].time = UnityEngine.Random.Range(0f, this.Yandere.Character.GetComponent<Animation>()["f02_newWalk_00"].length);
 		this.Yandere.WearOutdoorShoes();
 		this.Senpai.WearOutdoorShoes();
 		this.Rival.WearOutdoorShoes();
@@ -330,7 +330,7 @@ public class WalkToSchoolManagerScript : MonoBehaviour
 				this.MouthTimer += Time.deltaTime;
 				if (this.MouthTimer > this.TimerLimit)
 				{
-					this.MouthTarget = Random.Range(40f, 40f + this.MouthExtent);
+					this.MouthTarget = UnityEngine.Random.Range(40f, 40f + this.MouthExtent);
 					this.MouthTimer = 0f;
 				}
 				if (this.Speakers[this.ID])

@@ -205,14 +205,14 @@ public class PhoneScript : MonoBehaviour
 		component.Play();
 		if (this.Speaker[this.ID] == 1)
 		{
-			this.NewMessage = Object.Instantiate<GameObject>(this.LeftMessage[this.Height[this.ID]]);
+			this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.LeftMessage[this.Height[this.ID]]);
 			this.NewMessage.transform.parent = this.Panel;
 			this.NewMessage.transform.localPosition = new Vector3(-225f, -375f, 0f);
 			this.NewMessage.transform.localScale = Vector3.zero;
 		}
 		else
 		{
-			this.NewMessage = Object.Instantiate<GameObject>(this.RightMessage[this.Height[this.ID]]);
+			this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.RightMessage[this.Height[this.ID]]);
 			this.NewMessage.transform.parent = this.Panel;
 			this.NewMessage.transform.localPosition = new Vector3(225f, -375f, 0f);
 			this.NewMessage.transform.localScale = Vector3.zero;
@@ -234,7 +234,7 @@ public class PhoneScript : MonoBehaviour
 
 	private void LoveSickColorSwap()
 	{
-		foreach (GameObject gameObject in Object.FindObjectsOfType<GameObject>())
+		foreach (GameObject gameObject in UnityEngine.Object.FindObjectsOfType<GameObject>())
 		{
 			UISprite component = gameObject.GetComponent<UISprite>();
 			if (component != null && component.color != Color.black && component.transform.parent)

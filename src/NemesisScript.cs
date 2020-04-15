@@ -146,8 +146,8 @@ public class NemesisScript : MonoBehaviour
 		this.Student.Ragdoll.AllColliders[10].enabled = true;
 		this.Student.Prompt.HideButton[0] = true;
 		this.Student.Prompt.HideButton[2] = true;
-		Object.Destroy(this.Student.MyRigidbody);
-		base.transform.position = this.MissionMode.SpawnPoints[Random.Range(0, 4)].position;
+		UnityEngine.Object.Destroy(this.Student.MyRigidbody);
+		base.transform.position = this.MissionMode.SpawnPoints[UnityEngine.Random.Range(0, 4)].position;
 		this.MissionMode.LastKnownPosition.position = new Vector3(0f, 0f, -36f);
 		this.UpdateLKP();
 		base.transform.parent = null;
@@ -162,7 +162,7 @@ public class NemesisScript : MonoBehaviour
 			int num = 1;
 			while ((this.Student.StudentManager.Students[num] != null && this.Student.StudentManager.Students[num].Male) || (num > 5 && num < 21) || num == 21 || num == 26 || num == 31 || num == 36 || num == 41 || num == 46 || num == 51 || num == 56 || num == 61 || num == 66 || num == 71 || num == this.MissionMode.TargetID)
 			{
-				num = Random.Range(2, 90);
+				num = UnityEngine.Random.Range(2, 90);
 			}
 			this.Student.StudentManager.Students[num].gameObject.SetActive(false);
 			this.Student.StudentManager.Students[num].Replaced = true;
@@ -400,7 +400,7 @@ public class NemesisScript : MonoBehaviour
 		{
 			if (component["f02_knifeLowSanityA_00"].time > 2.76666665f)
 			{
-				Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
 				this.EffectPhase++;
 				return;
 			}
@@ -409,14 +409,14 @@ public class NemesisScript : MonoBehaviour
 		{
 			if (component["f02_knifeLowSanityA_00"].time > 3.5333333f)
 			{
-				Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
 				this.EffectPhase++;
 				return;
 			}
 		}
 		else if (this.EffectPhase == 2 && component["f02_knifeLowSanityA_00"].time > 4.16666651f)
 		{
-			Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position + this.Knife.transform.forward * 0.1f, Quaternion.identity);
 			this.EffectPhase++;
 		}
 	}

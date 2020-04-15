@@ -19,7 +19,7 @@ public class GridScript : MonoBehaviour
 	{
 		while (this.ID < this.Rows * this.Columns)
 		{
-			Object.Instantiate<GameObject>(this.Tile, new Vector3((float)this.Row, 0f, (float)this.Column), Quaternion.identity).transform.parent = base.transform;
+			UnityEngine.Object.Instantiate<GameObject>(this.Tile, new Vector3((float)this.Row, 0f, (float)this.Column), Quaternion.identity).transform.parent = base.transform;
 			this.Row++;
 			if (this.Row > this.Rows)
 			{

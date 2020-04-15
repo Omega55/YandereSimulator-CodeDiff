@@ -46,7 +46,7 @@ public class YanvaniaTripleFireballScript : MonoBehaviour
 		this.Timer += Time.deltaTime;
 		if (this.Timer > 10f)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

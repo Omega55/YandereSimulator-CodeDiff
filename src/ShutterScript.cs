@@ -662,9 +662,9 @@ public class ShutterScript : MonoBehaviour
 	{
 		if (this.NewMessage != null)
 		{
-			Object.Destroy(this.NewMessage);
+			UnityEngine.Object.Destroy(this.NewMessage);
 		}
-		this.NewMessage = Object.Instantiate<GameObject>(this.Message);
+		this.NewMessage = UnityEngine.Object.Instantiate<GameObject>(this.Message);
 		this.NewMessage.transform.parent = this.TextMessages;
 		this.NewMessage.transform.localPosition = new Vector3(-225f, -275f, 0f);
 		this.NewMessage.transform.localEulerAngles = Vector3.zero;
@@ -845,7 +845,7 @@ public class ShutterScript : MonoBehaviour
 		this.PromptBar.Show = false;
 		if (this.NewMessage != null)
 		{
-			Object.Destroy(this.NewMessage);
+			UnityEngine.Object.Destroy(this.NewMessage);
 		}
 		if (!this.Yandere.CameraEffects.OneCamera)
 		{

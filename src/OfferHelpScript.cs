@@ -224,7 +224,7 @@ public class OfferHelpScript : MonoBehaviour
 			this.Student.Routine = true;
 			this.Yandere.CanMove = true;
 			this.Jukebox.Dip = 1f;
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

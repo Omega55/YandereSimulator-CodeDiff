@@ -14,7 +14,7 @@ namespace MaidDereMinigame
 		private void Awake()
 		{
 			this.gameTime = GameController.Instance.activeDifficultyVariables.gameTime;
-			this.starter = Object.FindObjectOfType<GameStarter>();
+			this.starter = UnityEngine.Object.FindObjectOfType<GameStarter>();
 			this.isPaused = true;
 		}
 

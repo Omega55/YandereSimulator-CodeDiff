@@ -12,7 +12,7 @@ namespace MaidDereMinigame
 
 		private void Awake()
 		{
-			int num = Random.Range(0, this.hairSprites.Length);
+			int num = UnityEngine.Random.Range(0, this.hairSprites.Length);
 			this.hairInstance = new GameObject("Hair", new Type[]
 			{
 				typeof(SpriteRenderer)

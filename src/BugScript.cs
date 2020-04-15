@@ -20,7 +20,7 @@ public class BugScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			this.MyAudio.clip = this.Praise[Random.Range(0, this.Praise.Length)];
+			this.MyAudio.clip = this.Praise[UnityEngine.Random.Range(0, this.Praise.Length)];
 			this.MyAudio.Play();
 			this.MyRenderer.enabled = true;
 			this.Prompt.Yandere.Inventory.PantyShots += 5;

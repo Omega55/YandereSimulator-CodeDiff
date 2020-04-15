@@ -10,7 +10,7 @@ public class MGPMPickUpScript : MonoBehaviour
 		base.transform.Translate(Vector3.up * Time.deltaTime * this.Speed * -1f);
 		if (base.transform.localPosition.y < -300f)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

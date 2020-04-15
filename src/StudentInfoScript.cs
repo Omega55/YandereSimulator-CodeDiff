@@ -591,7 +591,7 @@ public class StudentInfoScript : MonoBehaviour
 		}
 		else
 		{
-			reputationTriangle = new Vector3((float)Random.Range(-100, 101), (float)Random.Range(-100, 101), (float)Random.Range(-100, 101));
+			reputationTriangle = new Vector3((float)UnityEngine.Random.Range(-100, 101), (float)UnityEngine.Random.Range(-100, 101), (float)UnityEngine.Random.Range(-100, 101));
 		}
 		this.ReputationChart.fields[0].Value = reputationTriangle.x;
 		this.ReputationChart.fields[1].Value = reputationTriangle.y;

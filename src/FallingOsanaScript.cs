@@ -17,7 +17,7 @@ public class FallingOsanaScript : MonoBehaviour
 		if (base.transform.parent.position.y < 0f)
 		{
 			base.transform.parent.position = new Vector3(base.transform.parent.position.x, 0f, base.transform.parent.position.z);
-			Object.Instantiate<GameObject>(this.GroundImpact, base.transform.parent.position, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.GroundImpact, base.transform.parent.position, Quaternion.identity);
 		}
 	}
 }

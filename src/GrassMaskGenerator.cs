@@ -24,7 +24,7 @@ public class GrassMaskGenerator : MonoBehaviour
 
 	public void Start()
 	{
-		Object.Destroy(base.gameObject);
+		UnityEngine.Object.Destroy(base.gameObject);
 	}
 
 	private void Update()

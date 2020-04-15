@@ -28,7 +28,7 @@ public class HairBladeScript : MonoBehaviour
 			if (this.Student.StudentID != 1 && this.Student.Alive)
 			{
 				this.Student.DeathType = DeathType.EasterEgg;
-				Object.Instantiate<GameObject>(this.Student.Male ? this.MaleBloodyScream : this.FemaleBloodyScream, this.Student.transform.position + Vector3.up, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.Student.Male ? this.MaleBloodyScream : this.FemaleBloodyScream, this.Student.transform.position + Vector3.up, Quaternion.identity);
 				this.Student.BecomeRagdoll();
 				this.Student.Ragdoll.Dismember();
 				base.GetComponent<AudioSource>().Play();

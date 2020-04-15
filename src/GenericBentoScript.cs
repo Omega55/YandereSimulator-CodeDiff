@@ -81,7 +81,7 @@ public class GenericBentoScript : MonoBehaviour
 
 	private void ShutOff()
 	{
-		GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
 		this.PoisonSpot = gameObject.transform;
 		this.PoisonSpot.position = new Vector3(this.PoisonSpot.position.x, this.Prompt.Yandere.transform.position.y, this.PoisonSpot.position.z);
 		this.PoisonSpot.LookAt(this.Prompt.Yandere.transform.position);

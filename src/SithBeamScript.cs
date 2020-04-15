@@ -30,7 +30,7 @@ public class SithBeamScript : MonoBehaviour
 		this.Lifespan = Mathf.MoveTowards(this.Lifespan, 0f, Time.deltaTime);
 		if (this.Lifespan == 0f)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -42,7 +42,7 @@ public class SithBeamScript : MonoBehaviour
 			if (component != null && component.StudentID > 1)
 			{
 				AudioSource.PlayClipAtPoint(this.Hit, base.transform.position);
-				this.RandomNumber = Random.Range(0, 3);
+				this.RandomNumber = UnityEngine.Random.Range(0, 3);
 				if (this.MalePain.Length != 0)
 				{
 					if (component.Male)
@@ -54,7 +54,7 @@ public class SithBeamScript : MonoBehaviour
 						AudioSource.PlayClipAtPoint(this.FemalePain[this.RandomNumber], base.transform.position);
 					}
 				}
-				Object.Instantiate<GameObject>(this.BloodEffect, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, component.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 				component.Health -= this.Damage;
 				component.HealthBar.transform.parent.gameObject.SetActive(true);
 				component.HealthBar.transform.localScale = new Vector3(component.Health / 100f, 1f, 1f);
@@ -78,7 +78,7 @@ public class SithBeamScript : MonoBehaviour
 				}
 				if (this.Projectile)
 				{
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 			}
 		}

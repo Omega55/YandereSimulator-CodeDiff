@@ -149,8 +149,8 @@ public class ArmDetectorScript : MonoBehaviour
 					{
 						if (this.ArmArray[j] != null)
 						{
-							Object.Instantiate<GameObject>(this.SmallDarkAura, this.ArmArray[j].transform.position, Quaternion.identity);
-							Object.Destroy(this.ArmArray[j]);
+							UnityEngine.Object.Instantiate<GameObject>(this.SmallDarkAura, this.ArmArray[j].transform.position, Quaternion.identity);
+							UnityEngine.Object.Destroy(this.ArmArray[j]);
 						}
 					}
 				}
@@ -184,7 +184,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
 				{
@@ -193,7 +193,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 0f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 0f)
 				{
@@ -218,7 +218,7 @@ public class ArmDetectorScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer > (float)this.ArmsSpawned)
 				{
-					GameObject gameObject = Object.Instantiate<GameObject>(this.DemonArm, this.SpawnPoints[this.ArmsSpawned].position, Quaternion.identity);
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.DemonArm, this.SpawnPoints[this.ArmsSpawned].position, Quaternion.identity);
 					gameObject.transform.parent = this.Yandere.transform;
 					gameObject.transform.LookAt(this.Yandere.transform);
 					gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y + 180f, gameObject.transform.localEulerAngles.z);
@@ -244,8 +244,8 @@ public class ArmDetectorScript : MonoBehaviour
 				{
 					if (ragdollScript2 != null && ragdollScript2.Burned && ragdollScript2.Sacrifice && !ragdollScript2.Dragged && !ragdollScript2.Carried)
 					{
-						Object.Instantiate<GameObject>(this.SmallDarkAura, ragdollScript2.Prompt.transform.position, Quaternion.identity);
-						Object.Destroy(ragdollScript2.gameObject);
+						UnityEngine.Object.Instantiate<GameObject>(this.SmallDarkAura, ragdollScript2.Prompt.transform.position, Quaternion.identity);
+						UnityEngine.Object.Destroy(ragdollScript2.gameObject);
 						this.Yandere.NearBodies--;
 						this.Police.Corpses--;
 					}
@@ -281,7 +281,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 4)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
 				{
@@ -290,7 +290,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 5)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 0f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 0f)
 				{
@@ -354,8 +354,8 @@ public class ArmDetectorScript : MonoBehaviour
 					{
 						if (this.BodyArray[l] != null)
 						{
-							Object.Instantiate<GameObject>(this.SmallDarkAura, this.BodyArray[l].transform.position, Quaternion.identity);
-							Object.Destroy(this.BodyArray[l]);
+							UnityEngine.Object.Instantiate<GameObject>(this.SmallDarkAura, this.BodyArray[l].transform.position, Quaternion.identity);
+							UnityEngine.Object.Destroy(this.BodyArray[l]);
 						}
 					}
 				}
@@ -389,7 +389,7 @@ public class ArmDetectorScript : MonoBehaviour
 			}
 			else if (this.Phase == 3)
 			{
-				this.DemonSubtitle.transform.localPosition = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+				this.DemonSubtitle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 1f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 1f && Input.GetButtonDown("A"))
 				{

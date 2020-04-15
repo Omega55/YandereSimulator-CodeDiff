@@ -99,7 +99,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 	{
 		for (int i = 1; i < 101; i++)
 		{
-			GameObject gameObject = Object.Instantiate<GameObject>(this.StudentPortrait, base.transform.position, Quaternion.identity);
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StudentPortrait, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = this.PortraitGrid;
 			gameObject.transform.localPosition = new Vector3(-300f + (float)this.Column * 150f, 80f - (float)this.Row * 160f, 0f);
 			gameObject.transform.localEulerAngles = Vector3.zero;

@@ -37,7 +37,7 @@ public class DokiScript : MonoBehaviour
 			{
 				this.Yandere.PantyAttacher.newRenderer.enabled = false;
 				this.Prompt.Circle[0].fillAmount = 1f;
-				Object.Instantiate<GameObject>(this.TransformEffect, this.Yandere.Hips.position, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.TransformEffect, this.Yandere.Hips.position, Quaternion.identity);
 				this.Yandere.MyRenderer.sharedMesh = this.Yandere.Uniforms[4];
 				this.Yandere.MyRenderer.materials[0].mainTexture = this.DokiTexture;
 				this.Yandere.MyRenderer.materials[1].mainTexture = this.DokiTexture;

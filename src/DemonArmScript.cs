@@ -85,7 +85,7 @@ public class DemonArmScript : MonoBehaviour
 		{
 			AudioSource component2 = base.GetComponent<AudioSource>();
 			component2.clip = this.Whoosh;
-			component2.pitch = Random.Range(-0.9f, 1.1f);
+			component2.pitch = UnityEngine.Random.Range(-0.9f, 1.1f);
 			component2.Play();
 			base.GetComponent<Animation>().CrossFade(this.AttackAnim);
 			this.Attacking = true;

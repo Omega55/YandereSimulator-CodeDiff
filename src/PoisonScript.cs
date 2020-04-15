@@ -20,8 +20,8 @@ public class PoisonScript : MonoBehaviour
 		{
 			this.Yandere.Inventory.ChemicalPoison = true;
 			this.Yandere.StudentManager.UpdateAllBentos();
-			Object.Destroy(base.gameObject);
-			Object.Destroy(this.Bottle);
+			UnityEngine.Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(this.Bottle);
 		}
 	}
 }

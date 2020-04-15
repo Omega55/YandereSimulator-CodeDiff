@@ -40,11 +40,11 @@ public class DemonSlashScript : MonoBehaviour
 			component.DeathType = DeathType.EasterEgg;
 			if (!component.Male)
 			{
-				Object.Instantiate<GameObject>(this.FemaleBloodyScream, root.transform.position + Vector3.up, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.FemaleBloodyScream, root.transform.position + Vector3.up, Quaternion.identity);
 			}
 			else
 			{
-				Object.Instantiate<GameObject>(this.MaleBloodyScream, root.transform.position + Vector3.up, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.MaleBloodyScream, root.transform.position + Vector3.up, Quaternion.identity);
 			}
 			component.BecomeRagdoll();
 			component.Ragdoll.Dismember();

@@ -307,6 +307,9 @@ public class StudentScript : MonoBehaviour
 	};
 
 	[SerializeField]
+	private LayerMask YandereCheckMask;
+
+	[SerializeField]
 	private LayerMask Mask;
 
 	public StudentActionType CurrentAction;
@@ -1566,7 +1569,7 @@ public class StudentScript : MonoBehaviour
 			}
 			if (this.Name == "Random")
 			{
-				this.Persona = (PersonaType)Random.Range(1, 8);
+				this.Persona = (PersonaType)UnityEngine.Random.Range(1, 8);
 				if (this.Persona == PersonaType.Lovestruck)
 				{
 					this.Persona = PersonaType.PhoneAddict;
@@ -1574,7 +1577,7 @@ public class StudentScript : MonoBehaviour
 				studentJson.Persona = this.Persona;
 				if (this.Persona == PersonaType.Heroic)
 				{
-					this.Strength = Random.Range(1, 5);
+					this.Strength = UnityEngine.Random.Range(1, 5);
 					studentJson.Strength = this.Strength;
 				}
 			}
@@ -1731,7 +1734,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
-				this.RandomCheerAnim = this.CheerAnims[Random.Range(0, this.CheerAnims.Length)];
+				this.RandomCheerAnim = this.CheerAnims[UnityEngine.Random.Range(0, this.CheerAnims.Length)];
 				this.MapMarker.gameObject.SetActive(false);
 				this.DelinquentSpeechLines.Stop();
 				this.PinkSeifuku.SetActive(false);
@@ -1747,7 +1750,6 @@ public class StudentScript : MonoBehaviour
 			if (this.StudentID == 1)
 			{
 				this.MapMarker.gameObject.SetActive(true);
-				this.Perception = 5f;
 			}
 			else if (this.StudentID == 2)
 			{
@@ -1811,11 +1813,11 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (this.StudentID == 10)
 			{
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 			else if (this.StudentID == 11)
 			{
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 			else if (this.StudentID == 24 && this.StudentID == 25)
 			{
@@ -2464,7 +2466,7 @@ public class StudentScript : MonoBehaviour
 					this.ID++;
 				}
 			}
-			Object.Destroy(this.MyRigidbody);
+			UnityEngine.Object.Destroy(this.MyRigidbody);
 			this.Started = true;
 			if (this.Club == ClubType.Council)
 			{
@@ -2546,7 +2548,7 @@ public class StudentScript : MonoBehaviour
 		if (this.StudentID > 9 && this.StudentID < 21)
 		{
 			Debug.Log("Destroying a character who should not exist.");
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -2780,9 +2782,18 @@ public class StudentScript : MonoBehaviour
 
 	public bool SeenByYandere()
 	{
-		Debug.DrawLine(this.Eyes.position, this.Yandere.Eyes.position, Color.red);
+		Debug.Log("A ''SeenByYandere'' check is occuring.");
+		Debug.DrawLine(this.Yandere.Eyes.position, this.Head.position, Color.red);
 		RaycastHit raycastHit;
-		return Physics.Linecast(this.Eyes.position, this.Yandere.Eyes.position, out raycastHit, this.Mask) && raycastHit.collider.gameObject == this.Head.gameObject;
+		if (Physics.Linecast(this.Yandere.Eyes.position, this.Head.position, out raycastHit, this.YandereCheckMask))
+		{
+			Debug.Log("Yandere-chan's raycast hit: " + raycastHit.collider.gameObject.name);
+			if (raycastHit.collider.gameObject == this.Head.gameObject || raycastHit.collider.gameObject == base.gameObject)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public bool CanSeeObject(GameObject obj, Vector3 targetPoint, int[] layers, int mask)
@@ -2950,7 +2961,7 @@ public class StudentScript : MonoBehaviour
 					{
 						if (!this.PlayingAudio)
 						{
-							component.clip = this.FemaleAttacks[Random.Range(0, this.FemaleAttacks.Length)];
+							component.clip = this.FemaleAttacks[UnityEngine.Random.Range(0, this.FemaleAttacks.Length)];
 							component.Play();
 							this.PlayingAudio = true;
 						}
@@ -2965,7 +2976,7 @@ public class StudentScript : MonoBehaviour
 				{
 					if (!this.PlayingAudio)
 					{
-						component.clip = this.MaleAttacks[Random.Range(0, this.MaleAttacks.Length)];
+						component.clip = this.MaleAttacks[UnityEngine.Random.Range(0, this.MaleAttacks.Length)];
 						component.Play();
 						this.PlayingAudio = true;
 					}
@@ -3063,6 +3074,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (this.Hurry && !this.Tripped && base.transform.position.z > -50.5f && base.transform.position.x < 6f)
 				{
+					this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					this.CharacterAnimation.CrossFade("trip_00");
 					this.Pathfinding.canSearch = false;
 					this.Pathfinding.canMove = false;
@@ -4047,11 +4059,11 @@ public class StudentScript : MonoBehaviour
 												{
 													if (base.transform.position.x < 0f)
 													{
-														this.MyPaper = Object.Instantiate<GameObject>(this.Paper, this.Seat.position + new Vector3(-0.4f, 0.772f, 0f), Quaternion.identity);
+														this.MyPaper = UnityEngine.Object.Instantiate<GameObject>(this.Paper, this.Seat.position + new Vector3(-0.4f, 0.772f, 0f), Quaternion.identity);
 													}
 													else
 													{
-														this.MyPaper = Object.Instantiate<GameObject>(this.Paper, this.Seat.position + new Vector3(0.4f, 0.772f, 0f), Quaternion.identity);
+														this.MyPaper = UnityEngine.Object.Instantiate<GameObject>(this.Paper, this.Seat.position + new Vector3(0.4f, 0.772f, 0f), Quaternion.identity);
 													}
 													this.MyPaper.transform.eulerAngles = new Vector3(0f, 0f, -90f);
 													this.MyPaper.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
@@ -4652,7 +4664,7 @@ public class StudentScript : MonoBehaviour
 											{
 												this.Cosmetic.Goggles[this.StudentID].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 100f);
 												this.Cosmetic.MaleHair[this.Cosmetic.Hairstyle].GetComponent<SkinnedMeshRenderer>().SetBlendShapeWeight(0, 100f);
-												GameObject gameObject4 = Object.Instantiate<GameObject>(this.BigWaterSplash, this.RightHand.transform.position, Quaternion.identity);
+												GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.BigWaterSplash, this.RightHand.transform.position, Quaternion.identity);
 												gameObject4.transform.eulerAngles = new Vector3(-90f, gameObject4.transform.eulerAngles.y, gameObject4.transform.eulerAngles.z);
 												this.SetSplashes(true);
 												this.ClubActivityPhase++;
@@ -5370,7 +5382,7 @@ public class StudentScript : MonoBehaviour
 												}
 												if (this.GraffitiPhase == 0)
 												{
-													AudioSource.PlayClipAtPoint(this.BullyGiggles[Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
+													AudioSource.PlayClipAtPoint(this.BullyGiggles[UnityEngine.Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
 													this.CharacterAnimation.CrossFade("f02_bullyDesk_00");
 													this.SmartPhone.SetActive(false);
 													this.GraffitiPhase++;
@@ -5389,7 +5401,7 @@ public class StudentScript : MonoBehaviour
 												{
 													if (this.CharacterAnimation["f02_bullyDesk_00"].time >= 9.66666f)
 													{
-														AudioSource.PlayClipAtPoint(this.BullyGiggles[Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
+														AudioSource.PlayClipAtPoint(this.BullyGiggles[UnityEngine.Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
 														this.GraffitiPhase++;
 														return;
 													}
@@ -5417,8 +5429,10 @@ public class StudentScript : MonoBehaviour
 											}
 											else if (this.Actions[this.Phase] == StudentActionType.Bully)
 											{
+												this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 												if (!(this.StudentManager.Students[this.StudentManager.VictimID] != null))
 												{
+													this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 													this.DistanceToDestination = 100f;
 													ScheduleBlock scheduleBlock7 = this.ScheduleBlocks[4];
 													scheduleBlock7.destination = "Patrol";
@@ -5496,6 +5510,7 @@ public class StudentScript : MonoBehaviour
 													}
 													else if (this.BullyPhase == 4)
 													{
+														this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 														this.StudentManager.Students[this.StudentManager.VictimID].Routine = true;
 														ScheduleBlock scheduleBlock9 = this.ScheduleBlocks[4];
 														scheduleBlock9.destination = "LunchSpot";
@@ -5515,7 +5530,7 @@ public class StudentScript : MonoBehaviour
 													{
 														if (this.GiggleTimer == 0f)
 														{
-															AudioSource.PlayClipAtPoint(this.BullyGiggles[Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
+															AudioSource.PlayClipAtPoint(this.BullyGiggles[UnityEngine.Random.Range(0, this.BullyGiggles.Length)], this.Head.position);
 															this.GiggleTimer = 5f;
 														}
 														this.GiggleTimer = Mathf.MoveTowards(this.GiggleTimer, 0f, Time.deltaTime);
@@ -5533,6 +5548,7 @@ public class StudentScript : MonoBehaviour
 													}
 													if (this.CharacterAnimation["f02_bullyLaugh_00"].time >= this.CharacterAnimation["f02_bullyLaugh_00"].length || this.StudentManager.Students[81].BullyPhase == 4 || this.BullyPhase == 4)
 													{
+														this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 														this.DistanceToDestination = 100f;
 														ScheduleBlock scheduleBlock10 = this.ScheduleBlocks[4];
 														scheduleBlock10.destination = "Patrol";
@@ -5967,7 +5983,7 @@ public class StudentScript : MonoBehaviour
 													this.SewTimer += Time.deltaTime;
 													if (this.SewTimer > 10f)
 													{
-														Object.Instantiate<GameObject>(this.Yandere.PauseScreen.DropsMenu.GetComponent<DropsScript>().InfoChanWindow.Drops[1], new Vector3(28.289f, 0.7718928f, 5.196f), Quaternion.identity);
+														UnityEngine.Object.Instantiate<GameObject>(this.Yandere.PauseScreen.DropsMenu.GetComponent<DropsScript>().InfoChanWindow.Drops[1], new Vector3(28.289f, 0.7718928f, 5.196f), Quaternion.identity);
 														return;
 													}
 												}
@@ -6259,7 +6275,7 @@ public class StudentScript : MonoBehaviour
 										{
 											if (this.PetDestination == null)
 											{
-												this.PetDestination = Object.Instantiate<GameObject>(this.EmptyGameObject, this.Seat.position + this.Seat.forward * -0.5f, Quaternion.identity).transform;
+												this.PetDestination = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, this.Seat.position + this.Seat.forward * -0.5f, Quaternion.identity).transform;
 											}
 											this.Pathfinding.target = this.PetDestination;
 											this.CurrentDestination = this.PetDestination;
@@ -7175,7 +7191,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.BathePhase == 7)
 							{
-								if (this.StudentManager.CommunalLocker.RivalPhone.Stolen)
+								if (this.StudentManager.CommunalLocker.RivalPhone.Stolen && this.Yandere.Inventory.RivalPhoneID == this.StudentID)
 								{
 									this.CharacterAnimation.CrossFade("f02_losingPhone_00");
 									this.Subtitle.UpdateLabel(this.LostPhoneSubtitleType, 1, 5f);
@@ -7282,7 +7298,7 @@ public class StudentScript : MonoBehaviour
 									if (!this.LightSwitch.Flicker)
 									{
 										this.CharacterAnimation["f02_electrocution_00"].speed = 0.85f;
-										GameObject gameObject5 = Object.Instantiate<GameObject>(this.LightSwitch.Electricity, base.transform.position, Quaternion.identity);
+										GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.LightSwitch.Electricity, base.transform.position, Quaternion.identity);
 										gameObject5.transform.parent = this.Bones[1].transform;
 										gameObject5.transform.localPosition = Vector3.zero;
 										this.Subtitle.UpdateLabel(SubtitleType.LightSwitchReaction, 3, 0f);
@@ -7295,8 +7311,8 @@ public class StudentScript : MonoBehaviour
 										this.ElectroSteam[2].SetActive(true);
 										this.ElectroSteam[3].SetActive(true);
 									}
-									this.RightDrill.eulerAngles = new Vector3(Random.Range(-360f, 360f), Random.Range(-360f, 360f), Random.Range(-360f, 360f));
-									this.LeftDrill.eulerAngles = new Vector3(Random.Range(-360f, 360f), Random.Range(-360f, 360f), Random.Range(-360f, 360f));
+									this.RightDrill.eulerAngles = new Vector3(UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f));
+									this.LeftDrill.eulerAngles = new Vector3(UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f), UnityEngine.Random.Range(-360f, 360f));
 									this.ElectroTimer += Time.deltaTime;
 									if (this.ElectroTimer > 0.1f)
 									{
@@ -7735,8 +7751,8 @@ public class StudentScript : MonoBehaviour
 								{
 									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 3.3f)
 									{
-										GameObject gameObject6 = Object.Instantiate<GameObject>(this.Ragdoll.BloodPoolSpawner.BloodPool, base.transform.position + base.transform.up * 0.012f + base.transform.forward, Quaternion.identity);
-										gameObject6.transform.localEulerAngles = new Vector3(90f, Random.Range(0f, 360f), 0f);
+										GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.Ragdoll.BloodPoolSpawner.BloodPool, base.transform.position + base.transform.up * 0.012f + base.transform.forward, Quaternion.identity);
+										gameObject6.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
 										gameObject6.transform.parent = this.Police.BloodParent;
 										this.MyWeapon.Victims[this.HuntTarget.StudentID] = true;
 										this.MyWeapon.Blood.enabled = true;
@@ -7746,7 +7762,7 @@ public class StudentScript : MonoBehaviour
 											this.MyWeapon.Evidence = true;
 											this.Police.MurderWeapons++;
 										}
-										Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+										UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
 										this.KnifeDown = true;
 										this.MurderSuicidePhase++;
 									}
@@ -7757,7 +7773,7 @@ public class StudentScript : MonoBehaviour
 									{
 										if (this.MyWeapon.transform.position.y < base.transform.position.y + 0.333333343f)
 										{
-											Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+											UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
 											this.KnifeDown = true;
 											Debug.Log("Stab!");
 										}
@@ -7778,7 +7794,7 @@ public class StudentScript : MonoBehaviour
 									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 18.9f)
 									{
 										Debug.Log("Yanked out knife!");
-										Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+										UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
 										this.MyWeapon.transform.parent = this.ItemParent;
 										this.MyWeapon.transform.localPosition = Vector3.zero;
 										this.MyWeapon.transform.localEulerAngles = Vector3.zero;
@@ -7790,7 +7806,7 @@ public class StudentScript : MonoBehaviour
 									if (this.CharacterAnimation["f02_murderSuicide_00"].time >= 26.166666f)
 									{
 										Debug.Log("Stabbed neck!");
-										Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+										UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
 										this.MyWeapon.Victims[this.StudentID] = true;
 										this.MurderSuicidePhase++;
 									}
@@ -7906,7 +7922,7 @@ public class StudentScript : MonoBehaviour
 					if (this.CharacterAnimation["f02_suicide_00"].time >= 4.16666651f)
 					{
 						Debug.Log("Stabbed neck!");
-						Object.Instantiate<GameObject>(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.StabBloodEffect, this.MyWeapon.transform.position, Quaternion.identity);
 						this.MyWeapon.Victims[this.StudentID] = true;
 						this.MyWeapon.Blood.enabled = true;
 						if (!this.MyWeapon.Evidence)
@@ -8346,10 +8362,11 @@ public class StudentScript : MonoBehaviour
 					this.BecomeRagdoll();
 					this.DeathType = DeathType.Weight;
 					this.Ragdoll.Decapitated = true;
-					Object.Instantiate<GameObject>(this.SquishyBloodEffect, this.Head.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.SquishyBloodEffect, this.Head.position, Quaternion.identity);
 				}
 				if (this.CharacterAnimation["trip_00"].time >= this.CharacterAnimation["trip_00"].length)
 				{
+					this.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 					this.Pathfinding.canSearch = true;
 					this.Pathfinding.canMove = true;
 					this.Distracted = true;
@@ -8535,7 +8552,7 @@ public class StudentScript : MonoBehaviour
 					this.SnackTimer += Time.deltaTime;
 					if (this.SnackTimer > 10f)
 					{
-						Object.Destroy(this.BagOfChips);
+						UnityEngine.Object.Destroy(this.BagOfChips);
 						if (this.StudentID != this.StudentManager.RivalID)
 						{
 							this.StudentManager.GetNearestFountain(this);
@@ -9162,7 +9179,7 @@ public class StudentScript : MonoBehaviour
 					{
 						if (this.Teacher)
 						{
-							this.Subtitle.UpdateLabel(SubtitleType.TeacherMurderReaction, Random.Range(1, 3), 3f);
+							this.Subtitle.UpdateLabel(SubtitleType.TeacherMurderReaction, UnityEngine.Random.Range(1, 3), 3f);
 							this.StudentManager.Portal.SetActive(false);
 						}
 						if (!this.Yandere.Egg)
@@ -9518,7 +9535,7 @@ public class StudentScript : MonoBehaviour
 					this.Subtitle.Speaker = this;
 					this.Subtitle.UpdateLabel(SubtitleType.DelinquentWeaponReaction, 0, 3f);
 					this.ThreatDistance = this.DistanceToPlayer;
-					this.CheerTimer = Random.Range(1f, 2f);
+					this.CheerTimer = UnityEngine.Random.Range(1f, 2f);
 					this.SmartPhone.SetActive(false);
 					this.Threatened = true;
 					this.ThreatPhase = 1;
@@ -9765,9 +9782,9 @@ public class StudentScript : MonoBehaviour
 				}
 				else if (this.StudentManager.Six)
 				{
-					Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity).GetComponent<AlarmDiscScript>().Originator = this;
+					UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity).GetComponent<AlarmDiscScript>().Originator = this;
 					AudioSource.PlayClipAtPoint(this.Yandere.SixTakedown, base.transform.position);
-					AudioSource.PlayClipAtPoint(this.Yandere.Snarls[Random.Range(0, this.Yandere.Snarls.Length)], base.transform.position);
+					AudioSource.PlayClipAtPoint(this.Yandere.Snarls[UnityEngine.Random.Range(0, this.Yandere.Snarls.Length)], base.transform.position);
 					this.Yandere.CharacterAnimation.CrossFade("f02_sixEat_00");
 					this.Yandere.TargetStudent = this;
 					this.Yandere.FollowHips = true;
@@ -9779,7 +9796,7 @@ public class StudentScript : MonoBehaviour
 					this.Routine = false;
 					this.Dying = true;
 					this.Eaten = true;
-					GameObject gameObject = Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
 					this.Yandere.SixTarget = gameObject.transform;
 					this.Yandere.SixTarget.LookAt(this.Yandere.transform.position);
 					this.Yandere.SixTarget.Translate(this.Yandere.SixTarget.forward);
@@ -9789,8 +9806,8 @@ public class StudentScript : MonoBehaviour
 					if (!this.Eaten && !this.Cosmetic.Empty)
 					{
 						AudioSource.PlayClipAtPoint(this.Yandere.SixTakedown, base.transform.position);
-						AudioSource.PlayClipAtPoint(this.Yandere.Snarls[Random.Range(0, this.Yandere.Snarls.Length)], base.transform.position);
-						GameObject gameObject2 = Object.Instantiate<GameObject>(this.Yandere.EmptyHusk, base.transform.position + base.transform.forward * 0.5f, Quaternion.identity);
+						AudioSource.PlayClipAtPoint(this.Yandere.Snarls[UnityEngine.Random.Range(0, this.Yandere.Snarls.Length)], base.transform.position);
+						GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.Yandere.EmptyHusk, base.transform.position + base.transform.forward * 0.5f, Quaternion.identity);
 						gameObject2.GetComponent<EmptyHuskScript>().TargetStudent = this;
 						gameObject2.transform.LookAt(base.transform.position);
 						this.CharacterAnimation.CrossFade(this.EatVictimAnim);
@@ -9809,7 +9826,7 @@ public class StudentScript : MonoBehaviour
 							this.Yandere.Followers--;
 							this.Following = false;
 						}
-						Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, base.transform.position, Quaternion.identity);
 					}
 				}
 				else if (this.StudentManager.Gaze)
@@ -10298,7 +10315,7 @@ public class StudentScript : MonoBehaviour
 						this.MoveTowardsTarget(this.Yandere.transform.position + this.Yandere.transform.forward);
 						if (this.CharacterAnimation[this.CyborgDeathAnim].time >= this.CharacterAnimation[this.CyborgDeathAnim].length - 0.25f && this.Yandere.EquippedWeapon.WeaponID == 11)
 						{
-							Object.Instantiate<GameObject>(this.BloodyScream, base.transform.position + Vector3.up, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodyScream, base.transform.position + Vector3.up, Quaternion.identity);
 							this.DeathType = DeathType.EasterEgg;
 							this.BecomeRagdoll();
 							this.Ragdoll.Dismember();
@@ -10503,7 +10520,7 @@ public class StudentScript : MonoBehaviour
 				else
 				{
 					Debug.Log("Senpai witnessed murder, and entered a specific murder reaction animation.");
-					this.MurderReaction = Random.Range(1, 6);
+					this.MurderReaction = UnityEngine.Random.Range(1, 6);
 					this.CharacterAnimation.CrossFade("senpaiMurderReaction_0" + this.MurderReaction);
 					this.GameOverCause = GameOverType.Murder;
 					this.SenpaiNoticed();
@@ -10724,13 +10741,13 @@ public class StudentScript : MonoBehaviour
 						}
 						if (this.Club == ClubType.Council)
 						{
-							Object.Destroy(this.Subtitle.CurrentClip);
+							UnityEngine.Object.Destroy(this.Subtitle.CurrentClip);
 							this.Subtitle.UpdateLabel(SubtitleType.CouncilToCounselor, this.ClubMemberID, 6f);
 						}
 						if (this.BloodPool != null)
 						{
 							Debug.Log("The teacher was alarmed because she saw something weird on the ground.");
-							Object.Destroy(this.Subtitle.CurrentClip);
+							UnityEngine.Object.Destroy(this.Subtitle.CurrentClip);
 							this.Subtitle.UpdateLabel(SubtitleType.BloodPoolReaction, 2, 5f);
 							PromptScript component = this.BloodPool.GetComponent<PromptScript>();
 							if (component != null)
@@ -11132,13 +11149,13 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Subtitle.Speaker = this;
 						this.Subtitle.UpdateLabel(SubtitleType.DelinquentCheer, 0, 5f);
-						this.CheerTimer = Random.Range(2f, 3f);
+						this.CheerTimer = UnityEngine.Random.Range(2f, 3f);
 					}
 				}
 				this.CharacterAnimation.CrossFade(this.RandomCheerAnim);
 				if (this.CharacterAnimation[this.RandomCheerAnim].time >= this.CharacterAnimation[this.RandomCheerAnim].length)
 				{
-					this.RandomCheerAnim = this.CheerAnims[Random.Range(0, this.CheerAnims.Length)];
+					this.RandomCheerAnim = this.CheerAnims[UnityEngine.Random.Range(0, this.CheerAnims.Length)];
 				}
 				this.ThreatPhase = 3;
 				this.ThreatTimer = 0f;
@@ -11272,7 +11289,7 @@ public class StudentScript : MonoBehaviour
 							this.StudentManager.CombatMinigame.StartCombat();
 							this.SpeechLines.Stop();
 							this.SpawnAlarmDisc();
-							if (this.WitnessedMurder)
+							if (this.WitnessedMurder || this.WitnessedCorpse)
 							{
 								this.Subtitle.Speaker = this;
 								this.Subtitle.UpdateLabel(SubtitleType.DelinquentAvenge, 0, 5f);
@@ -11325,7 +11342,7 @@ public class StudentScript : MonoBehaviour
 				if (this.ThreatTimer > 5f)
 				{
 					this.DistanceToDestination = 100f;
-					if (!this.WitnessedMurder)
+					if (!this.WitnessedMurder && !this.WitnessedCorpse)
 					{
 						this.Distracted = false;
 						this.Threatened = false;
@@ -11778,7 +11795,7 @@ public class StudentScript : MonoBehaviour
 			{
 				if (base.transform.position.y < -11f && this.StudentID > 1)
 				{
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 			}
 			else
@@ -11983,7 +12000,7 @@ public class StudentScript : MonoBehaviour
 		{
 			if (this.DeathScream != null)
 			{
-				Object.Instantiate<GameObject>(this.DeathScream, base.transform.position + Vector3.up, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.DeathScream, base.transform.position + Vector3.up, Quaternion.identity);
 			}
 			this.BlackHoleEffect[0].enabled = true;
 			this.BlackHoleEffect[1].enabled = true;
@@ -12889,7 +12906,7 @@ public class StudentScript : MonoBehaviour
 				}
 				else
 				{
-					this.PetDestination = Object.Instantiate<GameObject>(this.EmptyGameObject, this.Seat.position + this.Seat.forward * -0.5f, Quaternion.identity).transform;
+					this.PetDestination = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, this.Seat.position + this.Seat.forward * -0.5f, Quaternion.identity).transform;
 					this.Pathfinding.target = this.PetDestination;
 					this.CurrentDestination = this.PetDestination;
 					this.Distracting = false;
@@ -13159,7 +13176,7 @@ public class StudentScript : MonoBehaviour
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.TeacherCorpseReaction, 1, 3f);
 				}
-				this.Pathfinding.target = Object.Instantiate<GameObject>(this.EmptyGameObject, new Vector3(this.Corpse.AllColliders[0].transform.position.x, base.transform.position.y, this.Corpse.AllColliders[0].transform.position.z), Quaternion.identity).transform;
+				this.Pathfinding.target = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, new Vector3(this.Corpse.AllColliders[0].transform.position.x, base.transform.position.y, this.Corpse.AllColliders[0].transform.position.z), Quaternion.identity).transform;
 				this.Pathfinding.target.position = Vector3.MoveTowards(this.Pathfinding.target.position, base.transform.position, 1.5f);
 				this.TargetDistance = 1f;
 				this.ReportPhase = 2;
@@ -13670,10 +13687,10 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Club != ClubType.Delinquent)
 		{
-			this.RandomAnim = this.AnimationNames[Random.Range(0, this.AnimationNames.Length)];
+			this.RandomAnim = this.AnimationNames[UnityEngine.Random.Range(0, this.AnimationNames.Length)];
 			return;
 		}
-		this.RandomAnim = this.DelinquentAnims[Random.Range(0, this.DelinquentAnims.Length)];
+		this.RandomAnim = this.DelinquentAnims[UnityEngine.Random.Range(0, this.DelinquentAnims.Length)];
 	}
 
 	private void PickRandomGossipAnim()
@@ -13683,7 +13700,7 @@ public class StudentScript : MonoBehaviour
 			this.RandomAnim = this.BulliedIdleAnim;
 			return;
 		}
-		this.RandomGossipAnim = this.GossipAnims[Random.Range(0, this.GossipAnims.Length)];
+		this.RandomGossipAnim = this.GossipAnims[UnityEngine.Random.Range(0, this.GossipAnims.Length)];
 		if (this.Actions[this.Phase] == StudentActionType.Gossip && this.DistanceToPlayer < 3f)
 		{
 			if (!ConversationGlobals.GetTopicDiscovered(19))
@@ -13703,10 +13720,10 @@ public class StudentScript : MonoBehaviour
 	{
 		if (!this.Sleuthing)
 		{
-			this.RandomSleuthAnim = this.SleuthAnims[Random.Range(0, 3)];
+			this.RandomSleuthAnim = this.SleuthAnims[UnityEngine.Random.Range(0, 3)];
 			return;
 		}
-		this.RandomSleuthAnim = this.SleuthAnims[Random.Range(3, 6)];
+		this.RandomSleuthAnim = this.SleuthAnims[UnityEngine.Random.Range(3, 6)];
 	}
 
 	private void BecomeTeacher()
@@ -14124,7 +14141,7 @@ public class StudentScript : MonoBehaviour
 
 	public void JojoReact()
 	{
-		Object.Instantiate<GameObject>(this.JojoHitEffect, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+		UnityEngine.Object.Instantiate<GameObject>(this.JojoHitEffect, base.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 		if (!this.Dying)
 		{
 			this.Dying = true;
@@ -14222,7 +14239,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.LabcoatAttacher.enabled)
 		{
-			Object.Destroy(this.LabcoatAttacher.newRenderer);
+			UnityEngine.Object.Destroy(this.LabcoatAttacher.newRenderer);
 			this.LabcoatAttacher.enabled = false;
 		}
 		if (this.Schoolwear == 0)
@@ -14413,7 +14430,7 @@ public class StudentScript : MonoBehaviour
 
 	public void SpawnAlarmDisc()
 	{
-		GameObject gameObject = Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
 		gameObject.GetComponent<AlarmDiscScript>().Male = this.Male;
 		gameObject.GetComponent<AlarmDiscScript>().Originator = this;
 		if (this.Splashed)
@@ -14437,7 +14454,7 @@ public class StudentScript : MonoBehaviour
 
 	public void SpawnSmallAlarmDisc()
 	{
-		GameObject gameObject = Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity);
 		gameObject.transform.localScale = new Vector3(100f, 1f, 100f);
 		gameObject.GetComponent<AlarmDiscScript>().NoScream = true;
 	}
@@ -14556,7 +14573,7 @@ public class StudentScript : MonoBehaviour
 				this.SkirtCollider.gameObject.SetActive(true);
 				this.PantyCollider.enabled = true;
 			}
-			Object.Destroy(this.LabcoatAttacher.newRenderer);
+			UnityEngine.Object.Destroy(this.LabcoatAttacher.newRenderer);
 			this.LabcoatAttacher.enabled = false;
 			this.ChangeSchoolwear();
 			return;
@@ -14847,7 +14864,7 @@ public class StudentScript : MonoBehaviour
 		this.Note.SetActive(false);
 		if (!this.Slave)
 		{
-			Object.Destroy(this.Broken);
+			UnityEngine.Object.Destroy(this.Broken);
 		}
 	}
 
@@ -14957,6 +14974,13 @@ public class StudentScript : MonoBehaviour
 		if (this.Club != ClubType.Council)
 		{
 			this.Phase++;
+			if (this.Club == ClubType.Bully)
+			{
+				ScheduleBlock scheduleBlock = this.ScheduleBlocks[2];
+				scheduleBlock.destination = "Patrol";
+				scheduleBlock.action = "Patrol";
+			}
+			this.GetDestinations();
 			if (this.Actions[this.Phase] == StudentActionType.Patrol)
 			{
 				this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
@@ -15188,6 +15212,7 @@ public class StudentScript : MonoBehaviour
 					this.Alarmed = false;
 					this.Routine = false;
 					this.Fleeing = false;
+					this.Blind = true;
 					this.Yandere.CharacterAnimation.CrossFade("f02_sprayed_00");
 					this.Yandere.YandereVision = false;
 					this.Yandere.NearSenpai = false;
@@ -15221,6 +15246,7 @@ public class StudentScript : MonoBehaviour
 			this.Yandere.FightHasBrokenUp = true;
 			this.Yandere.BreakUpTimer = 10f;
 			this.StudentManager.CombatMinigame.Path = 7;
+			this.StudentManager.Portal.SetActive(true);
 			this.CharacterAnimation.Play(this.BreakUpAnim);
 			this.BreakingUpFight = true;
 			this.SprayTimer = 1f;
@@ -15339,9 +15365,9 @@ public class StudentScript : MonoBehaviour
 		}
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 0f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 0f);
-		Object.Destroy(this.DetectionMarker.gameObject);
+		UnityEngine.Object.Destroy(this.DetectionMarker.gameObject);
 		AudioSource.PlayClipAtPoint(this.Yandere.Petrify, base.transform.position + new Vector3(0f, 1f, 0f));
-		Object.Instantiate<GameObject>(this.Yandere.Pebbles, this.Hips.position, Quaternion.identity);
+		UnityEngine.Object.Instantiate<GameObject>(this.Yandere.Pebbles, this.Hips.position, Quaternion.identity);
 		this.Pathfinding.enabled = false;
 		this.ShoeRemoval.enabled = false;
 		this.CharacterAnimation.Stop();
@@ -15729,7 +15755,7 @@ public class StudentScript : MonoBehaviour
 	{
 		this.CharacterAnimation[this.LeanAnim].speed += (float)this.StudentID * 0.01f;
 		this.CharacterAnimation[this.ConfusedSitAnim].speed += (float)this.StudentID * 0.01f;
-		this.CharacterAnimation[this.WalkAnim].time = Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
+		this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 		this.CharacterAnimation[this.WetAnim].layer = 9;
 		this.CharacterAnimation.Play(this.WetAnim);
 		this.CharacterAnimation[this.WetAnim].weight = 0f;
@@ -15788,7 +15814,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Persona == PersonaType.Sleuth)
 		{
-			this.CharacterAnimation[this.WalkAnim].time = Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
+			this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 		}
 		if (this.Club == ClubType.Bully)
 		{
@@ -15799,7 +15825,7 @@ public class StudentScript : MonoBehaviour
 		}
 		else if (this.Club == ClubType.Delinquent)
 		{
-			this.CharacterAnimation[this.WalkAnim].time = Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
+			this.CharacterAnimation[this.WalkAnim].time = UnityEngine.Random.Range(0f, this.CharacterAnimation[this.WalkAnim].length);
 			this.CharacterAnimation[this.LeanAnim].speed = 0.5f;
 		}
 		else if (this.Club == ClubType.Council)
@@ -15830,7 +15856,7 @@ public class StudentScript : MonoBehaviour
 
 	private void SpawnDetectionMarker()
 	{
-		this.DetectionMarker = Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
+		this.DetectionMarker = UnityEngine.Object.Instantiate<GameObject>(this.Marker, GameObject.Find("DetectionPanel").transform.position, Quaternion.identity).GetComponent<DetectionMarkerScript>();
 		this.DetectionMarker.transform.parent = GameObject.Find("DetectionPanel").transform;
 		this.DetectionMarker.Target = base.transform;
 	}

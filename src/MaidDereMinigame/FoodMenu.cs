@@ -36,7 +36,7 @@ namespace MaidDereMinigame
 			{
 				if (FoodMenu.instance == null)
 				{
-					FoodMenu.instance = Object.FindObjectOfType<FoodMenu>();
+					FoodMenu.instance = UnityEngine.Object.FindObjectOfType<FoodMenu>();
 				}
 				return FoodMenu.instance;
 			}
@@ -73,15 +73,15 @@ namespace MaidDereMinigame
 
 		public Food GetActiveFood()
 		{
-			Food food = Object.Instantiate<Food>(this.foodItems[this.activeIndex]);
+			Food food = UnityEngine.Object.Instantiate<Food>(this.foodItems[this.activeIndex]);
 			food.name = this.foodItems[this.activeIndex].name;
 			return food;
 		}
 
 		public Food GetRandomFood()
 		{
-			int index = Random.Range(0, this.foodItems.Count);
-			Food food = Object.Instantiate<Food>(this.foodItems[index]);
+			int index = UnityEngine.Random.Range(0, this.foodItems.Count);
+			Food food = UnityEngine.Object.Instantiate<Food>(this.foodItems[index]);
 			food.name = this.foodItems[index].name;
 			return food;
 		}

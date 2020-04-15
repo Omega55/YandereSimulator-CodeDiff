@@ -1542,7 +1542,7 @@ public class YandereScript : MonoBehaviour
 		}
 		if (this.StudentManager.Students[11] != null)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
@@ -1941,7 +1941,7 @@ public class YandereScript : MonoBehaviour
 					this.targetRotation = Quaternion.LookRotation(this.Senpai.position - base.transform.position);
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, Time.deltaTime * 10f);
 					base.transform.localEulerAngles = new Vector3(0f, base.transform.localEulerAngles.y, base.transform.localEulerAngles.z);
-					if (Vector3.Distance(base.transform.position, this.Senpai.position) < 1f)
+					if (Vector3.Distance(base.transform.position, this.Senpai.position) < 1.25f)
 					{
 						this.MyController.Move(base.transform.forward * (Time.deltaTime * -1f));
 					}
@@ -2399,7 +2399,7 @@ public class YandereScript : MonoBehaviour
 								{
 									this.BlasterStage = 1;
 								}
-								GameObject gameObject = Object.Instantiate<GameObject>(this.BlasterSet[this.BlasterStage], base.transform.position, Quaternion.identity);
+								GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BlasterSet[this.BlasterStage], base.transform.position, Quaternion.identity);
 								gameObject.transform.position = base.transform.position;
 								gameObject.transform.rotation = base.transform.rotation;
 								AudioSource.PlayClipAtPoint(this.BlasterClip, base.transform.position + Vector3.up);
@@ -2484,7 +2484,7 @@ public class YandereScript : MonoBehaviour
 											this.MyAudio.Play();
 										}
 										this.GiggleLines.Play();
-										Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
+										UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
 										this.MyAudio.volume = 1f;
 										this.LaughTimer = 0.5f;
 										this.Laughing = true;
@@ -2512,7 +2512,7 @@ public class YandereScript : MonoBehaviour
 								{
 									if (this.FalconHelmet.activeInHierarchy)
 									{
-										GameObject gameObject2 = Object.Instantiate<GameObject>(this.FalconWindUp);
+										GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.FalconWindUp);
 										gameObject2.transform.parent = this.ItemParent;
 										gameObject2.transform.localPosition = Vector3.zero;
 										AudioClipPlayer.PlayAttached(this.FalconPunchVoice, this.MainCamera.transform, 5f, 10f);
@@ -2522,10 +2522,10 @@ public class YandereScript : MonoBehaviour
 									}
 									else
 									{
-										GameObject gameObject3 = Object.Instantiate<GameObject>(this.FalconWindUp);
+										GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.FalconWindUp);
 										gameObject3.transform.parent = this.ItemParent;
 										gameObject3.transform.localPosition = Vector3.zero;
-										AudioSource.PlayClipAtPoint(this.OnePunchVoices[Random.Range(0, this.OnePunchVoices.Length)], base.transform.position + Vector3.up);
+										AudioSource.PlayClipAtPoint(this.OnePunchVoices[UnityEngine.Random.Range(0, this.OnePunchVoices.Length)], base.transform.position + Vector3.up);
 										this.CharacterAnimation["f02_onePunch_00"].time = 0f;
 										this.CharacterAnimation.CrossFade("f02_onePunch_00", 0.15f);
 									}
@@ -2761,9 +2761,9 @@ public class YandereScript : MonoBehaviour
 			{
 				if (this.NewTrail != null)
 				{
-					Object.Destroy(this.NewTrail);
+					UnityEngine.Object.Destroy(this.NewTrail);
 				}
-				this.NewTrail = Object.Instantiate<GameObject>(this.Trail, base.transform.position + base.transform.forward * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
+				this.NewTrail = UnityEngine.Object.Instantiate<GameObject>(this.Trail, base.transform.position + base.transform.forward * 0.5f + Vector3.up * 0.1f, Quaternion.identity);
 				if (SchemeGlobals.CurrentScheme == 0)
 				{
 					this.NewTrail.GetComponent<AIPath>().target = this.Homeroom;
@@ -2774,7 +2774,7 @@ public class YandereScript : MonoBehaviour
 				}
 				else
 				{
-					Object.Destroy(this.NewTrail);
+					UnityEngine.Object.Destroy(this.NewTrail);
 				}
 			}
 			if (this.Armed)
@@ -3044,17 +3044,17 @@ public class YandereScript : MonoBehaviour
 					if (this.PickUp.Bucket.Gasoline)
 					{
 						this.PickUp.Bucket.PourEffect.main.startColor = new Color(1f, 1f, 0f, 0.5f);
-						Object.Instantiate<GameObject>(this.PickUp.Bucket.GasCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.GasCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
 					}
 					else if (this.PickUp.Bucket.Bloodiness < 50f)
 					{
 						this.PickUp.Bucket.PourEffect.main.startColor = new Color(0f, 1f, 1f, 0.5f);
-						Object.Instantiate<GameObject>(this.PickUp.Bucket.WaterCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.WaterCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
 					}
 					else
 					{
 						this.PickUp.Bucket.PourEffect.main.startColor = new Color(0.5f, 0f, 0f, 0.5f);
-						Object.Instantiate<GameObject>(this.PickUp.Bucket.BloodCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.PickUp.Bucket.BloodCollider, this.PickUp.Bucket.PourEffect.transform.position + this.PourDistance * base.transform.forward, Quaternion.identity);
 					}
 					this.PickUp.Bucket.PourEffect.Play();
 					this.PickUp.Bucket.Poured = true;
@@ -3098,8 +3098,8 @@ public class YandereScript : MonoBehaviour
 					this.CirnoTimer -= Time.deltaTime;
 					if (this.CirnoTimer < 0f)
 					{
-						Object.Instantiate<GameObject>(this.Fireball, this.RightHand.position, base.transform.rotation).transform.localEulerAngles += new Vector3(Random.Range(0f, 22.5f), Random.Range(-22.5f, 22.5f), Random.Range(-22.5f, 22.5f));
-						Object.Instantiate<GameObject>(this.Fireball, this.LeftHand.position, base.transform.rotation).transform.localEulerAngles += new Vector3(Random.Range(0f, 22.5f), Random.Range(-22.5f, 22.5f), Random.Range(-22.5f, 22.5f));
+						UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.RightHand.position, base.transform.rotation).transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
+						UnityEngine.Object.Instantiate<GameObject>(this.Fireball, this.LeftHand.position, base.transform.rotation).transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(0f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f), UnityEngine.Random.Range(-22.5f, 22.5f));
 						this.CirnoTimer = 0.1f;
 					}
 				}
@@ -3121,7 +3121,7 @@ public class YandereScript : MonoBehaviour
 					this.CirnoTimer -= Time.deltaTime;
 					if (this.CirnoTimer < 0f)
 					{
-						Object.Instantiate<GameObject>(this.CirnoIceAttack, base.transform.position + base.transform.up * 1.4f, base.transform.rotation).transform.localEulerAngles += new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+						UnityEngine.Object.Instantiate<GameObject>(this.CirnoIceAttack, base.transform.position + base.transform.up * 1.4f, base.transform.rotation).transform.localEulerAngles += new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
 						this.MyAudio.PlayOneShot(this.CirnoIceClip);
 						this.CirnoTimer = 0.1f;
 					}
@@ -3132,10 +3132,10 @@ public class YandereScript : MonoBehaviour
 					this.CirnoTimer -= Time.deltaTime;
 					if (this.CirnoTimer < 0f)
 					{
-						GameObject gameObject4 = Object.Instantiate<GameObject>(this.TornadoAttack, base.transform.forward * 5f + new Vector3(base.transform.position.x + Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + Random.Range(-5f, 5f)), base.transform.rotation);
+						GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.TornadoAttack, base.transform.forward * 5f + new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f)), base.transform.rotation);
 						while (Vector3.Distance(base.transform.position, gameObject4.transform.position) < 1f)
 						{
-							gameObject4.transform.position = base.transform.forward * 5f + new Vector3(base.transform.position.x + Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + Random.Range(-5f, 5f));
+							gameObject4.transform.position = base.transform.forward * 5f + new Vector3(base.transform.position.x + UnityEngine.Random.Range(-5f, 5f), base.transform.position.y, base.transform.position.z + UnityEngine.Random.Range(-5f, 5f));
 						}
 						this.CirnoTimer = 0.1f;
 					}
@@ -3182,14 +3182,14 @@ public class YandereScript : MonoBehaviour
 					}
 					else if (this.LaughIntensity <= 20f)
 					{
-						Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>().NoScream = true;
+						UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>().NoScream = true;
 						this.LaughAnim = "f02_laugh_04";
 						this.LaughClip = this.Laugh4;
 						this.LaughTimer = 2f;
 					}
 					else
 					{
-						Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>().NoScream = true;
+						UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, base.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>().NoScream = true;
 						this.LaughAnim = "f02_laugh_04";
 						this.LaughIntensity = 20f;
 						this.LaughTimer = 2f;
@@ -3320,7 +3320,7 @@ public class YandereScript : MonoBehaviour
 						{
 							Debug.Log("Yandere-chan just killed " + this.TargetStudent.Name + " as a result of winning a struggling against them.");
 							this.TargetStudent.DeathCause = this.EquippedWeapon.WeaponID;
-							Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.TargetStudent.Teacher ? this.EquippedWeapon.transform.position : this.TargetStudent.Head.position, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.TargetStudent.Teacher ? this.EquippedWeapon.transform.position : this.TargetStudent.Head.position, Quaternion.identity);
 							this.Bloodiness += 20f;
 							this.Sanity -= 20f * this.Numbness;
 							this.StainWeapon();
@@ -3331,13 +3331,13 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 1.3f)
 						{
-							Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
 							this.StrugglePhase++;
 						}
 					}
 					else if (this.StrugglePhase == 2 && this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > 2.1f)
 					{
-						Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.EquippedWeapon.transform.position, Quaternion.identity);
 						this.StrugglePhase++;
 					}
 					if ((!this.TargetStudent.Teacher && this.CharacterAnimation["f02_struggleWinA_00"].time > this.CharacterAnimation["f02_struggleWinA_00"].length) || (this.TargetStudent.Teacher && this.CharacterAnimation["f02_teacherStruggleWinA_00"].time > this.CharacterAnimation["f02_teacherStruggleWinA_00"].length))
@@ -3747,7 +3747,7 @@ public class YandereScript : MonoBehaviour
 				if (this.CharacterAnimation["f02_phoneCrush_00"].time >= 0.5f && this.PhoneToCrush.enabled)
 				{
 					this.PhoneToCrush.transform.localEulerAngles = new Vector3(this.PhoneToCrush.transform.localEulerAngles.x, this.PhoneToCrush.transform.localEulerAngles.y, 0f);
-					Object.Instantiate<GameObject>(this.PhoneToCrush.PhoneSmash, this.PhoneToCrush.transform.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.PhoneToCrush.PhoneSmash, this.PhoneToCrush.transform.position, Quaternion.identity);
 					this.Police.PhotoEvidence--;
 					this.PhoneToCrush.MyRenderer.material.mainTexture = this.PhoneToCrush.SmashedTexture;
 					this.PhoneToCrush.MyMesh.mesh = this.PhoneToCrush.SmashedMesh;
@@ -3812,7 +3812,7 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.NewFalconPunch == null)
 							{
-								this.NewFalconPunch = Object.Instantiate<GameObject>(this.FalconPunch);
+								this.NewFalconPunch = UnityEngine.Object.Instantiate<GameObject>(this.FalconPunch);
 								this.NewFalconPunch.transform.parent = this.ItemParent;
 								this.NewFalconPunch.transform.localPosition = Vector3.zero;
 							}
@@ -3829,7 +3829,7 @@ public class YandereScript : MonoBehaviour
 					{
 						if (this.CharacterAnimation["f02_onePunch_00"].time >= 0.833333f && this.CharacterAnimation["f02_onePunch_00"].time <= 1f && this.NewOnePunch == null)
 						{
-							this.NewOnePunch = Object.Instantiate<GameObject>(this.OnePunch);
+							this.NewOnePunch = UnityEngine.Object.Instantiate<GameObject>(this.OnePunch);
 							this.NewOnePunch.transform.parent = this.ItemParent;
 							this.NewOnePunch.transform.localPosition = Vector3.zero;
 						}
@@ -3883,7 +3883,7 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_sansBones_00");
 					if (this.BoneTimer == 0f)
 					{
-						Object.Instantiate<GameObject>(this.Bone, base.transform.position + base.transform.right * Random.Range(-2.5f, 2.5f) + base.transform.up * -2f + base.transform.forward * Random.Range(1f, 6f), Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.Bone, base.transform.position + base.transform.right * UnityEngine.Random.Range(-2.5f, 2.5f) + base.transform.up * -2f + base.transform.forward * UnityEngine.Random.Range(1f, 6f), Quaternion.identity);
 					}
 					this.BoneTimer += Time.deltaTime;
 					if (this.BoneTimer > 0.1f)
@@ -3950,7 +3950,7 @@ public class YandereScript : MonoBehaviour
 								this.SithCombo
 							})].time >= this.SithSpawnTime[this.SithCombo])
 							{
-								Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
 								this.SithAttacks++;
 							}
 						}
@@ -3966,11 +3966,11 @@ public class YandereScript : MonoBehaviour
 								this.SithCombo
 							})].time >= this.SithHardSpawnTime1[this.SithCombo] && this.SithAttacks == 0)
 							{
-								Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1.5f + base.transform.up, base.transform.rotation).GetComponent<SithBeamScript>().Damage = 20f;
+								UnityEngine.Object.Instantiate<GameObject>(this.SithHitbox, base.transform.position + base.transform.forward * 1.5f + base.transform.up, base.transform.rotation).GetComponent<SithBeamScript>().Damage = 20f;
 								this.SithAttacks++;
 								if (this.SithCombo < 2)
 								{
-									Object.Instantiate<GameObject>(this.GroundImpact, base.transform.position + base.transform.forward * 1.5f, base.transform.rotation).transform.localScale = new Vector3(2f, 2f, 2f);
+									UnityEngine.Object.Instantiate<GameObject>(this.GroundImpact, base.transform.position + base.transform.forward * 1.5f, base.transform.rotation).transform.localScale = new Vector3(2f, 2f, 2f);
 								}
 							}
 						}
@@ -3986,7 +3986,7 @@ public class YandereScript : MonoBehaviour
 								this.SithCombo
 							})].time >= this.SithHardSpawnTime1[this.SithCombo])
 							{
-								Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
 								this.SithAttacks++;
 							}
 						}
@@ -4002,7 +4002,7 @@ public class YandereScript : MonoBehaviour
 								this.SithCombo
 							})].time >= this.SithHardSpawnTime2[this.SithCombo])
 							{
-								Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
 								this.SithAttacks++;
 							}
 						}
@@ -4016,7 +4016,7 @@ public class YandereScript : MonoBehaviour
 							this.SithCombo
 						})].time >= 0.933333337f)
 						{
-							Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
+							UnityEngine.Object.Instantiate<GameObject>(this.SithHardHitbox, base.transform.position + base.transform.forward * 1f + base.transform.up, base.transform.rotation);
 							this.SithAttacks++;
 						}
 						this.SithSoundCheck();
@@ -4150,7 +4150,7 @@ public class YandereScript : MonoBehaviour
 					base.transform.rotation = Quaternion.Slerp(base.transform.rotation, this.targetRotation, 10f * Time.deltaTime);
 					if (this.CharacterAnimation["f02_sixEat_00"].time > this.BloodTimes[this.EatPhase])
 					{
-						Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.Mouth.position, Quaternion.identity).GetComponent<RandomStabScript>().Biting = true;
+						UnityEngine.Object.Instantiate<GameObject>(this.TargetStudent.StabBloodEffect, this.Mouth.position, Quaternion.identity).GetComponent<RandomStabScript>().Biting = true;
 						this.Bloodiness += 20f;
 						this.EatPhase++;
 					}
@@ -4193,7 +4193,7 @@ public class YandereScript : MonoBehaviour
 							if (this.CharacterAnimation["f02_fingerSnap_00"].time >= 1f)
 							{
 								AudioSource.PlayClipAtPoint(this.FingerSnap, base.transform.position + Vector3.up);
-								Object.Instantiate<GameObject>(this.KnifeArray, base.transform.position, base.transform.rotation).GetComponent<KnifeArrayScript>().GlobalKnifeArray = this.GlobalKnifeArray;
+								UnityEngine.Object.Instantiate<GameObject>(this.KnifeArray, base.transform.position, base.transform.rotation).GetComponent<KnifeArrayScript>().GlobalKnifeArray = this.GlobalKnifeArray;
 								this.SnapPhase++;
 							}
 						}
@@ -4201,7 +4201,7 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1f)
 							{
-								Object.Instantiate<GameObject>(this.Shell, this.Guns[1].position, base.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[1].position, base.transform.rotation);
 								this.ShotsFired++;
 							}
 						}
@@ -4209,7 +4209,7 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.2f)
 							{
-								Object.Instantiate<GameObject>(this.Shell, this.Guns[2].position, base.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[2].position, base.transform.rotation);
 								this.ShotsFired++;
 							}
 						}
@@ -4217,13 +4217,13 @@ public class YandereScript : MonoBehaviour
 						{
 							if (this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.4f)
 							{
-								Object.Instantiate<GameObject>(this.Shell, this.Guns[3].position, base.transform.rotation);
+								UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[3].position, base.transform.rotation);
 								this.ShotsFired++;
 							}
 						}
 						else if (this.ShotsFired < 4 && this.CharacterAnimation["f02_shipGirlSnap_00"].time >= 1.6f)
 						{
-							Object.Instantiate<GameObject>(this.Shell, this.Guns[4].position, base.transform.rotation);
+							UnityEngine.Object.Instantiate<GameObject>(this.Shell, this.Guns[4].position, base.transform.rotation);
 							this.ShotsFired++;
 							this.SnapPhase++;
 						}
@@ -4301,7 +4301,7 @@ public class YandereScript : MonoBehaviour
 					this.CharacterAnimation.CrossFade("f02_LoveLoveBeam_00");
 					if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= 1.5f && this.BeamPhase == 0)
 					{
-						Object.Instantiate<GameObject>(this.LoveLoveBeam, base.transform.position, base.transform.rotation);
+						UnityEngine.Object.Instantiate<GameObject>(this.LoveLoveBeam, base.transform.position, base.transform.rotation);
 						this.BeamPhase++;
 					}
 					if (this.CharacterAnimation["f02_LoveLoveBeam_00"].time >= this.CharacterAnimation["f02_LoveLoveBeam_00"].length - 1f)
@@ -5153,7 +5153,7 @@ public class YandereScript : MonoBehaviour
 				{
 					if (this.Shoes[0].activeInHierarchy)
 					{
-						Object.Instantiate<GameObject>(this.ShoePair, base.transform.position + new Vector3(0f, 0.045f, 0f) + base.transform.forward * 1.6f, Quaternion.identity).transform.eulerAngles = base.transform.eulerAngles;
+						UnityEngine.Object.Instantiate<GameObject>(this.ShoePair, base.transform.position + new Vector3(0f, 0.045f, 0f) + base.transform.forward * 1.6f, Quaternion.identity).transform.eulerAngles = base.transform.eulerAngles;
 						this.Shoes[0].SetActive(false);
 						this.Shoes[1].SetActive(false);
 					}
@@ -5293,7 +5293,7 @@ public class YandereScript : MonoBehaviour
 								{
 									this.StudentManager.Reporter = null;
 								}
-								Object.Destroy(this.TargetStudent.DeathScream);
+								UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
 								this.EquippedWeapon.Effect();
 								this.AttackPhase = 2;
 								this.Bloodiness += 20f;
@@ -5347,8 +5347,8 @@ public class YandereScript : MonoBehaviour
 							{
 								this.StudentManager.Reporter = null;
 							}
-							AudioSource.PlayClipAtPoint(this.Stabs[Random.Range(0, this.Stabs.Length)], base.transform.position + Vector3.up);
-							Object.Destroy(this.TargetStudent.DeathScream);
+							AudioSource.PlayClipAtPoint(this.Stabs[UnityEngine.Random.Range(0, this.Stabs.Length)], base.transform.position + Vector3.up);
+							UnityEngine.Object.Destroy(this.TargetStudent.DeathScream);
 							this.AttackPhase = 2;
 							this.Sanity -= 20f * this.Numbness;
 							if (this.EquippedWeapon.WeaponID == 8)
@@ -5413,8 +5413,8 @@ public class YandereScript : MonoBehaviour
 			this.TwitchTimer += Time.deltaTime;
 			if (this.TwitchTimer > this.NextTwitch)
 			{
-				this.Twitch = new Vector3((1f - this.Sanity / 100f) * Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * Random.Range(-10f, 10f));
-				this.NextTwitch = Random.Range(0f, 1f);
+				this.Twitch = new Vector3((1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f));
+				this.NextTwitch = UnityEngine.Random.Range(0f, 1f);
 				this.TwitchTimer = 0f;
 			}
 			this.Twitch = Vector3.Lerp(this.Twitch, Vector3.zero, Time.deltaTime * 10f);
@@ -6061,7 +6061,7 @@ public class YandereScript : MonoBehaviour
 					}
 					if (this.KagunePhase == 0 && this.KaguneRotation[0].y == 180f)
 					{
-						Object.Instantiate<GameObject>(this.DemonSlash, base.transform.position + base.transform.up + base.transform.forward, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.DemonSlash, base.transform.position + base.transform.up + base.transform.forward, Quaternion.identity);
 						this.KagunePhase = 1;
 					}
 					if (this.KaguneRotation[0] == new Vector3(15f, 180f, 500f))
@@ -6137,8 +6137,8 @@ public class YandereScript : MonoBehaviour
 			this.GiggleTimer += Time.deltaTime * (1f - this.sanity / 33.333f);
 			if (this.GiggleTimer > 10f)
 			{
-				Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
-				AudioSource.PlayClipAtPoint(this.CreepyGiggles[Random.Range(0, this.CreepyGiggles.Length)], base.transform.position);
+				UnityEngine.Object.Instantiate<GameObject>(this.GiggleDisc, base.transform.position + Vector3.up, Quaternion.identity);
+				AudioSource.PlayClipAtPoint(this.CreepyGiggles[UnityEngine.Random.Range(0, this.CreepyGiggles.Length)], base.transform.position);
 				this.InsaneLines.Play();
 				this.GiggleTimer = 0f;
 			}
@@ -7861,7 +7861,7 @@ public class YandereScript : MonoBehaviour
 				this.SithCombo
 			})].time >= this.SithSpawnTime[this.SithCombo] - 0.1f)
 			{
-				this.SithAudio.pitch = Random.Range(0.9f, 1.1f);
+				this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.SithAudio.Play();
 				this.SithSounds++;
 				return;
@@ -7879,7 +7879,7 @@ public class YandereScript : MonoBehaviour
 				this.SithCombo
 			})].time >= this.SithHardSpawnTime1[this.SithCombo] - 0.1f)
 			{
-				this.SithAudio.pitch = Random.Range(0.9f, 1.1f);
+				this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.SithAudio.Play();
 				this.SithSounds++;
 				return;
@@ -7897,7 +7897,7 @@ public class YandereScript : MonoBehaviour
 				this.SithCombo
 			})].time >= this.SithHardSpawnTime2[this.SithCombo] - 0.1f)
 			{
-				this.SithAudio.pitch = Random.Range(0.9f, 1.1f);
+				this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.SithAudio.Play();
 				this.SithSounds++;
 				return;
@@ -7913,7 +7913,7 @@ public class YandereScript : MonoBehaviour
 			this.SithCombo
 		})].time >= 0.8333333f)
 		{
-			this.SithAudio.pitch = Random.Range(0.9f, 1.1f);
+			this.SithAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 			this.SithAudio.Play();
 			this.SithSounds++;
 		}

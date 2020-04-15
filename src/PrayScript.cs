@@ -240,7 +240,7 @@ public class PrayScript : MonoBehaviour
 						}
 						if (this.StudentManager.Students[this.StudentID] != null)
 						{
-							Object.Destroy(this.StudentManager.Students[this.StudentID].gameObject);
+							UnityEngine.Object.Destroy(this.StudentManager.Students[this.StudentID].gameObject);
 						}
 						this.StudentManager.Students[this.StudentID] = null;
 						this.StudentManager.ForceSpawn = true;

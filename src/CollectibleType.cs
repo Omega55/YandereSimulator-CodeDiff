@@ -6,5 +6,6 @@ public enum CollectibleType
 	BasementTape,
 	Manga,
 	Tape,
-	Key
+	Key,
+	Panty
 }

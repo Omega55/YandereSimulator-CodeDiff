@@ -94,7 +94,7 @@ public class MechaScript : MonoBehaviour
 				{
 					if (this.Timer > 0f)
 					{
-						Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[1].position, base.transform.rotation);
+						UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[1].position, base.transform.rotation);
 						this.ShotsFired++;
 					}
 				}
@@ -102,7 +102,7 @@ public class MechaScript : MonoBehaviour
 				{
 					if (this.Timer > 0.1f)
 					{
-						Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[2].position, base.transform.rotation);
+						UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[2].position, base.transform.rotation);
 						this.ShotsFired++;
 					}
 				}
@@ -110,13 +110,13 @@ public class MechaScript : MonoBehaviour
 				{
 					if (this.Timer > 0.2f)
 					{
-						Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[3].position, base.transform.rotation);
+						UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[3].position, base.transform.rotation);
 						this.ShotsFired++;
 					}
 				}
 				else if (this.ShotsFired < 4 && this.Timer > 0.3f)
 				{
-					Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[4].position, base.transform.rotation);
+					UnityEngine.Object.Instantiate<GameObject>(this.ShellType, this.SpawnPoints[4].position, base.transform.rotation);
 					this.ShotsFired = 0;
 					this.Fire = false;
 					this.Timer = 0f;

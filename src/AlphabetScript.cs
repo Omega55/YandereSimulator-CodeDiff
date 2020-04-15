@@ -81,7 +81,7 @@ public class AlphabetScript : MonoBehaviour
 			{
 				if (this.StudentManager.Yandere.Inventory.SmokeBomb)
 				{
-					Object.Instantiate<GameObject>(this.SmokeBomb, this.Yandere.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.SmokeBomb, this.Yandere.position, Quaternion.identity);
 					this.RemainingBombs--;
 					this.BombLabel.text = string.Concat(this.RemainingBombs);
 					if (this.RemainingBombs == 0)
@@ -91,7 +91,7 @@ public class AlphabetScript : MonoBehaviour
 				}
 				else if (this.StudentManager.Yandere.Inventory.StinkBomb)
 				{
-					Object.Instantiate<GameObject>(this.StinkBomb, this.Yandere.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.StinkBomb, this.Yandere.position, Quaternion.identity);
 					this.RemainingBombs--;
 					this.BombLabel.text = string.Concat(this.RemainingBombs);
 					if (this.RemainingBombs == 0)
@@ -101,7 +101,7 @@ public class AlphabetScript : MonoBehaviour
 				}
 				else if (this.StudentManager.Yandere.Inventory.AmnesiaBomb)
 				{
-					Object.Instantiate<GameObject>(this.AmnesiaBomb, this.Yandere.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.AmnesiaBomb, this.Yandere.position, Quaternion.identity);
 					this.RemainingBombs--;
 					this.BombLabel.text = string.Concat(this.RemainingBombs);
 					if (this.RemainingBombs == 0)

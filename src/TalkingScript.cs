@@ -320,7 +320,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					Object.Destroy(this.S.Subtitle.CurrentClip);
+					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				if (this.S.CharacterAnimation[this.S.CurrentAnim].time >= this.S.CharacterAnimation[this.S.CurrentAnim].length)
@@ -628,7 +628,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					Object.Destroy(this.S.Subtitle.CurrentClip);
+					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -688,7 +688,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					Object.Destroy(this.S.Subtitle.CurrentClip);
+					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -734,7 +734,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					Object.Destroy(this.S.Subtitle.CurrentClip);
+					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -810,7 +810,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					Object.Destroy(this.S.Subtitle.CurrentClip);
+					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;
@@ -927,7 +927,7 @@ public class TalkingScript : MonoBehaviour
 				else if (Input.GetButtonDown("A"))
 				{
 					this.S.Subtitle.Label.text = string.Empty;
-					Object.Destroy(this.S.Subtitle.CurrentClip);
+					UnityEngine.Object.Destroy(this.S.Subtitle.CurrentClip);
 					this.S.TalkTimer = 0f;
 				}
 				this.S.TalkTimer -= Time.deltaTime;

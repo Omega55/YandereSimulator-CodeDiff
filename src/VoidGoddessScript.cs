@@ -71,7 +71,7 @@ public class VoidGoddessScript : MonoBehaviour
 		this.ID = 1;
 		while (this.ID < 101)
 		{
-			this.NewPortrait = Object.Instantiate<GameObject>(this.Portrait, base.transform.position, Quaternion.identity);
+			this.NewPortrait = UnityEngine.Object.Instantiate<GameObject>(this.Portrait, base.transform.position, Quaternion.identity);
 			this.NewPortrait.transform.parent = this.Window;
 			this.NewPortrait.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.NewPortrait.transform.localPosition = new Vector3((float)(-450 + this.Column * 100), (float)(450 - this.Row * 100), 0f);

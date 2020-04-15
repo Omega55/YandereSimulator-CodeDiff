@@ -337,7 +337,7 @@ public class PhoneEventScript : MonoBehaviour
 			this.EventStudent.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 			if (this.VoiceClip != null)
 			{
-				Object.Destroy(this.VoiceClip);
+				UnityEngine.Object.Destroy(this.VoiceClip);
 			}
 			if (this.EventFriend != null)
 			{

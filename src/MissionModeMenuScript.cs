@@ -1062,7 +1062,7 @@ public class MissionModeMenuScript : MonoBehaviour
 	{
 		if (this.Phase != 5)
 		{
-			this.TargetID = Random.Range(2, 90);
+			this.TargetID = UnityEngine.Random.Range(2, 90);
 			if (this.TargetNumber > 9 && this.TargetNumber < 21)
 			{
 				this.ChooseTarget();
@@ -1110,7 +1110,7 @@ public class MissionModeMenuScript : MonoBehaviour
 		this.CustomTargetPortrait.mainTexture = this.TargetPortrait.mainTexture;
 		if (this.JSON.Students[this.TargetID].Name == "Random" || this.JSON.Students[this.TargetID].Name == "Unknown")
 		{
-			this.TargetName = this.StudentManager.FirstNames[Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[Random.Range(0, this.StudentManager.LastNames.Length)];
+			this.TargetName = this.StudentManager.FirstNames[UnityEngine.Random.Range(0, this.StudentManager.FirstNames.Length)] + " " + this.StudentManager.LastNames[UnityEngine.Random.Range(0, this.StudentManager.LastNames.Length)];
 		}
 		else
 		{
@@ -1213,7 +1213,7 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void PickNewCondition()
 	{
-		int num = Random.Range(1, this.ConditionDescs.Length);
+		int num = UnityEngine.Random.Range(1, this.ConditionDescs.Length);
 		this.Conditions[this.Difficulty] = num;
 		this.Descs[this.Difficulty].text = this.ConditionDescs[num];
 		this.Icons[this.Difficulty].mainTexture = this.ConditionIcons[num];
@@ -1238,18 +1238,18 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.RequiredWeaponID = 11;
 			while (this.RequiredWeaponID == 11)
 			{
-				this.RequiredWeaponID = Random.Range(1, this.WeaponNames.Length);
+				this.RequiredWeaponID = UnityEngine.Random.Range(1, this.WeaponNames.Length);
 			}
 			this.Descs[this.Difficulty].text = this.ConditionDescs[num] + " " + this.WeaponNames[this.RequiredWeaponID];
 		}
 		else if (num == 2)
 		{
-			this.RequiredClothingID = Random.Range(1, this.ClothingNames.Length);
+			this.RequiredClothingID = UnityEngine.Random.Range(1, this.ClothingNames.Length);
 			this.Descs[this.Difficulty].text = this.ConditionDescs[num] + " " + this.ClothingNames[this.RequiredClothingID];
 		}
 		else if (num == 3)
 		{
-			this.RequiredDisposalID = Random.Range(1, this.DisposalNames.Length);
+			this.RequiredDisposalID = UnityEngine.Random.Range(1, this.DisposalNames.Length);
 			this.Descs[this.Difficulty].text = this.ConditionDescs[num] + " " + this.DisposalNames[this.RequiredDisposalID];
 		}
 		this.UpdateDifficultyLabel();
@@ -1314,18 +1314,18 @@ public class MissionModeMenuScript : MonoBehaviour
 					this.RequiredWeaponID = 11;
 					while (this.RequiredWeaponID == 11)
 					{
-						this.RequiredWeaponID = Random.Range(1, this.WeaponNames.Length);
+						this.RequiredWeaponID = UnityEngine.Random.Range(1, this.WeaponNames.Length);
 					}
 					this.Descs[j].text = this.ConditionDescs[MissionModeGlobals.GetMissionCondition(j)] + " " + this.WeaponNames[MissionModeGlobals.MissionRequiredWeapon];
 				}
 				else if (MissionModeGlobals.GetMissionCondition(j) == 2)
 				{
-					this.RequiredClothingID = Random.Range(0, this.ClothingNames.Length);
+					this.RequiredClothingID = UnityEngine.Random.Range(0, this.ClothingNames.Length);
 					this.Descs[j].text = this.ConditionDescs[MissionModeGlobals.GetMissionCondition(j)] + " " + this.ClothingNames[MissionModeGlobals.MissionRequiredClothing];
 				}
 				else if (MissionModeGlobals.GetMissionCondition(j) == 3)
 				{
-					this.RequiredDisposalID = Random.Range(1, this.DisposalNames.Length);
+					this.RequiredDisposalID = UnityEngine.Random.Range(1, this.DisposalNames.Length);
 					this.Descs[j].text = this.ConditionDescs[MissionModeGlobals.GetMissionCondition(j)] + " " + this.DisposalNames[MissionModeGlobals.MissionRequiredDisposal];
 				}
 			}
@@ -1484,7 +1484,7 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void ChangeFont()
 	{
-		foreach (UILabel uilabel in Object.FindObjectsOfType<UILabel>())
+		foreach (UILabel uilabel in UnityEngine.Object.FindObjectsOfType<UILabel>())
 		{
 			uilabel.trueTypeFont = this.Arial;
 			uilabel.fontSize += 10;

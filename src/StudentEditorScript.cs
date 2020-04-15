@@ -154,7 +154,7 @@ public class StudentEditorScript : MonoBehaviour
 		for (int j = 0; j < this.students.Length; j++)
 		{
 			StudentEditorScript.StudentData studentData = this.students[j];
-			UILabel uilabel = Object.Instantiate<UILabel>(this.studentLabelTemplate, this.listLabelsOrigin);
+			UILabel uilabel = UnityEngine.Object.Instantiate<UILabel>(this.studentLabelTemplate, this.listLabelsOrigin);
 			uilabel.text = "(" + studentData.id.ToString() + ") " + studentData.name;
 			Transform transform = uilabel.transform;
 			transform.localPosition = new Vector3(transform.localPosition.x + (float)(uilabel.width / 2), transform.localPosition.y - (float)(j * uilabel.height), transform.localPosition.z);
@@ -162,7 +162,7 @@ public class StudentEditorScript : MonoBehaviour
 		}
 		this.studentIndex = 0;
 		this.bodyLabel.text = StudentEditorScript.GetStudentText(this.students[this.studentIndex]);
-		this.inputManager = Object.FindObjectOfType<InputManagerScript>();
+		this.inputManager = UnityEngine.Object.FindObjectOfType<InputManagerScript>();
 	}
 
 	private void OnEnable()

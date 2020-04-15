@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class SettingsScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public QualityManagerScript QualityManager;
 
 	public InputManagerScript InputManager;
@@ -69,6 +71,15 @@ public class SettingsScript : MonoBehaviour
 		{
 			OptionGlobals.RimLight = !OptionGlobals.RimLight;
 			this.QualityManager.RimLight();
+		}
+		if (Input.GetKeyDown(KeyCode.Z))
+		{
+			this.StudentManager.OpaqueWindows = !this.StudentManager.OpaqueWindows;
+			this.StudentManager.LateUpdate();
+			if (!this.StudentManager.OpaqueWindows && !this.StudentManager.WindowOccluder.open)
+			{
+				this.StudentManager.SetWindowsOpaque();
+			}
 		}
 		if (Input.GetKeyDown(KeyCode.B))
 		{
@@ -263,7 +274,7 @@ public class SettingsScript : MonoBehaviour
 				OptionGlobals.TutorialsOff = !OptionGlobals.TutorialsOff;
 				if (SceneManager.GetActiveScene().name == "SchoolScene")
 				{
-					this.PauseScreen.Yandere.StudentManager.TutorialWindow.enabled = !OptionGlobals.TutorialsOff;
+					this.StudentManager.TutorialWindow.enabled = !OptionGlobals.TutorialsOff;
 				}
 				this.UpdateText();
 			}

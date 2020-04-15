@@ -14,7 +14,7 @@ public class StudentCrusherScript : MonoBehaviour
 			{
 				if (this.Mecha.Speed > 0.9f)
 				{
-					Object.Instantiate<GameObject>(component.BloodyScream, base.transform.position + Vector3.up, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(component.BloodyScream, base.transform.position + Vector3.up, Quaternion.identity);
 					component.BecomeRagdoll();
 				}
 				if (this.Mecha.Speed > 5f)

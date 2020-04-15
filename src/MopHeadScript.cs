@@ -23,13 +23,13 @@ public class MopHeadScript : MonoBehaviour
 				}
 				if (other.transform.localScale.x < 0.1f)
 				{
-					Object.Destroy(other.gameObject);
+					UnityEngine.Object.Destroy(other.gameObject);
 					return;
 				}
 			}
 			else
 			{
-				Object.Destroy(other.gameObject);
+				UnityEngine.Object.Destroy(other.gameObject);
 			}
 		}
 	}

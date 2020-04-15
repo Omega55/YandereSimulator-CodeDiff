@@ -301,7 +301,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.CanAdjust = false;
 			this.Yandere.Sanity += 20f;
 			this.UpdateButtonPrompts();
-			AudioSource.PlayClipAtPoint(this.Sighs[Random.Range(0, this.Sighs.Length)], this.Yandere.Head.position);
+			AudioSource.PlayClipAtPoint(this.Sighs[UnityEngine.Random.Range(0, this.Sighs.Length)], this.Yandere.Head.position);
 		}
 		if (this.InputManager.TappedRight)
 		{
@@ -340,7 +340,7 @@ public class PhotoGalleryScript : MonoBehaviour
 		this.ViewPhoto.transform.localPosition = Vector3.Lerp(this.ViewPhoto.transform.localPosition, Vector3.zero, this.LerpSpeed);
 		if (this.Corkboard && Input.GetButtonDown("A"))
 		{
-			GameObject gameObject = Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = this.CorkboardPanel;
 			gameObject.transform.localEulerAngles = Vector3.zero;
 			gameObject.transform.localPosition = Vector3.zero;
@@ -491,7 +491,7 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("Y"))
 		{
-			GameObject gameObject = Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
 			gameObject.transform.parent = this.StringParent;
 			gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -522,7 +522,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			{
 				this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
 				this.Shuffle(this.Cursor.Photograph.GetComponent<HomeCorkboardPhotoScript>().ArrayID);
-				Object.Destroy(this.Cursor.Photograph);
+				UnityEngine.Object.Destroy(this.Cursor.Photograph);
 				this.Photos--;
 				this.Cursor.Photograph = null;
 				this.UpdateButtonPrompts();
@@ -531,7 +531,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			{
 				this.Cursor.CircleHighlight.transform.position = new Vector3(this.Cursor.CircleHighlight.transform.position.x, 100f, this.Cursor.CircleHighlight.transform.position.z);
 				this.ShuffleStrings(this.Cursor.Tack.transform.parent.GetComponent<StringScript>().ArrayID);
-				Object.Destroy(this.Cursor.Tack.transform.parent.gameObject);
+				UnityEngine.Object.Destroy(this.Cursor.Tack.transform.parent.gameObject);
 				this.Strings--;
 				this.Cursor.Tack = null;
 				this.UpdateButtonPrompts();
@@ -910,7 +910,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				"_Exists"
 			})) == 1)
 			{
-				GameObject gameObject = Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Photograph, base.transform.position, Quaternion.identity);
 				gameObject.transform.parent = this.CorkboardPanel;
 				gameObject.transform.localPosition = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
 				{
@@ -1093,7 +1093,7 @@ public class PhotoGalleryScript : MonoBehaviour
 				"_Exists"
 			})) == 1)
 			{
-				GameObject gameObject = Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StringSet, base.transform.position, Quaternion.identity);
 				gameObject.transform.parent = this.StringParent;
 				gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
 				gameObject.transform.localScale = new Vector3(1f, 1f, 1f);

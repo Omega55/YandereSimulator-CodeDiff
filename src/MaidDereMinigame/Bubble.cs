@@ -50,7 +50,7 @@ namespace MaidDereMinigame
 
 		public void KillBubble()
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

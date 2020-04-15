@@ -237,10 +237,10 @@ public class LowRepGameOverScript : MonoBehaviour
 
 	private void Giggle()
 	{
-		this.GiggleID = Random.Range(1, this.Giggles.Length);
+		this.GiggleID = UnityEngine.Random.Range(1, this.Giggles.Length);
 		while (this.GiggleID == this.PreviousGiggle)
 		{
-			this.GiggleID = Random.Range(1, this.Giggles.Length);
+			this.GiggleID = UnityEngine.Random.Range(1, this.Giggles.Length);
 		}
 		this.PreviousGiggle = this.GiggleID;
 		if (this.GigglePhase < 6)

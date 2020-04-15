@@ -227,7 +227,7 @@ public class ClubManagerScript : MonoBehaviour
 						{
 							if (this.ClubPhase == 0)
 							{
-								component.clip = this.MotivationalQuotes[Random.Range(0, this.MotivationalQuotes.Length)];
+								component.clip = this.MotivationalQuotes[UnityEngine.Random.Range(0, this.MotivationalQuotes.Length)];
 								component.Play();
 								this.ClubEffect = true;
 								this.ClubPhase++;

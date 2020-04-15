@@ -69,6 +69,8 @@ public class InventoryScript : MonoBehaviour
 
 	public int MysteriousKeys;
 
+	public int RivalPhoneID;
+
 	public int PantyShots;
 
 	public float Money;

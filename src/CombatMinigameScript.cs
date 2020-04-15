@@ -141,7 +141,7 @@ public class CombatMinigameScript : MonoBehaviour
 		}
 		if (this.Phase > 0)
 		{
-			this.MainCamera.position += new Vector3(this.Shake * Random.Range(-1f, 1f), this.Shake * Random.Range(-1f, 1f), this.Shake * Random.Range(-1f, 1f));
+			this.MainCamera.position += new Vector3(this.Shake * UnityEngine.Random.Range(-1f, 1f), this.Shake * UnityEngine.Random.Range(-1f, 1f), this.Shake * UnityEngine.Random.Range(-1f, 1f));
 			this.Shake = Mathf.Lerp(this.Shake, 0f, Time.deltaTime * 10f);
 			this.AdjustMidpoint();
 		}
@@ -220,7 +220,7 @@ public class CombatMinigameScript : MonoBehaviour
 				{
 					if (this.Yandere.CharacterAnimation["Yandere_CombatA"].time > 1.66666f)
 					{
-						Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.LeftArmRoll.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.LeftArmRoll.position, Quaternion.identity);
 						this.Shake += this.ShakeFactor;
 						this.Strike++;
 						this.Yandere.Health--;
@@ -229,7 +229,7 @@ public class CombatMinigameScript : MonoBehaviour
 				}
 				else if (this.Strike < 2 && this.Yandere.CharacterAnimation["Yandere_CombatA"].time > 2.5f)
 				{
-					Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightArmRoll.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightArmRoll.position, Quaternion.identity);
 					this.Shake += this.ShakeFactor;
 					this.Strike++;
 					this.Yandere.Health--;
@@ -244,7 +244,7 @@ public class CombatMinigameScript : MonoBehaviour
 					}
 					if (this.Yandere.Health < 1)
 					{
-						if (!this.Delinquent.WitnessedMurder)
+						if (!this.Delinquent.WitnessedMurder && !this.Delinquent.WitnessedCorpse)
 						{
 							this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatF"].time = this.Delinquent.CharacterAnimation[this.Prefix + "Delinquent_CombatA"].time;
 							this.Yandere.CharacterAnimation["Yandere_CombatF"].time = this.Yandere.CharacterAnimation["Yandere_CombatA"].time;
@@ -361,7 +361,7 @@ public class CombatMinigameScript : MonoBehaviour
 			{
 				if (this.Strike < 1 && this.Yandere.CharacterAnimation["Yandere_CombatB"].time > 2.66666f)
 				{
-					Object.Instantiate<GameObject>(this.HitEffect, this.Delinquent.LeftHand.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Delinquent.LeftHand.position, Quaternion.identity);
 					this.Shake += this.ShakeFactor;
 					this.Strike++;
 				}
@@ -389,7 +389,7 @@ public class CombatMinigameScript : MonoBehaviour
 			{
 				if (this.Strike < 1 && this.Yandere.CharacterAnimation["Yandere_CombatC"].time > 2.5f)
 				{
-					Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightHand.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightHand.position, Quaternion.identity);
 					this.Shake += this.ShakeFactor;
 					this.Strike++;
 				}
@@ -461,8 +461,8 @@ public class CombatMinigameScript : MonoBehaviour
 				{
 					if (this.Yandere.CharacterAnimation["Yandere_CombatD"].time > 4f)
 					{
-						Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightKnee.position, Quaternion.identity);
-						if (!this.Delinquent.WitnessedMurder)
+						UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, this.Yandere.RightKnee.position, Quaternion.identity);
+						if (!this.Delinquent.WitnessedMurder && !this.Delinquent.WitnessedCorpse)
 						{
 							this.Delinquent.MyWeapon.transform.parent = null;
 							this.Delinquent.MyWeapon.MyCollider.enabled = true;
@@ -492,7 +492,7 @@ public class CombatMinigameScript : MonoBehaviour
 				}
 				if (this.Yandere.CharacterAnimation["Yandere_CombatD"].time > this.Yandere.CharacterAnimation["Yandere_CombatD"].length)
 				{
-					if (this.Delinquent.WitnessedMurder)
+					if (this.Delinquent.WitnessedMurder || this.Delinquent.WitnessedCorpse)
 					{
 						this.Yandere.Subtitle.UpdateLabel(SubtitleType.DelinquentNoSurrender, 0, 5f);
 						if (!this.Delinquent.WillChase)
@@ -691,7 +691,7 @@ public class CombatMinigameScript : MonoBehaviour
 		int buttonID = this.ButtonID;
 		while (this.ButtonID == buttonID)
 		{
-			this.ButtonID = Random.Range(1, 5);
+			this.ButtonID = UnityEngine.Random.Range(1, 5);
 		}
 		if (this.ButtonID == 1)
 		{

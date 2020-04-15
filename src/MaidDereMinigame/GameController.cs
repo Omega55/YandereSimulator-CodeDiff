@@ -50,7 +50,7 @@ namespace MaidDereMinigame
 			{
 				if (GameController.instance == null)
 				{
-					GameController.instance = Object.FindObjectOfType<GameController>();
+					GameController.instance = UnityEngine.Object.FindObjectOfType<GameController>();
 				}
 				return GameController.instance;
 			}
@@ -82,11 +82,11 @@ namespace MaidDereMinigame
 		{
 			if (GameController.Instance != this)
 			{
-				Object.DestroyImmediate(base.gameObject);
+				UnityEngine.Object.DestroyImmediate(base.gameObject);
 				return;
 			}
 			this.spriteRenderer = base.GetComponent<SpriteRenderer>();
-			Object.DontDestroyOnLoad(base.gameObject);
+			UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
 		}
 
 		public static void SetPause(bool toPause)
@@ -129,7 +129,7 @@ namespace MaidDereMinigame
 				{
 					GameController.Instance.whiteFadeOutPost.color = Color.white;
 				}
-				Object.Destroy(GameController.Instance.gameObject);
+				UnityEngine.Object.Destroy(GameController.Instance.gameObject);
 				Camera.main.farClipPlane = 0f;
 				GameController.instance = null;
 			}
@@ -151,7 +151,7 @@ namespace MaidDereMinigame
 			GameController.SetPause(true);
 			GameController.Instance.tipPage.Init();
 			GameController.Instance.tipPage.DisplayTips(GameController.Instance.tips);
-			Object.FindObjectOfType<GameStarter>().GetComponent<AudioSource>().Stop();
+			UnityEngine.Object.FindObjectOfType<GameStarter>().GetComponent<AudioSource>().Stop();
 		}
 
 		public static void AddTip(float tip)

@@ -23,7 +23,7 @@ namespace MaidDereMinigame
 			{
 				if (FlipBook.instance == null)
 				{
-					FlipBook.instance = Object.FindObjectOfType<FlipBook>();
+					FlipBook.instance = UnityEngine.Object.FindObjectOfType<FlipBook>();
 				}
 				return FlipBook.instance;
 			}

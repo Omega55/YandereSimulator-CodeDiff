@@ -369,7 +369,7 @@ namespace YandereSimulator.Yancord
 		{
 			for (int i = 1; i < this.Dialogue.Count; i++)
 			{
-				MessageScript item = Object.Instantiate<MessageScript>(this.MessagePrefab, new Vector3(0f, this.Messages[i - 1].transform.position.y - ((float)this.Messages[i - 1].MessageLabel.height * 0.00167239446f + this.Distance * 0.00167239446f), 0f), Quaternion.identity, this.ConversationParent);
+				MessageScript item = UnityEngine.Object.Instantiate<MessageScript>(this.MessagePrefab, new Vector3(0f, this.Messages[i - 1].transform.position.y - ((float)this.Messages[i - 1].MessageLabel.height * 0.00167239446f + this.Distance * 0.00167239446f), 0f), Quaternion.identity, this.ConversationParent);
 				this.Messages.Add(item);
 				this.Messages[i].MessageLabel.text = this.Dialogue[i].Message;
 				if (this.Dialogue[i].isQuestion)

@@ -13,10 +13,10 @@ public class YanvaniaCandlestickScript : MonoBehaviour
 	{
 		if (other.gameObject.layer == 19 && !this.Destroyed)
 		{
-			Object.Instantiate<GameObject>(this.DestroyedCandlestick, base.transform.position, Quaternion.identity).transform.localScale = base.transform.localScale;
+			UnityEngine.Object.Instantiate<GameObject>(this.DestroyedCandlestick, base.transform.position, Quaternion.identity).transform.localScale = base.transform.localScale;
 			this.Destroyed = true;
 			AudioClipPlayer.Play2D(this.Break, base.transform.position);
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

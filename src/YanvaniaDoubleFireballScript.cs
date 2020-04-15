@@ -29,7 +29,7 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 
 	private void Start()
 	{
-		Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
+		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
 		this.Direction = ((this.Dracula.position.x > base.transform.position.x) ? -1 : 1);
 	}
 
@@ -37,8 +37,8 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 	{
 		if (this.Timer > 1f && !this.SpawnedFirst)
 		{
-			Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
-			this.FirstLavaball = Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
+			this.FirstLavaball = UnityEngine.Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 8f, 0f), Quaternion.identity);
 			this.FirstLavaball.transform.localScale = Vector3.zero;
 			this.SpawnedFirst = true;
 		}
@@ -51,7 +51,7 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 		}
 		if (this.Timer > 2f && !this.SpawnedSecond)
 		{
-			this.SecondLavaball = Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
+			this.SecondLavaball = UnityEngine.Object.Instantiate<GameObject>(this.Lavaball, new Vector3(base.transform.position.x, 7f, 0f), Quaternion.identity);
 			this.SecondLavaball.transform.localScale = Vector3.zero;
 			this.SpawnedSecond = true;
 		}
@@ -74,13 +74,13 @@ public class YanvaniaDoubleFireballScript : MonoBehaviour
 		{
 			if (this.FirstLavaball != null)
 			{
-				Object.Destroy(this.FirstLavaball);
+				UnityEngine.Object.Destroy(this.FirstLavaball);
 			}
 			if (this.SecondLavaball != null)
 			{
-				Object.Destroy(this.SecondLavaball);
+				UnityEngine.Object.Destroy(this.SecondLavaball);
 			}
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

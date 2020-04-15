@@ -14,7 +14,7 @@ public class YanvaniaCandlestickHeadScript : MonoBehaviour
 		Rigidbody component = base.GetComponent<Rigidbody>();
 		component.AddForce(base.transform.up * 100f);
 		component.AddForce(base.transform.right * 100f);
-		this.Value = Random.Range(-1f, 1f);
+		this.Value = UnityEngine.Random.Range(-1f, 1f);
 	}
 
 	private void Update()
@@ -23,8 +23,8 @@ public class YanvaniaCandlestickHeadScript : MonoBehaviour
 		base.transform.localEulerAngles = this.Rotation;
 		if (base.transform.localPosition.y < 0.23f)
 		{
-			Object.Instantiate<GameObject>(this.Fire, base.transform.position, Quaternion.identity);
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Instantiate<GameObject>(this.Fire, base.transform.position, Quaternion.identity);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

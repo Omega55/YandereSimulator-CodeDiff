@@ -31,11 +31,11 @@ public class RoseSpawnerScript : MonoBehaviour
 
 	private void SpawnRose()
 	{
-		GameObject gameObject = Object.Instantiate<GameObject>(this.Rose, base.transform.position, Quaternion.identity);
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Rose, base.transform.position, Quaternion.identity);
 		gameObject.GetComponent<Rigidbody>().AddForce(base.transform.forward * this.ForwardForce);
 		gameObject.GetComponent<Rigidbody>().AddForce(base.transform.up * this.UpwardForce);
-		gameObject.transform.localEulerAngles = new Vector3(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
-		base.transform.localPosition = new Vector3(Random.Range(-5f, 5f), base.transform.localPosition.y, base.transform.localPosition.z);
+		gameObject.transform.localEulerAngles = new Vector3(UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f));
+		base.transform.localPosition = new Vector3(UnityEngine.Random.Range(-5f, 5f), base.transform.localPosition.y, base.transform.localPosition.z);
 		base.transform.LookAt(this.DramaGirl);
 		this.Timer = 0f;
 	}

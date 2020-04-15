@@ -88,6 +88,6 @@ public class YanvaniaIntroScript : MonoBehaviour
 		}
 		this.ZombieSpawner.enabled = true;
 		this.Yanmont.CanMove = true;
-		Object.Destroy(base.gameObject);
+		UnityEngine.Object.Destroy(base.gameObject);
 	}
 }

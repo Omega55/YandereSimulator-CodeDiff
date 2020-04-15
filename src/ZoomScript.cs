@@ -127,9 +127,9 @@ public class ZoomScript : MonoBehaviour
 			this.ShakeStrength = Mathf.Lerp(this.ShakeStrength, 1f - this.Yandere.Sanity * 0.01f, Time.deltaTime);
 			if (this.Timer > 0.1f + this.Yandere.Sanity * 0.01f)
 			{
-				this.Target.x = Random.Range(-this.ShakeStrength, this.ShakeStrength);
+				this.Target.x = UnityEngine.Random.Range(-this.ShakeStrength, this.ShakeStrength);
 				this.Target.y = base.transform.localPosition.y;
-				this.Target.z = Random.Range(-this.ShakeStrength, this.ShakeStrength);
+				this.Target.z = UnityEngine.Random.Range(-this.ShakeStrength, this.ShakeStrength);
 				this.Timer = 0f;
 			}
 		}

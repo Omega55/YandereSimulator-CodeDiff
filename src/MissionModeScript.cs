@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MissionModeScript : MonoBehaviour
 {
@@ -71,7 +70,7 @@ public class MissionModeScript : MonoBehaviour
 
 	public UISprite Darkness;
 
-	public Text FPS;
+	public UILabel FPS;
 
 	public GardenHoleScript[] GardenHoles;
 
@@ -1137,7 +1136,7 @@ public class MissionModeScript : MonoBehaviour
 	{
 		while (!this.Valid)
 		{
-			this.RandomNumber = (float)Random.Range(1000000, 10000000);
+			this.RandomNumber = (float)UnityEngine.Random.Range(1000000, 10000000);
 			if (this.RandomNumber / 9f % 5f == 0f)
 			{
 				this.Valid = true;
@@ -1231,13 +1230,13 @@ public class MissionModeScript : MonoBehaviour
 
 	private void ChangeAllText()
 	{
-		foreach (UILabel uilabel in Object.FindObjectsOfType<UILabel>())
+		foreach (UILabel uilabel in UnityEngine.Object.FindObjectsOfType<UILabel>())
 		{
 			float a = uilabel.color.a;
 			uilabel.color = new Color(1f, 1f, 1f, a);
 			uilabel.trueTypeFont = this.Arial;
 		}
-		foreach (UISprite uisprite in Object.FindObjectsOfType<UISprite>())
+		foreach (UISprite uisprite in UnityEngine.Object.FindObjectsOfType<UISprite>())
 		{
 			float a2 = uisprite.color.a;
 			if (uisprite.color != new Color(0f, 0f, 0f, a2))

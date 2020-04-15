@@ -186,8 +186,8 @@ public class HomePrisonerChanScript : MonoBehaviour
 			this.TwitchTimer += Time.deltaTime;
 			if (this.TwitchTimer > this.NextTwitch)
 			{
-				this.Twitch = new Vector3((1f - this.Sanity / 100f) * Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * Random.Range(-10f, 10f));
-				this.NextTwitch = Random.Range(0f, 1f);
+				this.Twitch = new Vector3((1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f), (1f - this.Sanity / 100f) * UnityEngine.Random.Range(-10f, 10f));
+				this.NextTwitch = UnityEngine.Random.Range(0f, 1f);
 				this.TwitchTimer = 0f;
 			}
 			this.Twitch = Vector3.Lerp(this.Twitch, Vector3.zero, Time.deltaTime * 10f);

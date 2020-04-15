@@ -29,7 +29,7 @@ public class MatchTriggerScript : MonoBehaviour
 				}
 				if (this.Fireball)
 				{
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 			}
 		}

@@ -209,10 +209,10 @@ public class SnappedYandereScript : MonoBehaviour
 					this.MainCamera.transform.parent = this.SnapAttackPivot;
 					this.MainCamera.transform.localPosition = new Vector3(0f, 0f, -1f);
 					this.MainCamera.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-					this.SnapAttackPivot.localEulerAngles = new Vector3(Random.Range(-45f, 45f), Random.Range(0f, 360f), 0f);
+					this.SnapAttackPivot.localEulerAngles = new Vector3(UnityEngine.Random.Range(-45f, 45f), UnityEngine.Random.Range(0f, 360f), 0f);
 					while (this.MainCamera.transform.position.y < base.transform.position.y + 0.1f)
 					{
-						this.SnapAttackPivot.localEulerAngles = new Vector3(Random.Range(-45f, 45f), Random.Range(0f, 360f), 0f);
+						this.SnapAttackPivot.localEulerAngles = new Vector3(UnityEngine.Random.Range(-45f, 45f), UnityEngine.Random.Range(0f, 360f), 0f);
 					}
 					this.MyAnim[this.AttackAnims[this.AttackID]].time = 0f;
 					this.MyAnim.Play(this.AttackAnims[this.AttackID]);
@@ -224,13 +224,13 @@ public class SnappedYandereScript : MonoBehaviour
 					this.TargetStudent.MyAnim[this.TargetStudent.AttackAnims[this.AttackID]].speed = this.MyAnim[this.AttackAnims[this.AttackID]].speed;
 					if (this.TargetStudent.Student.Male)
 					{
-						this.MyAudio.clip = this.MaleDeathScreams[Random.Range(0, this.MaleDeathScreams.Length)];
+						this.MyAudio.clip = this.MaleDeathScreams[UnityEngine.Random.Range(0, this.MaleDeathScreams.Length)];
 						this.MyAudio.pitch = 1f;
 						this.MyAudio.Play();
 					}
 					else
 					{
-						this.MyAudio.clip = this.FemaleDeathScreams[Random.Range(0, this.FemaleDeathScreams.Length)];
+						this.MyAudio.clip = this.FemaleDeathScreams[UnityEngine.Random.Range(0, this.FemaleDeathScreams.Length)];
 						this.MyAudio.pitch = 1f;
 						this.MyAudio.Play();
 					}
@@ -317,14 +317,14 @@ public class SnappedYandereScript : MonoBehaviour
 					{
 						if (this.MyAnim[this.AttackAnims[this.AttackID]].time > 0.25f)
 						{
-							Object.Instantiate<GameObject>(this.BloodEffect, this.RightHand.position, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.RightHand.position, Quaternion.identity);
 							this.MyAudio.Stop();
 							this.BloodSpawned++;
 						}
 					}
 					else if (this.MyAnim[this.AttackAnims[this.AttackID]].time > 1f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, this.LeftHand.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.LeftHand.position, Quaternion.identity);
 						this.BloodSpawned++;
 					}
 				}
@@ -332,7 +332,7 @@ public class SnappedYandereScript : MonoBehaviour
 				{
 					if (this.MyAnim[this.AttackAnims[this.AttackID]].time > 1f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, this.RightHand.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.RightHand.position, Quaternion.identity);
 						this.BloodSpawned += 2;
 						this.MyAudio.Stop();
 					}
@@ -341,7 +341,7 @@ public class SnappedYandereScript : MonoBehaviour
 				{
 					if (this.MyAnim[this.AttackAnims[this.AttackID]].time > 0.5f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, this.RightHand.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.RightHand.position, Quaternion.identity);
 						this.BloodSpawned += 2;
 						this.MyAudio.Stop();
 					}
@@ -359,14 +359,14 @@ public class SnappedYandereScript : MonoBehaviour
 					{
 						if (this.MyAnim[this.AttackAnims[this.AttackID]].time > 0.25f)
 						{
-							Object.Instantiate<GameObject>(this.BloodEffect, this.RightFoot.position, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.RightFoot.position, Quaternion.identity);
 							this.MyAudio.Stop();
 							this.BloodSpawned++;
 						}
 					}
 					else if (this.MyAnim[this.AttackAnims[this.AttackID]].time > 0.9f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, this.RightFoot.position, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.RightFoot.position, Quaternion.identity);
 						this.BloodSpawned++;
 					}
 				}
@@ -402,13 +402,13 @@ public class SnappedYandereScript : MonoBehaviour
 					if (this.WhisperTimer > 0.5f)
 					{
 						this.WhisperTimer = 0f;
-						int num = Random.Range(1, this.Whispers.Length);
+						int num = UnityEngine.Random.Range(1, this.Whispers.Length);
 						AudioSource.PlayClipAtPoint(this.Whispers[num], this.MainCamera.transform.position + new Vector3(11f - 10f * this.Rumble.volume * 2f, 11f - 10f * this.Rumble.volume * 2f, 11f - 10f * this.Rumble.volume * 2f));
-						this.NewDoIt = Object.Instantiate<GameObject>(this.DoIt, this.SNAPLabel.parent.transform.position, Quaternion.identity);
+						this.NewDoIt = UnityEngine.Object.Instantiate<GameObject>(this.DoIt, this.SNAPLabel.parent.transform.position, Quaternion.identity);
 						this.NewDoIt.transform.parent = this.SNAPLabel.parent.transform;
 						this.NewDoIt.transform.localScale = new Vector3(1f, 1f, 1f);
-						this.NewDoIt.transform.localPosition = new Vector3(Random.Range(-700f, 700f), Random.Range(-450f, 450f), 0f);
-						this.NewDoIt.transform.localEulerAngles = new Vector3(Random.Range(-15f, 15f), Random.Range(-15f, 15f), Random.Range(-15f, 15f));
+						this.NewDoIt.transform.localPosition = new Vector3(UnityEngine.Random.Range(-700f, 700f), UnityEngine.Random.Range(-450f, 450f), 0f);
+						this.NewDoIt.transform.localEulerAngles = new Vector3(UnityEngine.Random.Range(-15f, 15f), UnityEngine.Random.Range(-15f, 15f), UnityEngine.Random.Range(-15f, 15f));
 					}
 				}
 			}
@@ -416,7 +416,7 @@ public class SnappedYandereScript : MonoBehaviour
 			{
 				if (this.MyAnim["f02_snapKill_00"].time > this.MyAnim["f02_snapKill_00"].length * 0.2f)
 				{
-					Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position, Quaternion.identity);
 					this.AttackPhase++;
 				}
 			}
@@ -424,7 +424,7 @@ public class SnappedYandereScript : MonoBehaviour
 			{
 				if (this.MyAnim["f02_snapKill_00"].time > this.MyAnim["f02_snapKill_00"].length * 0.36f)
 				{
-					Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, this.Knife.transform.position, Quaternion.identity);
 					this.AttackPhase++;
 				}
 			}
@@ -534,7 +534,7 @@ public class SnappedYandereScript : MonoBehaviour
 					this.MyAnim["f02_suicide_00"].speed = 1f;
 					this.SuicidePrompt.alpha = 0f;
 					this.Rumble.volume = 0f;
-					Object.Destroy(this.NewDoIt);
+					UnityEngine.Object.Destroy(this.NewDoIt);
 					this.Whisper = false;
 					this.AttackPhase++;
 				}
@@ -543,7 +543,7 @@ public class SnappedYandereScript : MonoBehaviour
 			{
 				if (this.MyAnim["f02_suicide_00"].time >= this.MyAnim["f02_suicide_00"].length * 0.355f)
 				{
-					Object.Instantiate<GameObject>(this.StabBloodEffect, this.Knife.transform.position, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.StabBloodEffect, this.Knife.transform.position, Quaternion.identity);
 					this.AttackPhase++;
 				}
 			}
@@ -638,7 +638,7 @@ public class SnappedYandereScript : MonoBehaviour
 		{
 			this.MyAudio.clip = this.Buzz;
 			this.MyAudio.volume = 0.5f;
-			this.MyAudio.pitch = Random.Range(0.5f, 2f);
+			this.MyAudio.pitch = UnityEngine.Random.Range(0.5f, 2f);
 			this.MyAudio.Play();
 		}
 	}
@@ -648,10 +648,10 @@ public class SnappedYandereScript : MonoBehaviour
 		this.BloodSpawned = 0;
 		this.SetGlitches(true);
 		this.GlitchTimeLimit = 0.5f;
-		this.AttackID = Random.Range(1, 6);
+		this.AttackID = UnityEngine.Random.Range(1, 6);
 		while (this.AttacksUsed[this.AttackID])
 		{
-			this.AttackID = Random.Range(1, 6);
+			this.AttackID = UnityEngine.Random.Range(1, 6);
 		}
 		this.AttacksUsed[this.AttackID] = true;
 		this.Attacks++;

@@ -39,6 +39,7 @@ public class RivalPhoneScript : MonoBehaviour
 			}
 			this.Prompt.Yandere.RivalPhoneTexture = this.MyRenderer.material.mainTexture;
 			this.Prompt.Yandere.Inventory.RivalPhone = true;
+			this.Prompt.Yandere.Inventory.RivalPhoneID = this.StudentID;
 			this.Prompt.enabled = false;
 			base.enabled = false;
 			this.StolenPhoneDropoff.Prompt.enabled = true;

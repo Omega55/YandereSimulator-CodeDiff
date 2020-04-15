@@ -81,12 +81,12 @@ public class MiyukiEnemyScript : MonoBehaviour
 	{
 		if (this.Enemy.activeInHierarchy && other.gameObject.tag == "missile")
 		{
-			Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
-			Object.Destroy(other.gameObject);
+			UnityEngine.Object.Instantiate<GameObject>(this.HitEffect, other.transform.position, Quaternion.identity);
+			UnityEngine.Object.Destroy(other.gameObject);
 			this.Health -= 1f;
 			if (this.Health == 0f)
 			{
-				Object.Instantiate<GameObject>(this.DeathEffect, other.transform.position, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.DeathEffect, other.transform.position, Quaternion.identity);
 				this.Enemy.SetActive(false);
 				this.Health = 50f;
 				this.ID++;

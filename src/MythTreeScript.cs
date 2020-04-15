@@ -17,7 +17,7 @@ public class MythTreeScript : MonoBehaviour
 	{
 		if (SchemeGlobals.GetSchemeStage(2) > 2)
 		{
-			Object.Destroy(this);
+			UnityEngine.Object.Destroy(this);
 		}
 	}
 
@@ -40,7 +40,7 @@ public class MythTreeScript : MonoBehaviour
 			this.EventSubtitle.transform.localScale = Vector3.zero;
 			this.EventSubtitle.text = string.Empty;
 			this.Jukebox.Dip = 1f;
-			Object.Destroy(this);
+			UnityEngine.Object.Destroy(this);
 		}
 	}
 }

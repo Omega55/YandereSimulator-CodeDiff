@@ -30,7 +30,7 @@ public class ChainScript : MonoBehaviour
 					this.Tarp.enabled = true;
 					this.Prompt.Hide();
 					this.Prompt.enabled = false;
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 			}
 		}

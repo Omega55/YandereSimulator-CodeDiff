@@ -24,7 +24,7 @@ public class RandomAnimScript : MonoBehaviour
 
 	private void PickRandomAnim()
 	{
-		this.CurrentAnim = this.AnimationNames[Random.Range(0, this.AnimationNames.Length)];
+		this.CurrentAnim = this.AnimationNames[UnityEngine.Random.Range(0, this.AnimationNames.Length)];
 		base.GetComponent<Animation>().CrossFade(this.CurrentAnim);
 	}
 }

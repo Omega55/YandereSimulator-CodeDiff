@@ -141,7 +141,7 @@ public class BlacklightEffect : MonoBehaviour
 	[ContextMenu("Refresh")]
 	public void Refresh()
 	{
-		Object.DestroyImmediate(this.post);
+		UnityEngine.Object.DestroyImmediate(this.post);
 		this.post = null;
 	}
 }

@@ -300,7 +300,7 @@ public class HomeCameraScript : MonoBehaviour
 
 	private void LoveSickColorSwap()
 	{
-		foreach (GameObject gameObject in Object.FindObjectsOfType<GameObject>())
+		foreach (GameObject gameObject in UnityEngine.Object.FindObjectsOfType<GameObject>())
 		{
 			if (gameObject.transform.parent != this.PauseScreen && gameObject.transform.parent != this.PromptBarPanel)
 			{

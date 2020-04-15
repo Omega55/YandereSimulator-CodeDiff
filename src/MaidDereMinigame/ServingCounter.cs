@@ -279,7 +279,7 @@ namespace MaidDereMinigame
 				foodInstance.transform.localPosition = Vector3.zero;
 			}
 			SFXController.PlaySound(SFXController.Sounds.Plate);
-			FoodInstance foodInstance2 = Object.Instantiate<FoodInstance>(this.platePrefab);
+			FoodInstance foodInstance2 = UnityEngine.Object.Instantiate<FoodInstance>(this.platePrefab);
 			foodInstance2.transform.parent = this.platePositions[0];
 			foodInstance2.transform.localPosition = Vector3.zero;
 			foodInstance2.food = food;
@@ -290,7 +290,7 @@ namespace MaidDereMinigame
 		{
 			Component component = this.plates[index];
 			this.plates.RemoveAt(index);
-			Object.Destroy(component.gameObject);
+			UnityEngine.Object.Destroy(component.gameObject);
 			for (int i = index; i < this.plates.Count; i++)
 			{
 				FoodInstance foodInstance = this.plates[i];

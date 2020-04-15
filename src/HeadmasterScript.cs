@@ -420,8 +420,8 @@ public class HeadmasterScript : MonoBehaviour
 			this.Yandere.EmptyHands();
 			this.Yandere.CanMove = false;
 		}
-		Object.Instantiate<GameObject>(this.LightningEffect, this.TazerEffectTarget.position, Quaternion.identity);
-		Object.Instantiate<GameObject>(this.LightningEffect, this.Yandere.Spine[3].position, Quaternion.identity);
+		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.TazerEffectTarget.position, Quaternion.identity);
+		UnityEngine.Object.Instantiate<GameObject>(this.LightningEffect, this.Yandere.Spine[3].position, Quaternion.identity);
 		this.MyAudio.clip = this.HeadmasterShockClip;
 		this.MyAudio.Play();
 		this.Yandere.CharacterAnimation.CrossFade("f02_swingB_00");

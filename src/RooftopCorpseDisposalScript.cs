@@ -15,7 +15,7 @@ public class RooftopCorpseDisposalScript : MonoBehaviour
 	{
 		if (SchoolGlobals.RoofFence)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 

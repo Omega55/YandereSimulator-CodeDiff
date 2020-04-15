@@ -8,7 +8,7 @@ public class RandomSoundScript : MonoBehaviour
 	private void Start()
 	{
 		AudioSource component = base.GetComponent<AudioSource>();
-		component.clip = this.Clips[Random.Range(1, this.Clips.Length)];
+		component.clip = this.Clips[UnityEngine.Random.Range(1, this.Clips.Length)];
 		component.Play();
 	}
 }

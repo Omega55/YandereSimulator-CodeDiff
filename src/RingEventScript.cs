@@ -251,7 +251,7 @@ public class RingEventScript : MonoBehaviour
 		{
 			if (this.VoiceClip != null)
 			{
-				Object.Destroy(this.VoiceClip);
+				UnityEngine.Object.Destroy(this.VoiceClip);
 			}
 			this.EventStudent.CurrentDestination = this.EventStudent.Destinations[this.EventStudent.Phase];
 			this.EventStudent.Pathfinding.target = this.EventStudent.Destinations[this.EventStudent.Phase];

@@ -377,8 +377,8 @@ public class NewMissionWindowScript : MonoBehaviour
 		int i;
 		for (i = 1; i < 11; i++)
 		{
-			this.Target[i] = Random.Range(2, 89);
-			this.Method[i] = Random.Range(0, 7);
+			this.Target[i] = UnityEngine.Random.Range(2, 89);
+			this.Method[i] = UnityEngine.Random.Range(0, 7);
 			this.MethodLabel[i].text = "By: " + this.MethodNames[this.Method[i]];
 		}
 		i = 1;

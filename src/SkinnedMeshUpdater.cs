@@ -38,7 +38,7 @@ public class SkinnedMeshUpdater : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			Object.Instantiate<GameObject>(this.TransformEffect, this.Prompt.Yandere.Hips.position, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.TransformEffect, this.Prompt.Yandere.Hips.position, Quaternion.identity);
 			this.Prompt.Yandere.CharacterAnimation.Play(this.Prompt.Yandere.IdleAnim);
 			this.Prompt.Yandere.CanMove = false;
 			this.Prompt.Yandere.Egg = true;
@@ -67,10 +67,10 @@ public class SkinnedMeshUpdater : MonoBehaviour
 
 	public void UpdateSkin()
 	{
-		GameObject gameObject = Object.Instantiate<GameObject>(this.Characters[this.ID], Vector3.zero, Quaternion.identity);
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Characters[this.ID], Vector3.zero, Quaternion.identity);
 		this.TempRenderer = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
 		this.UpdateMeshRenderer(this.TempRenderer);
-		Object.Destroy(gameObject);
+		UnityEngine.Object.Destroy(gameObject);
 		this.MyRenderer.materials[0].mainTexture = this.Bodies[this.ID];
 		this.MyRenderer.materials[1].mainTexture = this.Bodies[this.ID];
 		this.MyRenderer.materials[2].mainTexture = this.Faces[this.ID];

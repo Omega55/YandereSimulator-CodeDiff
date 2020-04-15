@@ -155,7 +155,7 @@ public class WeaponScript : MonoBehaviour
 		this.MyRigidbody = base.GetComponent<Rigidbody>();
 		this.MyRigidbody.isKinematic = true;
 		Transform transform = GameObject.Find("WeaponOriginParent").transform;
-		this.Origin = Object.Instantiate<GameObject>(this.Prompt.Yandere.StudentManager.EmptyObject, base.transform.position, Quaternion.identity).transform;
+		this.Origin = UnityEngine.Object.Instantiate<GameObject>(this.Prompt.Yandere.StudentManager.EmptyObject, base.transform.position, Quaternion.identity).transform;
 		this.Origin.parent = transform;
 	}
 
@@ -198,7 +198,7 @@ public class WeaponScript : MonoBehaviour
 		}
 		else
 		{
-			array = ((Random.Range(2, 4) == 2) ? this.Clips2 : this.Clips3);
+			array = ((UnityEngine.Random.Range(2, 4) == 2) ? this.Clips2 : this.Clips3);
 		}
 		if (stealth)
 		{
@@ -470,7 +470,7 @@ public class WeaponScript : MonoBehaviour
 			if (this.DumpTimer > 1f)
 			{
 				this.Yandere.Incinerator.MurderWeapons++;
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 		if (base.transform.parent == this.Yandere.ItemParent && this.Concealable && this.Yandere.Weapon[1] != this && this.Yandere.Weapon[2] != this)
@@ -605,7 +605,7 @@ public class WeaponScript : MonoBehaviour
 		}
 		if (this.WeaponID == 14)
 		{
-			Object.Instantiate<GameObject>(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
 			base.GetComponent<AudioSource>().Play();
 		}
 	}

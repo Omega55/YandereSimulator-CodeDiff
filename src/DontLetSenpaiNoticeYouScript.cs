@@ -52,7 +52,7 @@ public class DontLetSenpaiNoticeYouScript : MonoBehaviour
 			{
 				UILabel uilabel2 = this.Letters[this.ShakeID];
 				Vector3 vector = this.Origins[this.ShakeID];
-				uilabel2.transform.localPosition = new Vector3(vector.x + Random.Range(-5f, 5f), vector.y + Random.Range(-5f, 5f), uilabel2.transform.localPosition.z);
+				uilabel2.transform.localPosition = new Vector3(vector.x + UnityEngine.Random.Range(-5f, 5f), vector.y + UnityEngine.Random.Range(-5f, 5f), uilabel2.transform.localPosition.z);
 				this.ShakeID++;
 			}
 		}

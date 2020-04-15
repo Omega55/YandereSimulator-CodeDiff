@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 
@@ -312,7 +313,11 @@ public class StudentJson : JsonData
 		float[] array2 = new float[array.Length];
 		for (int i = 0; i < array.Length; i++)
 		{
-			array2[i] = float.Parse(array[i]);
+			float num;
+			if (float.TryParse(array[i], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out num))
+			{
+				array2[i] = num;
+			}
 		}
 		return array2;
 	}

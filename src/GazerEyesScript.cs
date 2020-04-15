@@ -69,7 +69,7 @@ public class GazerEyesScript : MonoBehaviour
 		{
 			if (this.BlinkStrength[this.ID] == 0f)
 			{
-				this.RandomNumber = (float)Random.Range(1, 101);
+				this.RandomNumber = (float)UnityEngine.Random.Range(1, 101);
 			}
 			if (this.RandomNumber == 1f)
 			{
@@ -122,7 +122,7 @@ public class GazerEyesScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < this.Eyes.Length)
 		{
-			Object.Instantiate<GameObject>(this.ParticleEffect, this.Eyes[this.ID].transform.position, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.ParticleEffect, this.Eyes[this.ID].transform.position, Quaternion.identity);
 			this.Eyes[this.ID].material.mainTexture = this.EyeTextures[this.Effect];
 			this.ID++;
 		}
@@ -135,7 +135,7 @@ public class GazerEyesScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < this.Eyes.Length)
 			{
-				GameObject gameObject = Object.Instantiate<GameObject>(this.Laser, this.Eyes[this.ID].transform.position, Quaternion.identity);
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Laser, this.Eyes[this.ID].transform.position, Quaternion.identity);
 				gameObject.transform.LookAt(this.Yandere.TargetStudent.Hips.position + new Vector3(0f, 0.33333f, 0f));
 				gameObject.transform.localScale = new Vector3(1f, 1f, Vector3.Distance(this.Eyes[this.ID].transform.position, this.Yandere.TargetStudent.Hips.position + new Vector3(0f, 0.33333f, 0f)) * 0.5f);
 				this.ID++;
@@ -153,12 +153,12 @@ public class GazerEyesScript : MonoBehaviour
 		}
 		if (this.Effect == 2)
 		{
-			Object.Instantiate<GameObject>(this.Yandere.FalconPunch, this.Yandere.TargetStudent.transform.position + new Vector3(0f, 0.5f, 0f) - this.Yandere.transform.forward * 0.5f, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.Yandere.FalconPunch, this.Yandere.TargetStudent.transform.position + new Vector3(0f, 0.5f, 0f) - this.Yandere.transform.forward * 0.5f, Quaternion.identity);
 			return;
 		}
 		if (this.Effect == 3)
 		{
-			Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, this.Yandere.TargetStudent.transform.position + Vector3.up, Quaternion.identity);
+			UnityEngine.Object.Instantiate<GameObject>(this.Yandere.EbolaEffect, this.Yandere.TargetStudent.transform.position + Vector3.up, Quaternion.identity);
 			this.Yandere.TargetStudent.SpawnAlarmDisc();
 			this.Yandere.TargetStudent.DeathType = DeathType.Poison;
 			this.Yandere.TargetStudent.BecomeRagdoll();
@@ -168,11 +168,11 @@ public class GazerEyesScript : MonoBehaviour
 		{
 			if (this.Yandere.TargetStudent.Male)
 			{
-				Object.Instantiate<GameObject>(this.MaleBloodyScream, this.Yandere.TargetStudent.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.MaleBloodyScream, this.Yandere.TargetStudent.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 			}
 			else
 			{
-				Object.Instantiate<GameObject>(this.FemaleBloodyScream, this.Yandere.TargetStudent.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.FemaleBloodyScream, this.Yandere.TargetStudent.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
 			}
 			this.Yandere.TargetStudent.BecomeRagdoll();
 			this.Yandere.TargetStudent.Ragdoll.Dismember();
@@ -215,22 +215,22 @@ public class GazerEyesScript : MonoBehaviour
 		Target.Dying = true;
 		Target.MurderSuicidePhase = 100;
 		Target.SpawnAlarmDisc();
-		GameObject gameObject = Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
 		gameObject.transform.parent = Target.BoneSets.RightArm;
 		gameObject.transform.localPosition = Vector3.zero;
-		GameObject gameObject2 = Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
 		gameObject2.transform.parent = Target.BoneSets.LeftArm;
 		gameObject2.transform.localPosition = Vector3.zero;
-		GameObject gameObject3 = Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		GameObject gameObject3 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
 		gameObject3.transform.parent = Target.BoneSets.RightLeg;
 		gameObject3.transform.localPosition = Vector3.zero;
-		GameObject gameObject4 = Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		GameObject gameObject4 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
 		gameObject4.transform.parent = Target.BoneSets.LeftLeg;
 		gameObject4.transform.localPosition = Vector3.zero;
-		GameObject gameObject5 = Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		GameObject gameObject5 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
 		gameObject5.transform.parent = Target.BoneSets.Head;
 		gameObject5.transform.localPosition = Vector3.zero;
-		GameObject gameObject6 = Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
+		GameObject gameObject6 = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);
 		gameObject6.transform.parent = Target.Hips;
 		gameObject6.transform.localPosition = Vector3.zero;
 		AudioSource.PlayClipAtPoint(this.StudentManager.LightSwitch.Flick[2], Target.transform.position + Vector3.up);

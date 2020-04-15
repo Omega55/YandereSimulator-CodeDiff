@@ -160,8 +160,8 @@ public class DelinquentScript : MonoBehaviour
 						{
 							if (!this.Threatening)
 							{
-								component.clip = this.SurpriseClips[Random.Range(0, this.SurpriseClips.Length)];
-								component.pitch = Random.Range(0.9f, 1.1f);
+								component.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
+								component.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 								component.Play();
 							}
 							this.Threatening = true;
@@ -177,8 +177,8 @@ public class DelinquentScript : MonoBehaviour
 							{
 								if (!this.Threatening)
 								{
-									component.clip = this.SurpriseClips[Random.Range(0, this.SurpriseClips.Length)];
-									component.pitch = Random.Range(0.9f, 1.1f);
+									component.clip = this.SurpriseClips[UnityEngine.Random.Range(0, this.SurpriseClips.Length)];
+									component.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 									component.Play();
 								}
 								this.Threatening = true;
@@ -191,7 +191,7 @@ public class DelinquentScript : MonoBehaviour
 							}
 							else if (!this.Threatening && this.DelinquentManager.SpeechTimer == 0f)
 							{
-								component.clip = ((this.Yandere.Container == null) ? this.ProximityClips[Random.Range(0, this.ProximityClips.Length)] : this.CaseClips[Random.Range(0, this.CaseClips.Length)]);
+								component.clip = ((this.Yandere.Container == null) ? this.ProximityClips[UnityEngine.Random.Range(0, this.ProximityClips.Length)] : this.CaseClips[UnityEngine.Random.Range(0, this.CaseClips.Length)]);
 								component.Play();
 								this.DelinquentManager.SpeechTimer = 10f;
 							}
@@ -351,7 +351,7 @@ public class DelinquentScript : MonoBehaviour
 					this.Timer = 0f;
 					if (this.DelinquentManager.SpeechTimer == 0f)
 					{
-						this.DelinquentManager.GetComponent<AudioSource>().clip = this.ThreatenClips[Random.Range(0, this.ThreatenClips.Length)];
+						this.DelinquentManager.GetComponent<AudioSource>().clip = this.ThreatenClips[UnityEngine.Random.Range(0, this.ThreatenClips.Length)];
 						this.DelinquentManager.GetComponent<AudioSource>().Play();
 						this.DelinquentManager.SpeechTimer = 10f;
 					}
@@ -364,7 +364,7 @@ public class DelinquentScript : MonoBehaviour
 					AudioSource component3 = this.DelinquentManager.GetComponent<AudioSource>();
 					if (!component3.isPlaying)
 					{
-						component3.clip = this.SurrenderClips[Random.Range(0, this.SurrenderClips.Length)];
+						component3.clip = this.SurrenderClips[UnityEngine.Random.Range(0, this.SurrenderClips.Length)];
 						component3.Play();
 						this.DelinquentManager.SpeechTimer = 5f;
 					}
@@ -405,7 +405,7 @@ public class DelinquentScript : MonoBehaviour
 				this.IdleAnim = this.Prefix + "gruntIdle_00";
 				Animation component4 = this.Character.GetComponent<Animation>();
 				component4.CrossFade(this.IdleAnim);
-				component4[this.IdleAnim].time = Random.Range(0f, component4[this.IdleAnim].length);
+				component4[this.IdleAnim].time = UnityEngine.Random.Range(0f, component4[this.IdleAnim].length);
 				this.DefaultHair.SetActive(false);
 				this.Mask.SetActive(false);
 				this.EasterHair.SetActive(true);
@@ -422,7 +422,7 @@ public class DelinquentScript : MonoBehaviour
 			base.transform.position = Vector3.MoveTowards(base.transform.position, this.TimePortal.position, Time.deltaTime * 10f);
 			if (base.transform.position == this.TimePortal.position)
 			{
-				Object.Destroy(base.gameObject);
+				UnityEngine.Object.Destroy(base.gameObject);
 			}
 		}
 	}
@@ -432,7 +432,7 @@ public class DelinquentScript : MonoBehaviour
 		if (!this.Yandere.Shoved && !this.Yandere.Tripping && this.DistanceToPlayer < 0.5f)
 		{
 			AudioSource component = this.DelinquentManager.GetComponent<AudioSource>();
-			component.clip = this.ShoveClips[Random.Range(0, this.ShoveClips.Length)];
+			component.clip = this.ShoveClips[UnityEngine.Random.Range(0, this.ShoveClips.Length)];
 			component.Play();
 			this.DelinquentManager.SpeechTimer = 5f;
 			if (this.Yandere.transform.position.x > base.transform.position.x)

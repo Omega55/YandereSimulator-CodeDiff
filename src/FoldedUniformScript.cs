@@ -25,7 +25,7 @@ public class FoldedUniformScript : MonoBehaviour
 		bool flag = false;
 		if (this.Spare && !GameGlobals.SpareUniform)
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 			flag = true;
 		}
 		if (!flag && this.Clean && this.Prompt.Button[0] != null)
@@ -65,7 +65,7 @@ public class FoldedUniformScript : MonoBehaviour
 			}
 			if (this.Prompt.Circle[0].fillAmount == 0f)
 			{
-				Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.SteamCloud, this.Yandere.transform.position + Vector3.up * 0.81f, Quaternion.identity);
 				this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_stripping_00");
 				this.Yandere.CurrentUniformOrigin = 2;
 				this.Yandere.Stripping = true;
@@ -79,7 +79,7 @@ public class FoldedUniformScript : MonoBehaviour
 				{
 					this.Yandere.Schoolwear = 1;
 					this.Yandere.ChangeSchoolwear();
-					Object.Destroy(base.gameObject);
+					UnityEngine.Object.Destroy(base.gameObject);
 				}
 			}
 		}

@@ -385,7 +385,7 @@ public class ShoulderCameraScript : MonoBehaviour
 			}
 			else if (this.ObstacleCounter)
 			{
-				this.StruggleFocus.position += new Vector3(this.Shake * Random.Range(-1f, 1f), this.Shake * Random.Range(-0.5f, 0.5f), this.Shake * Random.Range(-1f, 1f));
+				this.StruggleFocus.position += new Vector3(this.Shake * UnityEngine.Random.Range(-1f, 1f), this.Shake * UnityEngine.Random.Range(-0.5f, 0.5f), this.Shake * UnityEngine.Random.Range(-1f, 1f));
 				this.Shake = Mathf.Lerp(this.Shake, 0f, Time.deltaTime * 5f);
 				if (this.Yandere.Armed)
 				{

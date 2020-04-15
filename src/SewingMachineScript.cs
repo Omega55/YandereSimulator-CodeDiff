@@ -89,7 +89,7 @@ public class SewingMachineScript : MonoBehaviour
 				this.Yandere.Inventory.ModifiedUniform = true;
 				this.StudentManager.Students[30].TaskPhase = 5;
 				TaskGlobals.SetTaskStatus(30, 2);
-				Object.Destroy(this.Uniform.gameObject);
+				UnityEngine.Object.Destroy(this.Uniform.gameObject);
 				this.MoveAway = true;
 				this.Check = false;
 				return;

@@ -167,7 +167,7 @@ public class NotificationManagerScript : MonoBehaviour
 	{
 		if (!this.Yandere.Egg)
 		{
-			GameObject gameObject = Object.Instantiate<GameObject>(this.Notification);
+			GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.Notification);
 			NotificationScript component = gameObject.GetComponent<NotificationScript>();
 			gameObject.transform.parent = this.NotificationParent;
 			gameObject.transform.localPosition = new Vector3(0f, 0.60275f + 0.049f * (float)this.NotificationsSpawned, 0f);

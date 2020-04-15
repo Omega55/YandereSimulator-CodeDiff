@@ -671,7 +671,7 @@ public class IntroScript : MonoBehaviour
 						this.EyeTimer += Time.deltaTime;
 						if (this.EyeTimer > 0.1f)
 						{
-							this.Yandere.materials[2].SetTextureOffset("_OverlayTex", new Vector2(Random.Range(-0.01f, 0.01f), Random.Range(-0.01f, 0.01f)));
+							this.Yandere.materials[2].SetTextureOffset("_OverlayTex", new Vector2(UnityEngine.Random.Range(-0.01f, 0.01f), UnityEngine.Random.Range(-0.01f, 0.01f)));
 							this.EyeTimer -= 0.1f;
 						}
 						base.transform.Translate(Vector3.forward * -0.1f * Time.deltaTime, Space.Self);
@@ -966,7 +966,7 @@ public class IntroScript : MonoBehaviour
 			this.Ponytail2.transform.eulerAngles = new Vector3(this.X, this.Y, this.Z);
 			this.RightHair2.transform.eulerAngles = new Vector3(this.X2, this.Y2, this.Z2);
 			this.LeftHair2.transform.eulerAngles = new Vector3(this.X2, this.Y2, this.Z2);
-			this.RightHand.localEulerAngles += new Vector3(Random.Range(1f, -1f), Random.Range(1f, -1f), Random.Range(1f, -1f));
+			this.RightHand.localEulerAngles += new Vector3(UnityEngine.Random.Range(1f, -1f), UnityEngine.Random.Range(1f, -1f), UnityEngine.Random.Range(1f, -1f));
 		}
 	}
 
@@ -975,7 +975,7 @@ public class IntroScript : MonoBehaviour
 		if (GameGlobals.LoveSick)
 		{
 			Camera.main.backgroundColor = new Color(0f, 0f, 0f, 1f);
-			foreach (GameObject gameObject in Object.FindObjectsOfType<GameObject>())
+			foreach (GameObject gameObject in UnityEngine.Object.FindObjectsOfType<GameObject>())
 			{
 				UISprite component = gameObject.GetComponent<UISprite>();
 				if (component != null)

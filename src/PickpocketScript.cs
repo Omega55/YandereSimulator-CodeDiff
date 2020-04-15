@@ -172,7 +172,7 @@ public class PickpocketScript : MonoBehaviour
 	private void Punish()
 	{
 		Debug.Log("Punishing Yandere-chan for pickpocketing.");
-		Object.Instantiate<GameObject>(this.AlarmDisc, this.Student.Yandere.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>().NoScream = true;
+		UnityEngine.Object.Instantiate<GameObject>(this.AlarmDisc, this.Student.Yandere.transform.position + Vector3.up, Quaternion.identity).GetComponent<AlarmDiscScript>().NoScream = true;
 		if (!this.NotNurse && !this.Prompt.Yandere.Egg)
 		{
 			Debug.Log("A faculty member saw pickpocketing.");

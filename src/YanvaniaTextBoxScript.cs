@@ -93,7 +93,7 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 					{
 						if (this.NewLabel != null)
 						{
-							Object.Destroy(this.NewLabel);
+							UnityEngine.Object.Destroy(this.NewLabel);
 						}
 						this.UpdatePortrait = true;
 						this.Display = true;
@@ -241,7 +241,7 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 			{
 				if (this.NewLabel != null)
 				{
-					Object.Destroy(this.NewLabel);
+					UnityEngine.Object.Destroy(this.NewLabel);
 				}
 				if (this.NewLabelScript != null)
 				{
@@ -251,8 +251,8 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 				this.Dracula.SpawnTeleportEffect();
 				this.Dracula.enabled = true;
 				this.Jukebox.BossBattle();
-				Object.Destroy(this.BloodWipe);
-				Object.Destroy(this.Glass);
+				UnityEngine.Object.Destroy(this.BloodWipe);
+				UnityEngine.Object.Destroy(this.Glass);
 				this.Leave = true;
 				return;
 			}
@@ -276,7 +276,7 @@ public class YanvaniaTextBoxScript : MonoBehaviour
 
 	private void SpawnLabel()
 	{
-		this.NewLabel = Object.Instantiate<GameObject>(this.Label, base.transform.position, Quaternion.identity);
+		this.NewLabel = UnityEngine.Object.Instantiate<GameObject>(this.Label, base.transform.position, Quaternion.identity);
 		this.NewLabel.transform.parent = this.NewLabelSpawnPoint;
 		this.NewLabel.transform.localEulerAngles = Vector3.zero;
 		this.NewLabel.transform.localPosition = Vector3.zero;

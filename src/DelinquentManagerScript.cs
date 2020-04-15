@@ -45,7 +45,7 @@ public class DelinquentManagerScript : MonoBehaviour
 		if (this.Attacker != null && !this.Attacker.Attacking && this.Attacker.ExpressedSurprise && this.Attacker.Run && !this.Aggro)
 		{
 			AudioSource component = base.GetComponent<AudioSource>();
-			component.clip = this.Attacker.AggroClips[Random.Range(0, this.Attacker.AggroClips.Length)];
+			component.clip = this.Attacker.AggroClips[UnityEngine.Random.Range(0, this.Attacker.AggroClips.Length)];
 			component.Play();
 			this.Aggro = true;
 		}

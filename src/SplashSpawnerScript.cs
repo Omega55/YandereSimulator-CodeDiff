@@ -32,7 +32,7 @@ public class SplashSpawnerScript : MonoBehaviour
 			this.FootUp = false;
 			if (this.Bloody)
 			{
-				GameObject gameObject = Object.Instantiate<GameObject>(this.BloodSplash, new Vector3(base.transform.position.x, this.Yandere.position.y, base.transform.position.z), Quaternion.identity);
+				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodSplash, new Vector3(base.transform.position.x, this.Yandere.position.y, base.transform.position.z), Quaternion.identity);
 				gameObject.transform.eulerAngles = new Vector3(-90f, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
 				this.Bloody = false;
 			}

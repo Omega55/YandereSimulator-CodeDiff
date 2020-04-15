@@ -11,7 +11,7 @@ public class SenpaiShrineCollectibleScript : MonoBehaviour
 	{
 		if (PlayerGlobals.GetShrineCollectible(this.ID))
 		{
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 
@@ -21,7 +21,7 @@ public class SenpaiShrineCollectibleScript : MonoBehaviour
 		{
 			this.Prompt.Yandere.Inventory.ShrineCollectibles[this.ID] = true;
 			this.Prompt.Hide();
-			Object.Destroy(base.gameObject);
+			UnityEngine.Object.Destroy(base.gameObject);
 		}
 	}
 }

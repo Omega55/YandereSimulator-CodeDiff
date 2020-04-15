@@ -24,7 +24,7 @@ public class SnapStudentScript : MonoBehaviour
 	private void Start()
 	{
 		this.MyAnim.enabled = false;
-		this.MyAnim[this.FearAnim].time = Random.Range(0f, this.MyAnim[this.FearAnim].length);
+		this.MyAnim[this.FearAnim].time = UnityEngine.Random.Range(0f, this.MyAnim[this.FearAnim].length);
 		this.MyAnim.enabled = true;
 	}
 
@@ -83,7 +83,7 @@ public class SnapStudentScript : MonoBehaviour
 					int voiceID = this.Yandere.VoiceID;
 					while (this.Yandere.VoiceID == voiceID)
 					{
-						this.Yandere.VoiceID = Random.Range(0, 5);
+						this.Yandere.VoiceID = UnityEngine.Random.Range(0, 5);
 					}
 					this.Yandere.SnapVoice.clip = this.StudentFear[this.Yandere.VoiceID];
 					this.Yandere.SnapVoice.Play();

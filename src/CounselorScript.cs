@@ -375,7 +375,7 @@ public class CounselorScript : MonoBehaviour
 				this.TalkTimer = Mathf.MoveTowards(this.TalkTimer, 1f, Time.deltaTime);
 				if (this.TalkTimer == 1f)
 				{
-					int num = Random.Range(1, 3);
+					int num = UnityEngine.Random.Range(1, 3);
 					this.CounselorSubtitle.text = this.CounselorGreetingText[num];
 					this.MyAudio.clip = this.CounselorGreetingClips[num];
 					this.MyAudio.Play();
@@ -794,7 +794,7 @@ public class CounselorScript : MonoBehaviour
 					this.MouthTimer += Time.deltaTime;
 					if (this.MouthTimer > this.TimerLimit)
 					{
-						this.MouthTarget = Random.Range(0f, 100f);
+						this.MouthTarget = UnityEngine.Random.Range(0f, 100f);
 						this.MouthTimer = 0f;
 					}
 					this.MouthOpen = Mathf.Lerp(this.MouthOpen, this.MouthTarget, Time.deltaTime * this.TalkSpeed);
@@ -907,7 +907,7 @@ public class CounselorScript : MonoBehaviour
 				}
 				if (this.Yandere.Subtitle.CurrentClip != null)
 				{
-					Object.Destroy(this.Yandere.Subtitle.CurrentClip);
+					UnityEngine.Object.Destroy(this.Yandere.Subtitle.CurrentClip);
 				}
 				this.GenkaChibi.mainTexture = this.AnnoyedChibi;
 				this.CounselorBar.SetActive(true);
@@ -1201,7 +1201,7 @@ public class CounselorScript : MonoBehaviour
 			{
 				if (this.SilentTreatment)
 				{
-					int num = Random.Range(0, 3);
+					int num = UnityEngine.Random.Range(0, 3);
 					this.MyAudio.clip = this.SilentClips[num];
 					this.CounselorSubtitle.text = this.Silents[num];
 					this.Patience--;
@@ -1251,7 +1251,7 @@ public class CounselorScript : MonoBehaviour
 					else
 					{
 						Debug.Log("Yandere-chan's excuse has been deemed invalid.");
-						int num2 = Random.Range(0, 3);
+						int num2 = UnityEngine.Random.Range(0, 3);
 						this.MyAudio.clip = this.RejectExcuseClips[num2];
 						this.CounselorSubtitle.text = this.RejectExcuses[num2];
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1271,7 +1271,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
-						int num3 = Random.Range(0, 3);
+						int num3 = UnityEngine.Random.Range(0, 3);
 						this.MyAudio.clip = this.RejectApologyClips[num3];
 						this.CounselorSubtitle.text = this.RejectApologies[num3];
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1280,7 +1280,7 @@ public class CounselorScript : MonoBehaviour
 				}
 				else if (this.Answer == 3)
 				{
-					int num4 = Random.Range(0, 5);
+					int num4 = UnityEngine.Random.Range(0, 5);
 					this.MyAudio.clip = this.RejectLieClips[num4];
 					this.CounselorSubtitle.text = this.RejectLies[num4];
 					this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1420,7 +1420,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
-						int num6 = Random.Range(0, 3);
+						int num6 = UnityEngine.Random.Range(0, 3);
 						this.MyAudio.clip = this.RejectBlameClips[num6];
 						this.CounselorSubtitle.text = this.RejectBlames[num6];
 						this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1429,7 +1429,7 @@ public class CounselorScript : MonoBehaviour
 				}
 				else if (this.Answer == 5)
 				{
-					int num7 = Random.Range(0, 3);
+					int num7 = UnityEngine.Random.Range(0, 3);
 					this.MyAudio.clip = this.RejectFlirtClips[num7];
 					this.CounselorSubtitle.text = this.RejectFlirts[num7];
 					this.MyAnimation.CrossFade("CounselorAnnoyed");
@@ -1472,7 +1472,7 @@ public class CounselorScript : MonoBehaviour
 			{
 				if (this.Patience < 0)
 				{
-					int num8 = Random.Range(0, 3);
+					int num8 = UnityEngine.Random.Range(0, 3);
 					this.MyAudio.clip = this.BadClosingClips[num8];
 					this.CounselorSubtitle.text = this.BadClosings[num8];
 					this.MyAnimation.CrossFade("CounselorArmsCrossed", 1f);
@@ -1499,7 +1499,7 @@ public class CounselorScript : MonoBehaviour
 					}
 					else
 					{
-						int num9 = Random.Range(0, 3);
+						int num9 = UnityEngine.Random.Range(0, 3);
 						this.MyAudio.clip = this.FreeToLeaveClips[num9];
 						this.CounselorSubtitle.text = this.FreeToLeaves[num9];
 						this.MyAnimation.CrossFade("CounselorArmsCrossed", 1f);

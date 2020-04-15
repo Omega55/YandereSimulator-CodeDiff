@@ -287,7 +287,7 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -300,14 +300,14 @@ public class AttackManagerScript : MonoBehaviour
 						{
 							this.Yandere.Bloodiness += 20f;
 							this.Yandere.StainWeapon();
-							Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 							this.EffectPhase++;
 							return;
 						}
 					}
 					else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 3.0333333f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -318,7 +318,7 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -327,14 +327,14 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 3.5333333f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
 				}
 				else if (this.EffectPhase == 2 && this.YandereAnim[this.AnimName].time > 4.16666651f)
 				{
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
@@ -343,7 +343,7 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				this.Yandere.Bloodiness += 20f;
 				this.Yandere.StainWeapon();
-				Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 				this.EffectPhase++;
 				return;
 			}
@@ -358,7 +358,7 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -371,14 +371,14 @@ public class AttackManagerScript : MonoBehaviour
 						{
 							this.Yandere.Bloodiness += 20f;
 							this.Yandere.StainWeapon();
-							Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 							this.EffectPhase++;
 							return;
 						}
 					}
 					else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 1.51666665f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -389,7 +389,7 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -407,7 +407,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 2.33333325f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -416,7 +416,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 2.73333335f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -425,7 +425,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 3.13333344f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -434,7 +434,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 3.5333333f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -443,7 +443,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 4.133333f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -461,14 +461,14 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					this.Yandere.Bloodiness += 20f;
 					this.Yandere.StainWeapon();
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.6666667f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
 			}
 			else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 1f)
 			{
-				Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.333333343f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.333333343f, Quaternion.identity);
 				this.EffectPhase++;
 				return;
 			}
@@ -486,7 +486,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					this.Yandere.Bloodiness += 20f;
 					this.Yandere.StainWeapon();
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
@@ -499,14 +499,14 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
 				}
 				else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 2.9666667f)
 				{
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
@@ -517,7 +517,7 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					this.Yandere.Bloodiness += 20f;
 					this.Yandere.StainWeapon();
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
@@ -526,7 +526,7 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				if (this.YandereAnim[this.AnimName].time > 3.1f)
 				{
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
@@ -535,14 +535,14 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				if (this.YandereAnim[this.AnimName].time > 3.76666665f)
 				{
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
 			}
 			else if (this.EffectPhase == 3 && this.YandereAnim[this.AnimName].time > 4.4f)
 			{
-				Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 				this.EffectPhase++;
 				return;
 			}
@@ -689,7 +689,7 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				this.Yandere.Bloodiness += 20f;
 				this.Yandere.StainWeapon();
-				Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.right * 0.2f + weapon.transform.forward * -0.06666667f, Quaternion.identity);
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.right * 0.2f + weapon.transform.forward * -0.06666667f, Quaternion.identity);
 				this.EffectPhase++;
 				return;
 			}
@@ -704,7 +704,7 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -717,14 +717,14 @@ public class AttackManagerScript : MonoBehaviour
 						{
 							this.Yandere.Bloodiness += 20f;
 							this.Yandere.StainWeapon();
-							Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 							this.EffectPhase++;
 							return;
 						}
 					}
 					else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 2.83333325f)
 					{
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
@@ -735,14 +735,14 @@ public class AttackManagerScript : MonoBehaviour
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
-						Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
 					}
 				}
 				else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 4.16666651f)
 				{
-					Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
@@ -811,7 +811,7 @@ public class AttackManagerScript : MonoBehaviour
 		{
 			if (this.YandereAnim[this.AnimName].time > this.LoopEnd / 30f)
 			{
-				component.pitch = 1f + Random.Range(0.1f, -0.1f);
+				component.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
 				component.time = this.LoopStart / 30f;
 				this.VictimAnim[this.VictimAnimName].speed = -1f;
 				this.YandereAnim[this.AnimName].speed = -1f;
@@ -820,7 +820,7 @@ public class AttackManagerScript : MonoBehaviour
 			}
 			else if (this.YandereAnim[this.AnimName].time < this.LoopStart / 30f)
 			{
-				component.pitch = 1f + Random.Range(0.1f, -0.1f);
+				component.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
 				component.time = this.LoopStart / 30f;
 				this.VictimAnim[this.VictimAnimName].speed = 1f;
 				this.YandereAnim[this.AnimName].speed = 1f;
@@ -832,7 +832,7 @@ public class AttackManagerScript : MonoBehaviour
 		}
 		if (this.Loop && this.YandereAnim[this.AnimName].time > this.LoopEnd / 30f)
 		{
-			component.pitch = 1f + Random.Range(0.1f, -0.1f);
+			component.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
 			component.time = this.LoopStart / 30f;
 			this.VictimAnim[this.VictimAnimName].time = this.LoopStart / 30f;
 			this.YandereAnim[this.AnimName].time = this.LoopStart / 30f;

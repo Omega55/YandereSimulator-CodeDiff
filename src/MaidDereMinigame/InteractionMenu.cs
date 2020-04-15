@@ -39,7 +39,7 @@ namespace MaidDereMinigame
 			{
 				if (InteractionMenu.instance == null)
 				{
-					InteractionMenu.instance = Object.FindObjectOfType<InteractionMenu>();
+					InteractionMenu.instance = UnityEngine.Object.FindObjectOfType<InteractionMenu>();
 				}
 				return InteractionMenu.instance;
 			}

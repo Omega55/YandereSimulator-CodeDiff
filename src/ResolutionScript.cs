@@ -18,30 +18,30 @@ public class ResolutionScript : MonoBehaviour
 
 	public float Alpha = 1f;
 
-	public bool FadeOut;
+	public bool FullScreen;
 
-	public Resolution[] Resolutions;
+	public bool FadeOut;
 
 	public string[] Qualities;
 
+	public int[] Widths;
+
+	public int[] Heights;
+
 	public int QualityID;
 
-	public int ResID;
+	public int ResID = 1;
 
 	public int ID = 1;
 
 	private void Start()
 	{
 		this.Darkness.color = new Color(1f, 1f, 1f, 1f);
-		this.Resolutions = Screen.resolutions;
-		this.ResolutionLabel.text = this.Resolutions[this.ResID].width + " x " + this.Resolutions[this.ResID].height;
-		this.QualityLabel.text = (this.Qualities[this.QualityID] ?? "");
-		if (Screen.fullScreen)
-		{
-			this.FullScreenLabel.text = "No";
-			return;
-		}
-		this.FullScreenLabel.text = "Yes";
+		Screen.fullScreen = false;
+		Screen.SetResolution(1280, 720, false);
+		this.ResolutionLabel.text = Screen.width + " x " + Screen.height;
+		this.QualityLabel.text = (this.Qualities[QualitySettings.GetQualityLevel()] ?? "");
+		this.FullScreenLabel.text = "No";
 	}
 
 	private void Update()
@@ -73,21 +73,21 @@ public class ResolutionScript : MonoBehaviour
 			}
 			if (this.ID == 1)
 			{
-				if (this.InputManager.TappedLeft)
+				if (this.InputManager.TappedRight)
 				{
 					this.ResID++;
-					if (this.ResID == this.Resolutions.Length)
+					if (this.ResID == this.Widths.Length)
 					{
 						this.ResID = 0;
 					}
 					this.UpdateRes();
 				}
-				else if (this.InputManager.TappedRight)
+				else if (this.InputManager.TappedLeft)
 				{
 					this.ResID--;
 					if (this.ResID < 0)
 					{
-						this.ResID = this.Resolutions.Length - 1;
+						this.ResID = this.Widths.Length - 1;
 					}
 					this.UpdateRes();
 				}
@@ -96,15 +96,16 @@ public class ResolutionScript : MonoBehaviour
 			{
 				if (this.InputManager.TappedRight || this.InputManager.TappedLeft)
 				{
-					Screen.SetResolution(Screen.width, Screen.height, !Screen.fullScreen);
-					if (Screen.fullScreen)
-					{
-						this.FullScreenLabel.text = "No";
-					}
-					else
+					this.FullScreen = !this.FullScreen;
+					if (this.FullScreen)
 					{
 						this.FullScreenLabel.text = "Yes";
 					}
+					else
+					{
+						this.FullScreenLabel.text = "No";
+					}
+					Screen.SetResolution(Screen.width, Screen.height, this.FullScreen);
 				}
 			}
 			else if (this.ID == 3)
@@ -138,31 +139,8 @@ public class ResolutionScript : MonoBehaviour
 
 	private void UpdateRes()
 	{
-		int width = Screen.width;
-		int num = 0;
-		Screen.SetResolution(this.Resolutions[this.ResID].width, this.Resolutions[this.ResID].height, Screen.fullScreen);
-		while (Screen.width == width && num < 100)
-		{
-			if (this.InputManager.TappedLeft)
-			{
-				this.ResID++;
-				if (this.ResID == this.Resolutions.Length)
-				{
-					this.ResID = 0;
-				}
-			}
-			else if (this.InputManager.TappedRight)
-			{
-				this.ResID--;
-				if (this.ResID < 0)
-				{
-					this.ResID = this.Resolutions.Length - 1;
-				}
-			}
-			Screen.SetResolution(this.Resolutions[this.ResID].width, this.Resolutions[this.ResID].height, Screen.fullScreen);
-			num++;
-		}
-		this.ResolutionLabel.text = this.Resolutions[this.ResID].width + " x " + this.Resolutions[this.ResID].height;
+		Screen.SetResolution(this.Widths[this.ResID], this.Heights[this.ResID], Screen.fullScreen);
+		this.ResolutionLabel.text = this.Widths[this.ResID] + " x " + this.Heights[this.ResID];
 	}
 
 	private void UpdateQuality()
