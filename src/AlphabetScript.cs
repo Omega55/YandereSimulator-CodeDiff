@@ -44,6 +44,8 @@ public class AlphabetScript : MonoBehaviour
 
 	public int[] IDs;
 
+	public AudioSource[] Music;
+
 	private void Start()
 	{
 		if (GameGlobals.AlphabetMode)
@@ -69,6 +71,7 @@ public class AlphabetScript : MonoBehaviour
 		}
 		this.TargetLabel.transform.parent.gameObject.SetActive(false);
 		this.BombLabel.transform.parent.gameObject.SetActive(false);
+		UnityEngine.Object.Destroy(this.Music[1].transform.parent.gameObject);
 		base.gameObject.SetActive(false);
 		base.enabled = false;
 	}
@@ -119,6 +122,8 @@ public class AlphabetScript : MonoBehaviour
 			if (!this.StudentManager.Students[this.IDs[this.CurrentTarget]].Alive)
 			{
 				this.CurrentTarget++;
+				int num = this.CurrentTarget + 1;
+				int num2 = this.Music.Length;
 				if (this.CurrentTarget > 77)
 				{
 					this.TargetLabel.text = "Challenge Complete!";

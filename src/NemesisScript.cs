@@ -159,10 +159,22 @@ public class NemesisScript : MonoBehaviour
 	{
 		if (this.PutOnDisguise)
 		{
+			bool flag = false;
 			int num = 1;
-			while ((this.Student.StudentManager.Students[num] != null && this.Student.StudentManager.Students[num].Male) || (num > 5 && num < 21) || num == 21 || num == 26 || num == 31 || num == 36 || num == 41 || num == 46 || num == 51 || num == 56 || num == 61 || num == 66 || num == 71 || num == this.MissionMode.TargetID)
+			while ((this.Student.StudentManager.Students[num] != null && this.Student.StudentManager.Students[num].Male) || (num > 5 && num < 21) || num == 21 || num == 26 || num == 31 || num == 36 || num == 41 || num == 46 || num == 51 || num == 56 || num == 61 || num == 66 || num == 71 || num == this.MissionMode.TargetID || flag)
 			{
 				num = UnityEngine.Random.Range(2, 90);
+				if (this.MissionMode.MultiMission)
+				{
+					flag = false;
+					for (int i = 1; i < 11; i++)
+					{
+						if (num == PlayerPrefs.GetInt("MissionModeTarget" + i))
+						{
+							flag = true;
+						}
+					}
+				}
 			}
 			this.Student.StudentManager.Students[num].gameObject.SetActive(false);
 			this.Student.StudentManager.Students[num].Replaced = true;

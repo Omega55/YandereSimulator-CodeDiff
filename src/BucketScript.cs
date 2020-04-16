@@ -138,10 +138,17 @@ public class BucketScript : MonoBehaviour
 		{
 			if (this.Yandere.PickUp.JerryCan)
 			{
-				if (!this.Yandere.PickUp.Empty)
+				if (!this.Full)
 				{
-					this.Prompt.Label[0].text = "     Pour Gasoline";
-					this.Prompt.HideButton[0] = false;
+					if (!this.Yandere.PickUp.Empty)
+					{
+						this.Prompt.Label[0].text = "     Pour Gasoline";
+						this.Prompt.HideButton[0] = false;
+					}
+					else
+					{
+						this.Prompt.HideButton[0] = true;
+					}
 				}
 				else
 				{

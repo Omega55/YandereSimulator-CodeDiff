@@ -154,6 +154,11 @@ public class ZoomScript : MonoBehaviour
 			base.transform.position = new Vector3(this.Yandere.transform.position.x + this.midOffset * Vector3.Dot(lhs, Vector3.forward), base.transform.position.y, this.Yandere.transform.position.z + this.midOffset * Vector3.Dot(lhs, -Vector3.right));
 			return;
 		}
+		if (this.Yandere.FollowHips)
+		{
+			base.transform.position = new Vector3(Mathf.MoveTowards(base.transform.position.x, this.Yandere.Hips.position.x, Time.deltaTime), base.transform.position.y, Mathf.MoveTowards(base.transform.position.z, this.Yandere.Hips.position.z, Time.deltaTime));
+			return;
+		}
 		base.transform.localPosition = new Vector3(0f, base.transform.localPosition.y, 0f);
 	}
 }

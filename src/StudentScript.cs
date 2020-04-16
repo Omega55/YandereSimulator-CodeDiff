@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FIMSpace.FLook;
 using Pathfinding;
 using UnityEngine;
 
@@ -2536,14 +2535,9 @@ public class StudentScript : MonoBehaviour
 			}
 		}
 		this.UpdateAnimLayers();
-		if (!this.Male)
+		if (!this.Male && this.StudentID != 55)
 		{
-			base.GetComponent<FLookAnimatorWEyes>().ObjectToFollow = this.Yandere.Head;
-			base.GetComponent<FLookAnimatorWEyes>().EyesTarget = this.Yandere.Head;
-			if (this.StudentID != 55)
-			{
-				this.LongHair[0] = null;
-			}
+			this.LongHair[0] = null;
 		}
 		if (this.StudentID > 9 && this.StudentID < 21)
 		{
@@ -3163,6 +3157,11 @@ public class StudentScript : MonoBehaviour
 					{
 						this.Phase++;
 					}
+					if (this.Actions[this.Phase] == StudentActionType.SitAndTakeNotes && this.Schoolwear == 2)
+					{
+						this.MustChangeClothing = true;
+						this.ChangeClothingPhase = 0;
+					}
 					if (this.Actions[this.Phase] == StudentActionType.Graffiti && !this.StudentManager.Bully)
 					{
 						ScheduleBlock scheduleBlock = this.ScheduleBlocks[2];
@@ -3456,6 +3455,7 @@ public class StudentScript : MonoBehaviour
 							}
 							else if (this.ClubAttire)
 							{
+								this.TargetDistance = 1f;
 								if (!this.ChangingBooth.Occupied)
 								{
 									this.CurrentDestination = this.ChangingBooth.transform;
@@ -3943,26 +3943,32 @@ public class StudentScript : MonoBehaviour
 									{
 										if (this.ChangeClothingPhase == 0)
 										{
-											if (this.StudentManager.CommunalLocker.Student == null)
-											{
-												this.StudentManager.CommunalLocker.Open = true;
-												this.StudentManager.CommunalLocker.Student = this;
-												this.StudentManager.CommunalLocker.SpawnSteam();
-												this.Schoolwear = 1;
-												this.ChangeClothingPhase++;
-												return;
-											}
-											this.CharacterAnimation.CrossFade(this.IdleAnim);
+											UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.CommunalLocker.SteamCloud, base.transform.position + Vector3.up * 0.81f, Quaternion.identity);
+											this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+											this.ChangeClothingPhase++;
 											return;
 										}
-										else if (this.ChangeClothingPhase == 1 && !this.StudentManager.CommunalLocker.SteamCountdown)
+										if (this.ChangeClothingPhase == 1)
 										{
-											this.Pathfinding.target = this.Seat;
-											this.CurrentDestination = this.Seat;
-											this.StudentManager.CommunalLocker.Student = null;
-											this.ChangeClothingPhase++;
-											this.MustChangeClothing = false;
-											return;
+											this.CharacterAnimation.CrossFade(this.StripAnim);
+											this.Pathfinding.canSearch = false;
+											this.Pathfinding.canMove = false;
+											if (this.CharacterAnimation[this.StripAnim].time >= 1.5f)
+											{
+												if (this.Schoolwear != 1)
+												{
+													this.Schoolwear = 1;
+													this.ChangeSchoolwear();
+												}
+												if (this.CharacterAnimation[this.StripAnim].time >= this.CharacterAnimation[this.StripAnim].length)
+												{
+													this.Pathfinding.target = this.Seat;
+													this.CurrentDestination = this.Seat;
+													this.ChangeClothingPhase++;
+													this.MustChangeClothing = false;
+													return;
+												}
+											}
 										}
 									}
 									else

@@ -515,6 +515,11 @@ public class CosmeticScript : MonoBehaviour
 					gameObject.SetActive(false);
 				}
 			}
+			if (QualitySettings.GetQualityLevel() > 1)
+			{
+				this.Student.BreastSize = 1f;
+				this.BreastSize = 1f;
+			}
 			this.RightBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.LeftBreast.localScale = new Vector3(this.BreastSize, this.BreastSize, this.BreastSize);
 			this.RightWristband.SetActive(false);

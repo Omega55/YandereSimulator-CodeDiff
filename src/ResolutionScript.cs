@@ -42,6 +42,7 @@ public class ResolutionScript : MonoBehaviour
 		this.ResolutionLabel.text = Screen.width + " x " + Screen.height;
 		this.QualityLabel.text = (this.Qualities[QualitySettings.GetQualityLevel()] ?? "");
 		this.FullScreenLabel.text = "No";
+		Debug.Log("The quality level is set to: " + QualitySettings.GetQualityLevel());
 	}
 
 	private void Update()
@@ -147,6 +148,7 @@ public class ResolutionScript : MonoBehaviour
 	{
 		QualitySettings.SetQualityLevel(this.QualityID, true);
 		this.QualityLabel.text = (this.Qualities[this.QualityID] ?? "");
+		Debug.Log("The quality level is set to: " + QualitySettings.GetQualityLevel());
 	}
 
 	private void UpdateHighlight()

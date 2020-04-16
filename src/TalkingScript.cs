@@ -189,10 +189,10 @@ public class TalkingScript : MonoBehaviour
 			{
 				if (this.S.TalkTimer == 3f)
 				{
-					this.S.CharacterAnimation.CrossFade(this.S.LookDownAnim);
 					this.S.Subtitle.PersonaSubtitle.UpdateLabel(this.S.Persona, this.S.Reputation.Reputation, 5f);
 					if (this.S.Club != ClubType.Delinquent)
 					{
+						this.S.CharacterAnimation.CrossFade(this.S.LookDownAnim);
 						this.CalculateRepBonus();
 						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
 						this.S.PendingRep += 1f + (float)this.S.RepBonus;
@@ -337,9 +337,12 @@ public class TalkingScript : MonoBehaviour
 						PlayerGlobals.SetStudentFriend(this.S.StudentID, true);
 						this.S.Police.EndOfDay.NewFriends++;
 						this.S.Interaction = StudentInteractionType.Idle;
-						this.CalculateRepBonus();
-						this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
-						this.S.PendingRep += 1f + (float)this.S.RepBonus;
+						if (this.S.Club != ClubType.Delinquent)
+						{
+							this.CalculateRepBonus();
+							this.S.Reputation.PendingRep += 1f + (float)this.S.RepBonus;
+							this.S.PendingRep += 1f + (float)this.S.RepBonus;
+						}
 					}
 					else if (this.S.TaskPhase == 4 || this.S.TaskPhase == 0)
 					{

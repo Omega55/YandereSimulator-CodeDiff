@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using MaidDereMinigame.Malee;
 using UnityEngine;
 
@@ -26,8 +27,14 @@ namespace MaidDereMinigame
 			for (int j = 0; j < text2.Length; j++)
 			{
 				int index = -1;
-				int.TryParse(text2[j].ToString(), out index);
-				this.digits[j].sprite = GameController.Instance.numbers[index];
+				if (int.TryParse(text2[j].ToString(), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out index))
+				{
+					this.digits[j].sprite = GameController.Instance.numbers[index];
+				}
+				else
+				{
+					Debug.LogError("There was an issue while parsing the value in TipCard.SetTip");
+				}
 			}
 			if (text2.Length <= 3)
 			{

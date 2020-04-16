@@ -391,7 +391,7 @@ public class DoorScript : MonoBehaviour
 			this.Bucket.Fly = true;
 			this.Prompt.HideButton[0] = false;
 			this.Prompt.HideButton[1] = true;
-			this.Prompt.Label[1].text = "";
+			this.Prompt.Label[1].text = "     Set Trap";
 			this.Prompt.enabled = true;
 			this.BucketSet = false;
 		}

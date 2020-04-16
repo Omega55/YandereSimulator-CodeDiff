@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 namespace MaidDereMinigame
@@ -35,10 +36,15 @@ namespace MaidDereMinigame
 				','
 			});
 			float num;
-			float.TryParse(array[0], out num);
+			bool flag = float.TryParse(array[0], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out num);
 			float y;
-			float.TryParse(array[1], out y);
-			this.hairInstance.transform.localPosition = new Vector3(this.hairInstance.flipX ? (-num) : num, y, this.hairInstance.transform.localPosition.z);
+			bool flag2 = float.TryParse(array[1], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out y);
+			if (flag && flag2)
+			{
+				this.hairInstance.transform.localPosition = new Vector3(this.hairInstance.flipX ? (-num) : num, y, this.hairInstance.transform.localPosition.z);
+				return;
+			}
+			Debug.Log("There was an error while parsing the hair position in CharacterHairPlacer");
 		}
 	}
 }

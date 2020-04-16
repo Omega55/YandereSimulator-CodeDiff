@@ -82,6 +82,10 @@ public class CombatMinigameScript : MonoBehaviour
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
 		this.ButtonPrompts[4].enabled = false;
+		this.ButtonPrompts[1].alpha = 0f;
+		this.ButtonPrompts[2].alpha = 0f;
+		this.ButtonPrompts[3].alpha = 0f;
+		this.ButtonPrompts[4].alpha = 0f;
 		this.Circle.enabled = false;
 		this.BG.enabled = false;
 	}
@@ -688,6 +692,10 @@ public class CombatMinigameScript : MonoBehaviour
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
 		this.ButtonPrompts[4].enabled = false;
+		this.ButtonPrompts[1].alpha = 0f;
+		this.ButtonPrompts[2].alpha = 0f;
+		this.ButtonPrompts[3].alpha = 0f;
+		this.ButtonPrompts[4].alpha = 0f;
 		int buttonID = this.ButtonID;
 		while (this.ButtonID == buttonID)
 		{
@@ -710,6 +718,7 @@ public class CombatMinigameScript : MonoBehaviour
 			this.CurrentButton = "Y";
 		}
 		this.ButtonPrompts[this.ButtonID].enabled = true;
+		this.ButtonPrompts[this.ButtonID].alpha = 1f;
 		this.Circle.enabled = true;
 		this.BG.enabled = true;
 		this.Timer = this.StartTime;
@@ -721,6 +730,10 @@ public class CombatMinigameScript : MonoBehaviour
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
 		this.ButtonPrompts[4].enabled = false;
+		this.ButtonPrompts[1].alpha = 0f;
+		this.ButtonPrompts[2].alpha = 0f;
+		this.ButtonPrompts[3].alpha = 0f;
+		this.ButtonPrompts[4].alpha = 0f;
 		this.Circle.fillAmount = 1f;
 		this.Circle.enabled = false;
 		this.BG.enabled = false;

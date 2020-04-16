@@ -42,6 +42,10 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
 		this.ButtonPrompts[4].enabled = false;
+		this.ButtonPrompts[1].alpha = 0f;
+		this.ButtonPrompts[2].alpha = 0f;
+		this.ButtonPrompts[3].alpha = 0f;
+		this.ButtonPrompts[4].alpha = 0f;
 		this.Circle.enabled = false;
 		this.BG.enabled = false;
 	}
@@ -90,6 +94,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 				if (Input.GetButtonDown(this.CurrentButton))
 				{
 					this.ButtonPrompts[this.ButtonID].enabled = false;
+					this.ButtonPrompts[this.ButtonID].alpha = 0f;
 					this.Circle.enabled = false;
 					this.BG.enabled = false;
 					this.ButtonID = 0;
@@ -132,6 +137,10 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
 		this.ButtonPrompts[4].enabled = false;
+		this.ButtonPrompts[1].alpha = 0f;
+		this.ButtonPrompts[2].alpha = 0f;
+		this.ButtonPrompts[3].alpha = 0f;
+		this.ButtonPrompts[4].alpha = 0f;
 		int buttonID = this.ButtonID;
 		while (this.ButtonID == buttonID)
 		{
@@ -154,6 +163,7 @@ public class PickpocketMinigameScript : MonoBehaviour
 			this.CurrentButton = "Y";
 		}
 		this.ButtonPrompts[this.ButtonID].enabled = true;
+		this.ButtonPrompts[this.ButtonID].alpha = 1f;
 		this.Circle.enabled = true;
 		this.BG.enabled = true;
 	}
@@ -165,6 +175,10 @@ public class PickpocketMinigameScript : MonoBehaviour
 		this.ButtonPrompts[2].enabled = false;
 		this.ButtonPrompts[3].enabled = false;
 		this.ButtonPrompts[4].enabled = false;
+		this.ButtonPrompts[1].alpha = 0f;
+		this.ButtonPrompts[2].alpha = 0f;
+		this.ButtonPrompts[3].alpha = 0f;
+		this.ButtonPrompts[4].alpha = 0f;
 		this.Circle.enabled = false;
 		this.BG.enabled = false;
 		this.Yandere.CharacterAnimation.CrossFade("f02_readyToFight_00");
