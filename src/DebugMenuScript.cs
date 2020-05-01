@@ -176,6 +176,15 @@ public class DebugMenuScript : MonoBehaviour
 					this.Yandere.AttackManager.Censor = !this.Yandere.AttackManager.Censor;
 					this.Window.SetActive(false);
 				}
+				else if (Input.GetKeyDown(KeyCode.F10))
+				{
+					this.StudentManager.Students[21].Attempts = 101;
+					this.StudentManager.Students[22].Attempts = 101;
+					this.StudentManager.Students[23].Attempts = 101;
+					this.StudentManager.Students[24].Attempts = 101;
+					this.StudentManager.Students[25].Attempts = 101;
+					this.Window.SetActive(false);
+				}
 				else if (!Input.GetKeyDown(KeyCode.F12))
 				{
 					if (Input.GetKeyDown(KeyCode.Alpha1))

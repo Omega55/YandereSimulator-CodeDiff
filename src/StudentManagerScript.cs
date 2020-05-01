@@ -149,6 +149,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public OfferHelpScript FragileOfferHelp;
 
+	public OfferHelpScript OsanaOfferHelp;
+
 	public OfferHelpScript OfferHelp;
 
 	public Transform AltFemaleVomitSpot;
@@ -488,6 +490,8 @@ public class StudentManagerScript : MonoBehaviour
 	public bool ControllerShrink;
 
 	public bool DisableFarAnims;
+
+	public bool GameOverIminent;
 
 	public bool RivalEliminated;
 
@@ -1332,6 +1336,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[spawnID];
 			studentScript.ChaseSelectiveGrayscale.desaturation = 1f - SchoolGlobals.SchoolAtmosphere;
 			studentScript.Cosmetic.TextureManager = this.TextureManager;
+			studentScript.YanSave.ObjectID = "Student_" + spawnID;
 			studentScript.WitnessCamera = this.WitnessCamera;
 			studentScript.StudentManager = this;
 			studentScript.StudentID = spawnID;
@@ -1976,6 +1981,11 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		this.CombatMinigame.enabled = false;
 		this.Stop = true;
+		if (this.GameOverIminent)
+		{
+			this.Portal.GetComponent<PortalScript>().EndEvents();
+			this.Portal.GetComponent<PortalScript>().EndLaterEvents();
+		}
 		this.ID = 1;
 		while (this.ID < this.Students.Length)
 		{
@@ -3140,134 +3150,30 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void Save()
 	{
-		this.ID = 1;
-		while (this.ID < 101)
-		{
-			if (this.Students[this.ID] != null)
-			{
-				this.Students[this.ID].SaveLoad.SaveData();
-			}
-			this.ID++;
-		}
 		int profile = GameGlobals.Profile;
 		int @int = PlayerPrefs.GetInt("SaveSlot");
-		foreach (DoorScript doorScript in this.Doors)
+		YanSave.SaveData(string.Concat(new object[]
 		{
-			if (doorScript != null)
-			{
-				if (doorScript.Open)
-				{
-					PlayerPrefs.SetInt(string.Concat(new object[]
-					{
-						"Profile_",
-						profile,
-						"_Slot_",
-						@int,
-						"_Door",
-						doorScript.DoorID,
-						"_Open"
-					}), 1);
-				}
-				else
-				{
-					PlayerPrefs.SetInt(string.Concat(new object[]
-					{
-						"Profile_",
-						profile,
-						"_Slot_",
-						@int,
-						"_Door",
-						doorScript.DoorID,
-						"_Open"
-					}), 0);
-				}
-			}
-		}
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int
+		}));
 	}
 
 	public void Load()
 	{
-		this.ID = 1;
-		while (this.ID < 101)
-		{
-			if (this.Students[this.ID] != null)
-			{
-				this.Students[this.ID].SaveLoad.LoadData();
-			}
-			this.ID++;
-		}
 		int profile = GameGlobals.Profile;
 		int @int = PlayerPrefs.GetInt("SaveSlot");
-		this.Yandere.transform.position = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
+		YanSave.LoadData(string.Concat(new object[]
 		{
 			"Profile_",
 			profile,
 			"_Slot_",
-			@int,
-			"_YanderePosX"
-		})), PlayerPrefs.GetFloat(string.Concat(new object[]
-		{
-			"Profile_",
-			profile,
-			"_Slot_",
-			@int,
-			"_YanderePosY"
-		})), PlayerPrefs.GetFloat(string.Concat(new object[]
-		{
-			"Profile_",
-			profile,
-			"_Slot_",
-			@int,
-			"_YanderePosZ"
-		})));
-		this.Yandere.transform.eulerAngles = new Vector3(PlayerPrefs.GetFloat(string.Concat(new object[]
-		{
-			"Profile_",
-			profile,
-			"_Slot_",
-			@int,
-			"_YandereRotX"
-		})), PlayerPrefs.GetFloat(string.Concat(new object[]
-		{
-			"Profile_",
-			profile,
-			"_Slot_",
-			@int,
-			"_YandereRotY"
-		})), PlayerPrefs.GetFloat(string.Concat(new object[]
-		{
-			"Profile_",
-			profile,
-			"_Slot_",
-			@int,
-			"_YandereRotZ"
-		})));
+			@int
+		}), false);
 		this.Yandere.FixCamera();
 		Physics.SyncTransforms();
-		foreach (DoorScript doorScript in this.Doors)
-		{
-			if (doorScript != null)
-			{
-				if (PlayerPrefs.GetInt(string.Concat(new object[]
-				{
-					"Profile_",
-					profile,
-					"_Slot_",
-					@int,
-					"_Door",
-					doorScript.DoorID,
-					"_Open"
-				})) == 1)
-				{
-					doorScript.Open = true;
-					doorScript.OpenDoor();
-				}
-				else
-				{
-					doorScript.Open = false;
-				}
-			}
-		}
 	}
 
 	public void UpdateBlood()

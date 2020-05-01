@@ -96,6 +96,13 @@ public class SmokeBombScript : MonoBehaviour
 	{
 		if (!Student.Chasing)
 		{
+			if (Student.Following)
+			{
+				Student.Yandere.Followers--;
+				Student.Hearts.emission.enabled = false;
+				Student.FollowCountdown.gameObject.SetActive(false);
+				Student.Following = false;
+			}
 			Student.BecomeAlarmed();
 			Student.CurrentDestination = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
 			Student.Pathfinding.target = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
@@ -109,6 +116,7 @@ public class SmokeBombScript : MonoBehaviour
 			Student.Alarmed = false;
 			Student.Routine = false;
 			Student.GoAway = true;
+			Student.AlarmTimer = 0f;
 		}
 	}
 }

@@ -115,6 +115,11 @@ public class TrashCanScript : MonoBehaviour
 			this.Prompt.HideButton[0] = true;
 			return;
 		}
+		if (this.Yandere.PickUp.Bucket)
+		{
+			this.Prompt.HideButton[0] = true;
+			return;
+		}
 		if (this.Yandere.PickUp.Evidence || this.Yandere.PickUp.Suspicious)
 		{
 			this.Prompt.Label[0].text = "     Insert";

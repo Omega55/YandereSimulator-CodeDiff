@@ -28,6 +28,13 @@ public class HomeExitScript : MonoBehaviour
 			UILabel uilabel2 = this.Labels[1];
 			uilabel2.color = new Color(uilabel2.color.r, uilabel2.color.g, uilabel2.color.b, 0.5f);
 			uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 1f);
+			Debug.Log("Scheme #6 is at stage: " + SchemeGlobals.GetSchemeStage(6));
+			if (SchemeGlobals.GetSchemeStage(6) == 5)
+			{
+				UILabel uilabel3 = this.Labels[4];
+				uilabel3.color = new Color(uilabel3.color.r, uilabel3.color.g, uilabel3.color.b, 1f);
+				uilabel3.text = "Stalker's House";
+			}
 		}
 	}
 
@@ -38,7 +45,7 @@ public class HomeExitScript : MonoBehaviour
 			if (this.InputManager.TappedDown)
 			{
 				this.ID++;
-				if (this.ID > 3)
+				if (this.ID > 4)
 				{
 					this.ID = 1;
 				}
@@ -49,7 +56,7 @@ public class HomeExitScript : MonoBehaviour
 				this.ID--;
 				if (this.ID < 1)
 				{
-					this.ID = 3;
+					this.ID = 4;
 				}
 				this.Highlight.localPosition = new Vector3(this.Highlight.localPosition.x, 50f - (float)this.ID * 50f, this.Highlight.localPosition.z);
 			}
@@ -70,7 +77,11 @@ public class HomeExitScript : MonoBehaviour
 				{
 					this.HomeDarkness.Sprite.color = new Color(1f, 1f, 1f, 0f);
 				}
-				else
+				else if (this.ID == 3)
+				{
+					this.HomeDarkness.Sprite.color = new Color(0f, 0f, 0f, 0f);
+				}
+				else if (this.ID == 4)
 				{
 					this.HomeDarkness.Sprite.color = new Color(0f, 0f, 0f, 0f);
 				}

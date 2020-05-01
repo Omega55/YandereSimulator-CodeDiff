@@ -1,9 +1,12 @@
 ﻿using System;
+using Bayat.SaveSystem;
 using UnityEngine;
 
 public class StalkerYandereScript : MonoBehaviour
 {
 	public CharacterController MyController;
+
+	public AutoSaveManager SaveManager;
 
 	public Transform TrellisClimbSpot;
 
@@ -54,6 +57,12 @@ public class StalkerYandereScript : MonoBehaviour
 	public int ClimbPhase;
 
 	public int Frame;
+
+	private void Start()
+	{
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+	}
 
 	private void Update()
 	{
@@ -124,12 +133,13 @@ public class StalkerYandereScript : MonoBehaviour
 			}
 			if (this.MyAnimation["f02_climbTrellis_00"].time > this.MyAnimation["f02_climbTrellis_00"].length)
 			{
-				this.MyAnimation.Play(this.IdleAnim);
+				this.MyAnimation.Play("f02_idleShort_00");
 				base.transform.position = new Vector3(-9.1f, 4f, -2.5f);
 				this.CameraTarget.position = base.transform.position + new Vector3(0f, 1f, 0f);
 				this.RPGCamera.enabled = true;
 				this.Climbing = false;
 				this.CanMove = true;
+				Physics.SyncTransforms();
 			}
 		}
 		if (this.Street && base.transform.position.x < -16f)
@@ -180,11 +190,15 @@ public class StalkerYandereScript : MonoBehaviour
 				if (Input.GetButtonDown("RS"))
 				{
 					this.Stance.Current = StanceType.Crouching;
+					this.MyController.center = new Vector3(0f, 0.5f, 0f);
+					this.MyController.height = 1f;
 				}
 			}
 			else if (Input.GetButtonDown("RS"))
 			{
 				this.Stance.Current = StanceType.Standing;
+				this.MyController.center = new Vector3(0f, 0.75f, 0f);
+				this.MyController.height = 1.5f;
 			}
 		}
 		if (axis != 0f || axis2 != 0f)

@@ -120,6 +120,10 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				return 0.5f;
 			}
+			if (weaponType == WeaponType.Garrote)
+			{
+				return 0.5f;
+			}
 			Debug.LogError("Weapon type \"" + weaponType.ToString() + "\" not implemented.");
 			return 0f;
 		}
@@ -259,6 +263,10 @@ public class AttackManagerScript : MonoBehaviour
 				this.CheckForSpecialCase(equippedWeapon);
 				this.Yandere.Blur.enabled = false;
 				this.Yandere.Blur.blurSize = 0f;
+				if (equippedWeapon.Blunt)
+				{
+					this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+				}
 				if (!this.Yandere.Noticed)
 				{
 					this.Yandere.EquippedWeapon.MurderWeapon = true;
@@ -696,11 +704,27 @@ public class AttackManagerScript : MonoBehaviour
 		}
 		else if (weapon.Type == WeaponType.Weight)
 		{
-			if (!this.Stealth)
+			if (this.Stealth)
 			{
-				if (sanityType == SanityType.High)
+				this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+				return;
+			}
+			if (sanityType == SanityType.High)
+			{
+				if (this.EffectPhase == 0 && this.YandereAnim[this.AnimName].time > 0.6666667f)
 				{
-					if (this.EffectPhase == 0 && this.YandereAnim[this.AnimName].time > 0.6666667f)
+					this.Yandere.Bloodiness += 20f;
+					this.Yandere.StainWeapon();
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+					this.EffectPhase++;
+					return;
+				}
+			}
+			else if (sanityType == SanityType.Medium)
+			{
+				if (this.EffectPhase == 0)
+				{
+					if (this.YandereAnim[this.AnimName].time > 1f)
 					{
 						this.Yandere.Bloodiness += 20f;
 						this.Yandere.StainWeapon();
@@ -709,48 +733,34 @@ public class AttackManagerScript : MonoBehaviour
 						return;
 					}
 				}
-				else if (sanityType == SanityType.Medium)
-				{
-					if (this.EffectPhase == 0)
-					{
-						if (this.YandereAnim[this.AnimName].time > 1f)
-						{
-							this.Yandere.Bloodiness += 20f;
-							this.Yandere.StainWeapon();
-							UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
-							this.EffectPhase++;
-							return;
-						}
-					}
-					else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 2.83333325f)
-					{
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
-						this.EffectPhase++;
-						return;
-					}
-				}
-				else if (this.EffectPhase == 0)
-				{
-					if (this.YandereAnim[this.AnimName].time > 2.16666675f)
-					{
-						this.Yandere.Bloodiness += 20f;
-						this.Yandere.StainWeapon();
-						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
-						this.EffectPhase++;
-						return;
-					}
-				}
-				else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 4.16666651f)
+				else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 2.83333325f)
 				{
 					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
 				}
 			}
-			else
+			else if (this.EffectPhase == 0)
 			{
-				this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+				if (this.YandereAnim[this.AnimName].time > 2.16666675f)
+				{
+					this.Yandere.Bloodiness += 20f;
+					this.Yandere.StainWeapon();
+					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+					this.EffectPhase++;
+					return;
+				}
 			}
+			else if (this.EffectPhase == 1 && this.YandereAnim[this.AnimName].time > 4.16666651f)
+			{
+				UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
+				this.EffectPhase++;
+				return;
+			}
+		}
+		else if (weapon.Type == WeaponType.Garrote)
+		{
+			this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
 		}
 	}
 

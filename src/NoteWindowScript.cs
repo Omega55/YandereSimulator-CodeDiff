@@ -202,12 +202,19 @@ public class NoteWindowScript : MonoBehaviour
 						this.NoteLocker.NoteLeft = true;
 						if (this.NoteLocker.Student.StudentID == 30)
 						{
-							if (this.SlotLabels[1].text == this.Subjects[10])
+							if (this.SlotLabels[1].text == this.Subjects[9])
 							{
 								this.NoteLocker.Success = true;
 							}
 						}
-						else if (this.NoteLocker.Student.StudentID == 5 && this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[7] && this.MeetID > 7)
+						else if (this.NoteLocker.Student.StudentID == 5)
+						{
+							if (this.NoteLocker.Student.Bullied && this.SlotLabels[1].text == this.Subjects[7] && this.MeetID > 7)
+							{
+								this.NoteLocker.Success = true;
+							}
+						}
+						else if (this.NoteLocker.Student.StudentID == 11 && this.SlotLabels[1].text == this.Subjects[10])
 						{
 							this.NoteLocker.Success = true;
 						}
@@ -248,7 +255,7 @@ public class NoteWindowScript : MonoBehaviour
 								this.NoteLocker.Success = true;
 							}
 						}
-						else if (this.NoteLocker.Student.Club == ClubType.Bully && (this.SlotLabels[1].text == this.Subjects[5] || this.SlotLabels[1].text == this.Subjects[9]))
+						else if (this.NoteLocker.Student.Club == ClubType.Bully && (this.SlotLabels[1].text == this.Subjects[5] || this.SlotLabels[1].text == this.Subjects[10]))
 						{
 							this.NoteLocker.Success = true;
 						}
@@ -372,6 +379,10 @@ public class NoteWindowScript : MonoBehaviour
 				this.ID++;
 			}
 			if (!EventGlobals.Event1)
+			{
+				this.SubLabels[9].text = "??????????";
+			}
+			if (!EventGlobals.OsanaEvent1 || !EventGlobals.OsanaEvent2)
 			{
 				this.SubLabels[10].text = "??????????";
 				return;

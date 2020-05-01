@@ -226,9 +226,9 @@ public class HomeYandereScript : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.K))
 		{
+			SchemeGlobals.HelpingKokona = true;
 			SchoolGlobals.KidnapVictim = this.VictimID;
 			StudentGlobals.SetStudentSanity(this.VictimID, 100f);
-			SchemeGlobals.SetSchemeStage(6, 5);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		if (Input.GetKeyDown(KeyCode.F1))
@@ -288,6 +288,14 @@ public class HomeYandereScript : MonoBehaviour
 			if (this.AlphabetID == this.Letter.Length)
 			{
 				GameGlobals.AlphabetMode = true;
+				StudentGlobals.MemorialStudents = 0;
+				for (int i = 1; i < 101; i++)
+				{
+					StudentGlobals.SetStudentDead(i, false);
+					StudentGlobals.SetStudentKidnapped(i, false);
+					StudentGlobals.SetStudentArrested(i, false);
+					StudentGlobals.SetStudentExpelled(i, false);
+				}
 				SceneManager.LoadScene("LoadingScene");
 			}
 		}

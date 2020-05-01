@@ -121,4 +121,14 @@ public class TranqDetectorScript : MonoBehaviour
 			this.StopChecking = true;
 		}
 	}
+
+	public void GarroteAttack()
+	{
+		AudioSource component = base.GetComponent<AudioSource>();
+		component.clip = this.TranqClips[UnityEngine.Random.Range(0, this.TranqClips.Length)];
+		component.Play();
+		this.Yandere.EquippedWeapon.Type = WeaponType.Syringe;
+		this.Yandere.AttackManager.Stealth = true;
+		this.StopChecking = true;
+	}
 }

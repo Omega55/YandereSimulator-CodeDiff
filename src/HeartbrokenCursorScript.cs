@@ -94,6 +94,8 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public bool SnapSequence;
 
+	public bool ReloadScene;
+
 	public bool NeverSnap;
 
 	public float SnapTimer;
@@ -106,14 +108,17 @@ public class HeartbrokenCursorScript : MonoBehaviour
 	{
 		this.Darkness.transform.localPosition = new Vector3(this.Darkness.transform.localPosition.x, this.Darkness.transform.localPosition.y, -989f);
 		this.Continue.color = new Color(this.Continue.color.r, this.Continue.color.g, this.Continue.color.b, 0f);
-		this.StudentManager.Yandere.Jukebox.gameObject.SetActive(false);
-		if (this.StudentManager.Yandere.Weapon[1] != null && this.StudentManager.Yandere.Weapon[1].Type == WeaponType.Knife)
+		if (this.StudentManager != null)
 		{
-			this.StudentManager.Yandere.Weapon[1].Drop();
-		}
-		if (this.StudentManager.Yandere.Weapon[2] != null && this.StudentManager.Yandere.Weapon[2].Type == WeaponType.Knife)
-		{
-			this.StudentManager.Yandere.Weapon[2].Drop();
+			this.StudentManager.Yandere.Jukebox.gameObject.SetActive(false);
+			if (this.StudentManager.Yandere.Weapon[1] != null && this.StudentManager.Yandere.Weapon[1].Type == WeaponType.Knife)
+			{
+				this.StudentManager.Yandere.Weapon[1].Drop();
+			}
+			if (this.StudentManager.Yandere.Weapon[2] != null && this.StudentManager.Yandere.Weapon[2].Type == WeaponType.Knife)
+			{
+				this.StudentManager.Yandere.Weapon[2].Drop();
+			}
 		}
 	}
 
@@ -333,21 +338,35 @@ public class HeartbrokenCursorScript : MonoBehaviour
 			{
 				if (this.Selected == 1)
 				{
-					for (int k = 0; k < this.StudentManager.NPCsTotal; k++)
+					if (this.ReloadScene)
 					{
-						if (StudentGlobals.GetStudentDying(k))
-						{
-							StudentGlobals.SetStudentDying(k, false);
-						}
+						SceneManager.LoadScene(Application.loadedLevel);
 					}
-					SceneManager.LoadScene("LoadingScene");
+					else
+					{
+						for (int k = 0; k < this.StudentManager.NPCsTotal; k++)
+						{
+							if (StudentGlobals.GetStudentDying(k))
+							{
+								StudentGlobals.SetStudentDying(k, false);
+							}
+						}
+						SceneManager.LoadScene("LoadingScene");
+					}
 				}
 				else if (this.Selected == 2)
 				{
-					this.LoveSick = GameGlobals.LoveSick;
-					Globals.DeleteAll();
-					GameGlobals.LoveSick = this.LoveSick;
-					SceneManager.LoadScene("CalendarScene");
+					if (this.ReloadScene)
+					{
+						SceneManager.LoadScene("HomeScene");
+					}
+					else
+					{
+						this.LoveSick = GameGlobals.LoveSick;
+						Globals.DeleteAll();
+						GameGlobals.LoveSick = this.LoveSick;
+						SceneManager.LoadScene("CalendarScene");
+					}
 				}
 				else if (this.Selected == 3)
 				{

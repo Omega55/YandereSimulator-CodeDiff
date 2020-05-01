@@ -7,5 +7,6 @@ public enum WeaponType
 	Bat,
 	Saw,
 	Syringe,
-	Weight
+	Weight,
+	Garrote
 }

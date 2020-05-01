@@ -137,6 +137,11 @@ public class HomeDarknessScript : MonoBehaviour
 						Physics.SyncTransforms();
 						return;
 					}
+					else if (this.HomeExit.ID == 4)
+					{
+						SceneManager.LoadScene("StalkerHouseScene");
+						return;
+					}
 				}
 			}
 		}

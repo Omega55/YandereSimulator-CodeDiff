@@ -238,7 +238,7 @@ public class ShoulderCameraScript : MonoBehaviour
 							this.Yandere.Police.Darkness.enabled = true;
 							this.Yandere.HUD.enabled = true;
 							this.Yandere.HUD.alpha = 1f;
-							if (this.Yandere.Police.Corpses - this.Yandere.Police.HiddenCorpses <= 0)
+							if (this.Yandere.Police.Timer == 300f && this.Yandere.Police.Corpses - this.Yandere.Police.HiddenCorpses <= 0)
 							{
 								this.HUD.SetActive(false);
 							}
@@ -256,9 +256,12 @@ public class ShoulderCameraScript : MonoBehaviour
 					this.NoticedPOV.Translate(Vector3.forward * Time.deltaTime * 0.075f);
 					if (this.Yandere.Police.Darkness.color.a >= 1f)
 					{
-						if (this.Yandere.Police.Corpses - this.Yandere.Police.HiddenCorpses > 0)
+						if (this.Yandere.Police.Timer != 300f || this.Yandere.Police.Corpses - this.Yandere.Police.HiddenCorpses > 0)
 						{
+							Debug.Log("Ending day instead of going to counselor.");
+							this.HUD.SetActive(true);
 							this.Portal.EndDay();
+							base.enabled = false;
 						}
 						else
 						{
@@ -597,8 +600,18 @@ public class ShoulderCameraScript : MonoBehaviour
 
 	public void GameOver()
 	{
+		this.NoticedPOV.parent = this.Yandere.transform;
+		this.NoticedFocus.parent = this.Yandere.transform;
+		this.NoticedFocus.localPosition = new Vector3(0f, 1f, 0f);
+		this.NoticedPOV.localPosition = new Vector3(0f, 1f, 2f);
+		this.NoticedPOV.LookAt(this.NoticedFocus.position);
 		this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
 		this.HeartbrokenCamera.SetActive(true);
+		this.Yandere.RPGCamera.enabled = false;
 		this.Yandere.Collapse = true;
+		this.Yandere.HUD.alpha = 0f;
+		this.Yandere.StudentManager.Students[1].Pathfinding.canSearch = false;
+		this.Yandere.StudentManager.Students[1].Pathfinding.canMove = false;
+		this.Yandere.StudentManager.Students[1].Fleeing = false;
 	}
 }

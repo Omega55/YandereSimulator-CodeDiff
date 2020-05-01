@@ -52,6 +52,8 @@ public class HeartbrokenScript : MonoBehaviour
 
 	public bool NoSnap;
 
+	public bool Caught;
+
 	public float VibrationTimer;
 
 	public float AudioTimer;
@@ -72,11 +74,34 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (!this.Noticed && this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint && !this.Yandere.Unmasked)
+		if (!this.Caught && !this.Noticed && this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint && !this.Yandere.Unmasked)
 		{
 			this.Arrested = true;
 		}
-		if (this.Confessed)
+		if (this.Caught)
+		{
+			this.Letters[0].text = "";
+			this.Letters[1].text = "";
+			this.Letters[2].text = "C";
+			this.Letters[3].text = "A";
+			this.Letters[4].text = "U";
+			this.Letters[5].text = "G";
+			this.Letters[6].text = "H";
+			this.Letters[7].text = "T";
+			this.Letters[8].text = "";
+			this.Letters[9].text = "";
+			this.Letters[10].text = "";
+			foreach (UILabel uilabel in this.Letters)
+			{
+				uilabel.transform.localPosition = new Vector3(uilabel.transform.localPosition.x + 125f, uilabel.transform.localPosition.y, uilabel.transform.localPosition.z);
+			}
+			this.LetterID = 1;
+			this.StopID = 8;
+			this.NoSnap = true;
+			this.SNAP.SetActive(false);
+			this.Cursor.Options = 3;
+		}
+		else if (this.Confessed)
 		{
 			this.Letters[0].text = "S";
 			this.Letters[1].text = "E";
@@ -128,9 +153,9 @@ public class HeartbrokenScript : MonoBehaviour
 				this.LetterID = 0;
 				this.StopID = 10;
 			}
-			foreach (UILabel uilabel in this.Letters)
+			foreach (UILabel uilabel2 in this.Letters)
 			{
-				uilabel.transform.localPosition = new Vector3(uilabel.transform.localPosition.x + 100f, uilabel.transform.localPosition.y, uilabel.transform.localPosition.z);
+				uilabel2.transform.localPosition = new Vector3(uilabel2.transform.localPosition.x + 100f, uilabel2.transform.localPosition.y, uilabel2.transform.localPosition.z);
 			}
 			this.SNAP.SetActive(false);
 			this.Cursor.Options = 3;
@@ -166,9 +191,9 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
 			this.Letters[10].text = string.Empty;
-			foreach (UILabel uilabel2 in this.Letters)
+			foreach (UILabel uilabel3 in this.Letters)
 			{
-				uilabel2.transform.localPosition = new Vector3(uilabel2.transform.localPosition.x + 100f, uilabel2.transform.localPosition.y, uilabel2.transform.localPosition.z);
+				uilabel3.transform.localPosition = new Vector3(uilabel3.transform.localPosition.x + 100f, uilabel3.transform.localPosition.y, uilabel3.transform.localPosition.z);
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
@@ -187,9 +212,9 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
 			this.Letters[10].text = string.Empty;
-			foreach (UILabel uilabel3 in this.Letters)
+			foreach (UILabel uilabel4 in this.Letters)
 			{
-				uilabel3.transform.localPosition = new Vector3(uilabel3.transform.localPosition.x + 100f, uilabel3.transform.localPosition.y, uilabel3.transform.localPosition.z);
+				uilabel4.transform.localPosition = new Vector3(uilabel4.transform.localPosition.x + 100f, uilabel4.transform.localPosition.y, uilabel4.transform.localPosition.z);
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
@@ -208,9 +233,9 @@ public class HeartbrokenScript : MonoBehaviour
 			this.Letters[8].text = "D";
 			this.Letters[9].text = string.Empty;
 			this.Letters[10].text = string.Empty;
-			foreach (UILabel uilabel4 in this.Letters)
+			foreach (UILabel uilabel5 in this.Letters)
 			{
-				uilabel4.transform.localPosition = new Vector3(uilabel4.transform.localPosition.x + 100f, uilabel4.transform.localPosition.y, uilabel4.transform.localPosition.z);
+				uilabel5.transform.localPosition = new Vector3(uilabel5.transform.localPosition.x + 100f, uilabel5.transform.localPosition.y, uilabel5.transform.localPosition.z);
 			}
 			this.LetterID = 1;
 			this.StopID = 9;
@@ -224,17 +249,17 @@ public class HeartbrokenScript : MonoBehaviour
 		this.ID = 0;
 		while (this.ID < this.Letters.Length)
 		{
-			UILabel uilabel5 = this.Letters[this.ID];
-			uilabel5.transform.localScale = new Vector3(10f, 10f, 1f);
-			uilabel5.color = new Color(uilabel5.color.r, uilabel5.color.g, uilabel5.color.b, 0f);
-			this.Origins[this.ID] = uilabel5.transform.localPosition;
+			UILabel uilabel6 = this.Letters[this.ID];
+			uilabel6.transform.localScale = new Vector3(10f, 10f, 1f);
+			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 0f);
+			this.Origins[this.ID] = uilabel6.transform.localPosition;
 			this.ID++;
 		}
 		this.ID = 0;
 		while (this.ID < this.Options.Length)
 		{
-			UILabel uilabel6 = this.Options[this.ID];
-			uilabel6.color = new Color(uilabel6.color.r, uilabel6.color.g, uilabel6.color.b, 0f);
+			UILabel uilabel7 = this.Options[this.ID];
+			uilabel7.color = new Color(uilabel7.color.r, uilabel7.color.g, uilabel7.color.b, 0f);
 			this.ID++;
 		}
 		this.ID = 0;
@@ -248,21 +273,24 @@ public class HeartbrokenScript : MonoBehaviour
 		{
 			base.transform.parent.transform.position = new Vector3(base.transform.parent.transform.position.x, 100f, base.transform.parent.transform.position.z);
 		}
-		int num = 0;
-		WeaponScript[] weapons = this.Cursor.SnappedYandere.Weapons;
-		for (int i = 0; i < weapons.Length; i++)
+		if (this.Cursor.SnappedYandere != null)
 		{
-			if (weapons[i] != null)
+			int num = 0;
+			WeaponScript[] weapons = this.Cursor.SnappedYandere.Weapons;
+			for (int i = 0; i < weapons.Length; i++)
 			{
-				num++;
+				if (weapons[i] != null)
+				{
+					num++;
+				}
 			}
+			if (num == 0 || this.NoSnap || this.Yandere.Police.GameOver || this.Yandere.StudentManager.Clock.HourTime >= 18f || this.Yandere.transform.position.y < -1f)
+			{
+				this.SNAP.SetActive(false);
+				this.Cursor.Options = 3;
+			}
+			this.Clock.StopTime = true;
 		}
-		if (num == 0 || this.NoSnap || this.Yandere.Police.GameOver || this.Yandere.StudentManager.Clock.HourTime >= 18f || this.Yandere.transform.position.y < -1f)
-		{
-			this.SNAP.SetActive(false);
-			this.Cursor.Options = 3;
-		}
-		this.Clock.StopTime = true;
 	}
 
 	private void Update()
@@ -303,6 +331,19 @@ public class HeartbrokenScript : MonoBehaviour
 				{
 					this.Phase++;
 				}
+			}
+		}
+		else if (this.Yandere != null && this.Yandere.Unmasked)
+		{
+			this.Yandere.ShoulderCamera.transform.position = Vector3.Lerp(this.Yandere.ShoulderCamera.transform.position, this.Yandere.ShoulderCamera.NoticedPOV.position, Time.deltaTime * 1f);
+			this.Yandere.ShoulderCamera.transform.LookAt(this.Yandere.ShoulderCamera.NoticedFocus);
+			if (Vector3.Distance(this.Yandere.transform.position, this.Yandere.Senpai.position) < 1.25f)
+			{
+				this.Yandere.MyController.Move(this.Yandere.transform.forward * (Time.deltaTime * -1f));
+			}
+			if (this.Yandere.CharacterAnimation["f02_down_22"].time >= this.Yandere.CharacterAnimation["f02_down_22"].length)
+			{
+				this.Yandere.CharacterAnimation.CrossFade("f02_down_23");
 			}
 		}
 		if (this.Background.color.a < 1f)

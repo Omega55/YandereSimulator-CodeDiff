@@ -151,7 +151,7 @@ public class OfferHelpScript : MonoBehaviour
 
 	public void UpdateLocation()
 	{
-		Debug.Log("The ''Offer Help'' prompt was told to update its location.");
+		Debug.Log("The ''Offer Help'' prompt for Student " + this.EventStudentID + " was told to update its location.");
 		this.Student = this.StudentManager.Students[this.EventStudentID];
 		if (this.Student.CurrentDestination == this.StudentManager.MeetSpots.List[7])
 		{
@@ -172,6 +172,16 @@ public class OfferHelpScript : MonoBehaviour
 		{
 			base.transform.position = this.Locations[4].position;
 			base.transform.eulerAngles = this.Locations[4].eulerAngles;
+		}
+		if (this.EventStudentID == 11)
+		{
+			if (!PlayerGlobals.GetStudentFriend(11))
+			{
+				this.Prompt.Label[0].text = "     Must Befriend Student First";
+				this.Unable = true;
+			}
+			this.Prompt.MyCollider.enabled = true;
+			return;
 		}
 		if (this.EventStudentID == 30)
 		{
@@ -213,9 +223,14 @@ public class OfferHelpScript : MonoBehaviour
 		}
 		if (this.EventPhase == this.EventSpeech.Length)
 		{
-			if (this.EventStudentID == 30)
+			if (this.EventStudentID == 11)
 			{
+				Debug.Log("Scheme #6 has advanced to stage 5.");
 				SchemeGlobals.SetSchemeStage(6, 5);
+			}
+			else if (this.EventStudentID == 30)
+			{
+				SchemeGlobals.HelpingKokona = true;
 			}
 			this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
 			this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];

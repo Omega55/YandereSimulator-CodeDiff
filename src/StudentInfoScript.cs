@@ -522,7 +522,7 @@ public class StudentInfoScript : MonoBehaviour
 		Debug.Log("EventGlobals.Event1 is: " + EventGlobals.Event1.ToString());
 		if (ID == 11)
 		{
-			this.Strings[1] = (EventGlobals.OsanaEvent1 ? "May be a victim of blackmail" : "?????");
+			this.Strings[1] = (EventGlobals.OsanaEvent1 ? "May be a victim of blackmail." : "?????");
 			this.Strings[2] = (EventGlobals.OsanaEvent2 ? "Has a stalker." : "?????");
 			this.InfoLabel.text = this.Strings[1] + "\n\n" + this.Strings[2];
 			return;

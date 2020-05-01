@@ -172,6 +172,7 @@ public class EndOfDayScript : MonoBehaviour
 
 	public void Start()
 	{
+		GameGlobals.PoliceYesterday = false;
 		this.YandereInitialPosition = this.Yandere.transform.position;
 		this.YandereInitialRotation = this.Yandere.transform.rotation;
 		if (GameGlobals.SenpaiMourning)
@@ -304,8 +305,15 @@ public class EndOfDayScript : MonoBehaviour
 					this.Heartbroken.transform.parent.transform.parent = null;
 					this.Heartbroken.transform.parent.gameObject.SetActive(true);
 					this.Heartbroken.Cursor.HeartbrokenCamera.depth = 6f;
-					this.Heartbroken.Noticed = false;
-					this.Heartbroken.Arrested = true;
+					if (this.Police.Deaths + PlayerGlobals.Kills > 50)
+					{
+						this.Heartbroken.Noticed = true;
+					}
+					else
+					{
+						this.Heartbroken.Noticed = false;
+						this.Heartbroken.Arrested = true;
+					}
 					this.MainCamera.SetActive(false);
 					base.gameObject.SetActive(false);
 					Time.timeScale = 1f;
@@ -356,6 +364,7 @@ public class EndOfDayScript : MonoBehaviour
 			}
 			if (this.Phase == 1)
 			{
+				GameGlobals.PoliceYesterday = true;
 				this.CopAnimation[1]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.CopAnimation[2]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
 				this.CopAnimation[3]["walk_00"].speed = UnityEngine.Random.Range(0.9f, 1.1f);
@@ -856,7 +865,7 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					if (DateGlobals.Weekday == DayOfWeek.Friday)
 					{
-						this.Phase = 21;
+						this.Phase = 22;
 						return;
 					}
 					this.Phase += 2;
@@ -1196,14 +1205,28 @@ public class EndOfDayScript : MonoBehaviour
 						this.UpdateScene();
 						return;
 					}
+					else if (this.Phase == 20)
+					{
+						if (this.Police.Deaths + PlayerGlobals.Kills > 50)
+						{
+							this.EODCamera.position = new Vector3(-6f, 0.15f, -49f);
+							this.EODCamera.eulerAngles = new Vector3(-22.5f, 22.5f, 0f);
+							this.Label.text = "More than half of the school's population is dead. For the safety of the remaining students, the headmaster of Akademi makes the decision to shut down the school. Senpai enrolls in a school far away. Ayano will not be able to follow him, and another girl will steal his heart. Ayano has permanently lost her chance to be with Senpai.";
+							this.GameOver = true;
+							return;
+						}
+						this.Phase++;
+						this.UpdateScene();
+						return;
+					}
 					else
 					{
-						if (this.Phase == 20)
+						if (this.Phase == 21)
 						{
 							this.Finish();
 							return;
 						}
-						if (this.Phase == 21)
+						if (this.Phase == 22)
 						{
 							this.Senpai.enabled = false;
 							this.Senpai.Pathfinding.enabled = false;
@@ -1231,7 +1254,7 @@ public class EndOfDayScript : MonoBehaviour
 							this.Phase++;
 							return;
 						}
-						if (this.Phase == 22)
+						if (this.Phase == 23)
 						{
 							for (int m = 1; m < 101; m++)
 							{

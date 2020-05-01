@@ -11,4 +11,7 @@ public struct HighlightTarget
 
 	[Range(0f, 1f)]
 	public float Threshold;
+
+	[Range(0f, 1f)]
+	public float SmoothColorInterpolation;
 }

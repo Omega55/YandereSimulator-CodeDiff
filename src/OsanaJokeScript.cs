@@ -28,6 +28,11 @@ public class OsanaJokeScript : MonoBehaviour
 		if (this.Advance)
 		{
 			this.Timer += Time.deltaTime;
+			if (this.Timer > 14f)
+			{
+				Application.Quit();
+				return;
+			}
 			if (this.Timer > 3f)
 			{
 				this.Label.text = "Congratulations, you eliminated Osana!";
@@ -37,11 +42,6 @@ public class OsanaJokeScript : MonoBehaviour
 					this.Jukebox.Play();
 					return;
 				}
-			}
-			else if (this.Timer > 14f)
-			{
-				Application.Quit();
-				return;
 			}
 		}
 		else if (Input.GetKeyDown("f"))

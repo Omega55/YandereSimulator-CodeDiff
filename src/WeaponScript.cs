@@ -87,6 +87,8 @@ public class WeaponScript : MonoBehaviour
 
 	public bool Rotate;
 
+	public bool Blunt;
+
 	public bool Metal;
 
 	public bool Flip;
@@ -184,6 +186,10 @@ public class WeaponScript : MonoBehaviour
 		if (this.Type == WeaponType.Weight)
 		{
 			return "weight";
+		}
+		if (this.Type == WeaponType.Garrote)
+		{
+			return "syringe";
 		}
 		Debug.LogError("Weapon type \"" + this.Type.ToString() + "\" not implemented.");
 		return string.Empty;
@@ -286,6 +292,11 @@ public class WeaponScript : MonoBehaviour
 			if (base.transform.position.x > -71f && base.transform.position.x < -61f && base.transform.position.z > -37.5f && base.transform.position.z < -27.5f)
 			{
 				base.transform.position = new Vector3(-63f, 1f, -26.5f);
+				this.KinematicTimer = 0f;
+			}
+			if (base.transform.position.x > -21f && base.transform.position.x < 21f && base.transform.position.z > 100f && base.transform.position.z < 135f)
+			{
+				base.transform.position = new Vector3(0f, 1f, 100f);
 				this.KinematicTimer = 0f;
 			}
 			if (base.transform.position.x > -46f && base.transform.position.x < -18f && base.transform.position.z > 66f && base.transform.position.z < 78f)

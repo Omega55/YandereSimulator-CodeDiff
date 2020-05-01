@@ -30,7 +30,7 @@ public class StalkerIntroScript : MonoBehaviour
 
 	private void Start()
 	{
-		RenderSettings.ambientIntensity = 4f;
+		RenderSettings.ambientIntensity = 8f;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		base.transform.position = new Vector3(12.5f, 5f, 13f);
@@ -61,6 +61,7 @@ public class StalkerIntroScript : MonoBehaviour
 				if (this.Timer > 2f)
 				{
 					this.Phase++;
+					return;
 				}
 			}
 		}
@@ -84,11 +85,13 @@ public class StalkerIntroScript : MonoBehaviour
 			if (this.Yandere.MyAnimation["f02_jumpOverWall_00"].time > 13f)
 			{
 				this.Yandere.transform.position = new Vector3(13.15f, 0f, 13f);
-				base.transform.position = new Vector3(12.9f, 1.35f, 12.5f);
+				base.transform.position = new Vector3(12.75f, 1.3f, 12.4f);
 				base.transform.eulerAngles = new Vector3(0f, 45f, 0f);
-				this.UpdateDOF(0.3f);
+				this.UpdateDOF(0.5f);
+				this.DOF = 0.5f;
 				this.Speed = -1f;
 				this.Phase++;
+				return;
 			}
 		}
 		else if (this.Phase == 2)
@@ -101,27 +104,18 @@ public class StalkerIntroScript : MonoBehaviour
 			if (this.Speed > 0f)
 			{
 				base.transform.position = Vector3.Lerp(base.transform.position, new Vector3(13.15f, 1.51515f, 14.92272f), Time.deltaTime * this.Speed);
-				base.transform.eulerAngles = Vector3.Lerp(base.transform.eulerAngles, new Vector3(15f, 180f, 0f), Time.deltaTime * this.Speed);
-				this.DOF = Mathf.Lerp(this.DOF, 2f, Time.deltaTime * this.Speed);
+				base.transform.eulerAngles = Vector3.Lerp(base.transform.eulerAngles, new Vector3(15f, 180f, 0f), Time.deltaTime * this.Speed * 2f);
+				this.DOF = Mathf.MoveTowards(this.DOF, 2f, Time.deltaTime * this.Speed);
 				this.UpdateDOF(this.DOF);
 				if (this.Speed > 4f)
 				{
+					this.DOF = 2f;
+					this.UpdateDOF(this.DOF);
 					this.RPGCamera.enabled = true;
 					this.Yandere.enabled = true;
 					this.Phase++;
 				}
 			}
-		}
-		if (Input.GetKeyDown("space"))
-		{
-			if (this.Neighborhood[0].activeInHierarchy)
-			{
-				this.Neighborhood[0].SetActive(false);
-				this.Neighborhood[1].SetActive(true);
-				return;
-			}
-			this.Neighborhood[0].SetActive(true);
-			this.Neighborhood[1].SetActive(false);
 		}
 	}
 

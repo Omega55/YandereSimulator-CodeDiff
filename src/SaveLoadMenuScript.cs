@@ -87,62 +87,6 @@ public class SaveLoadMenuScript : MonoBehaviour
 			this.UICamera.enabled = true;
 			this.StudentManager.Save();
 			base.StartCoroutine(this.GetThumbnails());
-			PlayerPrefs.SetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_YanderePosX"
-			}), this.PauseScreen.Yandere.transform.position.x);
-			PlayerPrefs.SetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_YanderePosY"
-			}), this.PauseScreen.Yandere.transform.position.y);
-			PlayerPrefs.SetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_YanderePosZ"
-			}), this.PauseScreen.Yandere.transform.position.z);
-			PlayerPrefs.SetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_YandereRotX"
-			}), this.PauseScreen.Yandere.transform.eulerAngles.x);
-			PlayerPrefs.SetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_YandereRotY"
-			}), this.PauseScreen.Yandere.transform.eulerAngles.y);
-			PlayerPrefs.SetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_YandereRotZ"
-			}), this.PauseScreen.Yandere.transform.eulerAngles.z);
-			PlayerPrefs.SetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Time"
-			}), this.Clock.PresentTime);
 			if (DateGlobals.Weekday == DayOfWeek.Monday)
 			{
 				PlayerPrefs.SetInt(string.Concat(new object[]

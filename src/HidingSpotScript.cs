@@ -13,6 +13,8 @@ public class HidingSpotScript : MonoBehaviour
 
 	public string AnimName;
 
+	public bool Bench;
+
 	private void Update()
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
@@ -20,9 +22,16 @@ public class HidingSpotScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Prompt.Yandere.Chased && this.Prompt.Yandere.Chasers == 0 && this.Prompt.Yandere.Pursuer == null)
 			{
-				this.Prompt.Yandere.MyController.center = new Vector3(this.Prompt.Yandere.MyController.center.x, 0.3f, this.Prompt.Yandere.MyController.center.z);
-				this.Prompt.Yandere.MyController.radius = 0f;
-				this.Prompt.Yandere.MyController.height = 0.5f;
+				if (this.Bench)
+				{
+					this.Prompt.Yandere.MyController.radius = 0.1f;
+				}
+				else
+				{
+					this.Prompt.Yandere.MyController.center = new Vector3(this.Prompt.Yandere.MyController.center.x, 0.3f, this.Prompt.Yandere.MyController.center.z);
+					this.Prompt.Yandere.MyController.radius = 0f;
+					this.Prompt.Yandere.MyController.height = 0.5f;
+				}
 				this.Prompt.Yandere.HideAnim = this.AnimName;
 				this.Prompt.Yandere.HidingSpot = this.Spot;
 				this.Prompt.Yandere.ExitSpot = this.Exit;

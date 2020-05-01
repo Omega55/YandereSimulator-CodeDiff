@@ -41,6 +41,8 @@ public class NewMissionWindowScript : MonoBehaviour
 
 	public Texture BlankPortrait;
 
+	public Font Arial;
+
 	public int NemesisDifficulty;
 
 	public bool NemesisAggression;
@@ -66,6 +68,15 @@ public class NewMissionWindowScript : MonoBehaviour
 			this.DeathSkulls[i].SetActive(false);
 		}
 		this.DifficultyOptions.localScale = new Vector3(0f, 0f, 0f);
+	}
+
+	private void ChangeFont(UILabel Text)
+	{
+		Text.trueTypeFont = this.Arial;
+		if (Text.height == 150)
+		{
+			Text.height = 100;
+		}
 	}
 
 	private void Update()
@@ -485,6 +496,8 @@ public class NewMissionWindowScript : MonoBehaviour
 	{
 		for (int i = 1; i < 11; i++)
 		{
+			this.ChangeFont(this.NameLabel[i]);
+			this.ChangeFont(this.MethodLabel[i]);
 			this.Target[i] = PlayerPrefs.GetInt("MissionModeTarget" + i);
 			this.Method[i] = PlayerPrefs.GetInt("MissionModeMethod" + i);
 			if (this.Target[i] == 0)

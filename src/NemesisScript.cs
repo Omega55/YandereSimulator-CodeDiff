@@ -268,7 +268,7 @@ public class NemesisScript : MonoBehaviour
 							this.Yandere.FollowHips = true;
 							this.Yandere.Laughing = false;
 							this.Yandere.CanMove = false;
-							this.Yandere.EyeShrink = 1f;
+							this.Yandere.EyeShrink = 0.5f;
 							this.Yandere.StopAiming();
 							this.Yandere.EmptyHands();
 						}
@@ -325,7 +325,7 @@ public class NemesisScript : MonoBehaviour
 				this.Yandere.targetRotation = Quaternion.LookRotation(base.transform.position - this.Yandere.transform.position);
 				this.Yandere.transform.rotation = Quaternion.Slerp(this.Yandere.transform.rotation, this.Yandere.targetRotation, Time.deltaTime * 10f);
 				this.Yandere.MoveTowardsTarget(base.transform.position + base.transform.forward * 0.5f);
-				this.Yandere.EyeShrink = 1f;
+				this.Yandere.EyeShrink = 0.5f;
 				this.Yandere.transform.position = new Vector3(this.Yandere.transform.position.x, this.OriginalYPosition, this.Yandere.transform.position.z);
 				Quaternion b = Quaternion.LookRotation(this.Yandere.transform.position - base.transform.position);
 				base.transform.rotation = Quaternion.Slerp(base.transform.rotation, b, Time.deltaTime * 10f);

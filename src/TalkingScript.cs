@@ -358,6 +358,7 @@ public class TalkingScript : MonoBehaviour
 					{
 						this.S.TaskPhase++;
 						this.S.Subtitle.UpdateLabel(this.S.TaskLineResponseType, this.S.TaskPhase, this.S.Subtitle.GetClipLength(this.S.StudentID, this.S.TaskPhase));
+						this.S.Subtitle.Timer = 0f;
 						this.S.CharacterAnimation.CrossFade(this.S.TaskAnims[this.S.TaskPhase]);
 						this.S.CurrentAnim = this.S.TaskAnims[this.S.TaskPhase];
 						this.S.TalkTimer = this.S.Subtitle.GetClipLength(this.S.StudentID, this.S.TaskPhase);

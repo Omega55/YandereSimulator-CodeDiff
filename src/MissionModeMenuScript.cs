@@ -1275,6 +1275,7 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public void UpdateGraphics()
 	{
+		Debug.Log("Populating the Mission Mode criteria list!");
 		this.TargetID = MissionModeGlobals.MissionTarget;
 		if (this.TargetNumber > 9 && this.TargetNumber < 21)
 		{
@@ -1295,6 +1296,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			this.TargetName = this.JSON.Students[MissionModeGlobals.MissionTarget].Name;
 		}
 		this.Descs[1].text = "Kill " + this.TargetName + ".";
+		this.ChangeLabel(this.Descs[1]);
 		for (int i = 2; i < this.Objectives.Length; i++)
 		{
 			this.Objectives[i].gameObject.SetActive(false);
@@ -1305,6 +1307,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			{
 				this.Objectives[j].gameObject.SetActive(true);
 				this.Icons[j].mainTexture = this.ConditionIcons[MissionModeGlobals.GetMissionCondition(j)];
+				this.ChangeLabel(this.Descs[j]);
 				if (MissionModeGlobals.GetMissionCondition(j) > 3)
 				{
 					this.Descs[j].text = this.ConditionDescs[MissionModeGlobals.GetMissionCondition(j)];
@@ -1493,5 +1496,10 @@ public class MissionModeMenuScript : MonoBehaviour
 				uilabel.height = 100;
 			}
 		}
+	}
+
+	private void ChangeLabel(UILabel Text)
+	{
+		Text.trueTypeFont = this.Arial;
 	}
 }

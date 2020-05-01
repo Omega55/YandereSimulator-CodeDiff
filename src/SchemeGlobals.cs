@@ -7,6 +7,8 @@ public static class SchemeGlobals
 
 	private const string Str_DarkSecret = "DarkSecret";
 
+	private const string Str_HelpingKokona = "HelpingKokona";
+
 	private const string Str_SchemePreviousStage = "SchemePreviousStage_";
 
 	private const string Str_SchemeStage = "SchemeStage_";
@@ -38,6 +40,18 @@ public static class SchemeGlobals
 		set
 		{
 			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DarkSecret", value);
+		}
+	}
+
+	public static bool HelpingKokona
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_HelpingKokona");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_HelpingKokona", value);
 		}
 	}
 
@@ -190,6 +204,7 @@ public static class SchemeGlobals
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_CurrentScheme");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_DarkSecret");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_HelpingKokona");
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_SchemePreviousStage_", SchemeGlobals.KeysOfSchemePreviousStage());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_SchemeStage_", SchemeGlobals.KeysOfSchemeStage());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_SchemeStatus_", SchemeGlobals.KeysOfSchemeStatus());

@@ -77,6 +77,8 @@ public class BlacklightEffect : MonoBehaviour
 
 	private Color[] hColors = new Color[100];
 
+	private float[] hColorInterpolations = new float[100];
+
 	private Camera camera;
 
 	private Material post;
@@ -112,6 +114,7 @@ public class BlacklightEffect : MonoBehaviour
 					this.hTargets[i] = this.highlightTargets[i].TargetColor;
 					this.hThresholds[i] = this.highlightTargets[i].Threshold;
 					this.hColors[i] = this.highlightTargets[i].ReplacementColor;
+					this.hColorInterpolations[i] = this.highlightTargets[i].SmoothColorInterpolation;
 				}
 			}
 			if (this.highlightTargets != null && this.highlightTargets.Length != 0)
@@ -121,6 +124,7 @@ public class BlacklightEffect : MonoBehaviour
 			this.post.SetColorArray("_HighlightTargets", this.hTargets);
 			this.post.SetFloatArray("_HighlightTargetThresholds", this.hThresholds);
 			this.post.SetColorArray("_HighlightColors", this.hColors);
+			this.post.SetFloatArray("_SmoothColorInterpolations", this.hColorInterpolations);
 		}
 	}
 

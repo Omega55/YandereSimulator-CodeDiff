@@ -555,6 +555,10 @@ public class SubtitleScript : MonoBehaviour
 
 	public PersonaSubtitleScript PersonaSubtitle;
 
+	private SubtitleType PreviousSubtitle;
+
+	private int PreviousStudentID;
+
 	public AudioClip[] NoteReactionClips;
 
 	public AudioClip[] NoteReactionMaleClips;
@@ -1428,6 +1432,11 @@ public class SubtitleScript : MonoBehaviour
 
 	public void UpdateLabel(SubtitleType subtitleType, int ID, float Duration)
 	{
+		if (!this.Jukebox.Yandere.Talking && subtitleType == this.PreviousSubtitle && this.Timer > 0f)
+		{
+			Debug.Log("A character is attempting to say a subtitle that another character is already saying.");
+			return;
+		}
 		if (subtitleType == SubtitleType.WeaponAndBloodAndInsanityReaction)
 		{
 			this.Label.text = this.GetRandomString(this.WeaponBloodInsanityReactions);
@@ -2717,6 +2726,8 @@ public class SubtitleScript : MonoBehaviour
 			this.Label.text = this.GasWarnings[ID];
 			this.PlayVoice(subtitleType, ID);
 		}
+		this.PreviousSubtitle = subtitleType;
+		this.PreviousStudentID = this.StudentID;
 		this.Timer = Duration;
 	}
 

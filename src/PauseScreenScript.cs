@@ -102,6 +102,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public bool Sideways;
 
+	public bool InEditor;
+
 	public bool Home;
 
 	public bool Show;
@@ -376,7 +378,7 @@ public class PauseScreenScript : MonoBehaviour
 						if (Input.GetButtonDown("A"))
 						{
 							this.PressedA = true;
-							if (this.PhoneIcons[this.Selected].color.a == 1f)
+							if (this.PhoneIcons[this.Selected].color.a == 1f || this.InEditor)
 							{
 								if (this.Selected == 1)
 								{
