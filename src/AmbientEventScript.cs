@@ -145,9 +145,11 @@ public class AmbientEventScript : MonoBehaviour
 			{
 				if (this.Sitting)
 				{
+					this.EventStudent[1].CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					this.EventStudent[1].CharacterAnimation[this.EventStudent[1].SocialSitAnim].layer = 99;
 					this.EventStudent[1].CharacterAnimation.Play(this.EventStudent[1].SocialSitAnim);
 					this.EventStudent[1].CharacterAnimation[this.EventStudent[1].SocialSitAnim].weight = 1f;
+					this.EventStudent[2].CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 					this.EventStudent[2].CharacterAnimation[this.EventStudent[2].SocialSitAnim].layer = 99;
 					this.EventStudent[2].CharacterAnimation.Play(this.EventStudent[2].SocialSitAnim);
 					this.EventStudent[2].CharacterAnimation[this.EventStudent[2].SocialSitAnim].weight = 1f;
@@ -212,10 +214,11 @@ public class AmbientEventScript : MonoBehaviour
 								this.Scale = 1f;
 							}
 							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
-							Debug.Log("Scale is supposed to be: " + this.Scale);
+							Debug.Log("This script is setting Scale to " + this.Scale);
 						}
 						else
 						{
+							Debug.Log("This script is setting scale to 0.");
 							this.EventSubtitle.transform.localScale = Vector3.zero;
 							this.EventSubtitle.text = string.Empty;
 						}
@@ -286,6 +289,7 @@ public class AmbientEventScript : MonoBehaviour
 		}
 		for (int i = 1; i < 3; i++)
 		{
+			this.EventStudent[i].CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 			this.EventStudent[i].CharacterAnimation.Stop(this.EventStudent[i].SocialSitAnim);
 			this.EventStudent[1].MyController.radius = 0.1f;
 			this.EventStudent[i].CurrentDestination = this.EventStudent[i].Destinations[this.EventStudent[i].Phase];

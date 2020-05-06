@@ -54,7 +54,6 @@ public class LoveManagerScript : MonoBehaviour
 	private void Start()
 	{
 		this.SuitorProgress = DatingGlobals.SuitorProgress;
-		Debug.Log("DatingGlobals.Affection is: " + DatingGlobals.Affection);
 		if (DatingGlobals.Affection == 100f)
 		{
 			this.ConfessToSuitor = true;

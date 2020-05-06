@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PoliceScript : MonoBehaviour
 {
@@ -99,6 +100,8 @@ public class PoliceScript : MonoBehaviour
 
 	public bool BeginConfession;
 
+	public bool GenocideEnding;
+
 	public bool TeacherReport;
 
 	public bool ClubActivity;
@@ -118,6 +121,8 @@ public class PoliceScript : MonoBehaviour
 	public bool Delayed;
 
 	public bool FadeOut;
+
+	public bool Invalid;
 
 	public bool Suicide;
 
@@ -289,6 +294,11 @@ public class PoliceScript : MonoBehaviour
 			this.Seconds = num % 60;
 			this.TimeLabel.text = string.Format("{0:00}:{1:00}", this.Minutes, this.Seconds);
 		}
+		else if (this.Deaths > 84 && !this.Invalid && !this.Yandere.Egg && this.Clock.Weekday == 1 && this.StudentManager.Students[1].gameObject.activeInHierarchy && !this.StudentManager.Students[1].Fleeing)
+		{
+			this.GenocideEnding = true;
+			this.BeginFadingOut();
+		}
 		if (this.FadeOut)
 		{
 			if (this.Yandere.Laughing)
@@ -339,6 +349,10 @@ public class PoliceScript : MonoBehaviour
 					this.ShowResults = true;
 					Time.timeScale = 2f;
 					this.Jukebox.Volume = 0f;
+				}
+				if (this.GenocideEnding)
+				{
+					SceneManager.LoadScene("GenocideScene");
 				}
 			}
 		}

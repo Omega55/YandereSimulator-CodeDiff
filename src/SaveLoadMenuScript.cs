@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +14,11 @@ public class SaveLoadMenuScript : MonoBehaviour
 
 	public GameObject ConfirmWindow;
 
+	public GameObject WarningWindow;
+
 	public ClockScript Clock;
+
+	public Texture DefaultThumbnail;
 
 	public UILabel AreYouSureLabel;
 
@@ -48,7 +53,9 @@ public class SaveLoadMenuScript : MonoBehaviour
 			GameGlobals.Profile = 1;
 		}
 		this.Profile = GameGlobals.Profile;
+		this.WarningWindow.SetActive(true);
 		this.ConfirmWindow.SetActive(false);
+		base.StartCoroutine(this.GetThumbnails());
 	}
 
 	public void Update()
@@ -144,36 +151,174 @@ public class SaveLoadMenuScript : MonoBehaviour
 			}
 			this.GrabScreenshot = false;
 		}
-		if (Input.GetButtonDown("A"))
+		if (this.WarningWindow.activeInHierarchy)
 		{
-			if (this.Loading)
+			if (Input.GetButtonDown("A"))
 			{
-				if (this.DataLabels[this.Selected].text != "No Data")
+				this.WarningWindow.SetActive(false);
+				return;
+			}
+			if (Input.GetButtonDown("B"))
+			{
+				this.PauseScreen.MainMenu.SetActive(true);
+				this.PauseScreen.Sideways = false;
+				this.PauseScreen.PressedB = true;
+				base.gameObject.SetActive(false);
+				this.PauseScreen.PromptBar.ClearButtons();
+				this.PauseScreen.PromptBar.Label[0].text = "Accept";
+				this.PauseScreen.PromptBar.Label[1].text = "Exit";
+				this.PauseScreen.PromptBar.Label[4].text = "Choose";
+				this.PauseScreen.PromptBar.UpdateButtons();
+				this.PauseScreen.PromptBar.Show = true;
+				return;
+			}
+		}
+		else
+		{
+			if (Input.GetButtonDown("A"))
+			{
+				if (this.Loading)
+				{
+					if (this.DataLabels[this.Selected].text != "No Data")
+					{
+						if (!this.ConfirmWindow.activeInHierarchy)
+						{
+							this.AreYouSureLabel.text = "Are you sure you'd like to load?";
+							this.ConfirmWindow.SetActive(true);
+						}
+						else if (this.DataLabels[this.Selected].text != "No Data")
+						{
+							PlayerPrefs.SetInt("LoadingSave", 1);
+							PlayerPrefs.SetInt("SaveSlot", this.Selected);
+							SceneManager.LoadScene("LoadingScene");
+						}
+					}
+				}
+				else if (this.Saving)
 				{
 					if (!this.ConfirmWindow.activeInHierarchy)
 					{
-						this.AreYouSureLabel.text = "Are you sure you'd like to load?";
+						this.AreYouSureLabel.text = "Are you sure you'd like to save?";
 						this.ConfirmWindow.SetActive(true);
 					}
-					else if (this.DataLabels[this.Selected].text != "No Data")
+					else
 					{
-						PlayerPrefs.SetInt("LoadingSave", 1);
+						this.ConfirmWindow.SetActive(false);
 						PlayerPrefs.SetInt("SaveSlot", this.Selected);
-						SceneManager.LoadScene("LoadingScene");
+						GameGlobals.MostRecentSlot = this.Selected;
+						PlayerPrefs.SetString(string.Concat(new object[]
+						{
+							"Profile_",
+							this.Profile,
+							"_Slot_",
+							this.Selected,
+							"_DateTime"
+						}), DateTime.Now.ToString());
+						ScreenCapture.CaptureScreenshot(string.Concat(new object[]
+						{
+							Application.streamingAssetsPath,
+							"/SaveData/Profile_",
+							this.Profile,
+							"/Slot_",
+							this.Selected,
+							"_Thumbnail.png"
+						}));
+						this.PauseScreen.ScreenBlur.enabled = false;
+						this.UICamera.enabled = false;
+						this.GrabScreenshot = true;
 					}
 				}
 			}
-			else if (this.Saving)
+			if (Input.GetButtonDown("X"))
 			{
-				if (!this.ConfirmWindow.activeInHierarchy)
+				if (this.Loading)
 				{
-					this.AreYouSureLabel.text = "Are you sure you'd like to save?";
-					this.ConfirmWindow.SetActive(true);
+					if (this.DataLabels[this.Selected].text != "No Data")
+					{
+						PlayerPrefs.SetInt("SaveSlot", this.Selected);
+						this.StudentManager.Load();
+						Physics.SyncTransforms();
+						if (PlayerPrefs.GetInt(string.Concat(new object[]
+						{
+							"Profile_",
+							this.Profile,
+							"_Slot_",
+							this.Selected,
+							"_Weekday"
+						})) == 1)
+						{
+							DateGlobals.Weekday = DayOfWeek.Monday;
+						}
+						else if (PlayerPrefs.GetInt(string.Concat(new object[]
+						{
+							"Profile_",
+							this.Profile,
+							"_Slot_",
+							this.Selected,
+							"_Weekday"
+						})) == 2)
+						{
+							DateGlobals.Weekday = DayOfWeek.Tuesday;
+						}
+						else if (PlayerPrefs.GetInt(string.Concat(new object[]
+						{
+							"Profile_",
+							this.Profile,
+							"_Slot_",
+							this.Selected,
+							"_Weekday"
+						})) == 3)
+						{
+							DateGlobals.Weekday = DayOfWeek.Wednesday;
+						}
+						else if (PlayerPrefs.GetInt(string.Concat(new object[]
+						{
+							"Profile_",
+							this.Profile,
+							"_Slot_",
+							this.Selected,
+							"_Weekday"
+						})) == 4)
+						{
+							DateGlobals.Weekday = DayOfWeek.Tuesday;
+						}
+						else if (PlayerPrefs.GetInt(string.Concat(new object[]
+						{
+							"Profile_",
+							this.Profile,
+							"_Slot_",
+							this.Selected,
+							"_Weekday"
+						})) == 5)
+						{
+							DateGlobals.Weekday = DayOfWeek.Wednesday;
+						}
+						this.Clock.DayLabel.text = this.Clock.GetWeekdayText(DateGlobals.Weekday);
+						this.PauseScreen.MainMenu.SetActive(true);
+						this.PauseScreen.Sideways = false;
+						this.PauseScreen.PressedB = true;
+						base.gameObject.SetActive(false);
+						this.PauseScreen.ExitPhone();
+					}
 				}
-				else
+				else if (this.Saving && PlayerPrefs.GetString(string.Concat(new object[]
 				{
-					this.ConfirmWindow.SetActive(false);
-					PlayerPrefs.SetInt("SaveSlot", this.Selected);
+					"Profile_",
+					this.Profile,
+					"_Slot_",
+					this.Selected,
+					"_DateTime"
+				})) != "")
+				{
+					File.Delete(string.Concat(new object[]
+					{
+						Application.streamingAssetsPath,
+						"/SaveData/Profile_",
+						this.Profile,
+						"/Slot_",
+						this.Selected,
+						"_Thumbnail.png"
+					}));
 					PlayerPrefs.SetString(string.Concat(new object[]
 					{
 						"Profile_",
@@ -181,113 +326,29 @@ public class SaveLoadMenuScript : MonoBehaviour
 						"_Slot_",
 						this.Selected,
 						"_DateTime"
-					}), DateTime.Now.ToString());
-					ScreenCapture.CaptureScreenshot(string.Concat(new object[]
-					{
-						Application.streamingAssetsPath,
-						"/SaveData/Profile_",
-						this.Profile,
-						"/Slot_",
-						this.Selected,
-						"/Thumbnail.png"
-					}));
-					this.PauseScreen.ScreenBlur.enabled = false;
-					this.UICamera.enabled = false;
-					this.GrabScreenshot = true;
+					}), "");
+					this.Thumbnails[this.Selected].mainTexture = this.DefaultThumbnail;
+					this.DataLabels[this.Selected].text = "No Data";
 				}
 			}
-		}
-		if (Input.GetButtonDown("X") && this.DataLabels[this.Selected].text != "No Data")
-		{
-			PlayerPrefs.SetInt("SaveSlot", this.Selected);
-			this.StudentManager.Load();
-			if (PlayerPrefs.GetInt(string.Concat(new object[]
+			if (Input.GetButtonDown("B"))
 			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Weekday"
-			})) == 1)
-			{
-				DateGlobals.Weekday = DayOfWeek.Monday;
+				if (this.ConfirmWindow.activeInHierarchy)
+				{
+					this.ConfirmWindow.SetActive(false);
+					return;
+				}
+				this.PauseScreen.MainMenu.SetActive(true);
+				this.PauseScreen.Sideways = false;
+				this.PauseScreen.PressedB = true;
+				base.gameObject.SetActive(false);
+				this.PauseScreen.PromptBar.ClearButtons();
+				this.PauseScreen.PromptBar.Label[0].text = "Accept";
+				this.PauseScreen.PromptBar.Label[1].text = "Exit";
+				this.PauseScreen.PromptBar.Label[4].text = "Choose";
+				this.PauseScreen.PromptBar.UpdateButtons();
+				this.PauseScreen.PromptBar.Show = true;
 			}
-			else if (PlayerPrefs.GetInt(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Weekday"
-			})) == 2)
-			{
-				DateGlobals.Weekday = DayOfWeek.Tuesday;
-			}
-			else if (PlayerPrefs.GetInt(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Weekday"
-			})) == 3)
-			{
-				DateGlobals.Weekday = DayOfWeek.Wednesday;
-			}
-			else if (PlayerPrefs.GetInt(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Weekday"
-			})) == 4)
-			{
-				DateGlobals.Weekday = DayOfWeek.Tuesday;
-			}
-			else if (PlayerPrefs.GetInt(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Weekday"
-			})) == 5)
-			{
-				DateGlobals.Weekday = DayOfWeek.Wednesday;
-			}
-			this.Clock.PresentTime = PlayerPrefs.GetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				this.Profile,
-				"_Slot_",
-				this.Selected,
-				"_Time"
-			}), this.Clock.PresentTime);
-			this.Clock.DayLabel.text = this.Clock.GetWeekdayText(DateGlobals.Weekday);
-			this.PauseScreen.MainMenu.SetActive(true);
-			this.PauseScreen.Sideways = false;
-			this.PauseScreen.PressedB = true;
-			base.gameObject.SetActive(false);
-			this.PauseScreen.ExitPhone();
-		}
-		if (Input.GetButtonDown("B"))
-		{
-			if (this.ConfirmWindow.activeInHierarchy)
-			{
-				this.ConfirmWindow.SetActive(false);
-				return;
-			}
-			this.PauseScreen.MainMenu.SetActive(true);
-			this.PauseScreen.Sideways = false;
-			this.PauseScreen.PressedB = true;
-			base.gameObject.SetActive(false);
-			this.PauseScreen.PromptBar.ClearButtons();
-			this.PauseScreen.PromptBar.Label[0].text = "Accept";
-			this.PauseScreen.PromptBar.Label[1].text = "Exit";
-			this.PauseScreen.PromptBar.Label[4].text = "Choose";
-			this.PauseScreen.PromptBar.UpdateButtons();
-			this.PauseScreen.PromptBar.Show = true;
 		}
 	}
 
@@ -321,7 +382,7 @@ public class SaveLoadMenuScript : MonoBehaviour
 					this.Profile,
 					"/Slot_",
 					ID,
-					"/Thumbnail.png"
+					"_Thumbnail.png"
 				});
 				WWW www = new WWW(url);
 				yield return www;

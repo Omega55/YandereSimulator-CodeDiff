@@ -266,6 +266,7 @@ public class AttackManagerScript : MonoBehaviour
 				if (equippedWeapon.Blunt)
 				{
 					this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+					this.Yandere.TargetStudent.NeckSnapped = true;
 				}
 				if (!this.Yandere.Noticed)
 				{
@@ -486,14 +487,13 @@ public class AttackManagerScript : MonoBehaviour
 			if (this.Stealth)
 			{
 				this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+				this.Yandere.TargetStudent.NeckSnapped = true;
 				return;
 			}
 			if (sanityType == SanityType.High)
 			{
 				if (this.EffectPhase == 0 && this.YandereAnim[this.AnimName].time > 0.733333349f)
 				{
-					this.Yandere.Bloodiness += 20f;
-					this.Yandere.StainWeapon();
 					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
@@ -505,8 +505,6 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 1f)
 					{
-						this.Yandere.Bloodiness += 20f;
-						this.Yandere.StainWeapon();
 						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
@@ -523,8 +521,6 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				if (this.YandereAnim[this.AnimName].time > 0.7f)
 				{
-					this.Yandere.Bloodiness += 20f;
-					this.Yandere.StainWeapon();
 					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.5f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
@@ -707,14 +703,13 @@ public class AttackManagerScript : MonoBehaviour
 			if (this.Stealth)
 			{
 				this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+				this.Yandere.TargetStudent.NeckSnapped = true;
 				return;
 			}
 			if (sanityType == SanityType.High)
 			{
 				if (this.EffectPhase == 0 && this.YandereAnim[this.AnimName].time > 0.6666667f)
 				{
-					this.Yandere.Bloodiness += 20f;
-					this.Yandere.StainWeapon();
 					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
@@ -726,8 +721,6 @@ public class AttackManagerScript : MonoBehaviour
 				{
 					if (this.YandereAnim[this.AnimName].time > 1f)
 					{
-						this.Yandere.Bloodiness += 20f;
-						this.Yandere.StainWeapon();
 						UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 						this.EffectPhase++;
 						return;
@@ -744,8 +737,6 @@ public class AttackManagerScript : MonoBehaviour
 			{
 				if (this.YandereAnim[this.AnimName].time > 2.16666675f)
 				{
-					this.Yandere.Bloodiness += 20f;
-					this.Yandere.StainWeapon();
 					UnityEngine.Object.Instantiate<GameObject>(this.BloodEffect, weapon.transform.position + weapon.transform.forward * 0.1f, Quaternion.identity);
 					this.EffectPhase++;
 					return;
@@ -761,6 +752,7 @@ public class AttackManagerScript : MonoBehaviour
 		else if (weapon.Type == WeaponType.Garrote)
 		{
 			this.Yandere.TargetStudent.Ragdoll.NeckSnapped = true;
+			this.Yandere.TargetStudent.NeckSnapped = true;
 		}
 	}
 

@@ -29,6 +29,8 @@ public class StudentScript : MonoBehaviour
 
 	public WitnessCameraScript WitnessCamera;
 
+	public YanSaveIdentifier HipsIdentifier;
+
 	public StudentScript DistractionTarget;
 
 	public CookingEventScript CookingEvent;
@@ -597,6 +599,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool MusumeRight;
 
+	public bool NeckSnapped;
+
 	public bool UpdateSkirt;
 
 	public bool ClubAttire;
@@ -640,6 +644,8 @@ public class StudentScript : MonoBehaviour
 	public bool NoBreakUp;
 
 	public bool Phoneless;
+
+	public bool RingReact;
 
 	public bool TrueAlone;
 
@@ -686,6 +692,8 @@ public class StudentScript : MonoBehaviour
 	public bool Private;
 
 	public bool Reacted;
+
+	public bool Removed;
 
 	public bool SawMask;
 
@@ -3384,9 +3392,19 @@ public class StudentScript : MonoBehaviour
 						this.SmartPhone.transform.localEulerAngles = new Vector3(12.5f, 120f, 180f);
 					}
 				}
-				if (!this.Teacher && this.Club != ClubType.Delinquent && (this.Clock.Period == 2 || this.Clock.Period == 4) && this.ClubActivityPhase < 16)
+				if (!this.Teacher && this.Club != ClubType.Delinquent)
 				{
-					this.Pathfinding.speed = 4f;
+					if (this.Clock.Period == 2 || this.Clock.Period == 4)
+					{
+						if (this.ClubActivityPhase < 16)
+						{
+							this.Pathfinding.speed = 4f;
+						}
+					}
+					else
+					{
+						this.Pathfinding.speed = 1f;
+					}
 				}
 			}
 			if (this.MeetTime > 0f && this.Clock.HourTime > this.MeetTime)
@@ -6115,7 +6133,7 @@ public class StudentScript : MonoBehaviour
 			{
 				this.DistanceToDestination = Vector3.Distance(base.transform.position, this.CurrentDestination.position);
 			}
-			if (this.Fleeing && !this.Dying)
+			if (this.Fleeing && !this.Dying && !this.Spraying)
 			{
 				if (!this.PinningDown)
 				{
@@ -11013,7 +11031,14 @@ public class StudentScript : MonoBehaviour
 						}
 						else if (this.Witnessed == StudentWitnessType.Theft)
 						{
-							this.Subtitle.UpdateLabel(SubtitleType.TheftReaction, 0, 5f);
+							if (this.StudentID == 2 && this.RingReact)
+							{
+								this.Subtitle.UpdateLabel(SubtitleType.TheftReaction, 1, 5f);
+							}
+							else
+							{
+								this.Subtitle.UpdateLabel(SubtitleType.TheftReaction, 0, 5f);
+							}
 						}
 						else
 						{
@@ -13954,6 +13979,7 @@ public class StudentScript : MonoBehaviour
 			this.Ragdoll.RightEyeOrigin = this.RightEyeOrigin;
 			this.Ragdoll.LeftEyeOrigin = this.LeftEyeOrigin;
 			this.Ragdoll.Electrocuted = this.Electrocuted;
+			this.Ragdoll.NeckSnapped = this.NeckSnapped;
 			this.Ragdoll.BreastSize = this.BreastSize;
 			this.Ragdoll.EyeShrink = this.EyeShrink;
 			this.Ragdoll.StudentID = this.StudentID;

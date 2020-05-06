@@ -5,6 +5,8 @@ public static class GameGlobals
 {
 	private const string Str_Profile = "Profile";
 
+	private const string Str_MostRecentSlot = "MostRecentSlot";
+
 	private const string Str_LoveSick = "LoveSick";
 
 	private const string Str_MasksBanned = "MasksBanned";
@@ -46,6 +48,18 @@ public static class GameGlobals
 		set
 		{
 			PlayerPrefs.SetInt("Profile", value);
+		}
+	}
+
+	public static int MostRecentSlot
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("MostRecentSlot");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("MostRecentSlot", value);
 		}
 	}
 
@@ -259,5 +273,6 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_AnswerSheetUnavailable");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_AlphabetMode");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_PoliceYesterday");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_MostRecentSlot");
 	}
 }

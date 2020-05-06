@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 public class HomeInternetScript : MonoBehaviour
@@ -215,7 +216,7 @@ public class HomeInternetScript : MonoBehaviour
 				{
 					this.NavigationMenu.SetActive(false);
 					this.OnlineShopping.SetActive(true);
-					this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+					this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2", NumberFormatInfo.InvariantInfo);
 				}
 				else if (Input.GetButtonDown("B"))
 				{
@@ -522,7 +523,7 @@ public class HomeInternetScript : MonoBehaviour
 								GameGlobals.SpareUniform = true;
 								PlayerGlobals.Money -= 33.33f;
 								this.MyAudio.Play();
-								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2", NumberFormatInfo.InvariantInfo);
 								this.Clock.UpdateMoneyLabel();
 							}
 						}
@@ -545,7 +546,7 @@ public class HomeInternetScript : MonoBehaviour
 								GameGlobals.BlondeHair = true;
 								PlayerGlobals.Money -= 8.49f;
 								this.MyAudio.Play();
-								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+								this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2", NumberFormatInfo.InvariantInfo);
 								this.Clock.UpdateMoneyLabel();
 							}
 						}

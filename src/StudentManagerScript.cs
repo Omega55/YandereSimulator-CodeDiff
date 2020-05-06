@@ -91,6 +91,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public RobotArmScript RobotArms;
 
+	public AlphabetScript Alphabet;
+
 	public PickUpScript Flashlight;
 
 	public FountainScript Fountain;
@@ -820,6 +822,7 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			if (GameGlobals.AlphabetMode)
 			{
+				Debug.Log("Entering Alphabet Killer Mode. Repositioning Yandere-chan and others.");
 				this.Yandere.transform.position = this.Portal.transform.position + new Vector3(1f, 0f, 0f);
 				this.Clock.StopTime = true;
 				this.SkipTo730();
@@ -947,8 +950,8 @@ public class StudentManagerScript : MonoBehaviour
 				this.UpdateAprons();
 				if (PlayerPrefs.GetInt("LoadingSave") == 1)
 				{
-					this.Load();
 					PlayerPrefs.SetInt("LoadingSave", 0);
+					this.Load();
 				}
 				if (!this.YandereLate && StudentGlobals.MemorialStudents > 0)
 				{
@@ -1336,11 +1339,12 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[spawnID];
 			studentScript.ChaseSelectiveGrayscale.desaturation = 1f - SchoolGlobals.SchoolAtmosphere;
 			studentScript.Cosmetic.TextureManager = this.TextureManager;
-			studentScript.YanSave.ObjectID = "Student_" + spawnID;
 			studentScript.WitnessCamera = this.WitnessCamera;
 			studentScript.StudentManager = this;
 			studentScript.StudentID = spawnID;
 			studentScript.JSON = this.JSON;
+			studentScript.HipsIdentifier.ObjectID = "Student_" + spawnID + "_Hips";
+			studentScript.YanSave.ObjectID = "Student_" + spawnID;
 			if (studentScript.Miyuki != null)
 			{
 				studentScript.Miyuki.Enemy = this.MiyukiCat;
@@ -3163,6 +3167,7 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void Load()
 	{
+		Debug.Log("Now loading save data.");
 		int profile = GameGlobals.Profile;
 		int @int = PlayerPrefs.GetInt("SaveSlot");
 		YanSave.LoadData(string.Concat(new object[]
@@ -3172,8 +3177,44 @@ public class StudentManagerScript : MonoBehaviour
 			"_Slot_",
 			@int
 		}), false);
-		this.Yandere.FixCamera();
 		Physics.SyncTransforms();
+		this.Police.Corpses = 0;
+		this.ID = 1;
+		while (this.ID < 101)
+		{
+			if (this.Students[this.ID] != null)
+			{
+				if (!this.Students[this.ID].Alive)
+				{
+					Debug.Log(this.Students[this.ID].Name + " is confirmed to be dead.");
+					Vector3 localPosition = this.Students[this.ID].Hips.localPosition;
+					Quaternion localRotation = this.Students[this.ID].Hips.localRotation;
+					this.Students[this.ID].BecomeRagdoll();
+					this.Students[this.ID].Ragdoll.UpdateNextFrame = true;
+					this.Students[this.ID].Ragdoll.NextPosition = localPosition;
+					this.Students[this.ID].Ragdoll.NextRotation = localRotation;
+					if (this.Students[this.ID].Removed)
+					{
+						this.Students[this.ID].Ragdoll.Remove();
+						this.Police.Corpses--;
+					}
+				}
+				if (this.Students[this.ID].Phase > 0)
+				{
+					this.Students[this.ID].Phase--;
+				}
+			}
+			this.ID++;
+		}
+		this.Clock.UpdateClock();
+		this.Alphabet.UpdateText();
+		this.Yandere.CanMove = true;
+		this.Yandere.WeaponManager.EquipWeaponsFromSave();
+		if (this.Yandere.ClubAttire)
+		{
+			this.Yandere.ClubAttire = false;
+			this.Yandere.ChangeClubwear();
+		}
 	}
 
 	public void UpdateBlood()

@@ -585,6 +585,8 @@ public class SubtitleScript : MonoBehaviour
 
 	public AudioClip[] YandereWhimperClips;
 
+	public AudioClip[] TheftClips;
+
 	public AudioClip[] TeacherWeaponClips;
 
 	public AudioClip[] TeacherBloodClips;
@@ -1222,6 +1224,10 @@ public class SubtitleScript : MonoBehaviour
 				new AudioClipArrayWrapper(this.TaskInquiryClips)
 			},
 			{
+				SubtitleType.TheftReaction,
+				new AudioClipArrayWrapper(this.TheftClips)
+			},
+			{
 				SubtitleType.TeacherAttackReaction,
 				new AudioClipArrayWrapper(this.TeacherAttackClips)
 			},
@@ -1569,7 +1575,8 @@ public class SubtitleScript : MonoBehaviour
 		}
 		else if (subtitleType == SubtitleType.TheftReaction)
 		{
-			this.Label.text = this.GetRandomString(this.TheftReactions);
+			this.Label.text = this.TheftReactions[ID];
+			this.PlayVoice(subtitleType, ID);
 		}
 		else if (subtitleType == SubtitleType.KilledMood)
 		{

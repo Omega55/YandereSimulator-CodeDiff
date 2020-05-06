@@ -6,6 +6,8 @@ public class AlphabetScript : MonoBehaviour
 {
 	public StudentManagerScript StudentManager;
 
+	public InventoryScript Inventory;
+
 	public GameObject BodyHidingLockers;
 
 	public GameObject AmnesiaBombBox;
@@ -32,6 +34,8 @@ public class AlphabetScript : MonoBehaviour
 
 	public UILabel BombLabel;
 
+	public UITexture BombTexture;
+
 	public Transform LocalArrow;
 
 	public Transform Yandere;
@@ -50,13 +54,6 @@ public class AlphabetScript : MonoBehaviour
 	{
 		if (GameGlobals.AlphabetMode)
 		{
-			this.TargetLabel.text = string.Concat(new object[]
-			{
-				"(",
-				this.CurrentTarget,
-				"/77) Current Target: ",
-				this.StudentManager.JSON.Students[this.IDs[this.CurrentTarget]].Name
-			});
 			this.TargetLabel.transform.parent.gameObject.SetActive(true);
 			this.StudentManager.Yandere.NoDebug = true;
 			this.BodyHidingLockers.SetActive(true);
@@ -67,6 +64,7 @@ public class AlphabetScript : MonoBehaviour
 			this.PuzzleCube.SetActive(true);
 			this.WeaponBag.SetActive(true);
 			ClassGlobals.PhysicalGrade = 5;
+			this.UpdateText();
 			return;
 		}
 		this.TargetLabel.transform.parent.gameObject.SetActive(false);
@@ -131,13 +129,7 @@ public class AlphabetScript : MonoBehaviour
 				}
 				else
 				{
-					this.TargetLabel.text = string.Concat(new object[]
-					{
-						"(",
-						this.CurrentTarget,
-						"/77) Current Target: ",
-						this.StudentManager.Students[this.IDs[this.CurrentTarget]].Name
-					});
+					this.UpdateText();
 				}
 			}
 			if (this.ChallengeFailed.enabled)
@@ -147,6 +139,35 @@ public class AlphabetScript : MonoBehaviour
 				{
 					SceneManager.LoadScene("LoadingScene");
 				}
+			}
+		}
+	}
+
+	public void UpdateText()
+	{
+		this.TargetLabel.text = string.Concat(new object[]
+		{
+			"(",
+			this.CurrentTarget,
+			"/77) Current Target: ",
+			this.StudentManager.JSON.Students[this.IDs[this.CurrentTarget]].Name
+		});
+		if (this.RemainingBombs > 0)
+		{
+			this.BombLabel.transform.parent.gameObject.SetActive(true);
+			if (this.BombTexture.color.a < 1f)
+			{
+				if (this.Inventory.StinkBomb)
+				{
+					this.BombTexture.color = new Color(0f, 0.5f, 0f, 1f);
+					return;
+				}
+				if (this.Inventory.AmnesiaBomb)
+				{
+					this.BombTexture.color = new Color(1f, 0.5f, 1f, 1f);
+					return;
+				}
+				this.BombTexture.color = new Color(0.5f, 0.5f, 0.5f, 1f);
 			}
 		}
 	}

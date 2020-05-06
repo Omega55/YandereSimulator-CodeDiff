@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.PostProcessing;
 
@@ -285,7 +286,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 		this.SpeechPhase = 0;
 		this.Timer = 1f;
 		PlayerGlobals.Money -= this.Costs[this.Selected];
-		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2", NumberFormatInfo.InvariantInfo);
 		this.StreetManager.Clock.UpdateMoneyLabel();
 		this.MyAudio.Play();
 	}

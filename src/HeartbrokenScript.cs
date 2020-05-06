@@ -74,6 +74,10 @@ public class HeartbrokenScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (GameGlobals.MostRecentSlot == 0)
+		{
+			this.Options[2].color = new Color(this.Options[2].color.r * 0.5f, this.Options[2].color.g * 0.5f, this.Options[2].color.b * 0.5f, 1f);
+		}
 		if (!this.Caught && !this.Noticed && this.Yandere.Bloodiness > 0f && !this.Yandere.RedPaint && !this.Yandere.Unmasked)
 		{
 			this.Arrested = true;
@@ -99,7 +103,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.StopID = 8;
 			this.NoSnap = true;
 			this.SNAP.SetActive(false);
-			this.Cursor.Options = 3;
+			this.Cursor.Options = 4;
 		}
 		else if (this.Confessed)
 		{
@@ -158,7 +162,7 @@ public class HeartbrokenScript : MonoBehaviour
 				uilabel2.transform.localPosition = new Vector3(uilabel2.transform.localPosition.x + 100f, uilabel2.transform.localPosition.y, uilabel2.transform.localPosition.z);
 			}
 			this.SNAP.SetActive(false);
-			this.Cursor.Options = 3;
+			this.Cursor.Options = 4;
 			this.NoSnap = true;
 		}
 		else if (this.Yandere.Lost || this.ShoulderCamera.LookDown || this.ShoulderCamera.Counter || this.ShoulderCamera.ObstacleCounter)
@@ -287,7 +291,7 @@ public class HeartbrokenScript : MonoBehaviour
 			if (num == 0 || this.NoSnap || this.Yandere.Police.GameOver || this.Yandere.StudentManager.Clock.HourTime >= 18f || this.Yandere.transform.position.y < -1f)
 			{
 				this.SNAP.SetActive(false);
-				this.Cursor.Options = 3;
+				this.Cursor.Options = 4;
 			}
 			this.Clock.StopTime = true;
 		}

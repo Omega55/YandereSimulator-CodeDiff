@@ -110,30 +110,6 @@ public class ClockScript : MonoBehaviour
 		{
 			int profile = GameGlobals.Profile;
 			int @int = PlayerPrefs.GetInt("SaveSlot");
-			Debug.Log(string.Concat(new object[]
-			{
-				"Loading time! Profile_",
-				profile,
-				"_Slot_",
-				@int,
-				"_Time is ",
-				PlayerPrefs.GetFloat(string.Concat(new object[]
-				{
-					"Profile_",
-					profile,
-					"_Slot_",
-					@int,
-					"_Time"
-				}))
-			}));
-			this.PresentTime = PlayerPrefs.GetFloat(string.Concat(new object[]
-			{
-				"Profile_",
-				profile,
-				"_Slot_",
-				@int,
-				"_Time"
-			}));
 			this.Weekday = PlayerPrefs.GetInt(string.Concat(new object[]
 			{
 				"Profile_",

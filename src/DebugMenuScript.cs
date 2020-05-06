@@ -502,15 +502,13 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.Z))
 					{
+						this.Yandere.Police.Invalid = true;
 						if (Input.GetKey(KeyCode.LeftShift))
 						{
 							this.ID = 2;
 							while (this.ID < 93)
 							{
-								if (this.StudentManager.Students[this.ID] != null)
-								{
-									StudentGlobals.SetStudentMissing(this.ID, true);
-								}
+								this.StudentManager.Students[this.ID] != null;
 								this.ID++;
 							}
 						}
@@ -525,7 +523,6 @@ public class DebugMenuScript : MonoBehaviour
 									studentScript7.SpawnAlarmDisc();
 									studentScript7.BecomeRagdoll();
 									studentScript7.DeathType = DeathType.EasterEgg;
-									StudentGlobals.SetStudentDead(this.ID, true);
 								}
 								this.ID++;
 							}

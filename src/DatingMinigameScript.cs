@@ -208,29 +208,29 @@ public class DatingMinigameScript : MonoBehaviour
 		if (this.Affection == 0f)
 		{
 			this.AffectionLevel = 0;
+			return;
 		}
-		else if (this.Affection < 25f)
+		if (this.Affection < 25f)
 		{
 			this.AffectionLevel = 1;
+			return;
 		}
-		else if (this.Affection < 50f)
+		if (this.Affection < 50f)
 		{
 			this.AffectionLevel = 2;
+			return;
 		}
-		else if (this.Affection < 75f)
+		if (this.Affection < 75f)
 		{
 			this.AffectionLevel = 3;
+			return;
 		}
-		else if (this.Affection < 100f)
+		if (this.Affection < 100f)
 		{
 			this.AffectionLevel = 4;
+			return;
 		}
-		else
-		{
-			this.AffectionLevel = 5;
-		}
-		Debug.Log("Affection is: " + this.Affection);
-		Debug.Log("AffectionLevel is now: " + this.AffectionLevel);
+		this.AffectionLevel = 5;
 	}
 
 	private void Update()

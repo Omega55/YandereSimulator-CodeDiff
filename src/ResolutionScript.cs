@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,6 +45,7 @@ public class ResolutionScript : MonoBehaviour
 		this.QualityLabel.text = (this.Qualities[QualitySettings.GetQualityLevel()] ?? "");
 		this.FullScreenLabel.text = "No";
 		Debug.Log("The quality level is set to: " + QualitySettings.GetQualityLevel());
+		Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
 	}
 
 	private void Update()

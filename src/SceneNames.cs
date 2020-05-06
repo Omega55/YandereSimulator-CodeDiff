@@ -77,4 +77,6 @@ public static class SceneNames
 	public const string OsanaJokeScene = "OsanaJokeScene";
 
 	public const string StalkerHouseScene = "StalkerHouseScene";
+
+	public const string GenocideScene = "GenocideScene";
 }

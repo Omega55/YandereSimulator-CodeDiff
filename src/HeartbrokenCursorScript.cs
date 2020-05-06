@@ -40,7 +40,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public int Selected = 1;
 
-	public int Options = 4;
+	public int Options = 5;
 
 	public int LastRandomCrack;
 
@@ -161,11 +161,14 @@ public class HeartbrokenCursorScript : MonoBehaviour
 				if (Input.GetButtonDown("A"))
 				{
 					this.Nudge = true;
-					if (this.Selected != 4)
+					if (this.Selected != 5)
 					{
 						this.MyAudio.clip = this.SelectSound;
 						this.MyAudio.Play();
-						this.FadeOut = true;
+						if (this.Selected != 3 || (this.Selected == 3 && GameGlobals.MostRecentSlot > 0))
+						{
+							this.FadeOut = true;
+						}
 					}
 					else
 					{
@@ -369,6 +372,19 @@ public class HeartbrokenCursorScript : MonoBehaviour
 					}
 				}
 				else if (this.Selected == 3)
+				{
+					PlayerPrefs.SetInt("LoadingSave", 1);
+					PlayerPrefs.SetInt("SaveSlot", GameGlobals.MostRecentSlot);
+					for (int l = 0; l < this.StudentManager.NPCsTotal; l++)
+					{
+						if (StudentGlobals.GetStudentDying(l))
+						{
+							StudentGlobals.SetStudentDying(l, false);
+						}
+					}
+					SceneManager.LoadScene("LoadingScene");
+				}
+				else if (this.Selected == 4)
 				{
 					SceneManager.LoadScene("TitleScene");
 				}

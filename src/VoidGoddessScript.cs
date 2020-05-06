@@ -126,6 +126,7 @@ public class VoidGoddessScript : MonoBehaviour
 			this.Prompt.Circle[0].fillAmount = 1f;
 			if (!this.Goddess.activeInHierarchy)
 			{
+				this.Prompt.Yandere.Police.Invalid = true;
 				this.Prompt.Label[0].text = "     Pass Judgement";
 				this.Prompt.Label[1].text = "     Dismiss";
 				this.Prompt.Label[2].text = "     Follow";

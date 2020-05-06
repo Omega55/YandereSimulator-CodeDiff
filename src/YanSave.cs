@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,6 +14,10 @@ public static class YanSave
 {
 	public const string SAVE_EXTENSION = "yansave";
 
+	private static Dictionary<Type, PropertyInfo[]> PropertyCache = new Dictionary<Type, PropertyInfo[]>();
+
+	private static Dictionary<Type, FieldInfo[]> FieldCache = new Dictionary<Type, FieldInfo[]>();
+
 	public static string SaveDataPath
 	{
 		get
@@ -22,14 +28,14 @@ public static class YanSave
 
 	public static void SaveData(string targetSave)
 	{
-		YanSaveIdentifier[] array = UnityEngine.Object.FindObjectsOfType<YanSaveIdentifier>();
+		YanSaveIdentifier[] array = Resources.FindObjectsOfTypeAll<YanSaveIdentifier>();
 		List<SerializedGameObject> list = new List<SerializedGameObject>();
 		foreach (YanSaveIdentifier yanSaveIdentifier in array)
 		{
 			List<SerializedComponent> list2 = new List<SerializedComponent>();
 			foreach (Component component in yanSaveIdentifier.gameObject.GetComponents(typeof(Component)))
 			{
-				if (!yanSaveIdentifier.DisabledComponents.Contains(component))
+				if (yanSaveIdentifier.EnabledComponents.Contains(component))
 				{
 					SerializedComponent serializedComponent = default(SerializedComponent);
 					serializedComponent.TypePath = component.GetType().AssemblyQualifiedName;
@@ -37,7 +43,15 @@ public static class YanSave
 					serializedComponent.PropertyValues = new ValueDict();
 					serializedComponent.FieldReferences = new ReferenceDict();
 					serializedComponent.FieldValues = new ValueDict();
-					foreach (PropertyInfo propertyInfo in component.GetType().GetProperties())
+					serializedComponent.FieldReferenceArrays = new ReferenceArrayDict();
+					serializedComponent.PropertyReferenceArrays = new ReferenceArrayDict();
+					if (typeof(MonoBehaviour).IsAssignableFrom(component.GetType()))
+					{
+						serializedComponent.IsMonoBehaviour = true;
+						serializedComponent.IsEnabled = ((MonoBehaviour)component).enabled;
+					}
+					Type type = component.GetType();
+					foreach (PropertyInfo propertyInfo in YanSave.GetCachedProperties(type))
 					{
 						if (propertyInfo.CanWrite && !propertyInfo.IsDefined(typeof(ObsoleteAttribute), true))
 						{
@@ -47,91 +61,132 @@ public static class YanSave
 								if (disabledYanSaveMember.Component == component && disabledYanSaveMember.Name == propertyInfo.Name)
 								{
 									flag = true;
+									break;
 								}
 							}
 							if (!flag)
 							{
-								try
+								object value = propertyInfo.GetValue(component);
+								bool flag2 = typeof(Component).IsAssignableFrom(propertyInfo.PropertyType);
+								bool flag3 = propertyInfo.PropertyType == typeof(GameObject);
+								bool isArray = propertyInfo.PropertyType.IsArray;
+								bool flag4 = typeof(Component[]).IsAssignableFrom(propertyInfo.PropertyType);
+								bool flag5 = typeof(GameObject[]).IsAssignableFrom(propertyInfo.PropertyType);
+								if (value != null)
 								{
-									if (!typeof(Component).IsAssignableFrom(propertyInfo.PropertyType) && propertyInfo.PropertyType != typeof(GameObject))
+									try
 									{
-										serializedComponent.PropertyValues.Add(propertyInfo.Name, propertyInfo.GetValue(component));
-									}
-									else if (typeof(Component).IsAssignableFrom(propertyInfo.PropertyType))
-									{
-										if (propertyInfo.GetValue(component) != null)
+										if (!flag2 && !flag3)
 										{
-											YanSaveIdentifier component2 = ((Component)propertyInfo.GetValue(component)).gameObject.GetComponent<YanSaveIdentifier>();
-											if (component2 != null)
+											serializedComponent.PropertyValues.Add(propertyInfo.Name, value);
+										}
+										else if (isArray)
+										{
+											List<string> list3 = new List<string>();
+											if (flag4)
 											{
-												serializedComponent.PropertyReferences.Add(propertyInfo.Name, component2.ObjectID);
+												list3.AddRange(((Component[])value).Select(delegate(Component x)
+												{
+													if (!(x.GetComponent<YanSaveIdentifier>() != null))
+													{
+														return string.Empty;
+													}
+													return x.GetComponent<YanSaveIdentifier>().ObjectID;
+												}));
+											}
+											else if (flag5)
+											{
+												list3.AddRange(((GameObject[])value).Select(delegate(GameObject x)
+												{
+													if (!(x.GetComponent<YanSaveIdentifier>() != null))
+													{
+														return string.Empty;
+													}
+													return x.GetComponent<YanSaveIdentifier>().ObjectID;
+												}));
+											}
+											serializedComponent.PropertyReferenceArrays.Add(propertyInfo.Name, list3);
+										}
+										else
+										{
+											YanSaveIdentifier yanSaveIdentifier2 = flag2 ? ((Component)value).gameObject.GetComponent<YanSaveIdentifier>() : (flag3 ? ((GameObject)value).GetComponent<YanSaveIdentifier>() : null);
+											if (yanSaveIdentifier2 != null)
+											{
+												serializedComponent.PropertyReferences.Add(propertyInfo.Name, yanSaveIdentifier2.ObjectID);
+											}
+											else
+											{
+												serializedComponent.PropertyReferences.Add(propertyInfo.Name, null);
 											}
 										}
-										else
-										{
-											serializedComponent.PropertyReferences.Add(propertyInfo.Name, null);
-										}
 									}
-									else if (propertyInfo.PropertyType == typeof(GameObject))
+									catch
 									{
-										YanSaveIdentifier component3 = ((GameObject)propertyInfo.GetValue(component)).GetComponent<YanSaveIdentifier>();
-										if (component3 != null)
-										{
-											serializedComponent.PropertyReferences.Add(propertyInfo.Name, component3.ObjectID);
-										}
-										else
-										{
-											serializedComponent.PropertyReferences.Add(propertyInfo.Name, null);
-										}
 									}
-								}
-								catch
-								{
 								}
 							}
 						}
 					}
-					foreach (FieldInfo fieldInfo in component.GetType().GetFields())
+					foreach (FieldInfo fieldInfo in YanSave.GetCachedFields(type))
 					{
 						if (!fieldInfo.IsLiteral && !fieldInfo.IsDefined(typeof(ObsoleteAttribute), true))
 						{
-							bool flag2 = false;
+							bool flag6 = false;
 							foreach (DisabledYanSaveMember disabledYanSaveMember2 in yanSaveIdentifier.DisabledFields)
 							{
 								if (disabledYanSaveMember2.Component == component && disabledYanSaveMember2.Name == fieldInfo.Name)
 								{
-									flag2 = true;
+									flag6 = true;
+									break;
 								}
 							}
-							if (!flag2)
+							if (!flag6)
 							{
+								object value2 = fieldInfo.GetValue(component);
+								bool flag7 = typeof(Component).IsAssignableFrom(fieldInfo.FieldType);
+								bool flag8 = fieldInfo.FieldType == typeof(GameObject);
+								bool isArray2 = fieldInfo.FieldType.IsArray;
+								bool flag9 = typeof(Component[]).IsAssignableFrom(fieldInfo.FieldType);
+								bool flag10 = typeof(GameObject[]).IsAssignableFrom(fieldInfo.FieldType);
 								try
 								{
-									if (!typeof(Component).IsAssignableFrom(fieldInfo.FieldType) && fieldInfo.FieldType != typeof(GameObject))
+									if (!flag7 && !flag8 && !flag9 && !flag10)
 									{
-										serializedComponent.FieldValues.Add(fieldInfo.Name, fieldInfo.GetValue(component));
+										serializedComponent.FieldValues.Add(fieldInfo.Name, value2);
 									}
-									else if (typeof(Component).IsAssignableFrom(fieldInfo.FieldType))
+									else if (isArray2)
 									{
-										if (fieldInfo.GetValue(component) != null)
+										List<string> list4 = new List<string>();
+										if (flag9)
 										{
-											YanSaveIdentifier component4 = ((Component)fieldInfo.GetValue(component)).gameObject.GetComponent<YanSaveIdentifier>();
-											if (component4 != null)
+											list4.AddRange(((Component[])value2).Select(delegate(Component x)
 											{
-												serializedComponent.FieldReferences.Add(fieldInfo.Name, component4.ObjectID);
-											}
+												if (!(x.GetComponent<YanSaveIdentifier>() != null))
+												{
+													return string.Empty;
+												}
+												return x.GetComponent<YanSaveIdentifier>().ObjectID;
+											}));
 										}
-										else
+										else if (flag10)
 										{
-											serializedComponent.FieldReferences.Add(fieldInfo.Name, null);
+											list4.AddRange(((GameObject[])value2).Select(delegate(GameObject x)
+											{
+												if (!(x.GetComponent<YanSaveIdentifier>() != null))
+												{
+													return string.Empty;
+												}
+												return x.GetComponent<YanSaveIdentifier>().ObjectID;
+											}));
 										}
+										serializedComponent.FieldReferenceArrays.Add(fieldInfo.Name, list4);
 									}
-									else if (fieldInfo.FieldType == typeof(GameObject))
+									else
 									{
-										YanSaveIdentifier component5 = ((GameObject)fieldInfo.GetValue(component)).GetComponent<YanSaveIdentifier>();
-										if (component5 != null)
+										YanSaveIdentifier yanSaveIdentifier3 = flag7 ? ((Component)value2).gameObject.GetComponent<YanSaveIdentifier>() : (flag8 ? ((GameObject)value2).GetComponent<YanSaveIdentifier>() : null);
+										if (yanSaveIdentifier3 != null)
 										{
-											serializedComponent.FieldReferences.Add(fieldInfo.Name, component5.ObjectID);
+											serializedComponent.FieldReferences.Add(fieldInfo.Name, yanSaveIdentifier3.ObjectID);
 										}
 										else
 										{
@@ -162,7 +217,7 @@ public static class YanSave
 			};
 			list.Add(item);
 		}
-		object value = new YanSaveData
+		object value3 = new YanSaveData
 		{
 			LoadedLevelName = SceneManager.GetActiveScene().name,
 			SerializedGameObjects = list.ToArray()
@@ -173,7 +228,7 @@ public static class YanSave
 		{
 			e.ErrorContext.Handled = true;
 		};
-		string contents = JsonConvert.SerializeObject(value, jsonSerializerSettings);
+		string contents = JsonConvert.SerializeObject(value3, jsonSerializerSettings);
 		if (!Directory.Exists(YanSave.SaveDataPath))
 		{
 			Directory.CreateDirectory(YanSave.SaveDataPath);
@@ -197,168 +252,269 @@ public static class YanSave
 			GameObject gameObject = YanSaveIdentifier.GetObject(serializedGameObject);
 			if (gameObject == null && recreateMissing)
 			{
-				gameObject = new GameObject
-				{
-					isStatic = serializedGameObject.IsStatic,
-					layer = serializedGameObject.Layer,
-					tag = serializedGameObject.Tag,
-					name = serializedGameObject.Name
-				};
+				gameObject = new GameObject();
 				gameObject.AddComponent<YanSaveIdentifier>().ObjectID = serializedGameObject.ObjectID;
 				gameObject.SetActive(serializedGameObject.ActiveSelf);
-			}
-			foreach (SerializedComponent serializedComponent in serializedGameObject.SerializedComponents)
-			{
-				if (gameObject == null)
+				gameObject.isStatic = serializedGameObject.IsStatic;
+				gameObject.layer = serializedGameObject.Layer;
+				gameObject.tag = serializedGameObject.Tag;
+				gameObject.name = serializedGameObject.Name;
+				gameObject.SetActive(serializedGameObject.ActiveSelf);
+				foreach (SerializedComponent serializedComponent in serializedGameObject.SerializedComponents)
 				{
-					return;
-				}
-				Type type = YanSave.getType(serializedComponent.TypePath);
-				if (recreateMissing && gameObject.GetComponent(type) == null)
-				{
-					gameObject.AddComponent(type);
+					if (gameObject != null)
+					{
+						Type type = YanSave.GetType(serializedComponent.TypePath);
+						if (recreateMissing && gameObject.GetComponent(type) == null)
+						{
+							gameObject.AddComponent(type);
+						}
+					}
 				}
 			}
 		}
 		foreach (SerializedGameObject serializedGameObject2 in yanSaveData.SerializedGameObjects)
 		{
 			GameObject @object = YanSaveIdentifier.GetObject(serializedGameObject2);
-			if (@object == null)
+			if (!(@object == null))
 			{
-				return;
-			}
-			foreach (SerializedComponent serializedComponent2 in serializedGameObject2.SerializedComponents)
-			{
-				Type type2 = YanSave.getType(serializedComponent2.TypePath);
-				Component component = @object.GetComponent(type2);
-				foreach (PropertyInfo propertyInfo in type2.GetProperties())
+				foreach (SerializedComponent serializedComponent2 in serializedGameObject2.SerializedComponents)
 				{
-					if (propertyInfo.CanWrite)
+					Type type2 = YanSave.GetType(serializedComponent2.TypePath);
+					Component component = @object.GetComponent(type2);
+					@object.GetComponent<YanSaveIdentifier>();
+					if (!(component == null))
 					{
-						if (!typeof(Component).IsAssignableFrom(propertyInfo.PropertyType) && propertyInfo.PropertyType != typeof(GameObject))
+						if (serializedComponent2.IsMonoBehaviour)
 						{
-							if (serializedComponent2.PropertyValues.ContainsKey(propertyInfo.Name))
-							{
-								object obj = serializedComponent2.PropertyValues[propertyInfo.Name];
-								if (obj == null)
-								{
-									propertyInfo.SetValue(component, null);
-								}
-								else
-								{
-									if (obj.GetType() == typeof(JObject))
-									{
-										try
-										{
-											propertyInfo.SetValue(component, ((JObject)obj).ToObject(propertyInfo.PropertyType));
-											goto IL_3B8;
-										}
-										catch
-										{
-											goto IL_3B8;
-										}
-									}
-									if (obj.GetType() == typeof(JArray))
-									{
-										try
-										{
-											propertyInfo.SetValue(component, ((JArray)obj).ToObject(propertyInfo.PropertyType));
-											goto IL_3B8;
-										}
-										catch
-										{
-											goto IL_3B8;
-										}
-									}
-									bool isEnum = propertyInfo.PropertyType.IsEnum;
-									bool flag = typeof(IConvertible).IsAssignableFrom(obj.GetType());
-									propertyInfo.SetValue(component, isEnum ? Enum.ToObject(propertyInfo.PropertyType, obj) : (flag ? Convert.ChangeType(obj, propertyInfo.PropertyType) : obj));
-								}
-							}
+							((MonoBehaviour)component).enabled = serializedComponent2.IsEnabled;
 						}
-						else if (serializedComponent2.PropertyReferences.ContainsKey(propertyInfo.Name))
+						foreach (PropertyInfo propertyInfo in YanSave.GetCachedProperties(type2))
 						{
-							GameObject object2 = YanSaveIdentifier.GetObject(serializedComponent2.PropertyReferences[propertyInfo.Name]);
-							if (!(object2 == null))
+							if (propertyInfo.CanWrite)
 							{
-								if (propertyInfo.PropertyType == typeof(Component))
+								bool flag = typeof(Component).IsAssignableFrom(propertyInfo.PropertyType);
+								if (!flag && propertyInfo.PropertyType != typeof(GameObject))
 								{
-									propertyInfo.SetValue(component, object2.GetComponent(propertyInfo.PropertyType));
+									if (serializedComponent2.PropertyValues.ContainsKey(propertyInfo.Name))
+									{
+										object obj = serializedComponent2.PropertyValues[propertyInfo.Name];
+										if (obj == null)
+										{
+											propertyInfo.SetValue(component, null);
+										}
+										else
+										{
+											if (obj.GetType() == typeof(JObject))
+											{
+												try
+												{
+													propertyInfo.SetValue(component, ((JObject)obj).ToObject(propertyInfo.PropertyType));
+													goto IL_521;
+												}
+												catch
+												{
+													goto IL_521;
+												}
+											}
+											if (obj.GetType() == typeof(JArray))
+											{
+												try
+												{
+													propertyInfo.SetValue(component, ((JArray)obj).ToObject(propertyInfo.PropertyType));
+													goto IL_521;
+												}
+												catch
+												{
+													goto IL_521;
+												}
+											}
+											bool isEnum = propertyInfo.PropertyType.IsEnum;
+											bool flag2 = typeof(IConvertible).IsAssignableFrom(obj.GetType());
+											propertyInfo.SetValue(component, isEnum ? Enum.ToObject(propertyInfo.PropertyType, obj) : (flag2 ? Convert.ChangeType(obj, propertyInfo.PropertyType) : obj));
+										}
+									}
 								}
-								else if (propertyInfo.PropertyType == typeof(GameObject))
+								else if (serializedComponent2.PropertyReferences.ContainsKey(propertyInfo.Name))
 								{
-									propertyInfo.SetValue(component, object2);
+									bool flag3 = propertyInfo.PropertyType == typeof(GameObject);
+									GameObject object2 = YanSaveIdentifier.GetObject(serializedComponent2.FieldReferences[propertyInfo.Name]);
+									if (!(object2 == null))
+									{
+										if (flag)
+										{
+											propertyInfo.SetValue(component, object2.GetComponent(propertyInfo.PropertyType));
+										}
+										else if (flag3)
+										{
+											propertyInfo.SetValue(component, object2);
+										}
+									}
+								}
+								else if (serializedComponent2.PropertyReferenceArrays.ContainsKey(propertyInfo.Name))
+								{
+									bool flag4 = typeof(Component[]).IsAssignableFrom(propertyInfo.PropertyType);
+									bool flag5 = typeof(GameObject[]).IsAssignableFrom(propertyInfo.PropertyType);
+									List<string> list = serializedComponent2.PropertyReferenceArrays[propertyInfo.Name];
+									Type elementType = propertyInfo.PropertyType.GetElementType();
+									if (flag4)
+									{
+										IList list2 = Array.CreateInstance(elementType, list.Count);
+										for (int l = 0; l < list.Count; l++)
+										{
+											YanSaveIdentifier.GetObject(list[l]);
+											Component value = (@object != null) ? @object.GetComponent(elementType) : null;
+											list2[l] = value;
+										}
+										propertyInfo.SetValue(component, list2);
+									}
+									else if (flag5)
+									{
+										IList list3 = Array.CreateInstance(elementType, list.Count);
+										for (int m = 0; m < list.Count; m++)
+										{
+											GameObject object3 = YanSaveIdentifier.GetObject(list[m]);
+											list3[m] = object3;
+										}
+										propertyInfo.SetValue(component, list3);
+									}
 								}
 							}
+							IL_521:;
+						}
+						foreach (FieldInfo fieldInfo in YanSave.GetCachedFields(type2))
+						{
+							bool flag6 = typeof(Component).IsAssignableFrom(fieldInfo.FieldType);
+							if (!fieldInfo.FieldType.IsArray && !flag6 && fieldInfo.FieldType != typeof(GameObject))
+							{
+								if (serializedComponent2.FieldValues.ContainsKey(fieldInfo.Name))
+								{
+									object obj2 = serializedComponent2.FieldValues[fieldInfo.Name];
+									if (obj2 == null)
+									{
+										fieldInfo.SetValue(component, null);
+									}
+									else
+									{
+										if (obj2.GetType() == typeof(JObject))
+										{
+											try
+											{
+												fieldInfo.SetValue(component, ((JObject)obj2).ToObject(fieldInfo.FieldType));
+												goto IL_85C;
+											}
+											catch
+											{
+												goto IL_85C;
+											}
+										}
+										if (obj2.GetType() == typeof(JArray))
+										{
+											try
+											{
+												fieldInfo.SetValue(component, ((JArray)obj2).ToObject(fieldInfo.FieldType));
+												goto IL_85C;
+											}
+											catch
+											{
+												goto IL_85C;
+											}
+										}
+										bool isEnum2 = fieldInfo.FieldType.IsEnum;
+										bool flag7 = typeof(IConvertible).IsAssignableFrom(obj2.GetType());
+										fieldInfo.SetValue(component, isEnum2 ? Enum.ToObject(fieldInfo.FieldType, obj2) : (flag7 ? Convert.ChangeType(obj2, fieldInfo.FieldType) : obj2));
+									}
+								}
+							}
+							else if (serializedComponent2.FieldReferences.ContainsKey(fieldInfo.Name))
+							{
+								bool flag8 = fieldInfo.FieldType == typeof(GameObject);
+								GameObject object4 = YanSaveIdentifier.GetObject(serializedComponent2.FieldReferences[fieldInfo.Name]);
+								if (!(object4 == null))
+								{
+									if (flag6)
+									{
+										fieldInfo.SetValue(component, object4.GetComponent(fieldInfo.FieldType));
+									}
+									else if (flag8)
+									{
+										fieldInfo.SetValue(component, object4);
+									}
+								}
+							}
+							else if (serializedComponent2.FieldReferenceArrays.ContainsKey(fieldInfo.Name))
+							{
+								bool flag9 = typeof(Component[]).IsAssignableFrom(fieldInfo.FieldType);
+								bool flag10 = typeof(GameObject[]).IsAssignableFrom(fieldInfo.FieldType);
+								List<string> list4 = serializedComponent2.FieldReferenceArrays[fieldInfo.Name];
+								Type elementType2 = fieldInfo.FieldType.GetElementType();
+								if (flag9)
+								{
+									IList list5 = Array.CreateInstance(elementType2, list4.Count);
+									for (int n = 0; n < list4.Count; n++)
+									{
+										YanSaveIdentifier.GetObject(list4[n]);
+										Component value2 = (@object != null) ? @object.GetComponent(elementType2) : null;
+										list5[n] = value2;
+									}
+									fieldInfo.SetValue(component, list5);
+								}
+								else if (flag10)
+								{
+									IList list6 = Array.CreateInstance(elementType2, list4.Count);
+									for (int num = 0; num < list4.Count; num++)
+									{
+										GameObject object5 = YanSaveIdentifier.GetObject(list4[num]);
+										list6[num] = object5;
+									}
+									fieldInfo.SetValue(component, list6);
+								}
+							}
+							IL_85C:;
 						}
 					}
-					IL_3B8:;
-				}
-				foreach (FieldInfo fieldInfo in type2.GetFields())
-				{
-					if (!typeof(Component).IsAssignableFrom(fieldInfo.FieldType) && fieldInfo.FieldType != typeof(GameObject))
-					{
-						if (serializedComponent2.FieldValues.ContainsKey(fieldInfo.Name))
-						{
-							object obj2 = serializedComponent2.FieldValues[fieldInfo.Name];
-							if (obj2 == null)
-							{
-								fieldInfo.SetValue(component, null);
-							}
-							else
-							{
-								if (obj2.GetType() == typeof(JObject))
-								{
-									try
-									{
-										fieldInfo.SetValue(component, ((JObject)obj2).ToObject(fieldInfo.FieldType));
-										goto IL_5C0;
-									}
-									catch
-									{
-										goto IL_5C0;
-									}
-								}
-								if (obj2.GetType() == typeof(JArray))
-								{
-									try
-									{
-										fieldInfo.SetValue(component, ((JArray)obj2).ToObject(fieldInfo.FieldType));
-										goto IL_5C0;
-									}
-									catch
-									{
-										goto IL_5C0;
-									}
-								}
-								bool isEnum2 = fieldInfo.FieldType.IsEnum;
-								bool flag2 = typeof(IConvertible).IsAssignableFrom(obj2.GetType());
-								fieldInfo.SetValue(component, isEnum2 ? Enum.ToObject(fieldInfo.FieldType, obj2) : (flag2 ? Convert.ChangeType(obj2, fieldInfo.FieldType) : obj2));
-							}
-						}
-					}
-					else if (serializedComponent2.FieldReferences.ContainsKey(fieldInfo.Name))
-					{
-						GameObject object3 = YanSaveIdentifier.GetObject(serializedComponent2.FieldReferences[fieldInfo.Name]);
-						if (!(object3 == null))
-						{
-							if (fieldInfo.FieldType == typeof(Component))
-							{
-								fieldInfo.SetValue(component, object3.GetComponent(fieldInfo.FieldType));
-							}
-							else if (fieldInfo.FieldType == typeof(GameObject))
-							{
-								fieldInfo.SetValue(component, object3);
-							}
-						}
-					}
-					IL_5C0:;
 				}
 			}
 		}
 	}
 
-	private static Type getType(string typeName)
+	public static void RemoveData(string targetSave)
+	{
+		string path = Path.Combine(YanSave.SaveDataPath, targetSave + ".yansave");
+		try
+		{
+			if (File.Exists(path))
+			{
+				File.Delete(path);
+			}
+		}
+		catch
+		{
+		}
+	}
+
+	private static PropertyInfo[] GetCachedProperties(Type type)
+	{
+		if (YanSave.PropertyCache.ContainsKey(type))
+		{
+			return YanSave.PropertyCache[type];
+		}
+		YanSave.PropertyCache.Add(type, type.GetProperties());
+		return YanSave.PropertyCache[type];
+	}
+
+	private static FieldInfo[] GetCachedFields(Type type)
+	{
+		if (YanSave.FieldCache.ContainsKey(type))
+		{
+			return YanSave.FieldCache[type];
+		}
+		FieldInfo[] fields = type.GetFields();
+		YanSave.FieldCache.Add(type, fields);
+		return fields;
+	}
+
+	private static Type GetType(string typeName)
 	{
 		Type type = Type.GetType(typeName);
 		if (type != null)

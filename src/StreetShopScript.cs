@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 public class StreetShopScript : MonoBehaviour
@@ -191,7 +192,7 @@ public class StreetShopScript : MonoBehaviour
 	{
 		this.Yandere.MainCamera.GetComponent<RPG_Camera>().enabled = false;
 		this.StreetShopInterface.StoreNameLabel.text = this.StoreName;
-		this.StreetShopInterface.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+		this.StreetShopInterface.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2", NumberFormatInfo.InvariantInfo);
 		this.StreetShopInterface.Shopkeeper.mainTexture = this.ShopkeeperPortraits[1];
 		this.StreetShopInterface.SpeechBubbleLabel.text = this.ShopkeeperSpeeches[1];
 		this.StreetShopInterface.ShopkeeperPortraits = this.ShopkeeperPortraits;

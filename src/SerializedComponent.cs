@@ -14,4 +14,12 @@ public struct SerializedComponent
 	public ValueDict FieldValues;
 
 	public ReferenceDict FieldReferences;
+
+	public ReferenceArrayDict PropertyReferenceArrays;
+
+	public ReferenceArrayDict FieldReferenceArrays;
+
+	public bool IsEnabled;
+
+	public bool IsMonoBehaviour;
 }

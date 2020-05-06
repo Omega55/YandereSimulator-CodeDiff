@@ -359,7 +359,10 @@ public class CookingEventScript : MonoBehaviour
 					this.EventSubtitle.transform.localScale = new Vector3(num2, num2, num2);
 					return;
 				}
-				this.EventSubtitle.transform.localScale = Vector3.zero;
+				if (num < 11f)
+				{
+					this.EventSubtitle.transform.localScale = Vector3.zero;
+				}
 			}
 		}
 	}

@@ -212,6 +212,19 @@ public class EndOfDayScript : MonoBehaviour
 	private void Update()
 	{
 		this.Yandere.UpdateSlouch();
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			PlayerPrefs.SetInt("LoadingSave", 1);
+			PlayerPrefs.SetInt("SaveSlot", GameGlobals.MostRecentSlot);
+			for (int i = 0; i < this.StudentManager.NPCsTotal; i++)
+			{
+				if (StudentGlobals.GetStudentDying(i))
+				{
+					StudentGlobals.SetStudentDying(i, false);
+				}
+			}
+			SceneManager.LoadScene("LoadingScene");
+		}
 		if (Input.GetKeyDown("space"))
 		{
 			this.EndOfDayDarkness.color = new Color(0f, 0f, 0f, 1f);
@@ -1032,6 +1045,21 @@ public class EndOfDayScript : MonoBehaviour
 					}
 					else if (this.Phase == 16)
 					{
+						if (this.Police.Deaths + PlayerGlobals.Kills > 50)
+						{
+							this.EODCamera.position = new Vector3(-6f, 0.15f, -49f);
+							this.EODCamera.eulerAngles = new Vector3(-22.5f, 22.5f, 0f);
+							this.Label.text = "More than half of the school's population is dead. For the safety of the remaining students, the headmaster of Akademi makes the decision to shut down the school. Senpai enrolls in a school far away. Ayano will not be able to follow him, and another girl will steal his heart. Ayano has permanently lost her chance to be with Senpai.";
+							this.Heartbroken.NoSnap = true;
+							this.GameOver = true;
+							return;
+						}
+						this.Phase++;
+						this.UpdateScene();
+						return;
+					}
+					else if (this.Phase == 17)
+					{
 						this.ClubClosed = false;
 						this.ClubKicked = false;
 						float d = 1.2f;
@@ -1164,7 +1192,7 @@ public class EndOfDayScript : MonoBehaviour
 						this.UpdateScene();
 						return;
 					}
-					else if (this.Phase == 17)
+					else if (this.Phase == 18)
 					{
 						if (this.TranqCase.Occupied)
 						{
@@ -1178,7 +1206,7 @@ public class EndOfDayScript : MonoBehaviour
 						this.UpdateScene();
 						return;
 					}
-					else if (this.Phase == 18)
+					else if (this.Phase == 19)
 					{
 						if (this.ErectFence)
 						{
@@ -1192,27 +1220,13 @@ public class EndOfDayScript : MonoBehaviour
 						this.UpdateScene();
 						return;
 					}
-					else if (this.Phase == 19)
+					else if (this.Phase == 20)
 					{
 						if (!SchoolGlobals.HighSecurity && this.Police.CouncilDeath)
 						{
 							this.SCP.SetActive(true);
 							this.Label.text = "The student council president has ordered the implementation of heightened security precautions. Security cameras and metal detectors are now present at school.";
 							this.Police.CouncilDeath = false;
-							return;
-						}
-						this.Phase++;
-						this.UpdateScene();
-						return;
-					}
-					else if (this.Phase == 20)
-					{
-						if (this.Police.Deaths + PlayerGlobals.Kills > 50)
-						{
-							this.EODCamera.position = new Vector3(-6f, 0.15f, -49f);
-							this.EODCamera.eulerAngles = new Vector3(-22.5f, 22.5f, 0f);
-							this.Label.text = "More than half of the school's population is dead. For the safety of the remaining students, the headmaster of Akademi makes the decision to shut down the school. Senpai enrolls in a school far away. Ayano will not be able to follow him, and another girl will steal his heart. Ayano has permanently lost her chance to be with Senpai.";
-							this.GameOver = true;
 							return;
 						}
 						this.Phase++;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 public class HomeClockScript : MonoBehaviour
@@ -80,7 +81,7 @@ public class HomeClockScript : MonoBehaviour
 
 	public void UpdateMoneyLabel()
 	{
-		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2");
+		this.MoneyLabel.text = "$" + PlayerGlobals.Money.ToString("F2", NumberFormatInfo.InvariantInfo);
 	}
 
 	public void MoneyFail()

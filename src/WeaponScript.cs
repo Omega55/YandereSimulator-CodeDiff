@@ -55,6 +55,8 @@ public class WeaponScript : MonoBehaviour
 
 	public Vector3 StartingRotation;
 
+	public bool UnequipImmediately;
+
 	public bool AlreadyExamined;
 
 	public bool DisableCollider;
@@ -377,6 +379,7 @@ public class WeaponScript : MonoBehaviour
 					}
 					this.Yandere.Equipped = 1;
 					this.Yandere.EquippedWeapon = this;
+					this.Yandere.WeaponManager.SetEquippedWeapon1(this);
 				}
 				else if (this.Yandere.Weapon[2] == null)
 				{
@@ -386,18 +389,21 @@ public class WeaponScript : MonoBehaviour
 					}
 					this.Yandere.Equipped = 2;
 					this.Yandere.EquippedWeapon = this;
+					this.Yandere.WeaponManager.SetEquippedWeapon2(this);
 				}
 				else if (this.Yandere.Weapon[2].gameObject.activeInHierarchy)
 				{
 					this.Yandere.Weapon[2].Drop();
 					this.Yandere.Equipped = 2;
 					this.Yandere.EquippedWeapon = this;
+					this.Yandere.WeaponManager.SetEquippedWeapon2(this);
 				}
 				else
 				{
 					this.Yandere.Weapon[1].Drop();
 					this.Yandere.Equipped = 1;
 					this.Yandere.EquippedWeapon = this;
+					this.Yandere.WeaponManager.SetEquippedWeapon1(this);
 				}
 			}
 			else
@@ -451,6 +457,11 @@ public class WeaponScript : MonoBehaviour
 			}
 			this.KinematicTimer = 0f;
 			AudioSource.PlayClipAtPoint(this.EquipClip, this.Yandere.MainCamera.transform.position);
+			if (this.UnequipImmediately)
+			{
+				this.UnequipImmediately = false;
+				this.Yandere.Unequip();
+			}
 		}
 		if (this.Yandere.EquippedWeapon == this && this.Yandere.Armed)
 		{
@@ -507,6 +518,14 @@ public class WeaponScript : MonoBehaviour
 		if (this.StartLow)
 		{
 			this.Prompt.OffsetY[3] = this.OriginalOffset;
+		}
+		if (this.Yandere.Weapon[1] == this)
+		{
+			this.Yandere.WeaponManager.YandereWeapon1 = -1;
+		}
+		else if (this.Yandere.Weapon[2] == this)
+		{
+			this.Yandere.WeaponManager.YandereWeapon2 = -1;
 		}
 		if (this.Yandere.EquippedWeapon == this)
 		{

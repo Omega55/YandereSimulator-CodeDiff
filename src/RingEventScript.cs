@@ -114,6 +114,7 @@ public class RingEventScript : MonoBehaviour
 				this.EventStudent.Cosmetic.FemaleAccessories[3].transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 				this.RingCollider.gameObject.SetActive(true);
 				this.RingCollider.enabled = false;
+				this.EventStudent.RingReact = true;
 				this.Yandere.Inventory.Ring = false;
 				this.EndEvent();
 				return;
@@ -247,6 +248,7 @@ public class RingEventScript : MonoBehaviour
 
 	private void EndEvent()
 	{
+		Debug.Log("Rooftop ring event has ended.");
 		if (!this.EventOver)
 		{
 			if (this.VoiceClip != null)

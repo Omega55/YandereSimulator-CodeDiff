@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 public class InventoryScript : MonoBehaviour
@@ -88,6 +89,6 @@ public class InventoryScript : MonoBehaviour
 
 	public void UpdateMoney()
 	{
-		this.MoneyLabel.text = "$" + this.Money.ToString("F2");
+		this.MoneyLabel.text = "$" + this.Money.ToString("F2", NumberFormatInfo.InvariantInfo);
 	}
 }

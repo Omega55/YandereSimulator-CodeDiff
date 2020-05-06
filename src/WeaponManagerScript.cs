@@ -7,6 +7,8 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public WeaponScript[] Weapons;
 
+	public YandereScript Yandere;
+
 	public JsonScript JSON;
 
 	public int[] Victims;
@@ -16,6 +18,10 @@ public class WeaponManagerScript : MonoBehaviour
 	public int MurderWeapons;
 
 	public int Fingerprints;
+
+	public int YandereWeapon1;
+
+	public int YandereWeapon2;
 
 	public Texture Flower;
 
@@ -141,6 +147,48 @@ public class WeaponManagerScript : MonoBehaviour
 			if (this.Weapons[i] == null)
 			{
 				Debug.Log("Weapon #" + i + " was destroyed! Setting status to 1!");
+			}
+		}
+	}
+
+	public void SetEquippedWeapon1(WeaponScript Weapon)
+	{
+		for (int i = 0; i < this.Weapons.Length; i++)
+		{
+			if (this.Weapons[i] == Weapon)
+			{
+				this.YandereWeapon1 = i;
+			}
+		}
+	}
+
+	public void SetEquippedWeapon2(WeaponScript Weapon)
+	{
+		for (int i = 0; i < this.Weapons.Length; i++)
+		{
+			if (this.Weapons[i] == Weapon)
+			{
+				this.YandereWeapon2 = i;
+			}
+		}
+	}
+
+	public void EquipWeaponsFromSave()
+	{
+		if (this.YandereWeapon1 > -1)
+		{
+			this.Weapons[this.YandereWeapon1].Prompt.Circle[3].fillAmount = 0f;
+			if (this.Yandere.Equipped != 1)
+			{
+				this.Weapons[this.YandereWeapon1].UnequipImmediately = true;
+			}
+		}
+		if (this.YandereWeapon2 > -1)
+		{
+			this.Weapons[this.YandereWeapon2].Prompt.Circle[3].fillAmount = 0f;
+			if (this.Yandere.Equipped != 2)
+			{
+				this.Weapons[this.YandereWeapon2].UnequipImmediately = true;
 			}
 		}
 	}

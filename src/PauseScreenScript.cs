@@ -511,6 +511,7 @@ public class PauseScreenScript : MonoBehaviour
 									this.PromptBar.ClearButtons();
 									this.PromptBar.Label[0].text = "Choose";
 									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.Label[2].text = "Delete";
 									this.PromptBar.Label[4].text = "Change";
 									this.PromptBar.Label[5].text = "Change";
 									this.PromptBar.UpdateButtons();

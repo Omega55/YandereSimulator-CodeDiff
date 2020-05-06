@@ -165,6 +165,14 @@ public class RagdollScript : MonoBehaviour
 
 	public string RunAnim = string.Empty;
 
+	public bool UpdateNextFrame;
+
+	public Vector3 NextPosition;
+
+	public Quaternion NextRotation;
+
+	public int Frames;
+
 	private void Start()
 	{
 		this.ElectrocutionAnimation = false;
@@ -205,6 +213,13 @@ public class RagdollScript : MonoBehaviour
 
 	private void Update()
 	{
+		if (this.UpdateNextFrame)
+		{
+			this.Student.Hips.localPosition = this.NextPosition;
+			this.Student.Hips.localRotation = this.NextRotation;
+			Physics.SyncTransforms();
+			this.UpdateNextFrame = false;
+		}
 		if (!this.Dragged && !this.Carried && !this.Settled && !this.Yandere.PK && !this.Yandere.StudentManager.NoGravity)
 		{
 			this.SettleTimer += Time.deltaTime;
@@ -369,6 +384,7 @@ public class RagdollScript : MonoBehaviour
 						rigidbody.transform.parent.transform.localPosition = new Vector3(rigidbody.transform.parent.transform.localPosition.x, 0.2f, rigidbody.transform.parent.transform.localPosition.z);
 					}
 					this.Yandere.CharacterAnimation.Play("f02_carryLiftA_00");
+					this.Student.CharacterAnimation.enabled = true;
 					this.Student.CharacterAnimation.Play(this.LiftAnim);
 					this.BloodSpawnerCollider.enabled = false;
 					this.PelvisRoot.localEulerAngles = new Vector3(this.PelvisRoot.localEulerAngles.x, 0f, this.PelvisRoot.localEulerAngles.z);
@@ -803,6 +819,8 @@ public class RagdollScript : MonoBehaviour
 
 	public void Remove()
 	{
+		Debug.Log("The Remove() function has been called on " + this.Student.Name + "'s RagdollScript.");
+		this.Student.Removed = true;
 		this.BloodPoolSpawner.enabled = false;
 		if (this.AddingToCount)
 		{

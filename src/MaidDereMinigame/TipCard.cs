@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 using MaidDereMinigame.Malee;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace MaidDereMinigame
 
 		public void SetTip(float tip)
 		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
 			if (tip == 0f)
 			{
 				base.gameObject.SetActive(false);

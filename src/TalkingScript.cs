@@ -371,11 +371,18 @@ public class TalkingScript : MonoBehaviour
 				{
 					if (this.S.Club != ClubType.Delinquent)
 					{
-						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f))
+						if ((this.S.Clock.HourTime > 8f && this.S.Clock.HourTime < 13f) || (this.S.Clock.HourTime > 13.375f && this.S.Clock.HourTime < 15.5f) || this.S.StudentID == this.S.StudentManager.RivalID)
 						{
 							this.S.CharacterAnimation.CrossFade(this.S.GossipAnim);
-							this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
 							this.NegativeResponse = true;
+							if (this.S.StudentID == this.S.StudentManager.RivalID)
+							{
+								this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 2, 5f);
+							}
+							else
+							{
+								this.S.Subtitle.UpdateLabel(SubtitleType.StudentStay, 0, 5f);
+							}
 						}
 						else if (this.S.StudentManager.LockerRoomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.WestBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.EastBathroomArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.StudentManager.HeadmasterArea.bounds.Contains(this.S.Yandere.transform.position) || this.S.MyRenderer.sharedMesh == this.S.SchoolSwimsuit || this.S.MyRenderer.sharedMesh == this.S.SwimmingTrunks)
 						{
