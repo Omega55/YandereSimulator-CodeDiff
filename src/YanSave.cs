@@ -247,31 +247,44 @@ public static class YanSave
 		{
 			SceneManager.LoadScene(yanSaveData.LoadedLevelName);
 		}
-		foreach (SerializedGameObject serializedGameObject in yanSaveData.SerializedGameObjects)
+		SerializedGameObject[] serializedGameObjects = yanSaveData.SerializedGameObjects;
+		int i = 0;
+		while (i < serializedGameObjects.Length)
 		{
+			SerializedGameObject serializedGameObject = serializedGameObjects[i];
 			GameObject gameObject = YanSaveIdentifier.GetObject(serializedGameObject);
-			if (gameObject == null && recreateMissing)
+			if (!(gameObject == null))
+			{
+				goto IL_BA;
+			}
+			if (recreateMissing)
 			{
 				gameObject = new GameObject();
 				gameObject.AddComponent<YanSaveIdentifier>().ObjectID = serializedGameObject.ObjectID;
 				gameObject.SetActive(serializedGameObject.ActiveSelf);
-				gameObject.isStatic = serializedGameObject.IsStatic;
-				gameObject.layer = serializedGameObject.Layer;
-				gameObject.tag = serializedGameObject.Tag;
-				gameObject.name = serializedGameObject.Name;
-				gameObject.SetActive(serializedGameObject.ActiveSelf);
-				foreach (SerializedComponent serializedComponent in serializedGameObject.SerializedComponents)
+				goto IL_BA;
+			}
+			IL_15D:
+			i++;
+			continue;
+			IL_BA:
+			gameObject.isStatic = serializedGameObject.IsStatic;
+			gameObject.layer = serializedGameObject.Layer;
+			gameObject.tag = serializedGameObject.Tag;
+			gameObject.name = serializedGameObject.Name;
+			gameObject.SetActive(serializedGameObject.ActiveSelf);
+			foreach (SerializedComponent serializedComponent in serializedGameObject.SerializedComponents)
+			{
+				if (gameObject != null)
 				{
-					if (gameObject != null)
+					Type type = YanSave.GetType(serializedComponent.TypePath);
+					if (recreateMissing && gameObject.GetComponent(type) == null)
 					{
-						Type type = YanSave.GetType(serializedComponent.TypePath);
-						if (recreateMissing && gameObject.GetComponent(type) == null)
-						{
-							gameObject.AddComponent(type);
-						}
+						gameObject.AddComponent(type);
 					}
 				}
 			}
+			goto IL_15D;
 		}
 		foreach (SerializedGameObject serializedGameObject2 in yanSaveData.SerializedGameObjects)
 		{
@@ -310,11 +323,11 @@ public static class YanSave
 												try
 												{
 													propertyInfo.SetValue(component, ((JObject)obj).ToObject(propertyInfo.PropertyType));
-													goto IL_521;
+													goto IL_522;
 												}
 												catch
 												{
-													goto IL_521;
+													goto IL_522;
 												}
 											}
 											if (obj.GetType() == typeof(JArray))
@@ -322,11 +335,11 @@ public static class YanSave
 												try
 												{
 													propertyInfo.SetValue(component, ((JArray)obj).ToObject(propertyInfo.PropertyType));
-													goto IL_521;
+													goto IL_522;
 												}
 												catch
 												{
-													goto IL_521;
+													goto IL_522;
 												}
 											}
 											bool isEnum = propertyInfo.PropertyType.IsEnum;
@@ -380,7 +393,7 @@ public static class YanSave
 									}
 								}
 							}
-							IL_521:;
+							IL_522:;
 						}
 						foreach (FieldInfo fieldInfo in YanSave.GetCachedFields(type2))
 						{
@@ -401,11 +414,11 @@ public static class YanSave
 											try
 											{
 												fieldInfo.SetValue(component, ((JObject)obj2).ToObject(fieldInfo.FieldType));
-												goto IL_85C;
+												goto IL_85D;
 											}
 											catch
 											{
-												goto IL_85C;
+												goto IL_85D;
 											}
 										}
 										if (obj2.GetType() == typeof(JArray))
@@ -413,11 +426,11 @@ public static class YanSave
 											try
 											{
 												fieldInfo.SetValue(component, ((JArray)obj2).ToObject(fieldInfo.FieldType));
-												goto IL_85C;
+												goto IL_85D;
 											}
 											catch
 											{
-												goto IL_85C;
+												goto IL_85D;
 											}
 										}
 										bool isEnum2 = fieldInfo.FieldType.IsEnum;
@@ -470,7 +483,7 @@ public static class YanSave
 									fieldInfo.SetValue(component, list6);
 								}
 							}
-							IL_85C:;
+							IL_85D:;
 						}
 					}
 				}
