@@ -23,6 +23,10 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public int YandereWeapon2;
 
+	public int YandereWeapon3;
+
+	public int Reequip;
+
 	public Texture Flower;
 
 	public Texture Blood;
@@ -138,6 +142,22 @@ public class WeaponManagerScript : MonoBehaviour
 				}
 			}
 		}
+		if (this.Reequip > 1)
+		{
+			if (this.Reequip == 1)
+			{
+				this.Weapons[this.YandereWeapon1].Prompt.Circle[3].fillAmount = 0f;
+			}
+			else if (this.Reequip == 2)
+			{
+				this.Weapons[this.YandereWeapon3].Prompt.Circle[3].fillAmount = 0f;
+			}
+			else if (this.Reequip == 3)
+			{
+				this.Weapons[this.YandereWeapon3].Prompt.Circle[3].fillAmount = 0f;
+			}
+			this.Reequip = 0;
+		}
 	}
 
 	public void TrackDumpedWeapons()
@@ -173,23 +193,41 @@ public class WeaponManagerScript : MonoBehaviour
 		}
 	}
 
+	public void SetEquippedWeapon3(WeaponScript Weapon)
+	{
+		for (int i = 0; i < this.Weapons.Length; i++)
+		{
+			if (this.Weapons[i] == Weapon)
+			{
+				this.YandereWeapon3 = i;
+			}
+		}
+	}
+
 	public void EquipWeaponsFromSave()
 	{
+		this.Reequip = this.Yandere.Equipped;
+		Debug.Log("The original equipped weapon was: " + this.Yandere.Equipped);
 		if (this.YandereWeapon1 > -1)
 		{
+			Debug.Log("Looks like the player had a " + this.Weapons[this.YandereWeapon1].gameObject.name + " in their possession when they saved.");
 			this.Weapons[this.YandereWeapon1].Prompt.Circle[3].fillAmount = 0f;
-			if (this.Yandere.Equipped != 1)
-			{
-				this.Weapons[this.YandereWeapon1].UnequipImmediately = true;
-			}
+			this.Weapons[this.YandereWeapon1].gameObject.SetActive(true);
+			this.Weapons[this.YandereWeapon1].UnequipImmediately = true;
 		}
 		if (this.YandereWeapon2 > -1)
 		{
+			Debug.Log("Looks like the player had a " + this.Weapons[this.YandereWeapon2].gameObject.name + " in their possession when they saved.");
 			this.Weapons[this.YandereWeapon2].Prompt.Circle[3].fillAmount = 0f;
-			if (this.Yandere.Equipped != 2)
-			{
-				this.Weapons[this.YandereWeapon2].UnequipImmediately = true;
-			}
+			this.Weapons[this.YandereWeapon2].gameObject.SetActive(true);
+			this.Weapons[this.YandereWeapon2].UnequipImmediately = true;
+		}
+		if (this.YandereWeapon3 > -1)
+		{
+			Debug.Log("Looks like the player had a " + this.Weapons[this.YandereWeapon3].gameObject.name + " equipped when they saved.");
+			this.Weapons[this.YandereWeapon3].Prompt.Circle[3].fillAmount = 0f;
+			this.Weapons[this.YandereWeapon3].gameObject.SetActive(true);
+			this.Weapons[this.YandereWeapon3].UnequipImmediately = true;
 		}
 	}
 }

@@ -155,7 +155,6 @@ public class AmbientEventScript : MonoBehaviour
 					this.EventStudent[2].CharacterAnimation[this.EventStudent[2].SocialSitAnim].weight = 1f;
 					this.EventStudent[1].MyController.radius = 0f;
 					this.EventStudent[2].MyController.radius = 0f;
-					Debug.Log("Setting Radius to 0");
 					this.RotateSpine = true;
 				}
 				if (!this.Spoken)
@@ -214,11 +213,9 @@ public class AmbientEventScript : MonoBehaviour
 								this.Scale = 1f;
 							}
 							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
-							Debug.Log("This script is setting Scale to " + this.Scale);
 						}
 						else
 						{
-							Debug.Log("This script is setting scale to 0.");
 							this.EventSubtitle.transform.localScale = Vector3.zero;
 							this.EventSubtitle.text = string.Empty;
 						}

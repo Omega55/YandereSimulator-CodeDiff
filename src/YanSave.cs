@@ -398,7 +398,9 @@ public static class YanSave
 						foreach (FieldInfo fieldInfo in YanSave.GetCachedFields(type2))
 						{
 							bool flag6 = typeof(Component).IsAssignableFrom(fieldInfo.FieldType);
-							if (!fieldInfo.FieldType.IsArray && !flag6 && fieldInfo.FieldType != typeof(GameObject))
+							bool flag7 = typeof(Component[]).IsAssignableFrom(fieldInfo.FieldType);
+							bool flag8 = typeof(GameObject[]).IsAssignableFrom(fieldInfo.FieldType);
+							if (!flag7 && !flag8 && !flag6 && fieldInfo.FieldType != typeof(GameObject))
 							{
 								if (serializedComponent2.FieldValues.ContainsKey(fieldInfo.Name))
 								{
@@ -414,11 +416,11 @@ public static class YanSave
 											try
 											{
 												fieldInfo.SetValue(component, ((JObject)obj2).ToObject(fieldInfo.FieldType));
-												goto IL_85D;
+												goto IL_85E;
 											}
 											catch
 											{
-												goto IL_85D;
+												goto IL_85E;
 											}
 										}
 										if (obj2.GetType() == typeof(JArray))
@@ -426,22 +428,22 @@ public static class YanSave
 											try
 											{
 												fieldInfo.SetValue(component, ((JArray)obj2).ToObject(fieldInfo.FieldType));
-												goto IL_85D;
+												goto IL_85E;
 											}
 											catch
 											{
-												goto IL_85D;
+												goto IL_85E;
 											}
 										}
 										bool isEnum2 = fieldInfo.FieldType.IsEnum;
-										bool flag7 = typeof(IConvertible).IsAssignableFrom(obj2.GetType());
-										fieldInfo.SetValue(component, isEnum2 ? Enum.ToObject(fieldInfo.FieldType, obj2) : (flag7 ? Convert.ChangeType(obj2, fieldInfo.FieldType) : obj2));
+										bool flag9 = typeof(IConvertible).IsAssignableFrom(obj2.GetType());
+										fieldInfo.SetValue(component, isEnum2 ? Enum.ToObject(fieldInfo.FieldType, obj2) : (flag9 ? Convert.ChangeType(obj2, fieldInfo.FieldType) : obj2));
 									}
 								}
 							}
 							else if (serializedComponent2.FieldReferences.ContainsKey(fieldInfo.Name))
 							{
-								bool flag8 = fieldInfo.FieldType == typeof(GameObject);
+								bool flag10 = fieldInfo.FieldType == typeof(GameObject);
 								GameObject object4 = YanSaveIdentifier.GetObject(serializedComponent2.FieldReferences[fieldInfo.Name]);
 								if (!(object4 == null))
 								{
@@ -449,7 +451,7 @@ public static class YanSave
 									{
 										fieldInfo.SetValue(component, object4.GetComponent(fieldInfo.FieldType));
 									}
-									else if (flag8)
+									else if (flag10)
 									{
 										fieldInfo.SetValue(component, object4);
 									}
@@ -457,11 +459,9 @@ public static class YanSave
 							}
 							else if (serializedComponent2.FieldReferenceArrays.ContainsKey(fieldInfo.Name))
 							{
-								bool flag9 = typeof(Component[]).IsAssignableFrom(fieldInfo.FieldType);
-								bool flag10 = typeof(GameObject[]).IsAssignableFrom(fieldInfo.FieldType);
 								List<string> list4 = serializedComponent2.FieldReferenceArrays[fieldInfo.Name];
 								Type elementType2 = fieldInfo.FieldType.GetElementType();
-								if (flag9)
+								if (flag7)
 								{
 									IList list5 = Array.CreateInstance(elementType2, list4.Count);
 									for (int n = 0; n < list4.Count; n++)
@@ -472,7 +472,7 @@ public static class YanSave
 									}
 									fieldInfo.SetValue(component, list5);
 								}
-								else if (flag10)
+								else if (flag8)
 								{
 									IList list6 = Array.CreateInstance(elementType2, list4.Count);
 									for (int num = 0; num < list4.Count; num++)
@@ -483,7 +483,7 @@ public static class YanSave
 									fieldInfo.SetValue(component, list6);
 								}
 							}
-							IL_85D:;
+							IL_85E:;
 						}
 					}
 				}

@@ -470,7 +470,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 			this.Letters[i].color = new Color(1f, 0f, 0f, this.Letters[i].color.a - 0.05882353f);
 		}
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			if (this.Options[i].color.a > 1f)
 			{

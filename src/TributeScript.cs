@@ -33,7 +33,7 @@ public class TributeScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (GameGlobals.LoveSick || MissionModeGlobals.MissionMode)
+		if (GameGlobals.LoveSick || MissionModeGlobals.MissionMode || GameGlobals.AlphabetMode)
 		{
 			base.enabled = false;
 		}

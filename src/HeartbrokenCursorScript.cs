@@ -125,7 +125,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 	private void Update()
 	{
 		base.transform.localPosition = new Vector3(base.transform.localPosition.x, Mathf.Lerp(base.transform.localPosition.y, 255f - (float)this.Selected * 50f, Time.deltaTime * 10f), base.transform.localPosition.z);
-		if (this.Selected == 4)
+		if (this.Selected == 5)
 		{
 			this.GameOverMusic.volume = Mathf.MoveTowards(this.GameOverMusic.volume, 0f, Time.deltaTime * 0.5f);
 		}

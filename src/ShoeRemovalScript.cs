@@ -256,6 +256,7 @@ public class ShoeRemovalScript : MonoBehaviour
 			else if (this.Phase == 10 && this.Student.CharacterAnimation[this.RemovalAnim].time >= this.Student.CharacterAnimation[this.RemovalAnim].length)
 			{
 				this.Student.CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
+				this.Student.ChangingShoes = false;
 				this.Student.Routine = true;
 				base.enabled = false;
 				if (!this.Student.Indoors)

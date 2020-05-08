@@ -1028,7 +1028,7 @@ public class StudentManagerScript : MonoBehaviour
 			while (this.ID < this.WitnessList.Length)
 			{
 				StudentScript studentScript = this.WitnessList[this.ID];
-				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Dying || (studentScript.Fleeing && !studentScript.PinningDown)))
+				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Dying || studentScript.Routine || (studentScript.Fleeing && !studentScript.PinningDown)))
 				{
 					studentScript.PinDownWitness = false;
 					if (this.ID != this.WitnessList.Length - 1)
@@ -2592,7 +2592,7 @@ public class StudentManagerScript : MonoBehaviour
 			while (this.ID < this.WitnessList.Length)
 			{
 				StudentScript studentScript = this.WitnessList[this.ID];
-				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Fleeing || studentScript.Dying))
+				if (studentScript != null && (!studentScript.Alive || studentScript.Attacked || studentScript.Fleeing || studentScript.Dying || studentScript.Routine))
 				{
 					if (this.ID != this.WitnessList.Length - 1)
 					{
@@ -3178,7 +3178,6 @@ public class StudentManagerScript : MonoBehaviour
 			@int
 		}), false);
 		Physics.SyncTransforms();
-		this.Police.Corpses = 0;
 		this.ID = 1;
 		while (this.ID < 101)
 		{
@@ -3193,15 +3192,46 @@ public class StudentManagerScript : MonoBehaviour
 					this.Students[this.ID].Ragdoll.UpdateNextFrame = true;
 					this.Students[this.ID].Ragdoll.NextPosition = localPosition;
 					this.Students[this.ID].Ragdoll.NextRotation = localRotation;
+					Debug.Log("Adding " + this.Students[this.ID].Name + " to the Police CorpseList.");
+					this.Police.CorpseList[this.Police.Corpses] = this.Students[this.ID].Ragdoll;
+					this.Police.Corpses++;
 					if (this.Students[this.ID].Removed)
 					{
+						Debug.Log("Removing " + this.Students[this.ID].Name + " from the Police CorpseList.");
 						this.Students[this.ID].Ragdoll.Remove();
 						this.Police.Corpses--;
 					}
 				}
-				if (this.Students[this.ID].Phase > 0)
+				else
 				{
-					this.Students[this.ID].Phase--;
+					if (this.Students[this.ID].ChangingShoes)
+					{
+						this.Students[this.ID].ShoeRemoval.enabled = true;
+					}
+					if (this.Students[this.ID].Schoolwear != 1)
+					{
+						this.Students[this.ID].ChangeSchoolwear();
+					}
+					if (this.Students[this.ID].ClubAttire)
+					{
+						this.Students[this.ID].ClubAttire = false;
+						this.Students[this.ID].ChangeClubwear();
+					}
+					if (this.Students[this.ID].Actions[this.Students[this.ID].Phase] == StudentActionType.ClubAction && this.Students[this.ID].Club == ClubType.Cooking && this.Students[this.ID].ClubActivityPhase > 0)
+					{
+						this.Students[this.ID].MyPlate.parent = this.Students[this.ID].RightHand;
+						this.Students[this.ID].MyPlate.localPosition = new Vector3(0.02f, -0.02f, -0.15f);
+						this.Students[this.ID].MyPlate.localEulerAngles = new Vector3(-5f, -90f, 172.5f);
+						this.Students[this.ID].IdleAnim = this.Students[this.ID].PlateIdleAnim;
+						this.Students[this.ID].WalkAnim = this.Students[this.ID].PlateWalkAnim;
+						this.Students[this.ID].LeanAnim = this.Students[this.ID].PlateIdleAnim;
+						this.Students[this.ID].GetFoodTarget();
+						this.Students[this.ID].ClubTimer = 0f;
+					}
+					else if (this.Students[this.ID].Phase > 0)
+					{
+						this.Students[this.ID].Phase--;
+					}
 				}
 			}
 			this.ID++;

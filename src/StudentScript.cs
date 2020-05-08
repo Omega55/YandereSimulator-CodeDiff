@@ -807,6 +807,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool SolvingPuzzle;
 
+	public bool ChangingShoes;
+
 	public bool Distracting;
 
 	public bool EatingSnack;
@@ -3151,6 +3153,7 @@ public class StudentScript : MonoBehaviour
 					this.Pathfinding.canMove = false;
 					this.ShoeRemoval.StartChangingShoes();
 					this.ShoeRemoval.enabled = true;
+					this.ChangingShoes = true;
 					this.CanTalk = false;
 					this.Routine = false;
 				}
@@ -7456,7 +7459,7 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.DistanceToDestination < 5f || this.DistractionTarget.Leaving)
 					{
-						if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere || this.DistractionTarget.ShoeRemoval.enabled || this.DistractionTarget.Posing || this.DistractionTarget.ClubActivityPhase >= 16 || !this.DistractionTarget.enabled || this.DistractionTarget.Alarmed || this.DistractionTarget.Fleeing || this.DistractionTarget.Wet || this.DistractionTarget.EatingSnack || this.DistractionTarget.MyBento.Tampered || this.DistractionTarget.Meeting || this.DistractionTarget.InvestigatingBloodPool || this.DistractionTarget.ReturningMisplacedWeapon || this.StudentManager.LockerRoomArea.bounds.Contains(this.DistractionTarget.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(this.DistractionTarget.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.DistractionTarget.transform.position) || this.StudentManager.HeadmasterArea.bounds.Contains(this.DistractionTarget.transform.position) || (this.DistractionTarget.Actions[this.DistractionTarget.Phase] == StudentActionType.Bully && this.DistractionTarget.DistanceToDestination < 1f) || this.DistractionTarget.Leaving)
+						if (this.DistractionTarget.InEvent || this.DistractionTarget.Talking || this.DistractionTarget.Following || this.DistractionTarget.TurnOffRadio || this.DistractionTarget.Splashed || this.DistractionTarget.Shoving || this.DistractionTarget.Spraying || this.DistractionTarget.FocusOnYandere || this.DistractionTarget.ShoeRemoval.enabled || this.DistractionTarget.Posing || this.DistractionTarget.ClubActivityPhase >= 16 || !this.DistractionTarget.enabled || this.DistractionTarget.Alarmed || this.DistractionTarget.Fleeing || this.DistractionTarget.Wet || this.DistractionTarget.EatingSnack || this.DistractionTarget.MyBento.Tampered || this.DistractionTarget.Meeting || this.DistractionTarget.InvestigatingBloodPool || this.DistractionTarget.ReturningMisplacedWeapon || this.StudentManager.LockerRoomArea.bounds.Contains(this.DistractionTarget.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(this.DistractionTarget.transform.position) || this.StudentManager.EastBathroomArea.bounds.Contains(this.DistractionTarget.transform.position) || this.StudentManager.HeadmasterArea.bounds.Contains(this.DistractionTarget.transform.position) || (this.DistractionTarget.Actions[this.DistractionTarget.Phase] == StudentActionType.Bully && this.DistractionTarget.DistanceToDestination < 1f) || this.DistractionTarget.Leaving || this.DistractionTarget.CameraReacting)
 						{
 							this.CurrentDestination = this.Destinations[this.Phase];
 							this.Pathfinding.target = this.Destinations[this.Phase];
@@ -10244,7 +10247,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling && !this.Chasing && this.SeenByYandere()))
+		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling && !this.Chasing && this.DistanceToPlayer < 1.4f && this.SeenByYandere()))
 		{
 			Debug.Log(this.Name + " was attacked because the player pressed the X button, or because Yandere-chan had low sanity.");
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
@@ -16438,6 +16441,7 @@ public class StudentScript : MonoBehaviour
 		this.LostTeacherTrust = true;
 		this.ReportingMurder = false;
 		this.ReportingBlood = false;
+		this.PinDownWitness = false;
 		this.Distracted = true;
 		this.Reacted = false;
 		this.Alarmed = false;

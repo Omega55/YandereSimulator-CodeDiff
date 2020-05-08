@@ -1947,7 +1947,7 @@ public class YandereScript : MonoBehaviour
 				base.transform.localEulerAngles = new Vector3(0f, base.transform.localEulerAngles.y, base.transform.localEulerAngles.z);
 				if (Vector3.Distance(base.transform.position, this.Senpai.position) < 1.25f)
 				{
-					this.MyController.Move(base.transform.forward * (Time.deltaTime * -1f));
+					this.MyController.Move(base.transform.forward * (Time.deltaTime * -2f));
 				}
 			}
 			this.UpdateEffects();
@@ -6328,6 +6328,7 @@ public class YandereScript : MonoBehaviour
 
 	public void Unequip()
 	{
+		Debug.Log("Yandere-chan has been told to de-equip her weapon.");
 		if (this.CanMove || this.Noticed)
 		{
 			if (this.Equipped < 3)

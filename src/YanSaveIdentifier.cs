@@ -18,6 +18,9 @@ public class YanSaveIdentifier : MonoBehaviour
 	[HideInInspector]
 	public List<DisabledYanSaveMember> DisabledFields = new List<DisabledYanSaveMember>();
 
+	[HideInInspector]
+	public bool InitializedInspector;
+
 	private static List<YanSaveIdentifier> Identifiers = new List<YanSaveIdentifier>();
 
 	public static GameObject GetObject(string id)
@@ -49,6 +52,10 @@ public class YanSaveIdentifier : MonoBehaviour
 		if (!YanSaveIdentifier.Identifiers.Contains(this))
 		{
 			YanSaveIdentifier.Identifiers.Add(this);
+		}
+		if (string.IsNullOrEmpty(this.ObjectID))
+		{
+			this.ObjectID = base.gameObject.name;
 		}
 	}
 

@@ -353,7 +353,7 @@ public class WeaponScript : MonoBehaviour
 			}
 			this.MyCollider.enabled = false;
 			this.MyRigidbody.constraints = RigidbodyConstraints.FreezeAll;
-			if (this.Yandere.Equipped == 3)
+			if (this.Yandere.Equipped == 3 && this.Yandere.Weapon[3] != null)
 			{
 				this.Yandere.Weapon[3].Drop();
 			}
@@ -650,7 +650,6 @@ public class WeaponScript : MonoBehaviour
 
 	public void SuspicionCheck()
 	{
-		Debug.Log("Suspicion Check!");
 		if ((this.WeaponID == 9 && ClubGlobals.Club == ClubType.Sports) || (this.WeaponID == 10 && ClubGlobals.Club == ClubType.Gardening) || (this.WeaponID == 12 && ClubGlobals.Club == ClubType.Sports) || (this.WeaponID == 25 && ClubGlobals.Club == ClubType.LightMusic))
 		{
 			this.Suspicious = false;

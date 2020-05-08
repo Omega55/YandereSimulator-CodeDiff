@@ -230,6 +230,7 @@ public class ShoulderCameraScript : MonoBehaviour
 							this.NoticedSpeed = 1f;
 							this.Yandere.Character.GetComponent<Animation>().CrossFade("f02_down_22");
 							this.HeartbrokenCamera.SetActive(true);
+							this.Yandere.Police.Invalid = true;
 							this.Yandere.Collapse = true;
 							this.Phase = 3;
 						}

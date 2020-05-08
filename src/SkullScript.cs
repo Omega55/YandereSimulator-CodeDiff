@@ -132,6 +132,7 @@ public class SkullScript : MonoBehaviour
 				this.RitualKnife.GetComponent<WeaponScript>().FireAudio.Play();
 				this.RitualKnife.GetComponent<WeaponScript>().Flaming = true;
 				this.Prompt.enabled = true;
+				this.Prompt.Yandere.Police.Invalid = true;
 				component.clip = this.FlameActivation;
 				component.Play();
 			}
