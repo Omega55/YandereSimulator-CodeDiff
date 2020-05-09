@@ -59,7 +59,11 @@ public class WeaponScript : MonoBehaviour
 
 	public bool AlreadyExamined;
 
+	public bool DelinquentOwned;
+
 	public bool DisableCollider;
+
+	public bool DoNotDisable;
 
 	public bool Dismembering;
 
@@ -385,7 +389,12 @@ public class WeaponScript : MonoBehaviour
 				{
 					if (this.Yandere.Weapon[1] != null)
 					{
-						this.Yandere.Weapon[1].gameObject.SetActive(false);
+						if (!this.DoNotDisable)
+						{
+							Debug.Log("We reached this code.");
+							this.Yandere.Weapon[1].gameObject.SetActive(false);
+						}
+						this.DoNotDisable = false;
 					}
 					this.Yandere.Equipped = 2;
 					this.Yandere.EquippedWeapon = this;
@@ -418,6 +427,7 @@ public class WeaponScript : MonoBehaviour
 				}
 				this.Yandere.Equipped = 3;
 				this.Yandere.EquippedWeapon = this;
+				this.Yandere.WeaponManager.SetEquippedWeapon3(this);
 			}
 			this.Yandere.StudentManager.UpdateStudents(0);
 			this.Prompt.Hide();
@@ -526,6 +536,10 @@ public class WeaponScript : MonoBehaviour
 		else if (this.Yandere.Weapon[2] == this)
 		{
 			this.Yandere.WeaponManager.YandereWeapon2 = -1;
+		}
+		else if (this.Yandere.Weapon[3] == this)
+		{
+			this.Yandere.WeaponManager.YandereWeapon3 = -1;
 		}
 		if (this.Yandere.EquippedWeapon == this)
 		{

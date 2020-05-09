@@ -860,7 +860,6 @@ public class StudentManagerScript : MonoBehaviour
 			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
 			this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
 			this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
-			this.AllDoors = (UnityEngine.Object.FindSceneObjectsOfType(typeof(DoorScript)) as DoorScript[]);
 		}
 	}
 
@@ -3217,6 +3216,30 @@ public class StudentManagerScript : MonoBehaviour
 						this.Students[this.ID].ClubAttire = false;
 						this.Students[this.ID].ChangeClubwear();
 					}
+					if (this.Students[this.ID].Defeats > 0)
+					{
+						this.Students[this.ID].IdleAnim = "idleInjured_00";
+						this.Students[this.ID].WalkAnim = "walkInjured_00";
+						this.Students[this.ID].OriginalIdleAnim = this.Students[this.ID].IdleAnim;
+						this.Students[this.ID].OriginalWalkAnim = this.Students[this.ID].WalkAnim;
+						this.Students[this.ID].LeanAnim = this.Students[this.ID].IdleAnim;
+						this.Students[this.ID].CharacterAnimation.CrossFade(this.Students[this.ID].IdleAnim);
+						this.Students[this.ID].Injured = true;
+						this.Students[this.ID].Strength = 0;
+						ScheduleBlock scheduleBlock = this.Students[this.ID].ScheduleBlocks[2];
+						scheduleBlock.destination = "Sulk";
+						scheduleBlock.action = "Sulk";
+						ScheduleBlock scheduleBlock2 = this.Students[this.ID].ScheduleBlocks[4];
+						scheduleBlock2.destination = "Sulk";
+						scheduleBlock2.action = "Sulk";
+						ScheduleBlock scheduleBlock3 = this.Students[this.ID].ScheduleBlocks[6];
+						scheduleBlock3.destination = "Sulk";
+						scheduleBlock3.action = "Sulk";
+						ScheduleBlock scheduleBlock4 = this.Students[this.ID].ScheduleBlocks[7];
+						scheduleBlock4.destination = "Sulk";
+						scheduleBlock4.action = "Sulk";
+						this.Students[this.ID].GetDestinations();
+					}
 					if (this.Students[this.ID].Actions[this.Students[this.ID].Phase] == StudentActionType.ClubAction && this.Students[this.ID].Club == ClubType.Cooking && this.Students[this.ID].ClubActivityPhase > 0)
 					{
 						this.Students[this.ID].MyPlate.parent = this.Students[this.ID].RightHand;
@@ -3240,10 +3263,19 @@ public class StudentManagerScript : MonoBehaviour
 		this.Alphabet.UpdateText();
 		this.Yandere.CanMove = true;
 		this.Yandere.WeaponManager.EquipWeaponsFromSave();
+		this.Yandere.WeaponManager.RestoreWeaponToStudent();
+		this.Yandere.WeaponManager.UpdateDelinquentWeapons();
 		if (this.Yandere.ClubAttire)
 		{
 			this.Yandere.ClubAttire = false;
 			this.Yandere.ChangeClubwear();
+		}
+		foreach (DoorScript doorScript in this.Doors)
+		{
+			if (doorScript != null && doorScript.Open)
+			{
+				doorScript.OpenDoor();
+			}
 		}
 	}
 

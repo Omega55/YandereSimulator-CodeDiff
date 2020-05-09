@@ -6330,55 +6330,63 @@ public class StudentScript : MonoBehaviour
 									if (this.ReportPhase == 0)
 									{
 										Debug.Log(this.Name + ", currently acting as a Teacher's Pet, is talking to a teacher.");
-										if (this.WitnessedMurder)
+										if (!this.MyTeacher.Alive)
 										{
-											this.Subtitle.Speaker = this;
-											this.Subtitle.UpdateLabel(SubtitleType.PetMurderReport, 2, 3f);
-											this.CharacterAnimation.CrossFade(this.ScaredAnim);
+											this.Persona = PersonaType.Loner;
+											this.PersonaReaction();
 										}
-										else if (this.WitnessedCorpse)
+										else
 										{
-											this.Subtitle.Speaker = this;
-											this.Subtitle.UpdateLabel(SubtitleType.PetCorpseReport, 2, 3f);
-											this.CharacterAnimation.CrossFade(this.ScaredAnim);
+											if (this.WitnessedMurder)
+											{
+												this.Subtitle.Speaker = this;
+												this.Subtitle.UpdateLabel(SubtitleType.PetMurderReport, 2, 3f);
+												this.CharacterAnimation.CrossFade(this.ScaredAnim);
+											}
+											else if (this.WitnessedCorpse)
+											{
+												this.Subtitle.Speaker = this;
+												this.Subtitle.UpdateLabel(SubtitleType.PetCorpseReport, 2, 3f);
+												this.CharacterAnimation.CrossFade(this.ScaredAnim);
+											}
+											else if (this.WitnessedLimb)
+											{
+												this.Subtitle.Speaker = this;
+												this.Subtitle.UpdateLabel(SubtitleType.PetLimbReport, 2, 3f);
+												this.CharacterAnimation.CrossFade(this.ScaredAnim);
+											}
+											else if (this.WitnessedBloodyWeapon)
+											{
+												this.Subtitle.Speaker = this;
+												this.Subtitle.UpdateLabel(SubtitleType.PetBloodyWeaponReport, 2, 3f);
+												this.CharacterAnimation.CrossFade(this.ScaredAnim);
+											}
+											else if (this.WitnessedBloodPool)
+											{
+												this.Subtitle.Speaker = this;
+												this.Subtitle.UpdateLabel(SubtitleType.PetBloodReport, 2, 3f);
+												this.CharacterAnimation.CrossFade(this.IdleAnim);
+											}
+											else if (this.WitnessedWeapon)
+											{
+												this.Subtitle.Speaker = this;
+												this.Subtitle.UpdateLabel(SubtitleType.PetWeaponReport, 2, 3f);
+												this.CharacterAnimation.CrossFade(this.ScaredAnim);
+											}
+											this.MyTeacher = this.StudentManager.Teachers[this.Class];
+											this.MyTeacher.CurrentDestination = this.MyTeacher.transform;
+											this.MyTeacher.Pathfinding.target = this.MyTeacher.transform;
+											this.MyTeacher.Pathfinding.canSearch = false;
+											this.MyTeacher.Pathfinding.canMove = false;
+											this.StudentManager.Teachers[this.Class].CharacterAnimation.CrossFade(this.StudentManager.Teachers[this.Class].IdleAnim);
+											this.StudentManager.Teachers[this.Class].Routine = false;
+											if (this.StudentManager.Teachers[this.Class].Investigating)
+											{
+												this.StudentManager.Teachers[this.Class].StopInvestigating();
+											}
+											this.Halt = true;
+											this.ReportPhase++;
 										}
-										else if (this.WitnessedLimb)
-										{
-											this.Subtitle.Speaker = this;
-											this.Subtitle.UpdateLabel(SubtitleType.PetLimbReport, 2, 3f);
-											this.CharacterAnimation.CrossFade(this.ScaredAnim);
-										}
-										else if (this.WitnessedBloodyWeapon)
-										{
-											this.Subtitle.Speaker = this;
-											this.Subtitle.UpdateLabel(SubtitleType.PetBloodyWeaponReport, 2, 3f);
-											this.CharacterAnimation.CrossFade(this.ScaredAnim);
-										}
-										else if (this.WitnessedBloodPool)
-										{
-											this.Subtitle.Speaker = this;
-											this.Subtitle.UpdateLabel(SubtitleType.PetBloodReport, 2, 3f);
-											this.CharacterAnimation.CrossFade(this.IdleAnim);
-										}
-										else if (this.WitnessedWeapon)
-										{
-											this.Subtitle.Speaker = this;
-											this.Subtitle.UpdateLabel(SubtitleType.PetWeaponReport, 2, 3f);
-											this.CharacterAnimation.CrossFade(this.ScaredAnim);
-										}
-										this.MyTeacher = this.StudentManager.Teachers[this.Class];
-										this.MyTeacher.CurrentDestination = this.MyTeacher.transform;
-										this.MyTeacher.Pathfinding.target = this.MyTeacher.transform;
-										this.MyTeacher.Pathfinding.canSearch = false;
-										this.MyTeacher.Pathfinding.canMove = false;
-										this.StudentManager.Teachers[this.Class].CharacterAnimation.CrossFade(this.StudentManager.Teachers[this.Class].IdleAnim);
-										this.StudentManager.Teachers[this.Class].Routine = false;
-										if (this.StudentManager.Teachers[this.Class].Investigating)
-										{
-											this.StudentManager.Teachers[this.Class].StopInvestigating();
-										}
-										this.Halt = true;
-										this.ReportPhase++;
 									}
 									else if (this.ReportPhase == 1)
 									{
@@ -8724,6 +8732,8 @@ public class StudentScript : MonoBehaviour
 								this.ReportingBlood = false;
 								this.Distracted = false;
 								this.CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
+								this.Yandere.WeaponManager.ReturnWeaponID = this.BloodPool.GetComponent<WeaponScript>().GlobalID;
+								this.Yandere.WeaponManager.ReturnStudentID = this.StudentID;
 							}
 						}
 						this.InvestigatingBloodPool = false;
@@ -16357,6 +16367,8 @@ public class StudentScript : MonoBehaviour
 		this.Routine = true;
 		this.ReturningMisplacedWeaponPhase = 0;
 		this.WitnessCooldownTimer = 0f;
+		this.Yandere.WeaponManager.ReturnWeaponID = -1;
+		this.Yandere.WeaponManager.ReturnStudentID = -1;
 	}
 
 	public void StopMusic()

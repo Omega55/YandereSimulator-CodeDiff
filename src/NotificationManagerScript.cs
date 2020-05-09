@@ -19,6 +19,8 @@ public class NotificationManagerScript : MonoBehaviour
 
 	public string PersonaName;
 
+	public string PreviousText;
+
 	public string CustomText;
 
 	public string TopicName;
@@ -194,6 +196,7 @@ public class NotificationManagerScript : MonoBehaviour
 			}
 			this.NotificationsSpawned++;
 			component.ID = this.NotificationsSpawned;
+			this.PreviousText = this.CustomText;
 		}
 	}
 }

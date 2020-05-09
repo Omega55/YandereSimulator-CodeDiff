@@ -19,13 +19,21 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public int Fingerprints;
 
-	public int YandereWeapon1;
+	public int YandereWeapon1 = -1;
 
-	public int YandereWeapon2;
+	public int YandereWeapon2 = -1;
 
-	public int YandereWeapon3;
+	public int YandereWeapon3 = -1;
 
-	public int Reequip;
+	public int ReturnWeaponID = -1;
+
+	public int ReturnStudentID = -1;
+
+	public int OriginalEquipped = -1;
+
+	public int OriginalWeapon = -1;
+
+	public int Frame;
 
 	public Texture Flower;
 
@@ -142,21 +150,13 @@ public class WeaponManagerScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Reequip > 1)
+		if (this.OriginalWeapon > -1)
 		{
-			if (this.Reequip == 1)
-			{
-				this.Weapons[this.YandereWeapon1].Prompt.Circle[3].fillAmount = 0f;
-			}
-			else if (this.Reequip == 2)
-			{
-				this.Weapons[this.YandereWeapon3].Prompt.Circle[3].fillAmount = 0f;
-			}
-			else if (this.Reequip == 3)
-			{
-				this.Weapons[this.YandereWeapon3].Prompt.Circle[3].fillAmount = 0f;
-			}
-			this.Reequip = 0;
+			Debug.Log("Re-equipping original weapon.");
+			this.Weapons[this.OriginalWeapon].Prompt.Circle[3].fillAmount = 0f;
+			this.Weapons[this.OriginalWeapon].gameObject.SetActive(true);
+			this.Weapons[this.OriginalWeapon].DoNotDisable = true;
+			this.OriginalWeapon = -1;
 		}
 	}
 
@@ -206,8 +206,30 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public void EquipWeaponsFromSave()
 	{
-		this.Reequip = this.Yandere.Equipped;
-		Debug.Log("The original equipped weapon was: " + this.Yandere.Equipped);
+		this.OriginalEquipped = this.Yandere.Equipped;
+		if (this.Yandere.Equipped == 1)
+		{
+			this.OriginalWeapon = this.YandereWeapon1;
+		}
+		else if (this.Yandere.Equipped == 2)
+		{
+			this.OriginalWeapon = this.YandereWeapon2;
+		}
+		else if (this.Yandere.Equipped == 3)
+		{
+			this.OriginalWeapon = this.YandereWeapon3;
+		}
+		if (this.Yandere.Equipped > 0)
+		{
+			Debug.Log(string.Concat(new object[]
+			{
+				"The player had a weapon equipped in Slot #",
+				this.Yandere.Equipped,
+				". That weapon was #",
+				this.OriginalWeapon,
+				" in the list of all weapons."
+			}));
+		}
 		if (this.YandereWeapon1 > -1)
 		{
 			Debug.Log("Looks like the player had a " + this.Weapons[this.YandereWeapon1].gameObject.name + " in their possession when they saved.");
@@ -228,6 +250,42 @@ public class WeaponManagerScript : MonoBehaviour
 			this.Weapons[this.YandereWeapon3].Prompt.Circle[3].fillAmount = 0f;
 			this.Weapons[this.YandereWeapon3].gameObject.SetActive(true);
 			this.Weapons[this.YandereWeapon3].UnequipImmediately = true;
+		}
+	}
+
+	public void UpdateDelinquentWeapons()
+	{
+		for (int i = 1; i < this.DelinquentWeapons.Length; i++)
+		{
+			if (this.DelinquentWeapons[i].DelinquentOwned)
+			{
+				this.DelinquentWeapons[i].transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				this.DelinquentWeapons[i].transform.localPosition = new Vector3(0f, 0f, 0f);
+			}
+			else
+			{
+				this.DelinquentWeapons[i].transform.parent = null;
+			}
+		}
+	}
+
+	public void RestoreWeaponToStudent()
+	{
+		if (this.ReturnWeaponID > -1)
+		{
+			this.Yandere.StudentManager.Students[this.ReturnStudentID].BloodPool = this.Weapons[this.ReturnWeaponID].transform;
+			this.Yandere.StudentManager.Students[this.ReturnStudentID].BloodPool = this.Weapons[this.ReturnWeaponID].transform;
+			this.Yandere.StudentManager.Students[this.ReturnStudentID].BloodPool = this.Weapons[this.ReturnWeaponID].transform;
+			this.Yandere.StudentManager.Students[this.ReturnStudentID].CurrentDestination = this.Weapons[this.ReturnWeaponID].Origin;
+			this.Yandere.StudentManager.Students[this.ReturnStudentID].Pathfinding.target = this.Weapons[this.ReturnWeaponID].Origin;
+			this.Weapons[this.ReturnWeaponID].Prompt.Hide();
+			this.Weapons[this.ReturnWeaponID].Prompt.enabled = false;
+			this.Weapons[this.ReturnWeaponID].enabled = false;
+			this.Weapons[this.ReturnWeaponID].Returner = this.Yandere.StudentManager.Students[this.ReturnStudentID];
+			this.Weapons[this.ReturnWeaponID].transform.parent = this.Yandere.StudentManager.Students[this.ReturnStudentID].RightHand;
+			this.Weapons[this.ReturnWeaponID].transform.localPosition = new Vector3(0f, 0f, 0f);
+			this.Weapons[this.ReturnWeaponID].transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+			this.Yandere.StudentManager.Students[this.ReturnStudentID].CharacterAnimation.cullingType = AnimationCullingType.AlwaysAnimate;
 		}
 	}
 }

@@ -261,6 +261,10 @@ public class NoteLockerScript : MonoBehaviour
 			Debug.Log(this.Student.Name + " has rejected the note, and is being told to travel to the destination of their current phase.");
 			this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
 			this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];
+			this.FindStudentLocker.Prompt.Label[0].text = "     Find Student Locker";
+			this.FindStudentLocker.TargetedStudent = null;
+			this.FindStudentLocker.Prompt.enabled = true;
+			this.FindStudentLocker.Phase = 1;
 		}
 		Animation component = this.Student.Character.GetComponent<Animation>();
 		component.cullingType = AnimationCullingType.BasedOnRenderers;

@@ -479,6 +479,7 @@ public class CombatMinigameScript : MonoBehaviour
 							component.useGravity = true;
 							if (!this.Practice)
 							{
+								this.Delinquent.MyWeapon.DelinquentOwned = false;
 								this.Delinquent.MyWeapon = null;
 							}
 						}
@@ -524,9 +525,19 @@ public class CombatMinigameScript : MonoBehaviour
 						ScheduleBlock scheduleBlock4 = this.Delinquent.ScheduleBlocks[7];
 						scheduleBlock4.destination = "Sulk";
 						scheduleBlock4.action = "Sulk";
+						if (this.Delinquent.Phase == 0)
+						{
+							this.Delinquent.Phase++;
+						}
 						this.Delinquent.GetDestinations();
 						this.Delinquent.CurrentDestination = this.Delinquent.Destinations[this.Delinquent.Phase];
 						this.Delinquent.Pathfinding.target = this.Delinquent.Destinations[this.Delinquent.Phase];
+						if (this.Delinquent.CurrentDestination == null)
+						{
+							Debug.Log("Manually setting Delinquent's destination to locker, to fix a saving/loading bug.");
+							this.Delinquent.CurrentDestination = this.Delinquent.Destinations[1];
+							this.Delinquent.Pathfinding.target = this.Delinquent.Destinations[1];
+						}
 						this.Delinquent.IdleAnim = "idleInjured_00";
 						this.Delinquent.WalkAnim = "walkInjured_00";
 						this.Delinquent.OriginalIdleAnim = this.Delinquent.IdleAnim;
@@ -658,9 +669,19 @@ public class CombatMinigameScript : MonoBehaviour
 			}
 			if (this.Yandere.CharacterAnimation["f02_stopFighting_00"].time > this.Yandere.CharacterAnimation["f02_stopFighting_00"].length)
 			{
+				if (this.Delinquent.Phase == 0)
+				{
+					this.Delinquent.Phase++;
+				}
 				this.Delinquent.GetDestinations();
 				this.Delinquent.CurrentDestination = this.Delinquent.Destinations[this.Delinquent.Phase];
 				this.Delinquent.Pathfinding.target = this.Delinquent.Destinations[this.Delinquent.Phase];
+				if (this.Delinquent.CurrentDestination == null)
+				{
+					Debug.Log("Manually setting Delinquent's destination to locker, to fix a saving/loading bug.");
+					this.Delinquent.CurrentDestination = this.Delinquent.Destinations[1];
+					this.Delinquent.Pathfinding.target = this.Delinquent.Destinations[1];
+				}
 				this.ReleaseYandere();
 				this.Delinquent.Threatened = false;
 				this.Delinquent.Fighting = false;

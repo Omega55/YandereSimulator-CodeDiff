@@ -7,6 +7,9 @@ public class DoorScript : MonoBehaviour
 	private Transform RelativeCharacter;
 
 	[SerializeField]
+	private YanSaveIdentifier Identifier;
+
+	[SerializeField]
 	private HideColliderScript HideCollider;
 
 	public StudentScript Student;
@@ -118,12 +121,21 @@ public class DoorScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.Identifier = base.GetComponent<YanSaveIdentifier>();
 		this.TrapSwing = 12.15f;
 		this.Yandere = GameObject.Find("YandereChan").GetComponent<YandereScript>();
 		this.StudentManager = this.Yandere.StudentManager;
 		this.StudentManager.Doors[this.StudentManager.DoorID] = this;
 		this.StudentManager.DoorID++;
 		this.DoorID = this.StudentManager.DoorID;
+		if (this.Identifier != null)
+		{
+			this.Identifier.ObjectID = "Door_" + this.DoorID;
+		}
+		else
+		{
+			Debug.Log(base.gameObject.name + " doesn't have an identifier.");
+		}
 		if (this.StudentManager.EastBathroomArea.bounds.Contains(base.transform.position) || this.StudentManager.WestBathroomArea.bounds.Contains(base.transform.position))
 		{
 			this.RoomName = "Toilet Stall";
