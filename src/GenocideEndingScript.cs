@@ -33,6 +33,7 @@ public class GenocideEndingScript : MonoBehaviour
 	private void Start()
 	{
 		this.Senpai["kidnapTorture_01"].speed = 0.9f;
+		GameGlobals.DarkEnding = true;
 		Time.timeScale = 1f;
 	}
 

@@ -57,7 +57,7 @@ public class MapScript : MonoBehaviour
 					this.ElevationLabel.enabled = true;
 					this.Yandere.Blur.enabled = true;
 					this.MyCamera.enabled = true;
-					Time.timeScale = 0f;
+					Time.timeScale = 0.001f;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Label[1].text = "Exit";
 					this.PromptBar.Label[2].text = "Lower Floor";

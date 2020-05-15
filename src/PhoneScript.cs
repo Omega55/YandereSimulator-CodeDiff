@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class PhoneScript : MonoBehaviour
 {
+	public OsanaTextMessageScript OsanaMessages;
+
 	public GameObject[] RightMessage;
 
 	public GameObject[] LeftMessage;
@@ -93,6 +95,15 @@ public class PhoneScript : MonoBehaviour
 			this.Height = this.BefriendHeight;
 			EventGlobals.LivingRoom = true;
 			EventGlobals.BefriendConversation = false;
+		}
+		else if (EventGlobals.OsanaConversation)
+		{
+			Debug.Log("Osana's text message conversation!");
+			this.VoiceClips = this.OsanaMessages.OsanaClips;
+			this.Speaker = this.OsanaMessages.OsanaSpeakers;
+			this.Text = this.OsanaMessages.OsanaTexts;
+			this.Height = this.OsanaMessages.OsanaHeights;
+			EventGlobals.LivingRoom = true;
 		}
 		if (GameGlobals.LoveSick)
 		{

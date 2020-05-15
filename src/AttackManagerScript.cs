@@ -164,10 +164,9 @@ public class AttackManagerScript : MonoBehaviour
 		this.VictimAnim = this.Yandere.TargetStudent.CharacterAnimation;
 		this.VictimAnim[this.VictimAnimName].time = 0f;
 		this.VictimAnim.CrossFade(this.VictimAnimName);
-		AudioSource component = weapon.gameObject.GetComponent<AudioSource>();
-		component.clip = weapon.GetClip(this.Yandere.Sanity / 100f, this.Stealth);
-		component.time = 0f;
-		component.Play();
+		weapon.MyAudio.clip = weapon.GetClip(this.Yandere.Sanity / 100f, this.Stealth);
+		weapon.MyAudio.time = 0f;
+		weapon.MyAudio.Play();
 		if (weapon.Type == WeaponType.Knife)
 		{
 			weapon.Flip = true;
@@ -808,13 +807,12 @@ public class AttackManagerScript : MonoBehaviour
 				this.Loop = true;
 			}
 		}
-		AudioSource component = weapon.gameObject.GetComponent<AudioSource>();
 		if (this.PingPong)
 		{
 			if (this.YandereAnim[this.AnimName].time > this.LoopEnd / 30f)
 			{
-				component.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
-				component.time = this.LoopStart / 30f;
+				weapon.MyAudio.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
+				weapon.MyAudio.time = this.LoopStart / 30f;
 				this.VictimAnim[this.VictimAnimName].speed = -1f;
 				this.YandereAnim[this.AnimName].speed = -1f;
 				this.EffectPhase = this.LoopPhase;
@@ -822,8 +820,8 @@ public class AttackManagerScript : MonoBehaviour
 			}
 			else if (this.YandereAnim[this.AnimName].time < this.LoopStart / 30f)
 			{
-				component.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
-				component.time = this.LoopStart / 30f;
+				weapon.MyAudio.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
+				weapon.MyAudio.time = this.LoopStart / 30f;
 				this.VictimAnim[this.VictimAnimName].speed = 1f;
 				this.YandereAnim[this.AnimName].speed = 1f;
 				this.EffectPhase = this.LoopPhase;
@@ -834,8 +832,8 @@ public class AttackManagerScript : MonoBehaviour
 		}
 		if (this.Loop && this.YandereAnim[this.AnimName].time > this.LoopEnd / 30f)
 		{
-			component.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
-			component.time = this.LoopStart / 30f;
+			weapon.MyAudio.pitch = 1f + UnityEngine.Random.Range(0.1f, -0.1f);
+			weapon.MyAudio.time = this.LoopStart / 30f;
 			this.VictimAnim[this.VictimAnimName].time = this.LoopStart / 30f;
 			this.YandereAnim[this.AnimName].time = this.LoopStart / 30f;
 			this.AttackTimer = this.LoopStart / 30f;

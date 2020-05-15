@@ -298,7 +298,7 @@ public class StatsScript : MonoBehaviour
 		this.Ranks[6].text = "Rank: " + PlayerGlobals.Seduction.ToString();
 		this.Ranks[7].text = "Rank: " + PlayerGlobals.Numbness.ToString();
 		this.Ranks[8].text = "Rank: " + PlayerGlobals.Enlightenment.ToString();
-		ClubType club = ClubGlobals.Club;
+		ClubType club = this.PauseScreen.Yandere.Club;
 		string str;
 		this.ClubLabels.TryGetValue(club, out str);
 		this.ClubLabel.text = "Club: " + str;

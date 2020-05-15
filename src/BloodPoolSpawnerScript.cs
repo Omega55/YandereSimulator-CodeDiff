@@ -46,6 +46,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public void Start()
 	{
+		this.PoolsSpawned = this.Ragdoll.Student.BloodPoolsSpawned;
 		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
 			this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
@@ -111,6 +112,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 							gameObject.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
 							gameObject.transform.parent = this.BloodParent;
 							this.PoolsSpawned++;
+							this.Ragdoll.Student.BloodPoolsSpawned++;
 							return;
 						}
 						if (this.PoolsSpawned < 20)
@@ -119,6 +121,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 							gameObject2.transform.localEulerAngles = new Vector3(90f, UnityEngine.Random.Range(0f, 360f), 0f);
 							gameObject2.transform.parent = this.BloodParent;
 							this.PoolsSpawned++;
+							this.Ragdoll.Student.BloodPoolsSpawned++;
 							gameObject2.GetComponent<BloodPoolScript>().TargetSize = 1f - (float)(this.PoolsSpawned - 10) * 0.1f;
 							if (this.PoolsSpawned == 20)
 							{

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BoneScript : MonoBehaviour
 {
+	public AudioSource MyAudio;
+
 	public float Height;
 
 	public float Origin;
@@ -13,7 +15,7 @@ public class BoneScript : MonoBehaviour
 	{
 		base.transform.eulerAngles = new Vector3(base.transform.eulerAngles.x, UnityEngine.Random.Range(0f, 360f), base.transform.eulerAngles.z);
 		this.Origin = base.transform.position.y;
-		base.GetComponent<AudioSource>().pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+		this.MyAudio.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
 	}
 
 	private void Update()

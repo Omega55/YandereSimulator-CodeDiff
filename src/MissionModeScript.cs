@@ -226,6 +226,8 @@ public class MissionModeScript : MonoBehaviour
 
 	public AudioClip GameOverSound;
 
+	public AudioSource MyAudio;
+
 	public ColorCorrectionCurves[] ColorCorrections;
 
 	public Camera MainCamera;
@@ -962,11 +964,10 @@ public class MissionModeScript : MonoBehaviour
 						this.Yandere.RPGCamera.enabled = false;
 						this.Yandere.HUD.gameObject.SetActive(false);
 						this.Yandere.CanMove = false;
-						AudioSource component = this.Jukebox.MissionMode.GetComponent<AudioSource>();
-						component.clip = this.StealthMusic[10];
-						component.loop = false;
-						component.Play();
-						base.GetComponent<AudioSource>().PlayOneShot(this.InfoAccomplished);
+						this.Jukebox.MissionMode.clip = this.StealthMusic[10];
+						this.Jukebox.MissionMode.loop = false;
+						this.Jukebox.MissionMode.Play();
+						this.MyAudio.PlayOneShot(this.InfoAccomplished);
 						this.HeartbeatCamera.SetActive(false);
 						this.Boundary.enabled = false;
 						this.Phase++;
@@ -977,7 +978,7 @@ public class MissionModeScript : MonoBehaviour
 			{
 				this.NotificationManager.DisplayNotification(NotificationType.Complete);
 				this.NotificationManager.DisplayNotification(NotificationType.Exfiltrate);
-				base.GetComponent<AudioSource>().PlayOneShot(this.InfoExfiltrate);
+				this.MyAudio.PlayOneShot(this.InfoExfiltrate);
 				this.AlphabetArrow.gameObject.SetActive(true);
 				this.ExitPortal.SetActive(true);
 			}
@@ -989,7 +990,7 @@ public class MissionModeScript : MonoBehaviour
 			}
 			if (!this.InfoRemark && this.GameOverID == 0 && this.TargetDead && (!this.CorpseDisposed || !this.BloodCleaned || !this.WeaponDisposed))
 			{
-				base.GetComponent<AudioSource>().PlayOneShot(this.InfoObjective);
+				this.MyAudio.PlayOneShot(this.InfoObjective);
 				this.InfoRemark = true;
 			}
 			if (this.ExitPortal.activeInHierarchy)
@@ -1084,7 +1085,7 @@ public class MissionModeScript : MonoBehaviour
 				{
 					if (this.Chastise)
 					{
-						base.GetComponent<AudioSource>().PlayOneShot(this.InfoFailure);
+						this.MyAudio.PlayOneShot(this.InfoFailure);
 						this.GameOverPhase++;
 						return;
 					}
@@ -1095,8 +1096,8 @@ public class MissionModeScript : MonoBehaviour
 			}
 			else if (this.GameOverPhase == 2 && this.Timer > 7.5f)
 			{
-				this.Jukebox.MissionMode.GetComponent<AudioSource>().clip = this.StealthMusic[0];
-				this.Jukebox.MissionMode.GetComponent<AudioSource>().Play();
+				this.Jukebox.MissionMode.clip = this.StealthMusic[0];
+				this.Jukebox.MissionMode.Play();
 				this.Jukebox.Volume = 0.5f;
 				this.GameOverPhase++;
 			}
@@ -1120,7 +1121,7 @@ public class MissionModeScript : MonoBehaviour
 		{
 			this.ColorCorrections[2].enabled = true;
 		}
-		base.GetComponent<AudioSource>().PlayOneShot(this.GameOverSound);
+		this.MyAudio.PlayOneShot(this.GameOverSound);
 		this.DetectionCamera.SetActive(false);
 		this.HeartbeatCamera.SetActive(false);
 		this.WitnessCamera.SetActive(false);
@@ -1129,7 +1130,7 @@ public class MissionModeScript : MonoBehaviour
 		this.Subtitle.SetActive(false);
 		Time.timeScale = 0.0001f;
 		this.GameOverPhase = 1;
-		this.Jukebox.MissionMode.GetComponent<AudioSource>().Stop();
+		this.Jukebox.MissionMode.Stop();
 	}
 
 	private void Success()
@@ -1164,8 +1165,8 @@ public class MissionModeScript : MonoBehaviour
 		{
 			this.MusicID = 1;
 		}
-		this.Jukebox.MissionMode.GetComponent<AudioSource>().clip = this.StealthMusic[this.MusicID];
-		this.Jukebox.MissionMode.GetComponent<AudioSource>().Play();
+		this.Jukebox.MissionMode.clip = this.StealthMusic[this.MusicID];
+		this.Jukebox.MissionMode.Play();
 	}
 
 	private void ResetGlobals()

@@ -51,7 +51,11 @@ public class StudentManagerScript : MonoBehaviour
 
 	public TallLockerScript CommunalLocker;
 
+	public BloodParentScript BloodParent;
+
 	public CabinetDoorScript CabinetDoor;
+
+	public ClubManagerScript ClubManager;
 
 	public LightSwitchScript LightSwitch;
 
@@ -1342,6 +1346,7 @@ public class StudentManagerScript : MonoBehaviour
 			studentScript.StudentManager = this;
 			studentScript.StudentID = spawnID;
 			studentScript.JSON = this.JSON;
+			studentScript.BloodSpawnerIdentifier.ObjectID = "Student_" + spawnID + "_BloodSpawner";
 			studentScript.HipsIdentifier.ObjectID = "Student_" + spawnID + "_Hips";
 			studentScript.YanSave.ObjectID = "Student_" + spawnID;
 			if (studentScript.Miyuki != null)
@@ -1712,7 +1717,7 @@ public class StudentManagerScript : MonoBehaviour
 						}
 						studentScript.transform.position = studentScript.Seat.position + Vector3.up * 0.01f;
 						studentScript.transform.rotation = studentScript.Seat.rotation;
-						studentScript.Character.GetComponent<Animation>().Play(studentScript.SitAnim);
+						studentScript.CharacterAnimation.Play(studentScript.SitAnim);
 						studentScript.Pathfinding.canSearch = false;
 						studentScript.Pathfinding.canMove = false;
 						studentScript.Pathfinding.speed = 0f;
@@ -1734,6 +1739,7 @@ public class StudentManagerScript : MonoBehaviour
 						studentScript.Routine = true;
 						if (studentScript.Wet)
 						{
+							studentScript.CharacterAnimation[studentScript.WetAnim].weight = 0f;
 							this.CommunalLocker.Student = null;
 							studentScript.Schoolwear = 3;
 							studentScript.ChangeSchoolwear();
@@ -3155,6 +3161,8 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		int profile = GameGlobals.Profile;
 		int @int = PlayerPrefs.GetInt("SaveSlot");
+		Debug.Log("At the moment of saving, ClubGlobals.Club is: " + ClubGlobals.Club);
+		this.BloodParent.RecordAllBlood();
 		YanSave.SaveData(string.Concat(new object[]
 		{
 			"Profile_",
@@ -3176,6 +3184,7 @@ public class StudentManagerScript : MonoBehaviour
 			"_Slot_",
 			@int
 		}), false);
+		Debug.Log("Upon saving, ClubGlobals.Club is: " + ClubGlobals.Club);
 		Physics.SyncTransforms();
 		this.ID = 1;
 		while (this.ID < 101)
@@ -3261,7 +3270,9 @@ public class StudentManagerScript : MonoBehaviour
 		}
 		this.Clock.UpdateClock();
 		this.Alphabet.UpdateText();
+		this.ClubManager.ActivateClubBenefit();
 		this.Yandere.CanMove = true;
+		this.Yandere.ClubAccessory();
 		this.Yandere.WeaponManager.EquipWeaponsFromSave();
 		this.Yandere.WeaponManager.RestoreWeaponToStudent();
 		this.Yandere.WeaponManager.UpdateDelinquentWeapons();
@@ -3277,6 +3288,7 @@ public class StudentManagerScript : MonoBehaviour
 				doorScript.OpenDoor();
 			}
 		}
+		this.BloodParent.RestoreAllBlood();
 	}
 
 	public void UpdateBlood()
@@ -3591,6 +3603,38 @@ public class StudentManagerScript : MonoBehaviour
 			else if (!this.WindowOccluder.open)
 			{
 				this.SetWindowsOpaque();
+			}
+		}
+	}
+
+	public void UpdateSkirts(bool Status)
+	{
+		foreach (StudentScript studentScript in this.Students)
+		{
+			if (studentScript != null)
+			{
+				if (!studentScript.Male && !studentScript.Teacher && studentScript.Schoolwear == 1)
+				{
+					studentScript.SkirtCollider.gameObject.SetActive(Status);
+				}
+				studentScript.RightHandCollider.enabled = Status;
+				studentScript.LeftHandCollider.enabled = Status;
+			}
+		}
+	}
+
+	public void UpdatePanties(bool Status)
+	{
+		foreach (StudentScript studentScript in this.Students)
+		{
+			if (studentScript != null)
+			{
+				if (!studentScript.Male && !studentScript.Teacher && studentScript.Schoolwear == 1)
+				{
+					studentScript.PantyCollider.gameObject.SetActive(Status);
+				}
+				studentScript.NotFaceCollider.enabled = Status;
+				studentScript.FaceCollider.enabled = Status;
 			}
 		}
 	}

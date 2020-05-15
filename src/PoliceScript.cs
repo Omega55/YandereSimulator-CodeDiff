@@ -337,7 +337,7 @@ public class PoliceScript : MonoBehaviour
 				this.DetectionCamera.SetActive(false);
 				if (this.ClubActivity)
 				{
-					this.ClubManager.Club = ClubGlobals.Club;
+					this.ClubManager.Club = this.Yandere.Club;
 					this.ClubManager.ClubActivity();
 					this.FadeOut = false;
 				}
@@ -705,7 +705,6 @@ public class PoliceScript : MonoBehaviour
 						{
 							if (this.Clock.HourTime < 18f)
 							{
-								Debug.Log("Senpai's position is: " + this.Yandere.Senpai.position);
 								if (this.Yandere.Senpai.position.z > -75f)
 								{
 									this.ResultsLabels[1].text = "However, she can't bring herself to leave before Senpai does.";

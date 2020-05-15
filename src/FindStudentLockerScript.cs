@@ -39,20 +39,33 @@ public class FindStudentLockerScript : MonoBehaviour
 				return;
 			}
 		}
-		else if (this.Phase == 1)
+		else
 		{
-			if (this.TargetedStudent.Meeting)
+			if (!this.TargetedStudent.Alive)
 			{
-				this.Phase++;
+				this.RestorePrompt();
 				return;
 			}
+			if (this.Phase == 1)
+			{
+				if (this.TargetedStudent.Meeting)
+				{
+					this.Phase++;
+					return;
+				}
+			}
+			else if (!this.TargetedStudent.Meeting)
+			{
+				this.RestorePrompt();
+			}
 		}
-		else if (!this.TargetedStudent.Meeting)
-		{
-			this.Prompt.Label[0].text = "     Find Student Locker";
-			this.TargetedStudent = null;
-			this.Prompt.enabled = true;
-			this.Phase = 1;
-		}
+	}
+
+	private void RestorePrompt()
+	{
+		this.Prompt.Label[0].text = "     Find Student Locker";
+		this.TargetedStudent = null;
+		this.Prompt.enabled = true;
+		this.Phase = 1;
 	}
 }

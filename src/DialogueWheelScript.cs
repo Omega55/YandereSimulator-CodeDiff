@@ -219,7 +219,7 @@ public class DialogueWheelScript : MonoBehaviour
 							this.CenterLabel.text = "Love";
 						}
 					}
-					else if (this.Selected == 6 && ClubGlobals.Club == ClubType.Delinquent)
+					else if (this.Selected == 6 && this.Yandere.Club == ClubType.Delinquent)
 					{
 						this.CenterLabel.text = "Intimidate";
 						this.CenterLabel.color = new Color(1f, 0f, 0f, 1f);
@@ -319,7 +319,7 @@ public class DialogueWheelScript : MonoBehaviour
 							{
 								this.Yandere.TargetStudent.ClubPhase = 4;
 							}
-							else if (ClubGlobals.Club != ClubType.None)
+							else if (this.Yandere.Club != ClubType.None)
 							{
 								this.Yandere.TargetStudent.ClubPhase = 5;
 							}
@@ -770,7 +770,7 @@ public class DialogueWheelScript : MonoBehaviour
 			{
 				this.Shadow[6].color = new Color(0f, 0f, 0f, 0.75f);
 			}
-			if ((this.Yandere.TargetStudent.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 3) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4 || ClubGlobals.Club == ClubType.Delinquent)
+			if ((this.Yandere.TargetStudent.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 3) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4 || this.Yandere.Club == ClubType.Delinquent)
 			{
 				this.Shadow[6].color = new Color(0f, 0f, 0f, 0f);
 			}
@@ -783,7 +783,7 @@ public class DialogueWheelScript : MonoBehaviour
 				this.Shadow[6].color = new Color(0f, 0f, 0f, 0.75f);
 			}
 		}
-		if (ClubGlobals.Club == this.Yandere.TargetStudent.Club)
+		if (this.Yandere.Club == this.Yandere.TargetStudent.Club)
 		{
 			UISprite uisprite12 = this.ClubShadow[1];
 			uisprite12.color = new Color(uisprite12.color.r, uisprite12.color.g, uisprite12.color.b, 0.75f);
@@ -795,7 +795,7 @@ public class DialogueWheelScript : MonoBehaviour
 			UISprite uisprite14 = this.ClubShadow[3];
 			uisprite14.color = new Color(uisprite14.color.r, uisprite14.color.g, uisprite14.color.b, 0.75f);
 		}
-		if (ClubGlobals.Club != this.Yandere.TargetStudent.Club)
+		if (this.Yandere.Club != this.Yandere.TargetStudent.Club)
 		{
 			UISprite uisprite15 = this.ClubShadow[2];
 			uisprite15.color = new Color(uisprite15.color.r, uisprite15.color.g, uisprite15.color.b, 0f);
@@ -815,7 +815,7 @@ public class DialogueWheelScript : MonoBehaviour
 		if (this.Yandere.TargetStudent.StudentID == 51)
 		{
 			int num = 4;
-			if (ClubGlobals.Club != ClubType.LightMusic || this.PracticeWindow.PlayedRhythmMinigame)
+			if (this.Yandere.Club != ClubType.LightMusic || this.PracticeWindow.PlayedRhythmMinigame)
 			{
 				num = 0;
 			}
@@ -928,7 +928,7 @@ public class DialogueWheelScript : MonoBehaviour
 		{
 			this.Yandere.TargetStudent.TaskPhase = 5;
 		}
-		if (ClubGlobals.Club == ClubType.Delinquent)
+		if (this.Yandere.Club == ClubType.Delinquent)
 		{
 			this.Text[6] = "Intimidate";
 			return;

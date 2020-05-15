@@ -4,13 +4,20 @@ using UnityEngine.SceneManagement;
 
 public class AntiCheatScript : MonoBehaviour
 {
+	public AudioSource MyAudio;
+
 	public GameObject Jukebox;
 
 	public bool Check;
 
+	private void Start()
+	{
+		this.MyAudio = base.GetComponent<AudioSource>();
+	}
+
 	private void Update()
 	{
-		if (this.Check && !base.GetComponent<AudioSource>().isPlaying)
+		if (this.Check && !this.MyAudio.isPlaying)
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
@@ -22,7 +29,7 @@ public class AntiCheatScript : MonoBehaviour
 		{
 			this.Jukebox.SetActive(false);
 			this.Check = true;
-			base.GetComponent<AudioSource>().Play();
+			this.MyAudio.Play();
 		}
 	}
 }

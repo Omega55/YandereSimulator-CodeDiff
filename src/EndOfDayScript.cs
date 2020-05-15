@@ -1076,9 +1076,9 @@ public class EndOfDayScript : MonoBehaviour
 									ClubGlobals.SetClubClosed(this.ClubArray[this.ClubID], true);
 									this.Label.text = "The " + this.ClubNames[this.ClubID].ToString() + " no longer has enough members to remain operational. The school forces the club to disband.";
 									this.ClubClosed = true;
-									if (ClubGlobals.Club == this.ClubArray[this.ClubID])
+									if (this.Yandere.Club == this.ClubArray[this.ClubID])
 									{
-										ClubGlobals.Club = ClubType.None;
+										this.Yandere.Club = ClubType.None;
 									}
 								}
 								if (this.ClubManager.LeaderMissing)
@@ -1096,9 +1096,9 @@ public class EndOfDayScript : MonoBehaviour
 										" cannot operate without its leader. The club disbands."
 									});
 									this.ClubClosed = true;
-									if (ClubGlobals.Club == this.ClubArray[this.ClubID])
+									if (this.Yandere.Club == this.ClubArray[this.ClubID])
 									{
-										ClubGlobals.Club = ClubType.None;
+										this.Yandere.Club = ClubType.None;
 									}
 								}
 								else if (this.ClubManager.LeaderDead)
@@ -1116,9 +1116,9 @@ public class EndOfDayScript : MonoBehaviour
 										" cannot operate without its leader. The club disbands."
 									});
 									this.ClubClosed = true;
-									if (ClubGlobals.Club == this.ClubArray[this.ClubID])
+									if (this.Yandere.Club == this.ClubArray[this.ClubID])
 									{
-										ClubGlobals.Club = ClubType.None;
+										this.Yandere.Club = ClubType.None;
 									}
 								}
 								else if (this.ClubManager.LeaderAshamed)
@@ -1130,13 +1130,13 @@ public class EndOfDayScript : MonoBehaviour
 									this.Label.text = "The leader of the " + this.ClubNames[this.ClubID].ToString() + " has unexpectedly disbanded the club without explanation.";
 									this.ClubClosed = true;
 									this.ClubManager.LeaderAshamed = false;
-									if (ClubGlobals.Club == this.ClubArray[this.ClubID])
+									if (this.Yandere.Club == this.ClubArray[this.ClubID])
 									{
-										ClubGlobals.Club = ClubType.None;
+										this.Yandere.Club = ClubType.None;
 									}
 								}
 							}
-							if (!ClubGlobals.GetClubClosed(this.ClubArray[this.ClubID]) && !ClubGlobals.GetClubKicked(this.ClubArray[this.ClubID]) && ClubGlobals.Club == this.ClubArray[this.ClubID])
+							if (!ClubGlobals.GetClubClosed(this.ClubArray[this.ClubID]) && !ClubGlobals.GetClubKicked(this.ClubArray[this.ClubID]) && this.Yandere.Club == this.ClubArray[this.ClubID])
 							{
 								this.ClubManager.CheckGrudge(this.ClubArray[this.ClubID]);
 								if (this.ClubManager.LeaderGrudge)
@@ -1155,7 +1155,7 @@ public class EndOfDayScript : MonoBehaviour
 										" room."
 									});
 									ClubGlobals.SetClubKicked(this.ClubArray[this.ClubID], true);
-									ClubGlobals.Club = ClubType.None;
+									this.Yandere.Club = ClubType.None;
 									this.ClubKicked = true;
 								}
 								else if (this.ClubManager.ClubGrudge)
@@ -1176,7 +1176,7 @@ public class EndOfDayScript : MonoBehaviour
 										" room."
 									});
 									ClubGlobals.SetClubKicked(this.ClubArray[this.ClubID], true);
-									ClubGlobals.Club = ClubType.None;
+									this.Yandere.Club = ClubType.None;
 									this.ClubKicked = true;
 								}
 							}
@@ -1500,6 +1500,7 @@ public class EndOfDayScript : MonoBehaviour
 			GameGlobals.RivalEliminationID = 5;
 		}
 		PlayerGlobals.Reputation = this.Reputation.Reputation;
+		ClubGlobals.Club = this.Yandere.Club;
 		StudentGlobals.MemorialStudents = 0;
 		HomeGlobals.Night = true;
 		this.Police.KillStudents();

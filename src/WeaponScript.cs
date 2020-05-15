@@ -43,6 +43,8 @@ public class WeaponScript : MonoBehaviour
 
 	public Rigidbody MyRigidbody;
 
+	public AudioSource MyAudio;
+
 	public Collider MyCollider;
 
 	public Renderer MyRenderer;
@@ -155,10 +157,10 @@ public class WeaponScript : MonoBehaviour
 		{
 			this.MyCollider.enabled = false;
 		}
-		AudioSource component = base.GetComponent<AudioSource>();
-		if (component != null)
+		this.MyAudio = base.GetComponent<AudioSource>();
+		if (this.MyAudio != null)
 		{
-			this.OriginalClip = component.clip;
+			this.OriginalClip = this.MyAudio.clip;
 		}
 		this.MyRigidbody = base.GetComponent<Rigidbody>();
 		this.MyRigidbody.isKinematic = true;
@@ -638,33 +640,32 @@ public class WeaponScript : MonoBehaviour
 		if (this.WeaponID == 8)
 		{
 			base.gameObject.GetComponent<ParticleSystem>().Play();
-			base.GetComponent<AudioSource>().clip = this.OriginalClip;
-			base.GetComponent<AudioSource>().Play();
+			this.MyAudio.clip = this.OriginalClip;
+			this.MyAudio.Play();
 			return;
 		}
 		if (this.WeaponID == 2 || this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 13)
 		{
-			base.GetComponent<AudioSource>().Play();
+			this.MyAudio.Play();
 			return;
 		}
 		if (this.WeaponID == 14)
 		{
 			UnityEngine.Object.Instantiate<GameObject>(this.HeartBurst, this.Yandere.TargetStudent.Head.position, Quaternion.identity);
-			base.GetComponent<AudioSource>().Play();
+			this.MyAudio.Play();
 		}
 	}
 
 	public void Dismember()
 	{
-		AudioSource component = base.GetComponent<AudioSource>();
-		component.clip = this.DismemberClip;
-		component.Play();
+		this.MyAudio.clip = this.DismemberClip;
+		this.MyAudio.Play();
 		this.Dismembering = true;
 	}
 
 	public void SuspicionCheck()
 	{
-		if ((this.WeaponID == 9 && ClubGlobals.Club == ClubType.Sports) || (this.WeaponID == 10 && ClubGlobals.Club == ClubType.Gardening) || (this.WeaponID == 12 && ClubGlobals.Club == ClubType.Sports) || (this.WeaponID == 25 && ClubGlobals.Club == ClubType.LightMusic))
+		if ((this.WeaponID == 9 && this.Yandere.Club == ClubType.Sports) || (this.WeaponID == 10 && this.Yandere.Club == ClubType.Gardening) || (this.WeaponID == 12 && this.Yandere.Club == ClubType.Sports) || (this.WeaponID == 25 && this.Yandere.Club == ClubType.LightMusic) || (this.WeaponID == 14 && this.Yandere.Club == ClubType.Drama) || (this.WeaponID == 14 && this.Yandere.Club == ClubType.Drama) || (this.WeaponID == 22 && this.Yandere.Club == ClubType.Drama))
 		{
 			this.Suspicious = false;
 		}

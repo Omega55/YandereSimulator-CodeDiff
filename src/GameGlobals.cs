@@ -39,6 +39,8 @@ public static class GameGlobals
 
 	private const string Str_PoliceYesterday = "PoliceYesterday";
 
+	private const string Str_DarkEnding = "DarkEnding";
+
 	public static int Profile
 	{
 		get
@@ -255,6 +257,18 @@ public static class GameGlobals
 		}
 	}
 
+	public static bool DarkEnding
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_DarkEnding");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_DarkEnding", value);
+		}
+	}
+
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_LoveSick");
@@ -273,6 +287,7 @@ public static class GameGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_AnswerSheetUnavailable");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_AlphabetMode");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_PoliceYesterday");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_DarkEnding");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_MostRecentSlot");
 	}
 }

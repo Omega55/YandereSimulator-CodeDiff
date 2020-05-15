@@ -74,6 +74,8 @@ public class ArmDetectorScript : MonoBehaviour
 
 	public AudioClip EmptyDemonLine;
 
+	public AudioSource MyAudio;
+
 	private void Start()
 	{
 		this.DemonDress.SetActive(false);
@@ -81,7 +83,6 @@ public class ArmDetectorScript : MonoBehaviour
 
 	private void Update()
 	{
-		AudioSource component = base.GetComponent<AudioSource>();
 		if (!this.SummonDemon)
 		{
 			for (int i = 1; i < this.ArmArray.Length; i++)
@@ -102,7 +103,7 @@ public class ArmDetectorScript : MonoBehaviour
 				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.CanMove = false;
 				this.SummonDemon = true;
-				component.Play();
+				this.MyAudio.Play();
 				this.Arms = 0;
 			}
 		}
@@ -129,7 +130,7 @@ public class ArmDetectorScript : MonoBehaviour
 				this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 				this.Yandere.CanMove = false;
 				this.SummonFlameDemon = true;
-				component.Play();
+				this.MyAudio.Play();
 			}
 		}
 		if (!this.SummonEmptyDemon && this.Bodies > 10 && !this.Yandere.Chased && this.Yandere.Chasers == 0)
@@ -137,7 +138,7 @@ public class ArmDetectorScript : MonoBehaviour
 			this.Yandere.Character.GetComponent<Animation>().CrossFade(this.Yandere.IdleAnim);
 			this.Yandere.CanMove = false;
 			this.SummonEmptyDemon = true;
-			component.Play();
+			this.MyAudio.Play();
 		}
 		if (this.SummonDemon)
 		{
@@ -177,8 +178,8 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Skull.Prompt.Hide();
 					this.Skull.Prompt.enabled = false;
 					this.Skull.enabled = false;
-					component.clip = this.DemonLine;
-					component.Play();
+					this.MyAudio.clip = this.DemonLine;
+					this.MyAudio.Play();
 					this.Phase++;
 				}
 			}
@@ -197,9 +198,9 @@ public class ArmDetectorScript : MonoBehaviour
 				this.DemonSubtitle.color = new Color(this.DemonSubtitle.color.r, this.DemonSubtitle.color.g, this.DemonSubtitle.color.b, Mathf.MoveTowards(this.DemonSubtitle.color.a, 0f, Time.deltaTime));
 				if (this.DemonSubtitle.color.a == 0f)
 				{
-					component.clip = this.DemonMusic;
-					component.loop = true;
-					component.Play();
+					this.MyAudio.clip = this.DemonMusic;
+					this.MyAudio.loop = true;
+					this.MyAudio.Play();
 					this.DemonSubtitle.text = string.Empty;
 					this.Phase++;
 				}
@@ -274,8 +275,8 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Skull.Prompt.Hide();
 					this.Skull.Prompt.enabled = false;
 					this.Skull.enabled = false;
-					component.clip = this.FlameDemonLine;
-					component.Play();
+					this.MyAudio.clip = this.FlameDemonLine;
+					this.MyAudio.Play();
 					this.Phase++;
 				}
 			}
@@ -304,9 +305,9 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Yandere.MyRenderer.materials[1].mainTexture = this.Yandere.NudePanties;
 					this.Yandere.MyRenderer.materials[2].mainTexture = this.Yandere.NudePanties;
 					this.DebugMenu.UpdateCensor();
-					component.clip = this.DemonMusic;
-					component.loop = true;
-					component.Play();
+					this.MyAudio.clip = this.DemonMusic;
+					this.MyAudio.loop = true;
+					this.MyAudio.Play();
 					this.DemonSubtitle.text = string.Empty;
 					this.Phase++;
 				}
@@ -325,7 +326,7 @@ public class ArmDetectorScript : MonoBehaviour
 				this.Timer += Time.deltaTime;
 				if (this.Timer > 5f)
 				{
-					component.PlayOneShot(this.FlameActivate);
+					this.MyAudio.PlayOneShot(this.FlameActivate);
 					this.RightFlame.SetActive(true);
 					this.LeftFlame.SetActive(true);
 					this.Phase++;
@@ -381,8 +382,8 @@ public class ArmDetectorScript : MonoBehaviour
 					this.Skull.Prompt.Hide();
 					this.Skull.Prompt.enabled = false;
 					this.Skull.enabled = false;
-					component.clip = this.EmptyDemonLine;
-					component.Play();
+					this.MyAudio.clip = this.EmptyDemonLine;
+					this.MyAudio.Play();
 					this.Phase++;
 					return;
 				}

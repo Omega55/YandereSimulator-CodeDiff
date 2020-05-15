@@ -194,6 +194,7 @@ public class GazerEyesScript : MonoBehaviour
 		Target.CharacterAnimation[Target.ElectroAnim].speed = 0.85f;
 		Target.CharacterAnimation[Target.ElectroAnim].time = 2f;
 		Target.CharacterAnimation.CrossFade(Target.ElectroAnim);
+		Target.CharacterAnimation[Target.WetAnim].weight = 0f;
 		Target.Pathfinding.canSearch = false;
 		Target.Pathfinding.canMove = false;
 		Target.EatingSnack = false;
@@ -212,7 +213,6 @@ public class GazerEyesScript : MonoBehaviour
 		Target.tag = "Blood";
 		Target.Ragdoll.ElectrocutionAnimation = true;
 		Target.Ragdoll.Disturbing = true;
-		Target.Dying = true;
 		Target.MurderSuicidePhase = 100;
 		Target.SpawnAlarmDisc();
 		GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.StudentManager.LightSwitch.Electricity, Target.transform.position, Quaternion.identity);

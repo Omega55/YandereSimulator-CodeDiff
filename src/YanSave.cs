@@ -14,6 +14,10 @@ public static class YanSave
 {
 	public const string SAVE_EXTENSION = "yansave";
 
+	public static Action OnLoad;
+
+	public static Action OnSave;
+
 	private static Dictionary<Type, PropertyInfo[]> PropertyCache = new Dictionary<Type, PropertyInfo[]>();
 
 	private static Dictionary<Type, FieldInfo[]> FieldCache = new Dictionary<Type, FieldInfo[]>();
@@ -234,6 +238,12 @@ public static class YanSave
 			Directory.CreateDirectory(YanSave.SaveDataPath);
 		}
 		File.WriteAllText(Path.Combine(YanSave.SaveDataPath, targetSave + ".yansave"), contents);
+		Action onSave = YanSave.OnSave;
+		if (onSave == null)
+		{
+			return;
+		}
+		onSave();
 	}
 
 	public static void LoadData(string targetSave, bool recreateMissing = false)
@@ -489,6 +499,12 @@ public static class YanSave
 				}
 			}
 		}
+		Action onLoad = YanSave.OnLoad;
+		if (onLoad == null)
+		{
+			return;
+		}
+		onLoad();
 	}
 
 	public static void RemoveData(string targetSave)

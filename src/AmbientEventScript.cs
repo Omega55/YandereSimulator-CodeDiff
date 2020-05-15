@@ -9,6 +9,8 @@ public class AmbientEventScript : MonoBehaviour
 
 	public AmbientEventScript PoliceReaction;
 
+	public HidingSpotScript HidingSpot;
+
 	public UILabel EventSubtitle;
 
 	public YandereScript Yandere;
@@ -112,6 +114,14 @@ public class AmbientEventScript : MonoBehaviour
 			}
 			if (this.Clock.HourTime > this.StartTime && this.EventStudent[1] != null && this.EventStudent[2] != null && this.EventStudent[1].Indoors && this.EventStudent[2].Indoors && this.EventStudent[1].Pathfinding.canMove && this.EventStudent[2].Pathfinding.canMove)
 			{
+				if (this.Sitting && this.Yandere.Hiding && this.Yandere.HidingSpot == this.HidingSpot.Spot)
+				{
+					this.Yandere.PromptBar.ClearButtons();
+					this.Yandere.PromptBar.Show = false;
+					this.Yandere.Exiting = true;
+					this.HidingSpot.Prompt.enabled = false;
+					this.HidingSpot.Prompt.Hide();
+				}
 				this.EventStudent[1].CharacterAnimation.CrossFade(this.EventStudent[1].WalkAnim);
 				this.EventStudent[1].CurrentDestination = this.EventLocation[1];
 				this.EventStudent[1].Pathfinding.target = this.EventLocation[1];
@@ -297,6 +307,10 @@ public class AmbientEventScript : MonoBehaviour
 		if (!this.StudentManager.Stop)
 		{
 			this.StudentManager.UpdateStudents(0);
+		}
+		if (this.HidingSpot != null)
+		{
+			this.HidingSpot.Prompt.enabled = true;
 		}
 		this.EventSubtitle.text = string.Empty;
 		this.Yandere.Eavesdropping = false;

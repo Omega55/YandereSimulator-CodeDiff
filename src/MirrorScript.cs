@@ -18,7 +18,7 @@ public class MirrorScript : MonoBehaviour
 	private void Start()
 	{
 		this.Limit = this.Idles.Length - 1;
-		if (ClubGlobals.Club == ClubType.Delinquent)
+		if (this.Prompt.Yandere.Club == ClubType.Delinquent)
 		{
 			this.ID = 10;
 			if (this.Prompt.Yandere.Persona != YanderePersonaType.Tough)

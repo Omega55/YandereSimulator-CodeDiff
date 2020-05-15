@@ -561,6 +561,7 @@ public class ShutterScript : MonoBehaviour
 		{
 			direction = this.SelfieRayParent.TransformDirection(Vector3.forward);
 		}
+		this.StudentManager.UpdateSkirts(true);
 		if (Physics.Raycast(this.SmartphoneCamera.transform.position, direction, out this.hit, float.PositiveInfinity, this.OnlyPhotography))
 		{
 			Debug.Log("Took a picture of " + this.hit.collider.gameObject.name);
@@ -656,6 +657,7 @@ public class ShutterScript : MonoBehaviour
 			this.PhotoDescLabel.text = "Photo of: Blood";
 			this.ViolenceX.SetActive(false);
 		}
+		this.StudentManager.UpdateSkirts(false);
 	}
 
 	private void SpawnMessage()

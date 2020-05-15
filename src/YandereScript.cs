@@ -385,6 +385,8 @@ public class YandereScript : MonoBehaviour
 
 	public float TargetHeight;
 
+	public float PermitLaugh;
+
 	public float ReachWeight;
 
 	public float BreastSize;
@@ -476,6 +478,8 @@ public class YandereScript : MonoBehaviour
 	public YandereInteractionType Interaction;
 
 	public YanderePersonaType Persona;
+
+	public ClubType Club;
 
 	public bool EavesdropWarning;
 
@@ -1405,6 +1409,8 @@ public class YandereScript : MonoBehaviour
 	{
 		this.PhysicalGrade = ClassGlobals.PhysicalGrade;
 		this.SpeedBonus = PlayerGlobals.SpeedBonus;
+		this.Club = ClubGlobals.Club;
+		Debug.Log("ClubGlobals.Club is: " + ClubGlobals.Club);
 		this.SanitySmudges.color = new Color(1f, 1f, 1f, 0f);
 		this.SpiderLegs.SetActive(GameGlobals.EmptyDemon);
 		this.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
@@ -2283,9 +2289,11 @@ public class YandereScript : MonoBehaviour
 						}
 						Time.timeScale = 1f;
 						this.UpdateSelfieStatus();
+						this.StudentManager.UpdatePanties(true);
 					}
 				}
-				if (!this.Aiming && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy && !this.Pod.activeInHierarchy)
+				this.PermitLaugh += Time.deltaTime;
+				if (!this.Aiming && !this.Accessories[9].activeInHierarchy && !this.Accessories[16].activeInHierarchy && !this.Pod.activeInHierarchy && this.PermitLaugh > 1f)
 				{
 					if (Input.GetButton("RB"))
 					{
@@ -3372,15 +3380,15 @@ public class YandereScript : MonoBehaviour
 			}
 			if (this.ClubActivity)
 			{
-				if (ClubGlobals.Club == ClubType.Drama)
+				if (this.Club == ClubType.Drama)
 				{
 					this.CharacterAnimation.Play("f02_performing_00");
 				}
-				else if (ClubGlobals.Club == ClubType.Art)
+				else if (this.Club == ClubType.Art)
 				{
 					this.CharacterAnimation.Play("f02_painting_00");
 				}
-				else if (ClubGlobals.Club == ClubType.MartialArts)
+				else if (this.Club == ClubType.MartialArts)
 				{
 					this.CharacterAnimation.Play("f02_kick_23");
 					if (this.CharacterAnimation["f02_kick_23"].time >= this.CharacterAnimation["f02_kick_23"].length)
@@ -3388,11 +3396,11 @@ public class YandereScript : MonoBehaviour
 						this.CharacterAnimation["f02_kick_23"].time = 0f;
 					}
 				}
-				else if (ClubGlobals.Club == ClubType.Photography)
+				else if (this.Club == ClubType.Photography)
 				{
 					this.CharacterAnimation.Play("f02_sit_00");
 				}
-				else if (ClubGlobals.Club == ClubType.Gaming)
+				else if (this.Club == ClubType.Gaming)
 				{
 					this.CharacterAnimation.Play("f02_playingGames_00");
 				}
@@ -4794,13 +4802,13 @@ public class YandereScript : MonoBehaviour
 				if (this.Interaction == YandereInteractionType.FollowMe)
 				{
 					int num = 0;
-					if (ClubGlobals.Club == ClubType.Delinquent)
+					if (this.Club == ClubType.Delinquent)
 					{
 						num++;
 					}
 					if (this.TalkTimer == 3f)
 					{
-						if (ClubGlobals.Club == ClubType.Delinquent)
+						if (this.Club == ClubType.Delinquent)
 						{
 							this.TalkAnim = "f02_delinquentGesture_01";
 						}
@@ -4834,13 +4842,13 @@ public class YandereScript : MonoBehaviour
 				if (this.Interaction == YandereInteractionType.GoAway)
 				{
 					int num2 = 0;
-					if (ClubGlobals.Club == ClubType.Delinquent)
+					if (this.Club == ClubType.Delinquent)
 					{
 						num2++;
 					}
 					if (this.TalkTimer == 3f)
 					{
-						if (ClubGlobals.Club == ClubType.Delinquent)
+						if (this.Club == ClubType.Delinquent)
 						{
 							this.TalkAnim = "f02_delinquentGesture_01";
 						}
@@ -4874,13 +4882,13 @@ public class YandereScript : MonoBehaviour
 				if (this.Interaction == YandereInteractionType.DistractThem)
 				{
 					int num3 = 0;
-					if (ClubGlobals.Club == ClubType.Delinquent)
+					if (this.Club == ClubType.Delinquent)
 					{
 						num3++;
 					}
 					if (this.TalkTimer == 3f)
 					{
-						if (ClubGlobals.Club == ClubType.Delinquent)
+						if (this.Club == ClubType.Delinquent)
 						{
 							this.TalkAnim = "f02_delinquentGesture_01";
 						}
@@ -6244,6 +6252,7 @@ public class YandereScript : MonoBehaviour
 		this.Aiming = false;
 		this.Selfie = false;
 		this.Lewd = false;
+		this.StudentManager.UpdatePanties(false);
 	}
 
 	public void FixCamera()
@@ -7678,7 +7687,7 @@ public class YandereScript : MonoBehaviour
 		if (!this.ClubAttire)
 		{
 			this.ClubAttire = true;
-			if (ClubGlobals.Club == ClubType.Art)
+			if (this.Club == ClubType.Art)
 			{
 				this.MyRenderer.sharedMesh = this.ApronMesh;
 				this.MyRenderer.materials[0].mainTexture = this.ApronTexture;
@@ -7687,7 +7696,7 @@ public class YandereScript : MonoBehaviour
 				this.Schoolwear = 4;
 				this.Paint = true;
 			}
-			else if (ClubGlobals.Club == ClubType.MartialArts)
+			else if (this.Club == ClubType.MartialArts)
 			{
 				this.MyRenderer.sharedMesh = this.JudoGiMesh;
 				this.MyRenderer.materials[0].mainTexture = this.JudoGiTexture;
@@ -7695,7 +7704,7 @@ public class YandereScript : MonoBehaviour
 				this.MyRenderer.materials[2].mainTexture = this.FaceTexture;
 				this.Schoolwear = 5;
 			}
-			else if (ClubGlobals.Club == ClubType.Science)
+			else if (this.Club == ClubType.Science)
 			{
 				this.LabcoatAttacher.enabled = true;
 				this.MyRenderer.sharedMesh = this.HeadAndHands;
@@ -7729,9 +7738,9 @@ public class YandereScript : MonoBehaviour
 			}
 			this.ID++;
 		}
-		if (!this.CensorSteam[0].activeInHierarchy && ClubGlobals.Club > ClubType.None && this.ClubAccessories[(int)ClubGlobals.Club] != null)
+		if (!this.CensorSteam[0].activeInHierarchy && this.Club > ClubType.None && this.ClubAccessories[(int)this.Club] != null)
 		{
-			this.ClubAccessories[(int)ClubGlobals.Club].SetActive(true);
+			this.ClubAccessories[(int)this.Club].SetActive(true);
 		}
 	}
 

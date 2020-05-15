@@ -393,7 +393,7 @@ public class TalkingScript : MonoBehaviour
 						else
 						{
 							int num = 0;
-							if (ClubGlobals.Club == ClubType.Delinquent)
+							if (this.S.Yandere.Club == ClubType.Delinquent)
 							{
 								this.S.Reputation.PendingRep -= 10f;
 								this.S.PendingRep -= 10f;
@@ -432,7 +432,7 @@ public class TalkingScript : MonoBehaviour
 								this.S.StudentManager.LoveManager.Follower = this.S;
 							}
 							this.S.FollowCountdown.Sprite.fillAmount = 1f;
-							if (ClubGlobals.Club != ClubType.Delinquent)
+							if (this.S.Yandere.Club != ClubType.Delinquent)
 							{
 								this.S.FollowCountdown.Speed = 1f / (35f + this.S.Reputation.Reputation * 0.25f);
 							}
@@ -472,7 +472,7 @@ public class TalkingScript : MonoBehaviour
 						else
 						{
 							int num2 = 0;
-							if (ClubGlobals.Club == ClubType.Delinquent)
+							if (this.S.Yandere.Club == ClubType.Delinquent)
 							{
 								this.S.Reputation.PendingRep -= 10f;
 								this.S.PendingRep -= 10f;
@@ -527,7 +527,7 @@ public class TalkingScript : MonoBehaviour
 							if (studentScript.Routine && !studentScript.TargetedForDistraction && !studentScript.InEvent && !this.Grudge && studentScript.Indoors && studentScript.gameObject.activeInHierarchy && studentScript.ClubActivityPhase < 16 && studentScript.CurrentAction != StudentActionType.Sunbathe && studentScript.FollowTarget == null)
 							{
 								int num3 = 0;
-								if (ClubGlobals.Club == ClubType.Delinquent)
+								if (this.S.Yandere.Club == ClubType.Delinquent)
 								{
 									this.S.Reputation.PendingRep -= 10f;
 									this.S.PendingRep -= 10f;
@@ -887,7 +887,7 @@ public class TalkingScript : MonoBehaviour
 					if (this.S.TalkTimer <= 0f)
 					{
 						this.S.ClubManager.DeactivateClubBenefit();
-						ClubGlobals.Club = ClubType.None;
+						this.S.Yandere.Club = ClubType.None;
 						this.S.DialogueWheel.End();
 						this.S.Yandere.ClubAccessory();
 					}

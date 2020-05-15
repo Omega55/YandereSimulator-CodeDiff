@@ -131,6 +131,8 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	public AudioSource Jukebox;
 
+	public AudioSource MyAudio;
+
 	public AudioClip[] InfoLines;
 
 	public bool[] InfoSpoke;
@@ -245,7 +247,6 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void Update()
 	{
-		AudioSource component = base.GetComponent<AudioSource>();
 		if (this.Phase == 1)
 		{
 			this.Speed += Time.deltaTime;
@@ -258,7 +259,7 @@ public class MissionModeMenuScript : MonoBehaviour
 				{
 					if (!this.InfoSpoke[0])
 					{
-						component.PlayOneShot(this.InfoLines[0]);
+						this.MyAudio.PlayOneShot(this.InfoLines[0]);
 						this.InfoSpoke[0] = true;
 					}
 					this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, Mathf.Lerp(this.InfoChan.localEulerAngles.y, 180f, Time.deltaTime * (this.Speed - 3f)), this.InfoChan.localEulerAngles.z);
@@ -298,7 +299,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			{
 				if (!this.InfoSpoke[0])
 				{
-					component.PlayOneShot(this.InfoLines[0]);
+					this.MyAudio.PlayOneShot(this.InfoLines[0]);
 					this.InfoSpoke[0] = true;
 				}
 				this.InfoChan.localEulerAngles = new Vector3(this.InfoChan.localEulerAngles.x, 180f, this.InfoChan.localEulerAngles.z);
@@ -355,7 +356,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			{
 				if (!this.InfoSpoke[this.Selected])
 				{
-					component.PlayOneShot(this.InfoLines[this.Selected]);
+					this.MyAudio.PlayOneShot(this.InfoLines[this.Selected]);
 					this.InfoSpoke[this.Selected] = true;
 				}
 				if (this.Selected == 1)
@@ -569,7 +570,7 @@ public class MissionModeMenuScript : MonoBehaviour
 			Transform parent = this.Option[1].parent;
 			parent.localPosition = new Vector3(parent.localPosition.x - this.Speed * 1000f * Time.deltaTime, parent.localPosition.y, parent.localPosition.z);
 			base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y, base.transform.position.z - this.Speed * Time.deltaTime);
-			this.Jukebox.GetComponent<AudioSource>().volume -= Time.deltaTime;
+			this.Jukebox.volume -= Time.deltaTime;
 			this.Header.color = new Color(this.Header.color.r, this.Header.color.g, this.Header.color.b, this.Header.color.a - Time.deltaTime);
 			if (this.Darkness.color.a == 1f)
 			{
@@ -1446,7 +1447,7 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void StartMission()
 	{
-		base.GetComponent<AudioSource>().PlayOneShot(this.InfoLines[6]);
+		this.MyAudio.PlayOneShot(this.InfoLines[6]);
 		Globals.DeleteAll();
 		OptionGlobals.TutorialsOff = true;
 		SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;

@@ -91,146 +91,156 @@ public class AlarmDiscScript : MonoBehaviour
 		if (other.gameObject.layer == 9)
 		{
 			this.Student = other.gameObject.GetComponent<StudentScript>();
-			if (this.Student != null && this.Student.enabled && this.Student.DistractionSpot != new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z))
+			if (this.Student != null)
 			{
-				UnityEngine.Object.Destroy(this.Student.Giggle);
-				this.Student.InvestigationTimer = 0f;
-				this.Student.InvestigationPhase = 0;
-				this.Student.Investigating = false;
-				this.Student.DiscCheck = false;
-				this.Student.VisionDistance += 1f;
-				this.Student.ChalkDust.Stop();
-				this.Student.CleanTimer = 0f;
-				if (!this.Radio)
+				Debug.Log("Student's ''Hurry'' is: " + this.Student.Hurry.ToString());
+				if (this.Student.enabled && this.Student.DistractionSpot != new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z))
 				{
-					if (this.Student != this.Originator)
+					UnityEngine.Object.Destroy(this.Student.Giggle);
+					this.Student.InvestigationTimer = 0f;
+					this.Student.InvestigationPhase = 0;
+					this.Student.Investigating = false;
+					this.Student.DiscCheck = false;
+					this.Student.VisionDistance += 1f;
+					this.Student.ChalkDust.Stop();
+					this.Student.CleanTimer = 0f;
+					if (!this.Radio)
 					{
-						if (this.Student.Clock.Period == 3 && this.Student.BusyAtLunch)
+						if (this.Student != this.Originator)
 						{
-							this.StudentIsBusy = true;
-						}
-						if ((this.Student.StudentID == 47 || this.Student.StudentID == 49) && this.Student.StudentManager.ConvoManager.Confirmed)
-						{
-							this.StudentIsBusy = true;
-						}
-						if (this.Student.StudentID == this.Student.StudentManager.RivalID || this.Student.StudentID == 1)
-						{
-							StudentActionType currentAction = this.Student.CurrentAction;
-						}
-						if ((!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Guarding && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && !this.Student.Fleeing && !this.Student.Shoving && !this.Student.SentHome && this.Student.ClubActivityPhase < 16 && !this.Student.Vomiting && !this.Student.Lethal && !this.Student.Headache && !this.Student.Sedated && !this.Student.SenpaiWitnessingRivalDie) || (this.Student.Persona == PersonaType.Protective && this.Originator.StudentID == 11))
-						{
-							bool male = this.Student.Male;
-							if (!this.Student.Struggling)
+							if (this.Student.Clock.Period == 3 && this.Student.BusyAtLunch)
 							{
-								this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.LeanAnim);
+								this.StudentIsBusy = true;
 							}
-							if (this.Originator != null)
+							if ((this.Student.StudentID == 47 || this.Student.StudentID == 49) && this.Student.StudentManager.ConvoManager.Confirmed)
 							{
-								if (this.Originator.WitnessedMurder)
+								this.StudentIsBusy = true;
+							}
+							if (this.Student.StudentID == 7 && this.Student.Hurry)
+							{
+								this.Student.Distracted = false;
+							}
+							if (this.Student.StudentID == this.Student.StudentManager.RivalID || this.Student.StudentID == 1)
+							{
+								StudentActionType currentAction = this.Student.CurrentAction;
+							}
+							Debug.Log("An alarm disc has come into contact with: " + this.Student.Name);
+							if ((!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Guarding && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && !this.Student.Fleeing && !this.Student.Shoving && !this.Student.SentHome && this.Student.ClubActivityPhase < 16 && !this.Student.Vomiting && !this.Student.Lethal && !this.Student.Headache && !this.Student.Sedated && !this.Student.SenpaiWitnessingRivalDie) || (this.Student.Persona == PersonaType.Protective && this.Originator.StudentID == 11))
+							{
+								Debug.Log("Nothing is stopping " + this.Student.Name + " from reacting.");
+								bool male = this.Student.Male;
+								if (!this.Student.Struggling)
 								{
-									this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.Yandere.transform.position.y, base.transform.position.z);
+									this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.LeanAnim);
 								}
-								else if (this.Originator.Corpse == null)
+								if (this.Originator != null)
 								{
-									this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
+									if (this.Originator.WitnessedMurder)
+									{
+										this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.Yandere.transform.position.y, base.transform.position.z);
+									}
+									else if (this.Originator.Corpse == null)
+									{
+										this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
+									}
+									else
+									{
+										this.Student.DistractionSpot = new Vector3(this.Originator.Corpse.transform.position.x, this.Student.transform.position.y, this.Originator.Corpse.transform.position.z);
+									}
 								}
 								else
 								{
-									this.Student.DistractionSpot = new Vector3(this.Originator.Corpse.transform.position.x, this.Student.transform.position.y, this.Originator.Corpse.transform.position.z);
+									this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
+								}
+								this.Student.DiscCheck = true;
+								if (this.Shocking)
+								{
+									this.Student.Hesitation = 0.5f;
+								}
+								this.Student.Alarm = 200f;
+								if (!this.NoScream)
+								{
+									this.Student.Giggle = null;
+									this.InvestigateScream();
+								}
+								if (this.FocusOnYandere)
+								{
+									this.Student.FocusOnYandere = true;
+								}
+								if (this.Hesitation != 1f)
+								{
+									this.Student.Hesitation = this.Hesitation;
+								}
+							}
+						}
+					}
+					else
+					{
+						Debug.Log("A student just heard a radio...");
+						if (this.Student.Giggle != null)
+						{
+							this.Student.StopInvestigating();
+						}
+						if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Guarding && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.Headache && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && !this.Student.SentHome && this.Student.Persona != PersonaType.Protective && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
+						{
+							if (this.Student.StudentManager.LockerRoomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.WestBathroomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.EastBathroomArea.bounds.Contains(base.transform.position) || (this.Student.Club != ClubType.Delinquent && this.Student.StudentManager.IncineratorArea.bounds.Contains(base.transform.position)) || this.Student.StudentManager.HeadmasterArea.bounds.Contains(base.transform.position))
+							{
+								this.Student.Yandere.NotificationManager.CustomText = this.Student.Name + " ignored a radio.";
+								if (this.Student.Yandere.NotificationManager.CustomText != this.Student.Yandere.NotificationManager.PreviousText)
+								{
+									this.Student.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 								}
 							}
 							else
 							{
-								this.Student.DistractionSpot = new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z);
-							}
-							this.Student.DiscCheck = true;
-							if (this.Shocking)
-							{
-								this.Student.Hesitation = 0.5f;
-							}
-							this.Student.Alarm = 200f;
-							if (!this.NoScream)
-							{
-								this.Student.Giggle = null;
-								this.InvestigateScream();
-							}
-							if (this.FocusOnYandere)
-							{
-								this.Student.FocusOnYandere = true;
-							}
-							if (this.Hesitation != 1f)
-							{
-								this.Student.Hesitation = this.Hesitation;
-							}
-						}
-					}
-				}
-				else
-				{
-					Debug.Log("A student just heard a radio...");
-					if (this.Student.Giggle != null)
-					{
-						this.Student.StopInvestigating();
-					}
-					if (!this.Student.Nemesis && this.Student.Alive && !this.Student.Dying && !this.Student.Guarding && !this.Student.Alarmed && !this.Student.Wet && !this.Student.Slave && !this.Student.Headache && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.InEvent && !this.Student.Following && !this.Student.Distracting && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && !this.Student.GoAway && this.Student.Routine && !this.Student.CheckingNote && !this.Student.SentHome && this.Student.Persona != PersonaType.Protective && this.Student.CharacterAnimation != null && this.SourceRadio.Victim == null)
-					{
-						if (this.Student.StudentManager.LockerRoomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.WestBathroomArea.bounds.Contains(base.transform.position) || this.Student.StudentManager.EastBathroomArea.bounds.Contains(base.transform.position) || (this.Student.Club != ClubType.Delinquent && this.Student.StudentManager.IncineratorArea.bounds.Contains(base.transform.position)) || this.Student.StudentManager.HeadmasterArea.bounds.Contains(base.transform.position))
-						{
-							this.Student.Yandere.NotificationManager.CustomText = this.Student.Name + " ignored a radio.";
-							if (this.Student.Yandere.NotificationManager.CustomText != this.Student.Yandere.NotificationManager.PreviousText)
-							{
+								Debug.Log(this.Student.Name + " has just been alarmed by a radio!");
+								this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
+								this.Student.Pathfinding.canSearch = false;
+								this.Student.Pathfinding.canMove = false;
+								this.Student.EatingSnack = false;
+								this.Student.Radio = this.SourceRadio;
+								this.Student.TurnOffRadio = true;
+								this.Student.Routine = false;
+								this.Student.GoAway = false;
+								bool flag = false;
+								if (this.Student.Bento.activeInHierarchy && this.Student.StudentID > 1)
+								{
+									flag = true;
+								}
+								this.Student.EmptyHands();
+								if (flag)
+								{
+									GenericBentoScript component = this.Student.Bento.GetComponent<GenericBentoScript>();
+									component.enabled = true;
+									component.Prompt.enabled = true;
+									this.Student.Bento.SetActive(true);
+									this.Student.Bento.transform.parent = this.Student.transform;
+									if (this.Student.Male)
+									{
+										this.Student.Bento.transform.localPosition = new Vector3(0f, 0.4266666f, -0.075f);
+									}
+									else
+									{
+										this.Student.Bento.transform.localPosition = new Vector3(0f, 0.461f, -0.075f);
+									}
+									this.Student.Bento.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+									this.Student.Bento.transform.parent = null;
+								}
+								this.Student.SpeechLines.Stop();
+								this.Student.ChalkDust.Stop();
+								this.Student.CleanTimer = 0f;
+								this.Student.RadioTimer = 0f;
+								this.Student.ReadPhase = 0;
+								this.SourceRadio.Victim = this.Student;
+								if (this.Student.StudentID == 97 && SchemeGlobals.GetSchemeStage(5) == 3)
+								{
+									SchemeGlobals.SetSchemeStage(5, 4);
+									this.Student.Yandere.PauseScreen.Schemes.UpdateInstructions();
+									base.enabled = false;
+								}
+								this.Student.Yandere.NotificationManager.CustomText = this.Student.Name + " hears the radio.";
 								this.Student.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 							}
-						}
-						else
-						{
-							Debug.Log(this.Student.Name + " has just been alarmed by a radio!");
-							this.Student.CharacterAnimation.CrossFade(this.Student.LeanAnim);
-							this.Student.Pathfinding.canSearch = false;
-							this.Student.Pathfinding.canMove = false;
-							this.Student.EatingSnack = false;
-							this.Student.Radio = this.SourceRadio;
-							this.Student.TurnOffRadio = true;
-							this.Student.Routine = false;
-							this.Student.GoAway = false;
-							bool flag = false;
-							if (this.Student.Bento.activeInHierarchy && this.Student.StudentID > 1)
-							{
-								flag = true;
-							}
-							this.Student.EmptyHands();
-							if (flag)
-							{
-								GenericBentoScript component = this.Student.Bento.GetComponent<GenericBentoScript>();
-								component.enabled = true;
-								component.Prompt.enabled = true;
-								this.Student.Bento.SetActive(true);
-								this.Student.Bento.transform.parent = this.Student.transform;
-								if (this.Student.Male)
-								{
-									this.Student.Bento.transform.localPosition = new Vector3(0f, 0.4266666f, -0.075f);
-								}
-								else
-								{
-									this.Student.Bento.transform.localPosition = new Vector3(0f, 0.461f, -0.075f);
-								}
-								this.Student.Bento.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-								this.Student.Bento.transform.parent = null;
-							}
-							this.Student.SpeechLines.Stop();
-							this.Student.ChalkDust.Stop();
-							this.Student.CleanTimer = 0f;
-							this.Student.RadioTimer = 0f;
-							this.Student.ReadPhase = 0;
-							this.SourceRadio.Victim = this.Student;
-							if (this.Student.StudentID == 97 && SchemeGlobals.GetSchemeStage(5) == 3)
-							{
-								SchemeGlobals.SetSchemeStage(5, 4);
-								this.Student.Yandere.PauseScreen.Schemes.UpdateInstructions();
-								base.enabled = false;
-							}
-							this.Student.Yandere.NotificationManager.CustomText = this.Student.Name + " hears the radio.";
-							this.Student.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 						}
 					}
 				}

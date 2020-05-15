@@ -147,7 +147,7 @@ public class ChangingBoothScript : MonoBehaviour
 
 	public void CheckYandereClub()
 	{
-		if (ClubGlobals.Club != this.ClubID)
+		if (this.Yandere.Club != this.ClubID)
 		{
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;

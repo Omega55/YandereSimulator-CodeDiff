@@ -55,8 +55,8 @@ public class RadioScript : MonoBehaviour
 					{
 						this.Prompt.Label[0].text = "     Turn Off";
 						this.MyRenderer.material.mainTexture = this.OnTexture;
-						base.GetComponent<AudioSource>().Play();
 						this.RadioNotes.SetActive(true);
+						this.MyAudio.Play();
 						this.On = true;
 					}
 					else
@@ -103,9 +103,9 @@ public class RadioScript : MonoBehaviour
 			}
 			if (this.Proximity > 0)
 			{
-				if (!base.GetComponent<AudioSource>().isPlaying)
+				if (!this.MyAudio.isPlaying)
 				{
-					base.GetComponent<AudioSource>().Play();
+					this.MyAudio.Play();
 				}
 				float num = Vector3.Distance(this.Prompt.Yandere.transform.position, base.transform.position);
 				if (num < 11f)
@@ -136,9 +136,9 @@ public class RadioScript : MonoBehaviour
 		this.Prompt.enabled = false;
 		this.Prompt.Hide();
 		this.MyRenderer.material.mainTexture = this.OffTexture;
-		base.GetComponent<AudioSource>().Stop();
 		this.RadioNotes.SetActive(false);
 		this.CooldownTimer = 1f;
+		this.MyAudio.Stop();
 		this.Victim = null;
 		this.On = false;
 	}

@@ -69,8 +69,9 @@ public class CreditsScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (DateGlobals.Weekday == DayOfWeek.Sunday)
+		if (DateGlobals.Weekday == DayOfWeek.Sunday || GameGlobals.DarkEnding)
 		{
+			GameGlobals.DarkEnding = false;
 			this.Jukebox.clip = this.DarkCreditsMusic;
 			this.Darkness.color = new Color(0f, 0f, 0f, 0f);
 			this.Speed = 1.1f;

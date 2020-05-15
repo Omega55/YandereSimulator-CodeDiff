@@ -94,7 +94,7 @@ public class GiggleScript : MonoBehaviour
 						{
 							this.Student.SmartPhone.SetActive(false);
 						}
-						else
+						else if (!this.Student.Phoneless)
 						{
 							this.Student.SmartPhone.SetActive(true);
 						}

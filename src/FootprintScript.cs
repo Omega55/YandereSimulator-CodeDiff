@@ -11,7 +11,7 @@ public class FootprintScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.Yandere.Schoolwear == 0 || this.Yandere.Schoolwear == 2 || (this.Yandere.ClubAttire && ClubGlobals.Club == ClubType.MartialArts) || this.Yandere.Hungry || this.Yandere.LucyHelmet.activeInHierarchy)
+		if (this.Yandere.Schoolwear == 0 || this.Yandere.Schoolwear == 2 || (this.Yandere.ClubAttire && this.Yandere.Club == ClubType.MartialArts) || this.Yandere.Hungry || this.Yandere.LucyHelmet.activeInHierarchy)
 		{
 			base.GetComponent<Renderer>().material.mainTexture = this.Footprint;
 		}
