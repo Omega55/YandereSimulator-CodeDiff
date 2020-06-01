@@ -12,11 +12,19 @@ public class PhoneScript : MonoBehaviour
 
 	public AudioClip[] VoiceClips;
 
+	public AudioClip SubtleWhoosh;
+
+	public AudioClip AppInstall;
+
 	public GameObject NewMessage;
 
 	public AudioSource Jukebox;
 
 	public Transform OldMessages;
+
+	public Transform PauseMenu;
+
+	public Transform InfoIcon;
 
 	public Transform Buttons;
 
@@ -56,17 +64,27 @@ public class PhoneScript : MonoBehaviour
 
 	public int[] NonlethalHeight;
 
+	public bool ManuallyAdvance;
+
+	public bool MeetingInfoChan;
+
 	public bool PostElimination;
+
+	public bool ShowPauseMenu;
 
 	public bool FadeOut;
 
 	public bool Auto;
+
+	public float PauseMenuTimer;
 
 	public float AutoLimit;
 
 	public float AutoTimer;
 
 	public float Timer;
+
+	public int PauseMenuPhase;
 
 	public int ID;
 
@@ -104,6 +122,10 @@ public class PhoneScript : MonoBehaviour
 			this.Text = this.OsanaMessages.OsanaTexts;
 			this.Height = this.OsanaMessages.OsanaHeights;
 			EventGlobals.LivingRoom = true;
+		}
+		else
+		{
+			this.MeetingInfoChan = true;
 		}
 		if (GameGlobals.LoveSick)
 		{
@@ -143,25 +165,73 @@ public class PhoneScript : MonoBehaviour
 					}
 				}
 			}
-			if (this.NewMessage != null)
+			if (this.ShowPauseMenu)
 			{
-				this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, Mathf.Lerp(this.Buttons.localPosition.y, 0f, Time.deltaTime * 10f), this.Buttons.localPosition.z);
-				this.AutoTimer += Time.deltaTime;
-				if ((this.Auto && this.AutoTimer > this.VoiceClips[this.ID].length + 1f) || Input.GetButtonDown("A"))
+				this.PauseMenuTimer += Time.deltaTime;
+				if (this.PauseMenuPhase == 0)
 				{
-					this.AutoTimer = 0f;
-					if (this.ID < this.Text.Length - 1)
+					this.PauseMenu.localPosition = Vector3.Lerp(this.PauseMenu.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
+					if (this.PauseMenuTimer > 1f)
 					{
-						this.ID++;
-						this.SpawnMessage();
+						base.GetComponent<AudioSource>().clip = this.AppInstall;
+						base.GetComponent<AudioSource>().Play();
+						this.PauseMenuPhase++;
 					}
-					else
+				}
+				else if (this.PauseMenuPhase == 1)
+				{
+					this.InfoIcon.localScale = Vector3.Lerp(this.InfoIcon.localScale, new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);
+					if (this.PauseMenuTimer > 2f)
 					{
-						this.Darkness.color = new Color(0f, 0f, 0f, 0f);
-						this.FadeOut = true;
-						if (!this.Buttons.gameObject.activeInHierarchy)
+						base.GetComponent<AudioSource>().clip = this.SubtleWhoosh;
+						base.GetComponent<AudioSource>().Play();
+						this.PauseMenuPhase++;
+					}
+				}
+				else if (this.PauseMenuPhase == 2)
+				{
+					this.PauseMenu.localPosition = Vector3.Lerp(this.PauseMenu.localPosition, new Vector3(-500f, 0f, 0f), Time.deltaTime * 10f);
+					if (this.PauseMenuTimer > 3f)
+					{
+						base.GetComponent<AudioSource>().volume = 1f;
+						this.ShowPauseMenu = false;
+						this.ManuallyAdvance = true;
+					}
+				}
+			}
+			else
+			{
+				if (this.NewMessage != null)
+				{
+					this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, Mathf.Lerp(this.Buttons.localPosition.y, 0f, Time.deltaTime * 10f), this.Buttons.localPosition.z);
+					this.AutoTimer += Time.deltaTime;
+					if ((this.Auto && this.AutoTimer > this.VoiceClips[this.ID].length + 1f) || Input.GetButtonDown("A") || this.ManuallyAdvance)
+					{
+						this.ManuallyAdvance = false;
+						if (this.MeetingInfoChan && this.ID == 16 && this.PauseMenuPhase == 0)
 						{
-							this.Darkness.color = new Color(0f, 0f, 0f, 1f);
+							base.GetComponent<AudioSource>().clip = this.SubtleWhoosh;
+							base.GetComponent<AudioSource>().volume = 0.5f;
+							base.GetComponent<AudioSource>().Play();
+							this.ShowPauseMenu = true;
+						}
+						else
+						{
+							this.AutoTimer = 0f;
+							if (this.ID < this.Text.Length - 1)
+							{
+								this.ID++;
+								this.SpawnMessage();
+							}
+							else
+							{
+								this.Darkness.color = new Color(0f, 0f, 0f, 0f);
+								this.FadeOut = true;
+								if (!this.Buttons.gameObject.activeInHierarchy)
+								{
+									this.Darkness.color = new Color(0f, 0f, 0f, 1f);
+								}
+							}
 						}
 					}
 				}
@@ -175,7 +245,7 @@ public class PhoneScript : MonoBehaviour
 		{
 			this.Buttons.localPosition = new Vector3(this.Buttons.localPosition.x, Mathf.Lerp(this.Buttons.localPosition.y, -135f, Time.deltaTime * 10f), this.Buttons.localPosition.z);
 			base.GetComponent<AudioSource>().volume = 1f - this.Darkness.color.a;
-			this.Jukebox.volume = 1f - this.Darkness.color.a;
+			this.Jukebox.volume = 0.25f - this.Darkness.color.a * 0.25f;
 			if (this.Darkness.color.a >= 1f)
 			{
 				if (DateGlobals.Week == 2)

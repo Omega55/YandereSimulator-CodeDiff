@@ -395,6 +395,42 @@ public class StudentInfoScript : MonoBehaviour
 				this.Yandere.RPGCamera.enabled = true;
 				Time.timeScale = 1f;
 			}
+			else if (this.StudentInfoMenu.FiringCouncilMember)
+			{
+				if (this.StudentManager.Students[this.CurrentStudent].Routine && !this.StudentManager.Students[this.CurrentStudent].InEvent && !this.StudentManager.Students[this.CurrentStudent].TargetedForDistraction && this.StudentManager.Students[this.CurrentStudent].ClubActivityPhase < 16 && !this.StudentManager.Students[this.CurrentStudent].MyBento.Tampered)
+				{
+					this.StudentManager.Students[this.CurrentStudent].Persona = PersonaType.Heroic;
+					this.StudentManager.Students[this.CurrentStudent].Club = ClubType.None;
+					this.StudentManager.Students[this.CurrentStudent].CameraReacting = false;
+					this.StudentManager.Students[this.CurrentStudent].SpeechLines.Stop();
+					this.StudentManager.Students[this.CurrentStudent].EmptyHands();
+					this.StudentManager.Students[this.CurrentStudent].IdleAnim = this.StudentManager.Students[this.CurrentStudent].BulliedIdleAnim;
+					this.StudentManager.Students[this.CurrentStudent].WalkAnim = this.StudentManager.Students[this.CurrentStudent].BulliedWalkAnim;
+					this.StudentManager.Students[this.CurrentStudent].Armband.SetActive(false);
+					StudentScript studentScript = this.StudentManager.Students[this.CurrentStudent];
+					ScheduleBlock scheduleBlock = studentScript.ScheduleBlocks[3];
+					scheduleBlock.destination = "LunchSpot";
+					scheduleBlock.action = "Eat";
+					studentScript.GetDestinations();
+					studentScript.CurrentDestination = studentScript.Destinations[studentScript.Phase];
+					studentScript.Pathfinding.target = studentScript.Destinations[studentScript.Phase];
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.gameObject.SetActive(true);
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateList();
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.UpdateDesc();
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.Purchase();
+					this.StudentInfoMenu.FiringCouncilMember = false;
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.TextMessageManager.SpawnMessage(9);
+				}
+				else
+				{
+					this.StudentInfoMenu.PauseScreen.ServiceMenu.TextMessageManager.SpawnMessage(0);
+				}
+				base.gameObject.SetActive(false);
+				this.PromptBar.ClearButtons();
+				this.PromptBar.Label[0].text = string.Empty;
+				this.PromptBar.Label[1].text = "Back";
+				this.PromptBar.UpdateButtons();
+			}
 		}
 		if (Input.GetButtonDown("B"))
 		{

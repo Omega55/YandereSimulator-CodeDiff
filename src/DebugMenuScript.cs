@@ -399,7 +399,7 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.K))
 					{
 						SchoolGlobals.KidnapVictim = 25;
-						StudentGlobals.SetStudentSlave(25);
+						StudentGlobals.StudentSlave = 25;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown(KeyCode.L))
@@ -705,8 +705,8 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.H))
 					{
-						StudentGlobals.SetFragileTarget(31);
-						StudentGlobals.SetStudentFragileSlave(5);
+						StudentGlobals.FragileSlave = 5;
+						StudentGlobals.FragileTarget = 31;
 						SceneManager.LoadScene("LoadingScene");
 					}
 					else if (Input.GetKeyDown(KeyCode.I))

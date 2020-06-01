@@ -51,15 +51,22 @@ public class WoodChipperScript : MonoBehaviour
 			{
 				if (!this.Yandere.PickUp.Bucket.Full)
 				{
-					this.BucketPrompt.HideButton[0] = false;
-					if (this.BucketPrompt.Circle[0].fillAmount == 0f)
+					if (this.Bucket == null)
 					{
-						this.Bucket = this.Yandere.PickUp;
-						this.Yandere.EmptyHands();
-						this.Bucket.transform.eulerAngles = this.BucketPoint.eulerAngles;
-						this.Bucket.transform.position = this.BucketPoint.position;
-						this.Bucket.GetComponent<Rigidbody>().useGravity = false;
-						this.Bucket.MyCollider.enabled = false;
+						this.BucketPrompt.HideButton[0] = false;
+						if (this.BucketPrompt.Circle[0].fillAmount == 0f)
+						{
+							this.Bucket = this.Yandere.PickUp;
+							this.Yandere.EmptyHands();
+							this.Bucket.transform.eulerAngles = this.BucketPoint.eulerAngles;
+							this.Bucket.transform.position = this.BucketPoint.position;
+							this.Bucket.GetComponent<Rigidbody>().useGravity = false;
+							this.Bucket.MyCollider.enabled = false;
+						}
+					}
+					else
+					{
+						this.BucketPrompt.HideButton[0] = true;
 					}
 				}
 				else

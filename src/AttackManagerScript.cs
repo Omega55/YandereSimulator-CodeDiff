@@ -234,6 +234,7 @@ public class AttackManagerScript : MonoBehaviour
 					this.Yandere.NoStainGloves = true;
 					this.Yandere.CanTranq = false;
 					this.Yandere.StainWeapon();
+					this.Yandere.Follower = null;
 					this.Yandere.Followers--;
 					equippedWeapon.Type = WeaponType.Knife;
 				}

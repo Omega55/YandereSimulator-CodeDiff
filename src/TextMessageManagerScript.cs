@@ -57,6 +57,10 @@ public class TextMessageManagerScript : MonoBehaviour
 		{
 			this.MessageHeight = 11;
 		}
+		else if (ServiceID == 9)
+		{
+			this.MessageHeight = 6;
+		}
 		else
 		{
 			this.MessageHeight = 5;

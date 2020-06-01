@@ -28,6 +28,8 @@ public class AlphabetScript : MonoBehaviour
 
 	public GameObject WeaponBag;
 
+	public GameObject Jukebox;
+
 	public UILabel ChallengeFailed;
 
 	public UILabel TargetLabel;
@@ -48,7 +50,7 @@ public class AlphabetScript : MonoBehaviour
 
 	public int[] IDs;
 
-	public AudioSource[] Music;
+	public AudioSource Music;
 
 	private void Start()
 	{
@@ -63,13 +65,14 @@ public class AlphabetScript : MonoBehaviour
 			this.SuperRobot.SetActive(true);
 			this.PuzzleCube.SetActive(true);
 			this.WeaponBag.SetActive(true);
+			this.Jukebox.SetActive(false);
 			ClassGlobals.PhysicalGrade = 5;
+			this.Music.Play();
 			this.UpdateText();
 			return;
 		}
 		this.TargetLabel.transform.parent.gameObject.SetActive(false);
 		this.BombLabel.transform.parent.gameObject.SetActive(false);
-		UnityEngine.Object.Destroy(this.Music[1].transform.parent.gameObject);
 		base.gameObject.SetActive(false);
 		base.enabled = false;
 	}
@@ -120,8 +123,6 @@ public class AlphabetScript : MonoBehaviour
 			if (!this.StudentManager.Students[this.IDs[this.CurrentTarget]].Alive)
 			{
 				this.CurrentTarget++;
-				int num = this.CurrentTarget + 1;
-				int num2 = this.Music.Length;
 				if (this.CurrentTarget > 77)
 				{
 					this.TargetLabel.text = "Challenge Complete!";

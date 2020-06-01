@@ -25,6 +25,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public SelectiveGrayscale SelectiveGreyscale;
 
+	public InterestManagerScript InterestManager;
+
 	public CombatMinigameScript CombatMinigame;
 
 	public DatingMinigameScript DatingMinigame;
@@ -670,15 +672,28 @@ public class StudentManagerScript : MonoBehaviour
 			this.YandereLate = true;
 			Debug.Log("Yandere-chan is late for school!");
 		}
-		if (!this.YandereLate && StudentGlobals.MemorialStudents > 0)
-		{
-			this.Yandere.HUD.alpha = 0f;
-			this.Yandere.HeartCamera.enabled = false;
-		}
 		if (GameGlobals.Profile == 0)
 		{
 			GameGlobals.Profile = 1;
 			PlayerGlobals.Money = 10f;
+		}
+		if (PlayerPrefs.GetInt("LoadingSave") == 1)
+		{
+			int profile = GameGlobals.Profile;
+			int @int = PlayerPrefs.GetInt("SaveSlot");
+			StudentGlobals.MemorialStudents = PlayerPrefs.GetInt(string.Concat(new object[]
+			{
+				"Profile_",
+				profile,
+				"_Slot_",
+				@int,
+				"_MemorialStudents"
+			}));
+		}
+		if (!this.YandereLate && StudentGlobals.MemorialStudents > 0)
+		{
+			this.Yandere.HUD.alpha = 0f;
+			this.Yandere.HeartCamera.enabled = false;
 		}
 		if (!GameGlobals.ReputationsInitialized)
 		{
@@ -745,9 +760,9 @@ public class StudentManagerScript : MonoBehaviour
 			}
 			this.SetAtmosphere();
 			GameGlobals.Paranormal = false;
-			if (StudentGlobals.GetStudentSlave() > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.GetStudentSlave()))
+			if (StudentGlobals.StudentSlave > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.StudentSlave))
 			{
-				int studentSlave = StudentGlobals.GetStudentSlave();
+				int studentSlave = StudentGlobals.StudentSlave;
 				this.ForceSpawn = true;
 				this.SpawnPositions[studentSlave] = this.SlaveSpot;
 				this.SpawnID = studentSlave;
@@ -756,16 +771,16 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[studentSlave].Slave = true;
 				this.SpawnID = 0;
 			}
-			if (StudentGlobals.GetStudentFragileSlave() > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.GetStudentFragileSlave()))
+			if (StudentGlobals.FragileSlave > 0 && !StudentGlobals.GetStudentDead(StudentGlobals.FragileSlave))
 			{
-				int studentFragileSlave = StudentGlobals.GetStudentFragileSlave();
+				int fragileSlave = StudentGlobals.FragileSlave;
 				this.ForceSpawn = true;
-				this.SpawnPositions[studentFragileSlave] = this.FragileSlaveSpot;
-				this.SpawnID = studentFragileSlave;
-				StudentGlobals.SetStudentDead(studentFragileSlave, false);
+				this.SpawnPositions[fragileSlave] = this.FragileSlaveSpot;
+				this.SpawnID = fragileSlave;
+				StudentGlobals.SetStudentDead(fragileSlave, false);
 				this.SpawnStudent(this.SpawnID);
-				this.Students[studentFragileSlave].FragileSlave = true;
-				this.Students[studentFragileSlave].Slave = true;
+				this.Students[fragileSlave].FragileSlave = true;
+				this.Students[fragileSlave].Slave = true;
 				this.SpawnID = 0;
 			}
 			this.NPCsTotal = this.StudentsTotal + this.TeachersTotal;
@@ -2041,7 +2056,7 @@ public class StudentManagerScript : MonoBehaviour
 					studentScript.Slave = false;
 					studentScript.Suicide = true;
 					studentScript.DeathType = DeathType.Mystery;
-					StudentGlobals.SetStudentSlave(studentScript.StudentID);
+					StudentGlobals.StudentSlave = studentScript.StudentID;
 				}
 			}
 			this.ID++;
@@ -2322,7 +2337,6 @@ public class StudentManagerScript : MonoBehaviour
 
 	public void LowerCorpsePosition()
 	{
-		Debug.Log("Corpse's Y position is: " + this.CorpseLocation.position.y);
 		int num;
 		if (this.CorpseLocation.position.y < 2f)
 		{
@@ -2353,7 +2367,6 @@ public class StudentManagerScript : MonoBehaviour
 			num = 12;
 		}
 		this.CorpseLocation.position = new Vector3(this.CorpseLocation.position.x, (float)num, this.CorpseLocation.position.z);
-		Debug.Log("The corpse's height is: " + num);
 	}
 
 	public void LowerBloodPosition()
@@ -3161,7 +3174,6 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		int profile = GameGlobals.Profile;
 		int @int = PlayerPrefs.GetInt("SaveSlot");
-		Debug.Log("At the moment of saving, ClubGlobals.Club is: " + ClubGlobals.Club);
 		this.BloodParent.RecordAllBlood();
 		YanSave.SaveData(string.Concat(new object[]
 		{
@@ -3170,6 +3182,16 @@ public class StudentManagerScript : MonoBehaviour
 			"_Slot_",
 			@int
 		}));
+		PlayerPrefs.SetInt(string.Concat(new object[]
+		{
+			"Profile_",
+			profile,
+			"_Slot_",
+			@int,
+			"_MemorialStudents"
+		}), StudentGlobals.MemorialStudents);
+		Debug.Log("WHILE SAVING PlayerPrefs.GetInt(''Profile_1_StudentDead_4'') is: " + PlayerPrefs.GetInt("Profile_1_StudentDead_4"));
+		Debug.Log("WHILE SAVING StudentGlobals.GetStudentDead(4) is: " + StudentGlobals.GetStudentDead(4).ToString());
 	}
 
 	public void Load()
@@ -3184,7 +3206,6 @@ public class StudentManagerScript : MonoBehaviour
 			"_Slot_",
 			@int
 		}), false);
-		Debug.Log("Upon saving, ClubGlobals.Club is: " + ClubGlobals.Club);
 		Physics.SyncTransforms();
 		this.ID = 1;
 		while (this.ID < 101)
@@ -3222,8 +3243,30 @@ public class StudentManagerScript : MonoBehaviour
 					}
 					if (this.Students[this.ID].ClubAttire)
 					{
+						int clubActivityPhase = this.Students[this.ID].ClubActivityPhase;
 						this.Students[this.ID].ClubAttire = false;
+						if (this.Students[this.ID].ClubActivityPhase > 14)
+						{
+							if (this.Students[this.ID].ClubActivityPhase == 18 || this.Students[this.ID].ClubActivityPhase == 19)
+							{
+								this.Students[this.ID].Destinations[this.Students[this.ID].Phase] = this.Clubs.List[this.ID].GetChild(this.Students[this.ID].ClubActivityPhase - 2);
+								this.Students[this.ID].Destinations[this.Students[this.ID].Phase + 1] = this.Clubs.List[this.ID].GetChild(this.Students[this.ID].ClubActivityPhase - 2);
+								this.Students[this.ID].CurrentDestination = this.Clubs.List[this.ID].GetChild(this.Students[this.ID].ClubActivityPhase - 2);
+								this.Students[this.ID].Pathfinding.target = this.Clubs.List[this.ID].GetChild(this.Students[this.ID].ClubActivityPhase - 2);
+								this.Students[this.ID].Character.transform.localPosition = new Vector3(0f, -0.25f, 0f);
+								this.Students[this.ID].CurrentAction = StudentActionType.ClubAction;
+								this.Students[this.ID].WalkAnim = "poolSwim_00";
+								this.Students[this.ID].ClubAnim = "poolSwim_00";
+								this.Students[this.ID].SetSplashes(true);
+								this.Students[this.ID].Phase++;
+							}
+							this.Clock.Period = 3;
+						}
 						this.Students[this.ID].ChangeClubwear();
+						if (this.Students[this.ID].ClubActivityPhase > 14)
+						{
+							this.Students[this.ID].ClubActivityPhase = clubActivityPhase;
+						}
 					}
 					if (this.Students[this.ID].Defeats > 0)
 					{
@@ -3273,6 +3316,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.ClubManager.ActivateClubBenefit();
 		this.Yandere.CanMove = true;
 		this.Yandere.ClubAccessory();
+		this.Yandere.Inventory.UpdateMoney();
 		this.Yandere.WeaponManager.EquipWeaponsFromSave();
 		this.Yandere.WeaponManager.RestoreWeaponToStudent();
 		this.Yandere.WeaponManager.UpdateDelinquentWeapons();

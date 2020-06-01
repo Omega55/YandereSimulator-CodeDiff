@@ -207,7 +207,7 @@ public class RagdollScript : MonoBehaviour
 		}
 		if (this.Student.Yandere.BlackHole)
 		{
-			this.DisableRigidbodies();
+			this.DestroyRigidbodies();
 		}
 	}
 
@@ -833,7 +833,7 @@ public class RagdollScript : MonoBehaviour
 		base.gameObject.SetActive(false);
 	}
 
-	public void DisableRigidbodies()
+	public void DestroyRigidbodies()
 	{
 		this.BloodPoolSpawner.gameObject.SetActive(false);
 		for (int i = 0; i < this.AllRigidbodies.Length; i++)
@@ -848,5 +848,24 @@ public class RagdollScript : MonoBehaviour
 		this.Prompt.Hide();
 		this.Prompt.enabled = false;
 		base.enabled = false;
+	}
+
+	public void DisableRigidbodies()
+	{
+		for (int i = 0; i < this.AllRigidbodies.Length; i++)
+		{
+			this.AllRigidbodies[i].isKinematic = true;
+			this.AllColliders[i].enabled = false;
+		}
+	}
+
+	public void EnableRigidbodies()
+	{
+		for (int i = 0; i < this.AllRigidbodies.Length; i++)
+		{
+			this.AllRigidbodies[i].isKinematic = false;
+			this.AllColliders[i].enabled = true;
+			this.AllRigidbodies[i].useGravity = !this.Yandere.StudentManager.NoGravity;
+		}
 	}
 }

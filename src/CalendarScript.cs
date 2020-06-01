@@ -30,6 +30,8 @@ public class CalendarScript : MonoBehaviour
 
 	public UILabel[] DayNumber;
 
+	public UILabel[] DayLabel;
+
 	public UILabel WeekNumber;
 
 	public bool Incremented;
@@ -90,10 +92,10 @@ public class CalendarScript : MonoBehaviour
 		this.CalendarPanel.alpha = 1f;
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
 		Time.timeScale = 1f;
-		this.Highlight.localPosition = new Vector3(-600f + 200f * (float)DateGlobals.Weekday, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+		this.Highlight.localPosition = new Vector3(-683.334f + (float)((DayOfWeek)250 * DateGlobals.Weekday), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 		if (DateGlobals.Weekday == DayOfWeek.Saturday)
 		{
-			this.Highlight.localPosition = new Vector3(-1125f, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+			this.Highlight.localPosition = new Vector3(-1150f, this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 		}
 		if (DateGlobals.Week == 2)
 		{
@@ -107,6 +109,7 @@ public class CalendarScript : MonoBehaviour
 		}
 		this.WeekNumber.text = "Week " + DateGlobals.Week;
 		this.LoveSickCheck();
+		this.ChangeDayColor();
 	}
 
 	private void Update()
@@ -127,8 +130,9 @@ public class CalendarScript : MonoBehaviour
 					{
 						DateGlobals.Weekday++;
 						DateGlobals.PassDays--;
+						this.ChangeDayColor();
 					}
-					this.Target = 200f * (float)DateGlobals.Weekday;
+					this.Target = 250f * (float)DateGlobals.Weekday;
 					if (DateGlobals.Weekday > DayOfWeek.Saturday)
 					{
 						this.Darkness.color = new Color(0f, 0f, 0f, 0f);
@@ -141,7 +145,7 @@ public class CalendarScript : MonoBehaviour
 				}
 				else
 				{
-					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -600f + this.Target, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
+					this.Highlight.localPosition = new Vector3(Mathf.Lerp(this.Highlight.localPosition.x, -683.334f + this.Target, Time.deltaTime * 10f), this.Highlight.localPosition.y, this.Highlight.localPosition.z);
 				}
 				if (this.Timer > 2f)
 				{
@@ -252,27 +256,89 @@ public class CalendarScript : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			DateGlobals.Weekday = DayOfWeek.Monday;
-			this.Target = 200f * (float)DateGlobals.Weekday;
+			this.Target = 250f * (float)DateGlobals.Weekday;
+			this.ChangeDayColor();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			DateGlobals.Weekday = DayOfWeek.Tuesday;
-			this.Target = 200f * (float)DateGlobals.Weekday;
+			this.Target = 250f * (float)DateGlobals.Weekday;
+			this.ChangeDayColor();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
 			DateGlobals.Weekday = DayOfWeek.Wednesday;
-			this.Target = 200f * (float)DateGlobals.Weekday;
+			this.Target = 250f * (float)DateGlobals.Weekday;
+			this.ChangeDayColor();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
 			DateGlobals.Weekday = DayOfWeek.Thursday;
-			this.Target = 200f * (float)DateGlobals.Weekday;
+			this.Target = 250f * (float)DateGlobals.Weekday;
+			this.ChangeDayColor();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha5))
 		{
 			DateGlobals.Weekday = DayOfWeek.Friday;
-			this.Target = 200f * (float)DateGlobals.Weekday;
+			this.Target = 250f * (float)DateGlobals.Weekday;
+			this.ChangeDayColor();
+		}
+	}
+
+	public void ChangeDayColor()
+	{
+		UILabel[] array = this.DayLabel;
+		for (int i = 0; i < array.Length; i++)
+		{
+			array[i].color = new Color(1f, 1f, 1f, 1f);
+		}
+		foreach (UILabel uilabel in this.DayNumber)
+		{
+			if (uilabel != null)
+			{
+				uilabel.color = new Color(1f, 1f, 1f, 0.25f);
+			}
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Sunday)
+		{
+			this.DayLabel[0].color = new Color(1f, 0.5f, 0.75f, 1f);
+			this.DayNumber[1].color = new Color(1f, 0.5f, 0.75f, 0.25f);
+			return;
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Monday)
+		{
+			this.DayLabel[1].color = new Color(1f, 0.5f, 0.75f, 1f);
+			this.DayNumber[2].color = new Color(1f, 0.5f, 0.75f, 0.25f);
+			return;
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Tuesday)
+		{
+			this.DayLabel[2].color = new Color(1f, 0.5f, 0.75f, 1f);
+			this.DayNumber[3].color = new Color(1f, 0.5f, 0.75f, 0.25f);
+			return;
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Wednesday)
+		{
+			this.DayLabel[3].color = new Color(1f, 0.5f, 0.75f, 1f);
+			this.DayNumber[4].color = new Color(1f, 0.5f, 0.75f, 0.25f);
+			return;
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Thursday)
+		{
+			this.DayLabel[4].color = new Color(1f, 0.5f, 0.75f, 1f);
+			this.DayNumber[5].color = new Color(1f, 0.5f, 0.75f, 0.25f);
+			return;
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Friday)
+		{
+			this.DayLabel[5].color = new Color(1f, 0.5f, 0.75f, 1f);
+			this.DayNumber[6].color = new Color(1f, 0.5f, 0.75f, 0.25f);
+			return;
+		}
+		if (DateGlobals.Weekday == DayOfWeek.Saturday)
+		{
+			this.DayLabel[6].color = new Color(1f, 0.5f, 0.75f, 1f);
+			this.DayNumber[7].color = new Color(1f, 0.5f, 0.75f, 0.25f);
 		}
 	}
 

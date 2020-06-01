@@ -1547,8 +1547,8 @@ public class EndOfDayScript : MonoBehaviour
 		if (this.FragileTarget > 0)
 		{
 			Debug.Log("Setting target for Fragile student.");
-			StudentGlobals.SetFragileTarget(this.FragileTarget);
-			StudentGlobals.SetStudentFragileSlave(5);
+			StudentGlobals.FragileTarget = this.FragileTarget;
+			StudentGlobals.FragileSlave = 5;
 		}
 		if (this.StudentManager.ReactedToGameLeader)
 		{

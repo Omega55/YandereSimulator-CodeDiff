@@ -204,6 +204,7 @@ public class GazerEyesScript : MonoBehaviour
 		Target.Dying = true;
 		if (Target.Following)
 		{
+			Target.Yandere.Follower = null;
 			Target.Yandere.Followers--;
 			Target.Following = false;
 		}

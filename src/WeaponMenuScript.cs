@@ -263,7 +263,7 @@ public class WeaponMenuScript : MonoBehaviour
 		}
 	}
 
-	private void Equip()
+	public void Equip()
 	{
 		if (this.Yandere.Weapon[this.Selected] != null)
 		{

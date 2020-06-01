@@ -103,7 +103,7 @@ public class RPG_Camera : MonoBehaviour
 
 	public void UpdateRotation()
 	{
-		this.mouseX = this.cameraPivot.transform.eulerAngles.y;
+		this.mouseX = this.cameraPivot.transform.parent.eulerAngles.y;
 		this.mouseY = 15f;
 	}
 

@@ -102,6 +102,7 @@ public class LiquidColliderScript : MonoBehaviour
 					{
 						component.Hearts.emission.enabled = false;
 						component.FollowCountdown.gameObject.SetActive(false);
+						component.Yandere.Follower = null;
 						component.Yandere.Followers--;
 						component.Following = false;
 						component.CurrentDestination = component.Destinations[component.Phase];

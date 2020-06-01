@@ -133,6 +133,7 @@ public class PhoneEventScript : MonoBehaviour
 								this.EventStudent.Pathfinding.speed = 1f;
 								this.EventStudent.Following = false;
 								this.EventStudent.Routine = true;
+								this.Yandere.Follower = null;
 								this.Yandere.Followers--;
 								this.EventStudent.Subtitle.UpdateLabel(SubtitleType.StopFollowApology, 0, 3f);
 								this.EventStudent.Prompt.Label[0].text = "     Talk";

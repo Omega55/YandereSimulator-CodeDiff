@@ -22,6 +22,9 @@ public class RichPresenceHelper : MonoBehaviour
 		UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
 		this._discordController.enabled = false;
 		this._discordController.presence.state = this.GetSceneDescription();
+		this._discordController.presence.details = "Senpai... will... be... mine...";
+		this._discordController.presence.largeImageKey = "boxart";
+		this._discordController.presence.largeImageText = "This might be the game's box art one day!";
 		this._discordController.enabled = true;
 		DiscordRpc.UpdatePresence(this._discordController.presence);
 		base.InvokeRepeating("UpdatePresence", 0f, 10f);

@@ -67,7 +67,7 @@ public static class StudentGlobals
 
 	private const string Str_StudentSlave = "StudentSlave";
 
-	private const string Str_StudentFragileSlave = "StudentFragileSlave";
+	private const string Str_FragileSlave = "FragileSlave";
 
 	private const string Str_FragileTarget = "FragileTarget";
 
@@ -925,39 +925,40 @@ public static class StudentGlobals
 		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_StudentSanity_");
 	}
 
-	public static int GetStudentSlave()
+	public static int StudentSlave
 	{
-		return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_StudentSlave");
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_StudentSlave");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_StudentSlave", value);
+		}
 	}
 
-	public static int GetStudentFragileSlave()
+	public static int FragileSlave
 	{
-		return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_StudentFragileSlave");
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_FragileSlave");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_FragileSlave", value);
+		}
 	}
 
-	public static void SetStudentSlave(int studentID)
+	public static int FragileTarget
 	{
-		PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_StudentSlave", studentID);
-	}
-
-	public static void SetStudentFragileSlave(int studentID)
-	{
-		PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_StudentFragileSlave", studentID);
-	}
-
-	public static int[] KeysOfStudentSlave()
-	{
-		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_StudentSlave");
-	}
-
-	public static int GetFragileTarget()
-	{
-		return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_FragileTarget");
-	}
-
-	public static void SetFragileTarget(int value)
-	{
-		PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_FragileTarget", value);
+		get
+		{
+			return PlayerPrefs.GetInt("Profile_" + GameGlobals.Profile + "_FragileTarget");
+		}
+		set
+		{
+			PlayerPrefs.SetInt("Profile_" + GameGlobals.Profile + "_FragileTarget", value);
+		}
 	}
 
 	public static Vector3 GetReputationTriangle(int studentID)
@@ -998,7 +999,7 @@ public static class StudentGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_FemaleUniform");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_MaleUniform");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_StudentSlave");
-		Globals.Delete("Profile_" + GameGlobals.Profile + "_StudentFragileSlave");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_FragileSlave");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_FragileTarget");
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentAccessory_", StudentGlobals.KeysOfStudentAccessory());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentArrested_", StudentGlobals.KeysOfStudentArrested());
@@ -1020,7 +1021,6 @@ public static class StudentGlobals
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentReplaced_", StudentGlobals.KeysOfStudentReplaced());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentReputation_", StudentGlobals.KeysOfStudentReputation());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentSanity_", StudentGlobals.KeysOfStudentSanity());
-		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_StudentSlave", StudentGlobals.KeysOfStudentSlave());
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudents");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent1");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_MemorialStudent2");

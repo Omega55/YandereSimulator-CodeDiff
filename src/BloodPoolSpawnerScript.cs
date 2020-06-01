@@ -46,9 +46,9 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 
 	public void Start()
 	{
-		this.PoolsSpawned = this.Ragdoll.Student.BloodPoolsSpawned;
 		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
+			this.PoolsSpawned = this.Ragdoll.Student.BloodPoolsSpawned;
 			this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
 			this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
 			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();

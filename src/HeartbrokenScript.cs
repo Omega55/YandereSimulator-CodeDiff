@@ -103,7 +103,7 @@ public class HeartbrokenScript : MonoBehaviour
 			this.StopID = 8;
 			this.NoSnap = true;
 			this.SNAP.SetActive(false);
-			this.Cursor.Options = 4;
+			this.Cursor.Options = 3;
 		}
 		else if (this.Confessed)
 		{

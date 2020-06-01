@@ -20,6 +20,9 @@ public class CreditsScript : MonoBehaviour
 	private GameObject BigCreditsLabel;
 
 	[SerializeField]
+	private UILabel SkipLabel;
+
+	[SerializeField]
 	private UISprite Darkness;
 
 	[SerializeField]
@@ -46,6 +49,9 @@ public class CreditsScript : MonoBehaviour
 	[SerializeField]
 	private bool Begin;
 
+	[SerializeField]
+	private bool Dark;
+
 	private const int SmallTextSize = 1;
 
 	private const int BigTextSize = 2;
@@ -53,6 +59,8 @@ public class CreditsScript : MonoBehaviour
 	public AudioClip DarkCreditsMusic;
 
 	public AudioSource Jukebox;
+
+	public ParticleSystem Blossoms;
 
 	private bool ShouldStopCredits
 	{
@@ -75,11 +83,19 @@ public class CreditsScript : MonoBehaviour
 			this.Jukebox.clip = this.DarkCreditsMusic;
 			this.Darkness.color = new Color(0f, 0f, 0f, 0f);
 			this.Speed = 1.1f;
+			this.Blossoms.startColor = new Color(0.5f, 0f, 0f, 1f);
+			this.SkipLabel.color = new Color(0.5f, 0f, 0f, 1f);
+			this.Dark = true;
 		}
 	}
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("d"))
+		{
+			GameGlobals.DarkEnding = true;
+			Application.LoadLevel(Application.loadedLevel);
+		}
 		if (!this.Begin)
 		{
 			this.Timer += Time.deltaTime;
@@ -102,6 +118,10 @@ public class CreditsScript : MonoBehaviour
 					gameObject.transform.parent = this.Panel;
 					gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
 					gameObject.GetComponent<UILabel>().text = creditJson.Name;
+					if (this.Dark)
+					{
+						gameObject.GetComponent<UILabel>().color = new Color(0.5f, 0f, 0f, 1f);
+					}
 					this.ID++;
 				}
 				this.Timer += Time.deltaTime * this.Speed;

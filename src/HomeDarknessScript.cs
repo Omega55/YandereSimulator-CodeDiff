@@ -75,7 +75,7 @@ public class HomeDarknessScript : MonoBehaviour
 					if (this.HomeCamera.ID == 10)
 					{
 						StudentGlobals.SetStudentKidnapped(SchoolGlobals.KidnapVictim, false);
-						StudentGlobals.SetStudentSlave(SchoolGlobals.KidnapVictim);
+						StudentGlobals.StudentSlave = SchoolGlobals.KidnapVictim;
 						this.CheckForOsanaThursday();
 						return;
 					}

@@ -1410,7 +1410,6 @@ public class YandereScript : MonoBehaviour
 		this.PhysicalGrade = ClassGlobals.PhysicalGrade;
 		this.SpeedBonus = PlayerGlobals.SpeedBonus;
 		this.Club = ClubGlobals.Club;
-		Debug.Log("ClubGlobals.Club is: " + ClubGlobals.Club);
 		this.SanitySmudges.color = new Color(1f, 1f, 1f, 0f);
 		this.SpiderLegs.SetActive(GameGlobals.EmptyDemon);
 		this.MyRenderer.materials[2].SetFloat("_BlendAmount1", 0f);
@@ -1558,6 +1557,7 @@ public class YandereScript : MonoBehaviour
 		}
 		this.MyRenderer.materials[0].SetFloat("_BlendAmount", 1f);
 		this.MyRenderer.materials[1].SetFloat("_BlendAmount", 1f);
+		this.CharacterAnimation.Sample();
 	}
 
 	public float Sanity
@@ -3450,6 +3450,7 @@ public class YandereScript : MonoBehaviour
 				this.DumpTimer += Time.deltaTime;
 				if (this.DumpTimer > 1f)
 				{
+					this.FollowHips = true;
 					if (this.Ragdoll != null)
 					{
 						this.CurrentRagdoll.PelvisRoot.localEulerAngles = new Vector3(this.CurrentRagdoll.PelvisRoot.localEulerAngles.x, 0f, this.CurrentRagdoll.PelvisRoot.localEulerAngles.z);
@@ -3480,6 +3481,7 @@ public class YandereScript : MonoBehaviour
 					if (this.CharacterAnimation["f02_carryDisposeA_00"].time >= this.CharacterAnimation["f02_carryDisposeA_00"].length)
 					{
 						this.CameraTarget.localPosition = new Vector3(0f, 1f, 0f);
+						this.FollowHips = false;
 						this.Dropping = false;
 						this.CanMove = true;
 						this.DumpTimer = 0f;
@@ -3746,11 +3748,13 @@ public class YandereScript : MonoBehaviour
 				{
 					this.EquippedWeapon.Blood.enabled = false;
 					this.EquippedWeapon.Bloody = false;
+					this.EquippedWeapon.SuspicionCheck();
 					if (this.Gloved)
 					{
 						this.EquippedWeapon.FingerprintID = 0;
 					}
 					this.CleaningWeapon = false;
+					this.Police.MurderWeapons--;
 					this.CanMove = true;
 				}
 			}
@@ -4451,7 +4455,12 @@ public class YandereScript : MonoBehaviour
 					}
 					if (this.Laughing)
 					{
+						Debug.Log("Yandere-chan was laughing, and is being told to stop laughing because UpdateEffects() was called.");
 						this.StopLaughing();
+						if (this.Pursuer != null)
+						{
+							this.CanMove = false;
+						}
 					}
 					this.Stance.Current = StanceType.Standing;
 					this.Obscurance.enabled = false;
@@ -5356,6 +5365,7 @@ public class YandereScript : MonoBehaviour
 							{
 								this.TargetStudent.Tranquil = true;
 								this.CanTranq = false;
+								this.Follower = null;
 								this.Followers--;
 							}
 							else
@@ -6349,7 +6359,7 @@ public class YandereScript : MonoBehaviour
 					this.EquippedWeapon.gameObject.SetActive(false);
 				}
 			}
-			else
+			else if (this.Weapon[3] != null)
 			{
 				this.Weapon[3].Drop();
 			}
@@ -6445,6 +6455,7 @@ public class YandereScript : MonoBehaviour
 
 	public void StopLaughing()
 	{
+		Debug.Log("Yandere-chan has been instructed to stop laughing.");
 		this.BladeHairCollider1.enabled = false;
 		this.BladeHairCollider2.enabled = false;
 		if (this.Sanity < 33.33333f)
@@ -7746,6 +7757,7 @@ public class YandereScript : MonoBehaviour
 
 	public void StopCarrying()
 	{
+		this.CurrentRagdoll = null;
 		if (this.Ragdoll != null)
 		{
 			this.Ragdoll.GetComponent<RagdollScript>().Fall();
@@ -7769,7 +7781,7 @@ public class YandereScript : MonoBehaviour
 		this.MyController.height = 0.1f;
 	}
 
-	private void Uncrouch()
+	public void Uncrouch()
 	{
 		this.MyController.center = new Vector3(this.MyController.center.x, 0.875f, this.MyController.center.z);
 		this.MyController.height = 1.55f;

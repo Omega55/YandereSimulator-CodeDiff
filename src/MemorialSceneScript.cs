@@ -25,6 +25,19 @@ public class MemorialSceneScript : MonoBehaviour
 
 	private void Start()
 	{
+		if (PlayerPrefs.GetInt("LoadingSave") == 1)
+		{
+			int profile = GameGlobals.Profile;
+			int @int = PlayerPrefs.GetInt("SaveSlot");
+			StudentGlobals.MemorialStudents = PlayerPrefs.GetInt(string.Concat(new object[]
+			{
+				"Profile_",
+				profile,
+				"_Slot_",
+				@int,
+				"_MemorialStudents"
+			}));
+		}
 		this.MemorialStudents = StudentGlobals.MemorialStudents;
 		if (this.MemorialStudents % 2 == 0)
 		{

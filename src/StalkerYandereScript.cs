@@ -12,7 +12,13 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public Transform CameraTarget;
 
+	public Transform RightHand;
+
 	public Transform EntryPOV;
+
+	public Transform RightArm;
+
+	public Transform Object;
 
 	public Transform Hips;
 
@@ -237,6 +243,18 @@ public class StalkerYandereScript : MonoBehaviour
 			}
 			this.MyAnimation.CrossFade(this.IdleAnim);
 			return;
+		}
+	}
+
+	private void LateUpdate()
+	{
+		if (this.RightArm != null)
+		{
+			this.RightArm.localEulerAngles = new Vector3(this.RightArm.localEulerAngles.x, this.RightArm.localEulerAngles.y + 15f, this.RightArm.localEulerAngles.z);
+		}
+		if (this.Object != null)
+		{
+			this.Object.eulerAngles = new Vector3(0f, this.Object.eulerAngles.y, 0f);
 		}
 	}
 

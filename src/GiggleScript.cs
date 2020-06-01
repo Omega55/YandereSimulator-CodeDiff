@@ -57,7 +57,7 @@ public class GiggleScript : MonoBehaviour
 				}
 				if (!this.Student.YandereVisible && !this.Student.Alarmed && !this.Student.Distracted && !this.Student.Wet && !this.Student.Slave && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.Student.Investigating && !this.Student.InEvent && !this.Student.Following && !this.Student.Confessing && !this.Student.Meeting && !this.Student.TurnOffRadio && !this.Student.Fleeing && !this.Student.Distracting && !this.Student.GoAway && !this.Student.FocusOnYandere && !this.StudentIsBusy && this.Student.Actions[this.Student.Phase] != StudentActionType.Teaching && this.Student.Actions[this.Student.Phase] != StudentActionType.SitAndTakeNotes && this.Student.Actions[this.Student.Phase] != StudentActionType.Graffiti && this.Student.Actions[this.Student.Phase] != StudentActionType.Bully && this.Student.Routine && !this.Student.Headache && this.Student.Persona != PersonaType.Protective && !this.Student.MyBento.Tampered)
 				{
-					this.Student.Character.GetComponent<Animation>().CrossFade(this.Student.IdleAnim);
+					this.Student.CharacterAnimation.CrossFade(this.Student.IdleAnim);
 					this.Giggle = UnityEngine.Object.Instantiate<GameObject>(this.EmptyGameObject, new Vector3(base.transform.position.x, this.Student.transform.position.y, base.transform.position.z), Quaternion.identity);
 					this.Student.Giggle = this.Giggle;
 					if (this.Student.Pathfinding != null && !this.Student.Nemesis)

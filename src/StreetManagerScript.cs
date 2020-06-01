@@ -125,7 +125,10 @@ public class StreetManagerScript : MonoBehaviour
 			else
 			{
 				this.Alpha = Mathf.MoveTowards(this.Alpha, 1f, Time.deltaTime);
-				this.CurrentlyActiveJukebox.volume = (1f - this.Alpha) * 0.5f;
+				if (!this.StreetShopInterface.Show)
+				{
+					this.CurrentlyActiveJukebox.volume = (1f - this.Alpha) * 0.5f;
+				}
 				if (this.GoToCafe)
 				{
 					this.Darkness.color = new Color(1f, 1f, 1f, this.Alpha);
@@ -154,15 +157,18 @@ public class StreetManagerScript : MonoBehaviour
 			{
 				this.DesiredValue = Vector3.Distance(this.Yandere.position, this.Yakuza.transform.position) * 0.1f;
 			}
-			if (this.Day)
+			if (!this.StreetShopInterface.Show)
 			{
-				this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, this.DesiredValue, Time.deltaTime * 10f);
-				this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, 0f, Time.deltaTime * 10f);
-			}
-			else
-			{
-				this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, 0f, Time.deltaTime * 10f);
-				this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, this.DesiredValue, Time.deltaTime * 10f);
+				if (this.Day)
+				{
+					this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, this.DesiredValue, Time.deltaTime * 10f);
+					this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, 0f, Time.deltaTime * 10f);
+				}
+				else
+				{
+					this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, 0f, Time.deltaTime * 10f);
+					this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, this.DesiredValue, Time.deltaTime * 10f);
+				}
 			}
 			if (Vector3.Distance(this.Yandere.position, this.Yakuza.transform.position) < 1f && !this.Threatened)
 			{
@@ -184,7 +190,12 @@ public class StreetManagerScript : MonoBehaviour
 				this.Sunlight.shadows = LightShadows.None;
 			}
 		}
-		if (this.Day)
+		if (this.StreetShopInterface.Show)
+		{
+			this.JukeboxNight.volume = Mathf.Lerp(this.JukeboxNight.volume, 0f, Time.deltaTime * 10f);
+			this.JukeboxDay.volume = Mathf.Lerp(this.JukeboxDay.volume, 0f, Time.deltaTime * 10f);
+		}
+		else if (this.Day)
 		{
 			this.CurrentlyActiveJukebox = this.JukeboxDay;
 			this.Rotation = Mathf.Lerp(this.Rotation, 45f, Time.deltaTime * 10f);

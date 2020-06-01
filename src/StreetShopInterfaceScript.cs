@@ -47,6 +47,8 @@ public class StreetShopInterfaceScript : MonoBehaviour
 
 	public GameObject FakeIDBox;
 
+	public AudioSource Jukebox;
+
 	public AudioSource MyAudio;
 
 	public int ShopkeeperPosition;
@@ -79,6 +81,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 	{
 		if (this.Show)
 		{
+			this.Jukebox.volume = Mathf.Lerp(this.Jukebox.volume, 1f, Time.deltaTime * 10f);
 			this.Shopkeeper.transform.localPosition = Vector3.Lerp(this.Shopkeeper.transform.localPosition, new Vector3((float)this.ShopkeeperPosition, 0f, 0f), Time.deltaTime * 10f);
 			this.Interface.localPosition = Vector3.Lerp(this.Interface.localPosition, new Vector3(100f, 0f, 0f), Time.deltaTime * 10f);
 			this.BlurAmount = Mathf.Lerp(this.BlurAmount, 0f, Time.deltaTime * 10f);
@@ -141,6 +144,7 @@ public class StreetShopInterfaceScript : MonoBehaviour
 		}
 		else
 		{
+			this.Jukebox.volume = Mathf.Lerp(this.Jukebox.volume, 0f, Time.deltaTime);
 			this.SpeechBubbleParent.localScale = new Vector3(0f, 0f, 0f);
 			this.Shopkeeper.transform.localPosition = Vector3.Lerp(this.Shopkeeper.transform.localPosition, new Vector3(1604f, 0f, 0f), Time.deltaTime * 10f);
 			this.Interface.localPosition = Vector3.Lerp(this.Interface.localPosition, new Vector3(-815.5f, 0f, 0f), Time.deltaTime * 10f);

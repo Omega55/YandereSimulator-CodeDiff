@@ -21,18 +21,6 @@ public class KittenScript : MonoBehaviour
 
 	public float Timer;
 
-	private void Start()
-	{
-	}
-
-	private void Update()
-	{
-	}
-
-	private void PickRandomAnim()
-	{
-	}
-
 	private void LateUpdate()
 	{
 		if (Vector3.Distance(base.transform.position, this.Yandere.transform.position) < 5f)

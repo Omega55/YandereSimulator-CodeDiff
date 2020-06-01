@@ -323,6 +323,7 @@ public class WeaponScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
+			Debug.Log("Yandere-chan just picked up a weapon.");
 			if (this.WeaponID == 6 && SchemeGlobals.GetSchemeStage(4) == 1)
 			{
 				SchemeGlobals.SetSchemeStage(4, 2);
@@ -379,6 +380,7 @@ public class WeaponScript : MonoBehaviour
 			{
 				if (this.Yandere.Weapon[1] == null)
 				{
+					Debug.Log("Yandere-chan did not have a weapon in slot 1.");
 					if (this.Yandere.Weapon[2] != null)
 					{
 						this.Yandere.Weapon[2].gameObject.SetActive(false);
@@ -389,11 +391,11 @@ public class WeaponScript : MonoBehaviour
 				}
 				else if (this.Yandere.Weapon[2] == null)
 				{
+					Debug.Log("Yandere-chan had a weapon in slot 1, but slot 2 was empty.");
 					if (this.Yandere.Weapon[1] != null)
 					{
 						if (!this.DoNotDisable)
 						{
-							Debug.Log("We reached this code.");
 							this.Yandere.Weapon[1].gameObject.SetActive(false);
 						}
 						this.DoNotDisable = false;
@@ -435,10 +437,7 @@ public class WeaponScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Yandere.NearestPrompt = null;
-			if (this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 25)
-			{
-				this.SuspicionCheck();
-			}
+			this.SuspicionCheck();
 			if (this.Yandere.EquippedWeapon.Suspicious)
 			{
 				if (!this.Yandere.WeaponWarning)
@@ -665,7 +664,8 @@ public class WeaponScript : MonoBehaviour
 
 	public void SuspicionCheck()
 	{
-		if ((this.WeaponID == 9 && this.Yandere.Club == ClubType.Sports) || (this.WeaponID == 10 && this.Yandere.Club == ClubType.Gardening) || (this.WeaponID == 12 && this.Yandere.Club == ClubType.Sports) || (this.WeaponID == 25 && this.Yandere.Club == ClubType.LightMusic) || (this.WeaponID == 14 && this.Yandere.Club == ClubType.Drama) || (this.WeaponID == 14 && this.Yandere.Club == ClubType.Drama) || (this.WeaponID == 22 && this.Yandere.Club == ClubType.Drama))
+		Debug.Log("Suspicion Check!");
+		if ((this.WeaponID == 9 && this.Yandere.Club == ClubType.Sports) || (this.WeaponID == 10 && this.Yandere.Club == ClubType.Gardening) || (this.WeaponID == 12 && this.Yandere.Club == ClubType.Sports) || (this.WeaponID == 14 && this.Yandere.Club == ClubType.Drama) || (this.WeaponID == 16 && this.Yandere.Club == ClubType.Drama) || (this.WeaponID == 22 && this.Yandere.Club == ClubType.Drama) || (this.WeaponID == 25 && this.Yandere.Club == ClubType.LightMusic))
 		{
 			this.Suspicious = false;
 		}

@@ -452,6 +452,8 @@ public class TalkingScript : MonoBehaviour
 							this.S.Yandere.Followers++;
 							this.S.Following = true;
 							this.S.Hurry = false;
+							this.S.StudentManager.InterestManager.FollowerID = this.S.StudentID;
+							this.S.StudentManager.InterestManager.UpdateIgnore();
 						}
 						this.Follow = false;
 					}

@@ -6,13 +6,15 @@ public class PauseScreenScript : MonoBehaviour
 {
 	public StudentInfoMenuScript StudentInfoMenu;
 
-	public PhotoGalleryScript PhotoGallery;
-
 	public InputManagerScript InputManager;
+
+	public PhotoGalleryScript PhotoGallery;
 
 	public SaveLoadMenuScript SaveLoadMenu;
 
 	public HomeYandereScript HomeYandere;
+
+	public InputDeviceScript InputDevice;
 
 	public MissionModeScript MissionMode;
 
@@ -62,6 +64,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public GameObject LoadingScreen;
 
+	public GameObject ControlMenu;
+
 	public GameObject SchemesMenu;
 
 	public GameObject StudentInfo;
@@ -69,6 +73,10 @@ public class PauseScreenScript : MonoBehaviour
 	public GameObject DropsMenu;
 
 	public GameObject MainMenu;
+
+	public GameObject Keyboard;
+
+	public GameObject Gamepad;
 
 	public Transform PromptParent;
 
@@ -85,6 +93,8 @@ public class PauseScreenScript : MonoBehaviour
 	public float Speed;
 
 	public bool ShowMissionModeDetails;
+
+	public bool ViewingControlMenu;
 
 	public bool CorrectingTime;
 
@@ -139,6 +149,7 @@ public class PauseScreenScript : MonoBehaviour
 		this.TaskList.gameObject.SetActive(false);
 		this.Stats.gameObject.SetActive(false);
 		this.LoadingScreen.SetActive(false);
+		this.ControlMenu.SetActive(false);
 		this.SchemesMenu.SetActive(false);
 		this.StudentInfo.SetActive(false);
 		this.DropsMenu.SetActive(false);
@@ -328,7 +339,7 @@ public class PauseScreenScript : MonoBehaviour
 				else
 				{
 					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(1.78f, 1.78f, 1.78f), this.Speed);
-					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 14f, 0f), this.Speed);
+					base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(0f, 35f, 0f), this.Speed);
 					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 90f, this.Speed));
 				}
 				if (this.MainMenu.activeInHierarchy && !this.Quitting)
@@ -533,14 +544,33 @@ public class PauseScreenScript : MonoBehaviour
 										this.MissionMode.ChangeMusic();
 									}
 								}
-								else if (this.Selected == 11)
+								else if (this.Selected == 12)
+								{
+									if (this.InputDevice.Type == InputDeviceType.Gamepad)
+									{
+										this.Keyboard.SetActive(false);
+										this.Gamepad.SetActive(true);
+									}
+									else
+									{
+										this.Keyboard.SetActive(true);
+										this.Gamepad.SetActive(false);
+									}
+									this.ControlMenu.SetActive(false);
+									this.ControlMenu.SetActive(true);
+									this.MainMenu.SetActive(false);
+									this.ViewingControlMenu = true;
+									this.Sideways = true;
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.UpdateButtons();
+									this.PromptBar.Show = true;
+								}
+								else if (this.Selected == 14)
 								{
 									this.PromptBar.ClearButtons();
 									this.PromptBar.Show = false;
 									this.Quitting = true;
-								}
-								else if (this.Selected == 12)
-								{
 								}
 							}
 						}
@@ -589,6 +619,32 @@ public class PauseScreenScript : MonoBehaviour
 							this.PromptBar.Label[5].text = "Choose";
 							this.PromptBar.UpdateButtons();
 							this.PassTime.gameObject.SetActive(false);
+						}
+					}
+					if (this.ViewingControlMenu)
+					{
+						if (this.InputDevice.Type == InputDeviceType.Gamepad)
+						{
+							this.Keyboard.SetActive(false);
+							this.Gamepad.SetActive(true);
+						}
+						else
+						{
+							this.Keyboard.SetActive(true);
+							this.Gamepad.SetActive(false);
+						}
+						if (Input.GetButtonDown("B"))
+						{
+							this.MainMenu.SetActive(true);
+							this.PromptBar.ClearButtons();
+							this.PromptBar.Label[0].text = "Accept";
+							this.PromptBar.Label[1].text = "Exit";
+							this.PromptBar.Label[4].text = "Choose";
+							this.PromptBar.Label[5].text = "Choose";
+							this.PromptBar.UpdateButtons();
+							this.ControlMenu.SetActive(false);
+							this.ViewingControlMenu = false;
+							this.Sideways = false;
 						}
 					}
 					if (this.Quitting)
@@ -674,9 +730,9 @@ public class PauseScreenScript : MonoBehaviour
 	{
 		if (this.Row < 0)
 		{
-			this.Row = 3;
+			this.Row = 4;
 		}
-		else if (this.Row > 3)
+		else if (this.Row > 4)
 		{
 			this.Row = 0;
 		}

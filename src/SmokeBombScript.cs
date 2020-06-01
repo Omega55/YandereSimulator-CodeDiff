@@ -94,10 +94,11 @@ public class SmokeBombScript : MonoBehaviour
 
 	private void GoAway(StudentScript Student)
 	{
-		if (!Student.Chasing)
+		if (!Student.Chasing && !Student.WitnessedMurder && !Student.WitnessedCorpse && !Student.Fleeing)
 		{
 			if (Student.Following)
 			{
+				Student.Yandere.Follower = null;
 				Student.Yandere.Followers--;
 				Student.Hearts.emission.enabled = false;
 				Student.FollowCountdown.gameObject.SetActive(false);

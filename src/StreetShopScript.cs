@@ -24,6 +24,8 @@ public class StreetShopScript : MonoBehaviour
 
 	public AudioSource MyAudio;
 
+	public AudioClip StoreTheme;
+
 	public AudioClip InsertCoin;
 
 	public AudioClip Fail;
@@ -204,6 +206,8 @@ public class StreetShopScript : MonoBehaviour
 		this.StreetShopInterface.Limit = this.Limit;
 		this.StreetShopInterface.Selected = 1;
 		this.StreetShopInterface.Timer = 0f;
+		this.StreetShopInterface.Jukebox.clip = this.StoreTheme;
+		this.StreetShopInterface.Jukebox.Play();
 		this.StreetShopInterface.UpdateHighlight();
 		for (int i = 1; i < 11; i++)
 		{

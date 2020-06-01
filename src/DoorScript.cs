@@ -351,8 +351,11 @@ public class DoorScript : MonoBehaviour
 				{
 					if (this.Yandere.PickUp.GetComponent<BucketScript>().Full)
 					{
-						this.Prompt.HideButton[1] = false;
-						this.CanSetBucket = true;
+						if (this.Bucket == null)
+						{
+							this.Prompt.HideButton[1] = false;
+							this.CanSetBucket = true;
+						}
 					}
 					else if (this.CanSetBucket)
 					{

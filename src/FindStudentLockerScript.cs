@@ -41,7 +41,7 @@ public class FindStudentLockerScript : MonoBehaviour
 		}
 		else
 		{
-			if (!this.TargetedStudent.Alive)
+			if (!this.TargetedStudent.Alive || this.TargetedStudent.Alarmed)
 			{
 				this.RestorePrompt();
 				return;

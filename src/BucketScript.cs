@@ -168,7 +168,7 @@ public class BucketScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.Equipped > 0)
+		else if (this.Yandere.Equipped > 0 && this.Yandere.EquippedWeapon != null)
 		{
 			if (!this.Full)
 			{

@@ -56,10 +56,12 @@ public class WeaponManagerScript : MonoBehaviour
 
 	public void UpdateLabels()
 	{
-		WeaponScript[] weapons = this.Weapons;
-		for (int i = 0; i < weapons.Length; i++)
+		foreach (WeaponScript weaponScript in this.Weapons)
 		{
-			weapons[i].UpdateLabel();
+			if (weaponScript != null)
+			{
+				weaponScript.UpdateLabel();
+			}
 		}
 	}
 
@@ -153,10 +155,10 @@ public class WeaponManagerScript : MonoBehaviour
 		if (this.OriginalWeapon > -1)
 		{
 			Debug.Log("Re-equipping original weapon.");
-			this.Weapons[this.OriginalWeapon].Prompt.Circle[3].fillAmount = 0f;
-			this.Weapons[this.OriginalWeapon].gameObject.SetActive(true);
-			this.Weapons[this.OriginalWeapon].DoNotDisable = true;
+			this.Yandere.WeaponMenu.Selected = this.OriginalEquipped;
+			this.Yandere.WeaponMenu.Equip();
 			this.OriginalWeapon = -1;
+			this.Frame++;
 		}
 	}
 
@@ -229,6 +231,15 @@ public class WeaponManagerScript : MonoBehaviour
 				this.OriginalWeapon,
 				" in the list of all weapons."
 			}));
+			this.Yandere.Unequip();
+		}
+		if (this.Yandere.Weapon[1] != null)
+		{
+			this.Yandere.Weapon[1].Drop();
+		}
+		if (this.Yandere.Weapon[2] != null)
+		{
+			this.Yandere.Weapon[2].Drop();
 		}
 		if (this.YandereWeapon1 > -1)
 		{

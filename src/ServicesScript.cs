@@ -23,6 +23,8 @@ public class ServicesScript : MonoBehaviour
 
 	public Transform Highlight;
 
+	public AudioSource MyAudio;
+
 	public PoliceScript Police;
 
 	public UITexture ServiceIcon;
@@ -90,7 +92,6 @@ public class ServicesScript : MonoBehaviour
 			}
 			this.UpdateDesc();
 		}
-		AudioSource component = base.GetComponent<AudioSource>();
 		if (Input.GetButtonDown("A"))
 		{
 			if (!SchemeGlobals.GetServicePurchased(this.Selected) && (double)this.NameLabels[this.Selected].color.a == 1.0)
@@ -102,12 +103,12 @@ public class ServicesScript : MonoBehaviour
 						if (this.Selected == 1)
 						{
 							this.Yandere.PauseScreen.StudentInfoMenu.GettingInfo = true;
-							this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
-							base.StartCoroutine(this.Yandere.PauseScreen.StudentInfoMenu.UpdatePortraits());
 							this.Yandere.PauseScreen.StudentInfoMenu.Column = 0;
 							this.Yandere.PauseScreen.StudentInfoMenu.Row = 0;
 							this.Yandere.PauseScreen.StudentInfoMenu.UpdateHighlight();
 							this.Yandere.PauseScreen.Sideways = true;
+							this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
+							base.StartCoroutine(this.Yandere.PauseScreen.StudentInfoMenu.UpdatePortraits());
 							this.Yandere.PromptBar.ClearButtons();
 							this.Yandere.PromptBar.Label[1].text = "Cancel";
 							this.Yandere.PromptBar.UpdateButtons();
@@ -133,12 +134,13 @@ public class ServicesScript : MonoBehaviour
 						else if (this.Selected == 5)
 						{
 							this.Yandere.PauseScreen.StudentInfoMenu.SendingHome = true;
-							this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
-							base.StartCoroutine(this.Yandere.PauseScreen.StudentInfoMenu.UpdatePortraits());
 							this.Yandere.PauseScreen.StudentInfoMenu.Column = 0;
 							this.Yandere.PauseScreen.StudentInfoMenu.Row = 0;
 							this.Yandere.PauseScreen.StudentInfoMenu.UpdateHighlight();
 							this.Yandere.PauseScreen.Sideways = true;
+							this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
+							this.Yandere.PauseScreen.StudentInfoMenu.GrabbedPortraits = false;
+							base.StartCoroutine(this.Yandere.PauseScreen.StudentInfoMenu.UpdatePortraits());
 							this.Yandere.PromptBar.ClearButtons();
 							this.Yandere.PromptBar.Label[1].text = "Cancel";
 							this.Yandere.PromptBar.UpdateButtons();
@@ -166,23 +168,39 @@ public class ServicesScript : MonoBehaviour
 							}
 							this.Purchase();
 						}
+						else if (this.Selected == 9)
+						{
+							this.Yandere.PauseScreen.StudentInfoMenu.FiringCouncilMember = true;
+							this.Yandere.PauseScreen.StudentInfoMenu.Column = 0;
+							this.Yandere.PauseScreen.StudentInfoMenu.Row = 0;
+							this.Yandere.PauseScreen.StudentInfoMenu.UpdateHighlight();
+							this.Yandere.PauseScreen.Sideways = true;
+							this.Yandere.PauseScreen.StudentInfoMenu.gameObject.SetActive(true);
+							this.Yandere.PauseScreen.StudentInfoMenu.GrabbedPortraits = false;
+							base.StartCoroutine(this.Yandere.PauseScreen.StudentInfoMenu.UpdatePortraits());
+							this.Yandere.PromptBar.ClearButtons();
+							this.Yandere.PromptBar.Label[1].text = "Cancel";
+							this.Yandere.PromptBar.UpdateButtons();
+							this.Yandere.PromptBar.Show = true;
+							base.gameObject.SetActive(false);
+						}
 					}
 				}
 				else if (this.Inventory.PantyShots < this.ServiceCosts[this.Selected])
 				{
-					component.clip = this.InfoAfford;
-					component.Play();
+					this.MyAudio.clip = this.InfoAfford;
+					this.MyAudio.Play();
 				}
 				else
 				{
-					component.clip = this.InfoUnavailable;
-					component.Play();
+					this.MyAudio.clip = this.InfoUnavailable;
+					this.MyAudio.Play();
 				}
 			}
 			else
 			{
-				component.clip = this.InfoUnavailable;
-				component.Play();
+				this.MyAudio.clip = this.InfoUnavailable;
+				this.MyAudio.Play();
 			}
 		}
 		if (Input.GetButtonDown("B"))
@@ -237,7 +255,14 @@ public class ServicesScript : MonoBehaviour
 					this.ServiceAvailable[this.ID] = true;
 				}
 			}
-			else if (this.ID == 8 && !SchemeGlobals.GetServicePurchased(8))
+			else if (this.ID == 8)
+			{
+				if (!SchemeGlobals.GetServicePurchased(8))
+				{
+					this.ServiceAvailable[this.ID] = true;
+				}
+			}
+			else if (this.ID == 9 && MissionModeGlobals.MissionMode)
 			{
 				this.ServiceAvailable[this.ID] = true;
 			}

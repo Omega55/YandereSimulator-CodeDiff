@@ -55,6 +55,8 @@ public class StudentInfoMenuScript : MonoBehaviour
 
 	public UILabel NameLabel;
 
+	public bool FiringCouncilMember;
+
 	public bool CyberBullying;
 
 	public bool CyberStalking;
@@ -177,6 +179,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 					{
 						this.PromptBar.Label[0].text = "Send Home";
 					}
+					if (this.FiringCouncilMember)
+					{
+						this.PromptBar.Label[0].text = "Fire";
+					}
 					if (this.StudentManager.Students[this.StudentID] != null)
 					{
 						if (this.StudentManager.Students[this.StudentID].gameObject.activeInHierarchy)
@@ -208,6 +214,13 @@ public class StudentInfoMenuScript : MonoBehaviour
 			else
 			{
 				StudentGlobals.SetStudentPhotographed(this.StudentID, true);
+				if (this.StudentManager.Students[this.StudentID] != null)
+				{
+					for (int i = 0; i < this.StudentManager.Students[this.StudentID].Outlines.Length; i++)
+					{
+						this.StudentManager.Students[this.StudentID].Outlines[i].enabled = true;
+					}
+				}
 				this.PauseScreen.ServiceMenu.gameObject.SetActive(true);
 				this.PauseScreen.ServiceMenu.UpdateList();
 				this.PauseScreen.ServiceMenu.UpdateDesc();
@@ -253,12 +266,13 @@ public class StudentInfoMenuScript : MonoBehaviour
 				this.PromptBar.ClearButtons();
 				this.PromptBar.Show = false;
 			}
-			else if (this.SendingHome || this.GettingInfo)
+			else if (this.SendingHome || this.GettingInfo || this.FiringCouncilMember)
 			{
 				this.PauseScreen.ServiceMenu.gameObject.SetActive(true);
 				this.PauseScreen.ServiceMenu.UpdateList();
 				this.PauseScreen.ServiceMenu.UpdateDesc();
 				base.gameObject.SetActive(false);
+				this.FiringCouncilMember = false;
 				this.SendingHome = false;
 				this.GettingInfo = false;
 			}
@@ -356,7 +370,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
 		}
-		if (this.FindingLocker && (this.StudentID == 1 || this.StudentID > 85 || StudentGlobals.GetStudentDead(this.StudentID)))
+		if (this.FindingLocker && (this.StudentID == 1 || this.StudentID > 89 || this.StudentManager.Students[this.StudentID].Club == ClubType.Council || StudentGlobals.GetStudentDead(this.StudentID)))
 		{
 			this.PromptBar.Label[0].text = string.Empty;
 			this.PromptBar.UpdateButtons();
@@ -395,7 +409,7 @@ public class StudentInfoMenuScript : MonoBehaviour
 			if (this.StudentManager.Students[this.StudentID] != null)
 			{
 				StudentScript studentScript = this.StudentManager.Students[this.StudentID];
-				if (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || (this.StudentID < 98 && studentScript.SentHome) || (this.StudentID > 97 || StudentGlobals.GetStudentSlave() == this.StudentID || (studentScript.Club == ClubType.MartialArts && studentScript.ClubAttire)) || (studentScript.Club == ClubType.Sports && studentScript.ClubAttire) || this.StudentManager.Students[this.StudentID].CameraReacting || !StudentGlobals.GetStudentPhotographed(this.StudentID))
+				if (this.StudentID == 1 || StudentGlobals.GetStudentDead(this.StudentID) || (this.StudentID < 98 && studentScript.SentHome) || (this.StudentID > 97 || StudentGlobals.StudentSlave == this.StudentID || (studentScript.Club == ClubType.MartialArts && studentScript.ClubAttire)) || (studentScript.Club == ClubType.Sports && studentScript.ClubAttire) || this.StudentManager.Students[this.StudentID].CameraReacting || !StudentGlobals.GetStudentPhotographed(this.StudentID))
 				{
 					this.PromptBar.Label[0].text = string.Empty;
 					this.PromptBar.UpdateButtons();
@@ -407,13 +421,12 @@ public class StudentInfoMenuScript : MonoBehaviour
 			if (StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentID > 97)
 			{
 				this.PromptBar.Label[0].text = string.Empty;
-				this.PromptBar.UpdateButtons();
 			}
 			else
 			{
 				this.PromptBar.Label[0].text = "Get Info";
-				this.PromptBar.UpdateButtons();
 			}
+			this.PromptBar.UpdateButtons();
 		}
 		if (this.UsingLifeNote)
 		{
@@ -424,6 +437,21 @@ public class StudentInfoMenuScript : MonoBehaviour
 			else
 			{
 				this.PromptBar.Label[0].text = "Kill";
+			}
+			this.PromptBar.UpdateButtons();
+		}
+		if (this.FiringCouncilMember)
+		{
+			if (this.StudentManager.Students[this.StudentID] != null)
+			{
+				if (!StudentGlobals.GetStudentPhotographed(this.StudentID) || this.StudentManager.Students[this.StudentID].Club != ClubType.Council)
+				{
+					this.PromptBar.Label[0].text = "";
+				}
+				else
+				{
+					this.PromptBar.Label[0].text = "Fire";
+				}
 			}
 			this.PromptBar.UpdateButtons();
 		}
