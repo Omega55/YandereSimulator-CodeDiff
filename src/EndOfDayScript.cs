@@ -50,6 +50,8 @@ public class EndOfDayScript : MonoBehaviour
 
 	public StudentScript Rival;
 
+	public ClassScript Class;
+
 	public ClockScript Clock;
 
 	public JsonScript JSON;
@@ -1583,6 +1585,16 @@ public class EndOfDayScript : MonoBehaviour
 		CollectibleGlobals.SenpaiGifts = this.SenpaiGifts;
 		PlayerGlobals.PantyShots = this.Yandere.Inventory.PantyShots;
 		PlayerGlobals.Money = this.Yandere.Inventory.Money;
+		ClassGlobals.Biology = this.Class.Biology;
+		ClassGlobals.Chemistry = this.Class.Chemistry;
+		ClassGlobals.Language = this.Class.Language;
+		ClassGlobals.Physical = this.Class.Physical;
+		ClassGlobals.Psychology = this.Class.Psychology;
+		ClassGlobals.BiologyGrade = this.Class.BiologyGrade;
+		ClassGlobals.ChemistryGrade = this.Class.ChemistryGrade;
+		ClassGlobals.LanguageGrade = this.Class.LanguageGrade;
+		ClassGlobals.PhysicalGrade = this.Class.PhysicalGrade;
+		ClassGlobals.PsychologyGrade = this.Class.PsychologyGrade;
 		this.WeaponManager.TrackDumpedWeapons();
 		this.StudentManager.CommunalLocker.RivalPhone.StolenPhoneDropoff.SetPhonesHacked();
 	}

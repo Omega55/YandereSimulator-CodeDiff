@@ -24,6 +24,7 @@ public class PoisonBottleScript : MonoBehaviour
 			else if (this.ID == 2)
 			{
 				this.Prompt.Yandere.Inventory.LethalPoison = true;
+				this.Prompt.Yandere.Inventory.LethalPoisons++;
 			}
 			else if (this.ID == 3)
 			{

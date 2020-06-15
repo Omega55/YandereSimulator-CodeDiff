@@ -471,8 +471,8 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.S))
 					{
-						ClassGlobals.PhysicalGrade = 5;
-						PlayerGlobals.Seduction = 5;
+						this.Yandere.Class.PhysicalGrade = 5;
+						this.Yandere.Class.Seduction = 5;
 						this.StudentManager.Police.UpdateCorpses();
 						this.ID = 1;
 						while (this.ID < 101)

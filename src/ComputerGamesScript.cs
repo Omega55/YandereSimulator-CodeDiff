@@ -233,47 +233,47 @@ public class ComputerGamesScript : MonoBehaviour
 	{
 		if (this.Subject == 1)
 		{
-			ClassGlobals.BiologyBonus = 1;
+			this.Yandere.Class.BiologyBonus = 1;
 		}
 		else if (this.Subject == 2)
 		{
-			ClassGlobals.ChemistryBonus = 1;
+			this.Yandere.Class.ChemistryBonus = 1;
 		}
 		else if (this.Subject == 3)
 		{
-			ClassGlobals.LanguageBonus = 1;
+			this.Yandere.Class.LanguageBonus = 1;
 		}
 		else if (this.Subject == 4)
 		{
-			ClassGlobals.PsychologyBonus = 1;
+			this.Yandere.Class.PsychologyBonus = 1;
 		}
 		else if (this.Subject == 5)
 		{
-			ClassGlobals.PhysicalBonus = 1;
+			this.Yandere.Class.PhysicalBonus = 1;
 		}
 		else if (this.Subject == 6)
 		{
-			PlayerGlobals.SeductionBonus = 1;
+			this.Yandere.Class.SeductionBonus = 1;
 		}
 		else if (this.Subject == 7)
 		{
-			PlayerGlobals.NumbnessBonus = 1;
+			this.Yandere.Class.NumbnessBonus = 1;
 		}
 		else if (this.Subject == 8)
 		{
-			PlayerGlobals.SocialBonus = 1;
+			this.Yandere.Class.SocialBonus = 1;
 		}
 		else if (this.Subject == 9)
 		{
-			PlayerGlobals.StealthBonus = 1;
+			this.Yandere.Class.StealthBonus = 1;
 		}
 		else if (this.Subject == 10)
 		{
-			PlayerGlobals.SpeedBonus = 1;
+			this.Yandere.Class.SpeedBonus = 1;
 		}
 		else if (this.Subject == 11)
 		{
-			PlayerGlobals.EnlightenmentBonus = 1;
+			this.Yandere.Class.EnlightenmentBonus = 1;
 		}
 		if (this.Poison != null)
 		{
@@ -288,47 +288,47 @@ public class ComputerGamesScript : MonoBehaviour
 	{
 		if (this.Subject == 1)
 		{
-			ClassGlobals.BiologyBonus = 0;
+			this.Yandere.Class.BiologyBonus = 0;
 		}
 		else if (this.Subject == 2)
 		{
-			ClassGlobals.ChemistryBonus = 0;
+			this.Yandere.Class.ChemistryBonus = 0;
 		}
 		else if (this.Subject == 3)
 		{
-			ClassGlobals.LanguageBonus = 0;
+			this.Yandere.Class.LanguageBonus = 0;
 		}
 		else if (this.Subject == 4)
 		{
-			ClassGlobals.PsychologyBonus = 0;
+			this.Yandere.Class.PsychologyBonus = 0;
 		}
 		else if (this.Subject == 5)
 		{
-			ClassGlobals.PhysicalBonus = 0;
+			this.Yandere.Class.PhysicalBonus = 0;
 		}
 		else if (this.Subject == 6)
 		{
-			PlayerGlobals.SeductionBonus = 0;
+			this.Yandere.Class.SeductionBonus = 0;
 		}
 		else if (this.Subject == 7)
 		{
-			PlayerGlobals.NumbnessBonus = 0;
+			this.Yandere.Class.NumbnessBonus = 0;
 		}
 		else if (this.Subject == 8)
 		{
-			PlayerGlobals.SocialBonus = 0;
+			this.Yandere.Class.SocialBonus = 0;
 		}
 		else if (this.Subject == 9)
 		{
-			PlayerGlobals.StealthBonus = 0;
+			this.Yandere.Class.StealthBonus = 0;
 		}
 		else if (this.Subject == 10)
 		{
-			PlayerGlobals.SpeedBonus = 0;
+			this.Yandere.Class.SpeedBonus = 0;
 		}
 		else if (this.Subject == 11)
 		{
-			PlayerGlobals.EnlightenmentBonus = 0;
+			this.Yandere.Class.EnlightenmentBonus = 0;
 		}
 		if (this.Poison != null)
 		{
@@ -341,17 +341,17 @@ public class ComputerGamesScript : MonoBehaviour
 
 	public void DeactivateAllBenefits()
 	{
-		ClassGlobals.BiologyBonus = 0;
-		ClassGlobals.ChemistryBonus = 0;
-		ClassGlobals.LanguageBonus = 0;
-		ClassGlobals.PsychologyBonus = 0;
-		ClassGlobals.PhysicalBonus = 0;
-		PlayerGlobals.SeductionBonus = 0;
-		PlayerGlobals.NumbnessBonus = 0;
-		PlayerGlobals.SocialBonus = 0;
-		PlayerGlobals.StealthBonus = 0;
-		PlayerGlobals.SpeedBonus = 0;
-		PlayerGlobals.EnlightenmentBonus = 0;
+		this.Yandere.Class.BiologyBonus = 0;
+		this.Yandere.Class.ChemistryBonus = 0;
+		this.Yandere.Class.LanguageBonus = 0;
+		this.Yandere.Class.PsychologyBonus = 0;
+		this.Yandere.Class.PhysicalBonus = 0;
+		this.Yandere.Class.SeductionBonus = 0;
+		this.Yandere.Class.NumbnessBonus = 0;
+		this.Yandere.Class.SocialBonus = 0;
+		this.Yandere.Class.StealthBonus = 0;
+		this.Yandere.Class.SpeedBonus = 0;
+		this.Yandere.Class.EnlightenmentBonus = 0;
 		if (this.Poison != null)
 		{
 			this.Poison.Start();

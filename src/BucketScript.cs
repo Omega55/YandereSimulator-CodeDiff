@@ -205,7 +205,7 @@ public class BucketScript : MonoBehaviour
 		}
 		if (this.Dumbbells > 0)
 		{
-			if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus == 0)
+			if (this.Prompt.Yandere.Class.PhysicalGrade + this.Prompt.Yandere.Class.PhysicalBonus == 0)
 			{
 				this.Prompt.Label[3].text = "     Physical Stat Too Low";
 				this.Prompt.Circle[3].fillAmount = 1f;

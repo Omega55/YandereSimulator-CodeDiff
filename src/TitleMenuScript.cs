@@ -127,6 +127,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	private void Start()
 	{
+		Cursor.visible = false;
 		if (GameGlobals.LoveSick)
 		{
 			this.LoveSick = true;

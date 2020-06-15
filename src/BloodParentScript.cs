@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BloodParentScript : MonoBehaviour
 {
+	public YandereScript Yandere;
+
 	public GameObject Bloodpool;
 
 	public GameObject Footprint;
@@ -23,6 +25,8 @@ public class BloodParentScript : MonoBehaviour
 
 	public void RecordAllBlood()
 	{
+		this.PoolID = 0;
+		this.FootprintID = 0;
 		foreach (object obj in base.transform)
 		{
 			Transform transform = (Transform)obj;
@@ -62,6 +66,7 @@ public class BloodParentScript : MonoBehaviour
 		while (this.FootprintID > 0)
 		{
 			GameObject gameObject2 = UnityEngine.Object.Instantiate<GameObject>(this.Footprint, this.FootprintPositions[this.FootprintID], Quaternion.identity);
+			gameObject2.transform.GetChild(0).GetComponent<FootprintScript>().Yandere = this.Yandere;
 			gameObject2.transform.eulerAngles = this.FootprintRotations[this.FootprintID];
 			gameObject2.transform.parent = base.transform;
 			this.FootprintID--;

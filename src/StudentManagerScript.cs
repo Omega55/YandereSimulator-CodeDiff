@@ -119,6 +119,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public ListScript MeetSpots;
 
+	public MirrorScript Mirror;
+
 	public PoliceScript Police;
 
 	public DoorScript ShedDoor;
@@ -136,6 +138,12 @@ public class StudentManagerScript : MonoBehaviour
 	public Collider IncineratorArea;
 
 	public Collider HeadmasterArea;
+
+	public Collider GardenArea;
+
+	public Collider PoolStairs;
+
+	public Collider TreeArea;
 
 	public Collider NEStairs;
 
@@ -192,6 +200,8 @@ public class StudentManagerScript : MonoBehaviour
 	public ListScript Podiums;
 
 	public ListScript Clubs;
+
+	public BodyHidingLockerScript[] BodyHidingLockers;
 
 	public ChangingBoothScript[] ChangingBooths;
 
@@ -2108,6 +2118,7 @@ public class StudentManagerScript : MonoBehaviour
 			StudentScript studentScript = this.Students[this.ID];
 			if (studentScript != null)
 			{
+				Debug.Log(this.Students[this.ID].Name + "'s expelled status is set to: " + StudentGlobals.GetStudentExpelled(this.ID).ToString());
 				if (!studentScript.Dying && !studentScript.Replaced && studentScript.Spawned && !StudentGlobals.GetStudentExpelled(this.ID) && !studentScript.Ragdoll.Disposed)
 				{
 					studentScript.gameObject.SetActive(true);
@@ -3174,6 +3185,13 @@ public class StudentManagerScript : MonoBehaviour
 	{
 		int profile = GameGlobals.Profile;
 		int @int = PlayerPrefs.GetInt("SaveSlot");
+		Debug.Log(string.Concat(new object[]
+		{
+			"At the moment of saving, Himari's Phase was: ",
+			this.Students[72].Phase,
+			" and her PatrolID was: ",
+			this.Students[72].PatrolID
+		}));
 		this.BloodParent.RecordAllBlood();
 		YanSave.SaveData(string.Concat(new object[]
 		{
@@ -3190,8 +3208,6 @@ public class StudentManagerScript : MonoBehaviour
 			@int,
 			"_MemorialStudents"
 		}), StudentGlobals.MemorialStudents);
-		Debug.Log("WHILE SAVING PlayerPrefs.GetInt(''Profile_1_StudentDead_4'') is: " + PlayerPrefs.GetInt("Profile_1_StudentDead_4"));
-		Debug.Log("WHILE SAVING StudentGlobals.GetStudentDead(4) is: " + StudentGlobals.GetStudentDead(4).ToString());
 	}
 
 	public void Load()
@@ -3199,6 +3215,13 @@ public class StudentManagerScript : MonoBehaviour
 		Debug.Log("Now loading save data.");
 		int profile = GameGlobals.Profile;
 		int @int = PlayerPrefs.GetInt("SaveSlot");
+		Debug.Log(string.Concat(new object[]
+		{
+			"Before loading data, Himari's Phase was: ",
+			this.Students[72].Phase,
+			" and her PatrolID was: ",
+			this.Students[72].PatrolID
+		}));
 		YanSave.LoadData(string.Concat(new object[]
 		{
 			"Profile_",
@@ -3206,6 +3229,13 @@ public class StudentManagerScript : MonoBehaviour
 			"_Slot_",
 			@int
 		}), false);
+		Debug.Log(string.Concat(new object[]
+		{
+			"After loading data, Himari's Phase was: ",
+			this.Students[72].Phase,
+			" and her PatrolID was: ",
+			this.Students[72].PatrolID
+		}));
 		Physics.SyncTransforms();
 		this.ID = 1;
 		while (this.ID < 101)
@@ -3214,25 +3244,24 @@ public class StudentManagerScript : MonoBehaviour
 			{
 				if (!this.Students[this.ID].Alive)
 				{
-					Debug.Log(this.Students[this.ID].Name + " is confirmed to be dead.");
 					Vector3 localPosition = this.Students[this.ID].Hips.localPosition;
 					Quaternion localRotation = this.Students[this.ID].Hips.localRotation;
 					this.Students[this.ID].BecomeRagdoll();
 					this.Students[this.ID].Ragdoll.UpdateNextFrame = true;
 					this.Students[this.ID].Ragdoll.NextPosition = localPosition;
 					this.Students[this.ID].Ragdoll.NextRotation = localRotation;
-					Debug.Log("Adding " + this.Students[this.ID].Name + " to the Police CorpseList.");
 					this.Police.CorpseList[this.Police.Corpses] = this.Students[this.ID].Ragdoll;
 					this.Police.Corpses++;
 					if (this.Students[this.ID].Removed)
 					{
-						Debug.Log("Removing " + this.Students[this.ID].Name + " from the Police CorpseList.");
 						this.Students[this.ID].Ragdoll.Remove();
 						this.Police.Corpses--;
 					}
 				}
 				else
 				{
+					this.Students[this.ID].ReturningFromSave = true;
+					this.Students[this.ID].PhaseFromSave = this.Students[this.ID].Phase;
 					if (this.Students[this.ID].ChangingShoes)
 					{
 						this.Students[this.ID].ShoeRemoval.enabled = true;
@@ -3320,6 +3349,7 @@ public class StudentManagerScript : MonoBehaviour
 		this.Yandere.WeaponManager.EquipWeaponsFromSave();
 		this.Yandere.WeaponManager.RestoreWeaponToStudent();
 		this.Yandere.WeaponManager.UpdateDelinquentWeapons();
+		this.Mirror.UpdatePersona();
 		if (this.Yandere.ClubAttire)
 		{
 			this.Yandere.ClubAttire = false;
@@ -3332,7 +3362,21 @@ public class StudentManagerScript : MonoBehaviour
 				doorScript.OpenDoor();
 			}
 		}
+		foreach (BodyHidingLockerScript bodyHidingLockerScript in this.BodyHidingLockers)
+		{
+			if (bodyHidingLockerScript != null && bodyHidingLockerScript.StudentID > 0)
+			{
+				bodyHidingLockerScript.UpdateCorpse();
+			}
+		}
 		this.BloodParent.RestoreAllBlood();
+		Debug.Log(string.Concat(new object[]
+		{
+			"After performing the entire loading process, Himari's Phase is: ",
+			this.Students[72].Phase,
+			" and her PatrolID is: ",
+			this.Students[72].PatrolID
+		}));
 	}
 
 	public void UpdateBlood()

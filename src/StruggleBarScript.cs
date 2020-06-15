@@ -59,7 +59,7 @@ public class StruggleBarScript : MonoBehaviour
 				{
 					this.Victory += 100f;
 				}
-				this.Victory += Time.deltaTime * (500f + (float)(ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus) * 150f) * this.Intensity;
+				this.Victory += Time.deltaTime * (500f + (float)(this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus) * 150f) * this.Intensity;
 			}
 			if (this.Victory >= 100f)
 			{

@@ -32,22 +32,30 @@ public class RivalPhoneScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
-			if (this.StudentID == this.Prompt.Yandere.StudentManager.RivalID && SchemeGlobals.GetSchemeStage(1) == 4)
+			this.Prompt.Circle[0].fillAmount = 1f;
+			this.Prompt.Yandere.StudentManager.CanAnyoneSeeYandere();
+			if (!this.Prompt.Yandere.StudentManager.YandereVisible)
 			{
-				SchemeGlobals.SetSchemeStage(1, 5);
-				this.Prompt.Yandere.PauseScreen.Schemes.UpdateInstructions();
+				if (this.StudentID == this.Prompt.Yandere.StudentManager.RivalID && SchemeGlobals.GetSchemeStage(1) == 4)
+				{
+					SchemeGlobals.SetSchemeStage(1, 5);
+					this.Prompt.Yandere.PauseScreen.Schemes.UpdateInstructions();
+				}
+				this.Prompt.Yandere.RivalPhoneTexture = this.MyRenderer.material.mainTexture;
+				this.Prompt.Yandere.Inventory.RivalPhone = true;
+				this.Prompt.Yandere.Inventory.RivalPhoneID = this.StudentID;
+				this.Prompt.enabled = false;
+				base.enabled = false;
+				this.StolenPhoneDropoff.Prompt.enabled = true;
+				this.StolenPhoneDropoff.Phase = 1;
+				this.StolenPhoneDropoff.Timer = 0f;
+				this.StolenPhoneDropoff.Prompt.Label[0].text = "     Provide Stolen Phone";
+				base.gameObject.SetActive(false);
+				this.Stolen = true;
+				return;
 			}
-			this.Prompt.Yandere.RivalPhoneTexture = this.MyRenderer.material.mainTexture;
-			this.Prompt.Yandere.Inventory.RivalPhone = true;
-			this.Prompt.Yandere.Inventory.RivalPhoneID = this.StudentID;
-			this.Prompt.enabled = false;
-			base.enabled = false;
-			this.StolenPhoneDropoff.Prompt.enabled = true;
-			this.StolenPhoneDropoff.Phase = 1;
-			this.StolenPhoneDropoff.Timer = 0f;
-			this.StolenPhoneDropoff.Prompt.Label[0].text = "     Provide Stolen Phone";
-			base.gameObject.SetActive(false);
-			this.Stolen = true;
+			this.Prompt.Yandere.NotificationManager.CustomText = "Someone is watching!";
+			this.Prompt.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 		}
 	}
 

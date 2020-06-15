@@ -147,6 +147,8 @@ public class YandereScript : MonoBehaviour
 
 	public GloveScript Gloves;
 
+	public ClassScript Class;
+
 	public Camera UICamera;
 
 	public UILabel PowerUp;
@@ -462,6 +464,8 @@ public class YandereScript : MonoBehaviour
 	public int Followers;
 
 	public int Hairstyle;
+
+	public int PersonaID;
 
 	public int DigPhase;
 
@@ -1407,6 +1411,7 @@ public class YandereScript : MonoBehaviour
 
 	private void Start()
 	{
+		Application.runInBackground = false;
 		this.PhysicalGrade = ClassGlobals.PhysicalGrade;
 		this.SpeedBonus = PlayerGlobals.SpeedBonus;
 		this.Club = ClubGlobals.Club;
@@ -3327,7 +3332,9 @@ public class YandereScript : MonoBehaviour
 					}
 					else
 					{
+						Debug.Log(this.TargetStudent.Name + " is being instructed to perform their ''losing struggle'' animation.");
 						this.CharacterAnimation.CrossFade("f02_teacherStruggleWinA_00");
+						this.TargetStudent.CharacterAnimation.CrossFade(this.TargetStudent.StruggleWonAnim);
 						this.EquippedWeapon.transform.localEulerAngles = Vector3.Lerp(this.EquippedWeapon.transform.localEulerAngles, Vector3.zero, Time.deltaTime);
 					}
 					if (this.StrugglePhase == 0)
@@ -6347,7 +6354,6 @@ public class YandereScript : MonoBehaviour
 
 	public void Unequip()
 	{
-		Debug.Log("Yandere-chan has been told to de-equip her weapon.");
 		if (this.CanMove || this.Noticed)
 		{
 			if (this.Equipped < 3)
@@ -6413,7 +6419,7 @@ public class YandereScript : MonoBehaviour
 
 	public void UpdateNumbness()
 	{
-		this.Numbness = 1f - 0.1f * (float)(PlayerGlobals.Numbness + PlayerGlobals.NumbnessBonus);
+		this.Numbness = 1f - 0.1f * (float)(this.Class.Numbness + this.Class.NumbnessBonus);
 	}
 
 	private void OnTriggerEnter(Collider other)

@@ -27,6 +27,8 @@ public class DropsScript : MonoBehaviour
 
 	public UILabel[] NameLabels;
 
+	public bool[] InfiniteSupply;
+
 	public bool[] Purchased;
 
 	public Texture[] DropIcons;
@@ -55,6 +57,12 @@ public class DropsScript : MonoBehaviour
 			this.NameLabels[this.ID].text = this.DropNames[this.ID];
 			this.ID++;
 		}
+		if (MissionModeGlobals.MissionMode)
+		{
+			this.CostLabels[6].text = "10";
+			this.InfiniteSupply[6] = true;
+			this.DropCosts[6] = 10;
+		}
 	}
 
 	private void Update()
@@ -80,14 +88,17 @@ public class DropsScript : MonoBehaviour
 		if (Input.GetButtonDown("A"))
 		{
 			AudioSource component = base.GetComponent<AudioSource>();
-			if (!this.Purchased[this.Selected])
+			if (!this.Purchased[this.Selected] && this.InfoChanWindow.Orders < 11)
 			{
 				if (this.PromptBar.Label[0].text != string.Empty)
 				{
 					if (this.Inventory.PantyShots >= this.DropCosts[this.Selected])
 					{
 						this.Inventory.PantyShots -= this.DropCosts[this.Selected];
-						this.Purchased[this.Selected] = true;
+						if (!this.InfiniteSupply[this.Selected])
+						{
+							this.Purchased[this.Selected] = true;
+						}
 						this.InfoChanWindow.Orders++;
 						this.InfoChanWindow.ItemsToDrop[this.InfoChanWindow.Orders] = this.Selected;
 						this.InfoChanWindow.DropObject();

@@ -455,6 +455,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 			}
 			this.PromptBar.UpdateButtons();
 		}
+		if (MissionModeGlobals.MissionMode && this.StudentID == 1)
+		{
+			this.PromptBar.Label[0].text = "";
+		}
 		this.Highlight.localPosition = new Vector3(-300f + (float)this.Column * 150f, 80f - (float)this.Row * 160f, this.Highlight.localPosition.z);
 		this.UpdateNameLabel();
 	}
@@ -579,6 +583,10 @@ public class StudentInfoMenuScript : MonoBehaviour
 			}
 			this.StudentPortraits[ID].Friend.SetActive(PlayerGlobals.GetStudentFriend(ID));
 			if (StudentGlobals.GetStudentDying(ID) || StudentGlobals.GetStudentDead(ID))
+			{
+				this.StudentPortraits[ID].DeathShadow.SetActive(true);
+			}
+			if (MissionModeGlobals.MissionMode && ID == 1)
 			{
 				this.StudentPortraits[ID].DeathShadow.SetActive(true);
 			}

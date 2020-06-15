@@ -136,7 +136,7 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.RepRecovery += 2.5f;
 						}
-						if (PlayerGlobals.SocialBonus > 0)
+						if (this.S.Yandere.Class.SocialBonus > 0)
 						{
 							this.S.RepRecovery += 2.5f;
 						}
@@ -234,11 +234,11 @@ public class TalkingScript : MonoBehaviour
 						{
 							this.S.GossipBonus++;
 						}
-						if ((this.S.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0) || PlayerGlobals.Seduction == 5)
+						if ((this.S.Male && this.S.Yandere.Class.Seduction + this.S.Yandere.Class.SeductionBonus > 0) || this.S.Yandere.Class.Seduction == 5)
 						{
 							this.S.GossipBonus++;
 						}
-						if (PlayerGlobals.SocialBonus > 0)
+						if (this.S.Yandere.Class.SocialBonus > 0)
 						{
 							this.S.GossipBonus++;
 						}
@@ -1453,11 +1453,11 @@ public class TalkingScript : MonoBehaviour
 		{
 			this.S.RepBonus++;
 		}
-		if ((this.S.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0) || PlayerGlobals.Seduction == 5)
+		if ((this.S.Male && this.S.Yandere.Class.Seduction + this.S.Yandere.Class.SeductionBonus > 0) || this.S.Yandere.Class.Seduction == 5)
 		{
 			this.S.RepBonus++;
 		}
-		if (PlayerGlobals.SocialBonus > 0)
+		if (this.S.Yandere.Class.SocialBonus > 0)
 		{
 			this.S.RepBonus++;
 		}

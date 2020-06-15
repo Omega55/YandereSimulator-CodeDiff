@@ -190,8 +190,6 @@ public class SaveLoadMenuScript : MonoBehaviour
 						{
 							PlayerPrefs.SetInt("LoadingSave", 1);
 							PlayerPrefs.SetInt("SaveSlot", this.Selected);
-							Debug.Log("BEFORE LOADING PlayerPrefs.GetInt(''Profile_1_StudentDead_4'') is: " + PlayerPrefs.GetInt("Profile_1_StudentDead_4"));
-							Debug.Log("BEFORE LOADING StudentGlobals.GetStudentDead(4) is: " + StudentGlobals.GetStudentDead(4).ToString());
 							YanSave.LoadPrefs(string.Concat(new object[]
 							{
 								"Profile_",
@@ -199,8 +197,6 @@ public class SaveLoadMenuScript : MonoBehaviour
 								"_Slot_",
 								this.Selected
 							}));
-							Debug.Log("AFTER LOADING PlayerPrefs.GetInt(''Profile_1_StudentDead_4'') is: " + PlayerPrefs.GetInt("Profile_1_StudentDead_4"));
-							Debug.Log("AFTER LOADING StudentGlobals.GetStudentDead(4) is: " + StudentGlobals.GetStudentDead(4).ToString());
 							SceneManager.LoadScene("LoadingScene");
 						}
 					}

@@ -99,7 +99,7 @@ public class QualityManagerScript : MonoBehaviour
 			}
 			if (OptionGlobals.DisableFarAnimations == 0)
 			{
-				OptionGlobals.DisableFarAnimations = 5;
+				OptionGlobals.DisableFarAnimations = 10;
 			}
 			if (OptionGlobals.Sensitivity == 0)
 			{
@@ -389,9 +389,9 @@ public class QualityManagerScript : MonoBehaviour
 	{
 		if (OptionGlobals.DisableFarAnimations > 20)
 		{
-			OptionGlobals.DisableFarAnimations = 0;
+			OptionGlobals.DisableFarAnimations = 1;
 		}
-		else if (OptionGlobals.DisableFarAnimations < 0)
+		else if (OptionGlobals.DisableFarAnimations < 1)
 		{
 			OptionGlobals.DisableFarAnimations = 20;
 		}

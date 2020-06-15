@@ -231,7 +231,7 @@ public class WeaponScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (this.WeaponID == 16 && this.Yandere.EquippedWeapon == this && Input.GetButtonDown("RB"))
+		if (this.WeaponID == 16 && this.Yandere.EquippedWeapon == this && Input.GetButtonDown("RB") && this.ExtraBlade != null)
 		{
 			this.ExtraBlade.SetActive(!this.ExtraBlade.activeInHierarchy);
 		}
@@ -323,7 +323,6 @@ public class WeaponScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[3].fillAmount == 0f)
 		{
-			Debug.Log("Yandere-chan just picked up a weapon.");
 			if (this.WeaponID == 6 && SchemeGlobals.GetSchemeStage(4) == 1)
 			{
 				SchemeGlobals.SetSchemeStage(4, 2);
@@ -380,7 +379,6 @@ public class WeaponScript : MonoBehaviour
 			{
 				if (this.Yandere.Weapon[1] == null)
 				{
-					Debug.Log("Yandere-chan did not have a weapon in slot 1.");
 					if (this.Yandere.Weapon[2] != null)
 					{
 						this.Yandere.Weapon[2].gameObject.SetActive(false);
@@ -391,7 +389,6 @@ public class WeaponScript : MonoBehaviour
 				}
 				else if (this.Yandere.Weapon[2] == null)
 				{
-					Debug.Log("Yandere-chan had a weapon in slot 1, but slot 2 was empty.");
 					if (this.Yandere.Weapon[1] != null)
 					{
 						if (!this.DoNotDisable)
@@ -437,7 +434,10 @@ public class WeaponScript : MonoBehaviour
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
 			this.Yandere.NearestPrompt = null;
-			this.SuspicionCheck();
+			if (this.WeaponID == 9 || this.WeaponID == 10 || this.WeaponID == 12 || this.WeaponID == 14 || this.WeaponID == 16 || this.WeaponID == 22 || this.WeaponID == 25)
+			{
+				this.SuspicionCheck();
+			}
 			if (this.Yandere.EquippedWeapon.Suspicious)
 			{
 				if (!this.Yandere.WeaponWarning)

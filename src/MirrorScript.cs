@@ -11,8 +11,6 @@ public class MirrorScript : MonoBehaviour
 
 	public string[] Walks;
 
-	public int ID;
-
 	public int Limit;
 
 	private void Start()
@@ -20,7 +18,7 @@ public class MirrorScript : MonoBehaviour
 		this.Limit = this.Idles.Length - 1;
 		if (this.Prompt.Yandere.Club == ClubType.Delinquent)
 		{
-			this.ID = 10;
+			this.Prompt.Yandere.PersonaID = 10;
 			if (this.Prompt.Yandere.Persona != YanderePersonaType.Tough)
 			{
 				this.UpdatePersona();
@@ -35,10 +33,10 @@ public class MirrorScript : MonoBehaviour
 			if (this.Prompt.Yandere.Health > 0)
 			{
 				this.Prompt.Circle[0].fillAmount = 1f;
-				this.ID++;
-				if (this.ID == this.Limit)
+				this.Prompt.Yandere.PersonaID++;
+				if (this.Prompt.Yandere.PersonaID == this.Limit)
 				{
-					this.ID = 0;
+					this.Prompt.Yandere.PersonaID = 0;
 				}
 				this.UpdatePersona();
 				return;
@@ -47,27 +45,28 @@ public class MirrorScript : MonoBehaviour
 		else if (this.Prompt.Circle[1].fillAmount == 0f && this.Prompt.Yandere.Health > 0)
 		{
 			this.Prompt.Circle[1].fillAmount = 1f;
-			this.ID--;
-			if (this.ID < 0)
+			this.Prompt.Yandere.PersonaID--;
+			if (this.Prompt.Yandere.PersonaID < 0)
 			{
-				this.ID = this.Limit - 1;
+				this.Prompt.Yandere.PersonaID = this.Limit - 1;
 			}
 			this.UpdatePersona();
 		}
 	}
 
-	private void UpdatePersona()
+	public void UpdatePersona()
 	{
+		int personaID = this.Prompt.Yandere.PersonaID;
 		if (!this.Prompt.Yandere.Carrying)
 		{
-			this.Prompt.Yandere.NotificationManager.PersonaName = this.Personas[this.ID];
+			this.Prompt.Yandere.NotificationManager.PersonaName = this.Personas[personaID];
 			this.Prompt.Yandere.NotificationManager.DisplayNotification(NotificationType.Persona);
-			this.Prompt.Yandere.IdleAnim = this.Idles[this.ID];
-			this.Prompt.Yandere.WalkAnim = this.Walks[this.ID];
-			this.Prompt.Yandere.UpdatePersona(this.ID);
+			this.Prompt.Yandere.IdleAnim = this.Idles[personaID];
+			this.Prompt.Yandere.WalkAnim = this.Walks[personaID];
+			this.Prompt.Yandere.UpdatePersona(personaID);
 		}
-		this.Prompt.Yandere.OriginalIdleAnim = this.Idles[this.ID];
-		this.Prompt.Yandere.OriginalWalkAnim = this.Walks[this.ID];
+		this.Prompt.Yandere.OriginalIdleAnim = this.Idles[personaID];
+		this.Prompt.Yandere.OriginalWalkAnim = this.Walks[personaID];
 		this.Prompt.Yandere.StudentManager.UpdatePerception();
 	}
 }

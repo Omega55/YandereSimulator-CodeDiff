@@ -70,6 +70,8 @@ public class InventoryScript : MonoBehaviour
 
 	public int MysteriousKeys;
 
+	public int LethalPoisons;
+
 	public int RivalPhoneID;
 
 	public int PantyShots;

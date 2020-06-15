@@ -141,6 +141,7 @@ public class CalendarScript : MonoBehaviour
 					}
 					Debug.Log("And, as of now, DateGlobals.Weekday is: " + DateGlobals.Weekday);
 					this.Incremented = true;
+					base.GetComponent<AudioSource>().pitch = 1f - (0.8f - SchoolGlobals.SchoolAtmosphere * 0.8f);
 					base.GetComponent<AudioSource>().Play();
 				}
 				else

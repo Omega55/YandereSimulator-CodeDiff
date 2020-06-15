@@ -50,7 +50,7 @@ public static class PoseSerializer
 			{
 				foreach (Transform transform in componentsInChildren)
 				{
-					if (transform.name == boneData2.BoneName)
+					if (transform.name == boneData2.BoneName && transform != cosmeticScript.LeftEyeRenderer.transform && transform != cosmeticScript.RightEyeRenderer.transform)
 					{
 						transform.localRotation = boneData2.LocalRotation;
 						if (flag)

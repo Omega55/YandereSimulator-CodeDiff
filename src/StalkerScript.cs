@@ -13,6 +13,8 @@ public class StalkerScript : MonoBehaviour
 
 	public AudioSource MyAudio;
 
+	public AudioClip Crunch;
+
 	public UILabel Subtitle;
 
 	public AudioClip[] AlarmedClip;
@@ -43,6 +45,8 @@ public class StalkerScript : MonoBehaviour
 
 	public int SpeechPhase;
 
+	public int Limit;
+
 	private void Update()
 	{
 		this.Distance = Vector3.Distance(this.Yandere.transform.position, base.transform.position);
@@ -69,29 +73,50 @@ public class StalkerScript : MonoBehaviour
 		{
 			if (!this.Started)
 			{
-				this.Subtitle.text = this.SpeechText[0];
-				this.MyAudio.Play();
-				this.Started = true;
+				this.Timer += Time.deltaTime;
+				if (this.Timer > 1f)
+				{
+					this.Subtitle.transform.localScale = new Vector3(1f, 1f, 1f);
+					this.Subtitle.text = this.SpeechText[0];
+					this.MyAudio.clip = this.SpeechClip[0];
+					this.MyAudio.Play();
+					this.Started = true;
+					this.SpeechPhase++;
+					return;
+				}
+			}
+			else
+			{
+				this.MyAudio.pitch = Time.timeScale;
+				if (!this.Alarmed)
+				{
+					if (this.SpeechPhase < this.SpeechTime.Length && !this.MyAudio.isPlaying)
+					{
+						this.MyAudio.clip = this.SpeechClip[this.SpeechPhase];
+						this.MyAudio.Play();
+						this.Subtitle.text = this.SpeechText[this.SpeechPhase];
+						this.SpeechPhase++;
+					}
+				}
+				else if (this.SpeechPhase < this.Limit && !this.MyAudio.isPlaying)
+				{
+					this.MyAudio.clip = this.SpeechClip[this.SpeechPhase];
+					this.MyAudio.Play();
+					this.Subtitle.text = this.SpeechText[this.SpeechPhase];
+					this.SpeechPhase++;
+				}
+				if (this.MyAudio.isPlaying)
+				{
+					this.Jukebox.volume = 0.1f;
+					return;
+				}
+				this.Jukebox.volume = 1f;
 				return;
 			}
-			this.MyAudio.pitch = Time.timeScale;
-			if (this.SpeechPhase < this.SpeechTime.Length && this.MyAudio.time > this.SpeechTime[this.SpeechPhase])
-			{
-				this.Subtitle.text = this.SpeechText[this.SpeechPhase];
-				this.SpeechPhase++;
-			}
-			this.Scale = Mathf.Abs(1f - (this.Distance - 1f) / (this.MinimumDistance - 1f));
-			if (this.Scale < 0f)
-			{
-				this.Scale = 0f;
-			}
-			if (this.Scale > 1f)
-			{
-				this.Scale = 1f;
-			}
-			this.Jukebox.volume = 1f - 0.9f * this.Scale;
-			this.Subtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
-			this.MyAudio.volume = this.Scale;
+		}
+		else
+		{
+			this.Subtitle.text = "";
 		}
 	}
 
@@ -105,6 +130,7 @@ public class StalkerScript : MonoBehaviour
 		this.Started = false;
 		this.Alarmed = true;
 		this.SpeechPhase = 0;
+		this.Timer = 0f;
 		this.MyAudio.Stop();
 	}
 }

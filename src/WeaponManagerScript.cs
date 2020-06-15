@@ -223,14 +223,6 @@ public class WeaponManagerScript : MonoBehaviour
 		}
 		if (this.Yandere.Equipped > 0)
 		{
-			Debug.Log(string.Concat(new object[]
-			{
-				"The player had a weapon equipped in Slot #",
-				this.Yandere.Equipped,
-				". That weapon was #",
-				this.OriginalWeapon,
-				" in the list of all weapons."
-			}));
 			this.Yandere.Unequip();
 		}
 		if (this.Yandere.Weapon[1] != null)
@@ -243,21 +235,18 @@ public class WeaponManagerScript : MonoBehaviour
 		}
 		if (this.YandereWeapon1 > -1)
 		{
-			Debug.Log("Looks like the player had a " + this.Weapons[this.YandereWeapon1].gameObject.name + " in their possession when they saved.");
 			this.Weapons[this.YandereWeapon1].Prompt.Circle[3].fillAmount = 0f;
 			this.Weapons[this.YandereWeapon1].gameObject.SetActive(true);
 			this.Weapons[this.YandereWeapon1].UnequipImmediately = true;
 		}
 		if (this.YandereWeapon2 > -1)
 		{
-			Debug.Log("Looks like the player had a " + this.Weapons[this.YandereWeapon2].gameObject.name + " in their possession when they saved.");
 			this.Weapons[this.YandereWeapon2].Prompt.Circle[3].fillAmount = 0f;
 			this.Weapons[this.YandereWeapon2].gameObject.SetActive(true);
 			this.Weapons[this.YandereWeapon2].UnequipImmediately = true;
 		}
 		if (this.YandereWeapon3 > -1)
 		{
-			Debug.Log("Looks like the player had a " + this.Weapons[this.YandereWeapon3].gameObject.name + " equipped when they saved.");
 			this.Weapons[this.YandereWeapon3].Prompt.Circle[3].fillAmount = 0f;
 			this.Weapons[this.YandereWeapon3].gameObject.SetActive(true);
 			this.Weapons[this.YandereWeapon3].UnequipImmediately = true;

@@ -48,6 +48,7 @@ public class VendingMachineScript : MonoBehaviour
 				this.Prompt.Yandere.Inventory.UpdateMoney();
 				return;
 			}
+			this.Prompt.Yandere.StudentManager.TutorialWindow.ShowMoneyMessage = true;
 			this.Prompt.Yandere.NotificationManager.CustomText = "Not enough money!";
 			this.Prompt.Yandere.NotificationManager.DisplayNotification(NotificationType.Custom);
 		}

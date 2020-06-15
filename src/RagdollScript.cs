@@ -186,6 +186,7 @@ public class RagdollScript : MonoBehaviour
 		{
 			this.Student.StudentManager.TutorialWindow.ShowPoolMessage = true;
 			this.BloodPoolSpawner.gameObject.SetActive(true);
+			this.BloodPoolSpawner.StudentManager = this.Student.StudentManager;
 			if (this.Pushed)
 			{
 				this.BloodPoolSpawner.Timer = 5f;
@@ -201,7 +202,7 @@ public class RagdollScript : MonoBehaviour
 			}
 		}
 		this.Prompt.enabled = true;
-		if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && !this.Tranquil)
+		if (this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}
@@ -591,7 +592,7 @@ public class RagdollScript : MonoBehaviour
 		{
 			allRigidbodies[i].drag = 0f;
 		}
-		if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && !this.Tranquil)
+		if (this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}
@@ -656,7 +657,7 @@ public class RagdollScript : MonoBehaviour
 		this.Prompt.Label[1].text = "     Drag";
 		this.Prompt.HideButton[1] = false;
 		this.Prompt.enabled = true;
-		if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && !this.Tranquil)
+		if (this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus > 0 && !this.Tranquil)
 		{
 			this.Prompt.HideButton[3] = false;
 		}

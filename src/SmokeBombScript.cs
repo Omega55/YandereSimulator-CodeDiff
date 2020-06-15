@@ -104,7 +104,6 @@ public class SmokeBombScript : MonoBehaviour
 				Student.FollowCountdown.gameObject.SetActive(false);
 				Student.Following = false;
 			}
-			Student.BecomeAlarmed();
 			Student.CurrentDestination = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
 			Student.Pathfinding.target = Student.StudentManager.GoAwaySpots.List[Student.StudentID];
 			Student.Pathfinding.canSearch = true;

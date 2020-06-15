@@ -170,7 +170,7 @@ public class PhoneScript : MonoBehaviour
 				this.PauseMenuTimer += Time.deltaTime;
 				if (this.PauseMenuPhase == 0)
 				{
-					this.PauseMenu.localPosition = Vector3.Lerp(this.PauseMenu.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * 10f);
+					this.PauseMenu.localPosition = Vector3.Lerp(this.PauseMenu.localPosition, new Vector3(0f, -15f, 0f), Time.deltaTime * 10f);
 					if (this.PauseMenuTimer > 1f)
 					{
 						base.GetComponent<AudioSource>().clip = this.AppInstall;
@@ -190,7 +190,7 @@ public class PhoneScript : MonoBehaviour
 				}
 				else if (this.PauseMenuPhase == 2)
 				{
-					this.PauseMenu.localPosition = Vector3.Lerp(this.PauseMenu.localPosition, new Vector3(-500f, 0f, 0f), Time.deltaTime * 10f);
+					this.PauseMenu.localPosition = Vector3.Lerp(this.PauseMenu.localPosition, new Vector3(-485f, -15f, 0f), Time.deltaTime * 10f);
 					if (this.PauseMenuTimer > 3f)
 					{
 						base.GetComponent<AudioSource>().volume = 1f;

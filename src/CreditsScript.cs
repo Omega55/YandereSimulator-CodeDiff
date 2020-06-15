@@ -130,7 +130,7 @@ public class CreditsScript : MonoBehaviour
 					this.Timer = 0f;
 				}
 			}
-			if (Input.GetButtonDown("B") || !this.Jukebox.isPlaying)
+			if (Input.GetButtonDown("B") || this.Jukebox.time >= this.Jukebox.clip.length)
 			{
 				this.FadeOut = true;
 			}

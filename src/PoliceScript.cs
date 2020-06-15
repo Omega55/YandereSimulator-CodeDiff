@@ -225,7 +225,7 @@ public class PoliceScript : MonoBehaviour
 				this.UniformIcon.spriteName = "No";
 				this.UniformDisposed = false;
 			}
-			if (this.IncineratedWeapons == this.MurderWeapons)
+			if (this.MurderWeapons == 0 || this.IncineratedWeapons == this.MurderWeapons)
 			{
 				if (!this.WeaponDisposed)
 				{
@@ -946,7 +946,7 @@ public class PoliceScript : MonoBehaviour
 			if (ragdollScript != null)
 			{
 				ragdollScript.Prompt.HideButton[3] = true;
-				if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && !ragdollScript.Tranquil)
+				if (this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus > 0 && !ragdollScript.Tranquil)
 				{
 					ragdollScript.Prompt.HideButton[3] = false;
 				}

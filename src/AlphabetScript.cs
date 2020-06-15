@@ -8,6 +8,8 @@ public class AlphabetScript : MonoBehaviour
 
 	public InventoryScript Inventory;
 
+	public ClassScript Class;
+
 	public GameObject BodyHidingLockers;
 
 	public GameObject AmnesiaBombBox;
@@ -46,6 +48,10 @@ public class AlphabetScript : MonoBehaviour
 
 	public int CurrentTarget;
 
+	public bool StopMusic;
+
+	public float LastTime;
+
 	public float Timer;
 
 	public int[] IDs;
@@ -66,7 +72,7 @@ public class AlphabetScript : MonoBehaviour
 			this.PuzzleCube.SetActive(true);
 			this.WeaponBag.SetActive(true);
 			this.Jukebox.SetActive(false);
-			ClassGlobals.PhysicalGrade = 5;
+			this.Class.PhysicalGrade = 5;
 			this.Music.Play();
 			this.UpdateText();
 			return;
@@ -81,6 +87,28 @@ public class AlphabetScript : MonoBehaviour
 	{
 		if (this.CurrentTarget < this.IDs.Length)
 		{
+			if (Input.GetKeyDown("m"))
+			{
+				if (this.Music.isPlaying)
+				{
+					this.StopMusic = true;
+					this.Music.Stop();
+				}
+				else
+				{
+					this.StopMusic = false;
+					this.Music.Play();
+				}
+			}
+			if (this.Music.time < 600f && this.Music.time > this.LastTime)
+			{
+				this.LastTime = this.Music.time;
+			}
+			if (!this.Music.isPlaying && !this.StopMusic)
+			{
+				this.Music.Play();
+				this.Music.time = this.LastTime;
+			}
 			if (this.StudentManager.Yandere.CanMove && (Input.GetButtonDown("LS") || Input.GetKeyDown(KeyCode.T)))
 			{
 				if (this.StudentManager.Yandere.Inventory.SmokeBomb)

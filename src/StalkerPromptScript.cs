@@ -81,10 +81,12 @@ public class StalkerPromptScript : MonoBehaviour
 					this.FrontDoor.SetActive(true);
 					this.Father.SetActive(false);
 					this.Mother.SetActive(false);
+					this.Cat.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 					this.Cat.enabled = false;
 					this.MyAudio.Play();
 					UnityEngine.Object.Destroy(base.gameObject);
 					UnityEngine.Object.Destroy(this.MySprite);
+					this.Stalker.Limit = 10;
 				}
 				else if (this.ID == 4)
 				{

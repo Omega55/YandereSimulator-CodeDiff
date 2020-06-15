@@ -17,6 +17,8 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	public Collider PoolStairs;
 
+	public Collider TreeArea;
+
 	public Collider NEStairs;
 
 	public Collider NWStairs;
@@ -43,29 +45,17 @@ public class FootprintSpawnerScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
-		this.PoolStairs = GameObject.Find("PoolStairs").GetComponent<Collider>();
-		this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
-		this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
-		this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
-		this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
+		this.GardenArea = this.Yandere.StudentManager.GardenArea;
+		this.PoolStairs = this.Yandere.StudentManager.PoolStairs;
+		this.TreeArea = this.Yandere.StudentManager.TreeArea;
+		this.NEStairs = this.Yandere.StudentManager.NEStairs;
+		this.NWStairs = this.Yandere.StudentManager.NWStairs;
+		this.SEStairs = this.Yandere.StudentManager.SEStairs;
+		this.SWStairs = this.Yandere.StudentManager.SWStairs;
 	}
 
 	private void Update()
 	{
-		if (this.Debugging)
-		{
-			Debug.Log(string.Concat(new string[]
-			{
-				"UpThreshold: ",
-				(this.Yandere.transform.position.y + this.UpThreshold).ToString(),
-				" | DownThreshold: ",
-				(this.Yandere.transform.position.y + this.DownThreshold).ToString(),
-				" | CurrentHeight: ",
-				base.transform.position.y.ToString()
-			}));
-		}
-		this.CanSpawn = (!this.GardenArea.bounds.Contains(base.transform.position) && !this.PoolStairs.bounds.Contains(base.transform.position) && !this.NEStairs.bounds.Contains(base.transform.position) && !this.NWStairs.bounds.Contains(base.transform.position) && !this.SEStairs.bounds.Contains(base.transform.position) && !this.SWStairs.bounds.Contains(base.transform.position));
 		if (!this.FootUp)
 		{
 			if (base.transform.position.y > this.Yandere.transform.position.y + this.UpThreshold)
@@ -93,29 +83,33 @@ public class FootprintSpawnerScript : MonoBehaviour
 				}
 			}
 			this.FootUp = false;
-			if (this.CanSpawn && this.Bloodiness > 0)
+			if (this.Bloodiness > 0)
 			{
-				if (base.transform.position.y > -1f && base.transform.position.y < 1f)
+				this.CanSpawn = (!this.GardenArea.bounds.Contains(base.transform.position) && !this.PoolStairs.bounds.Contains(base.transform.position) && !this.TreeArea.bounds.Contains(base.transform.position) && !this.NEStairs.bounds.Contains(base.transform.position) && !this.NWStairs.bounds.Contains(base.transform.position) && !this.SEStairs.bounds.Contains(base.transform.position) && !this.SWStairs.bounds.Contains(base.transform.position));
+				if (this.CanSpawn)
 				{
-					this.Height = 0f;
+					if (base.transform.position.y > -1f && base.transform.position.y < 1f)
+					{
+						this.Height = 0f;
+					}
+					else if (base.transform.position.y > 3f && base.transform.position.y < 5f)
+					{
+						this.Height = 4f;
+					}
+					else if (base.transform.position.y > 7f && base.transform.position.y < 9f)
+					{
+						this.Height = 8f;
+					}
+					else if (base.transform.position.y > 11f && base.transform.position.y < 13f)
+					{
+						this.Height = 12f;
+					}
+					GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodyFootprint, new Vector3(base.transform.position.x, this.Height + 0.012f, base.transform.position.z), Quaternion.identity);
+					gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, base.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
+					gameObject.transform.GetChild(0).GetComponent<FootprintScript>().Yandere = this.Yandere;
+					gameObject.transform.parent = this.BloodParent;
+					this.Bloodiness--;
 				}
-				else if (base.transform.position.y > 3f && base.transform.position.y < 5f)
-				{
-					this.Height = 4f;
-				}
-				else if (base.transform.position.y > 7f && base.transform.position.y < 9f)
-				{
-					this.Height = 8f;
-				}
-				else if (base.transform.position.y > 11f && base.transform.position.y < 13f)
-				{
-					this.Height = 12f;
-				}
-				GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.BloodyFootprint, new Vector3(base.transform.position.x, this.Height + 0.012f, base.transform.position.z), Quaternion.identity);
-				gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, base.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
-				gameObject.transform.GetChild(0).GetComponent<FootprintScript>().Yandere = this.Yandere;
-				gameObject.transform.parent = this.BloodParent;
-				this.Bloodiness--;
 			}
 		}
 	}

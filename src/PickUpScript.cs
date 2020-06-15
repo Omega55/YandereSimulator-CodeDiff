@@ -153,7 +153,7 @@ public class PickUpScript : MonoBehaviour
 		{
 			if (this.Period < this.Clock.Period)
 			{
-				this.Strength = ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus;
+				this.Strength = this.Prompt.Yandere.Class.PhysicalGrade + this.Prompt.Yandere.Class.PhysicalBonus;
 				this.Period++;
 			}
 			if (this.Strength == 0)

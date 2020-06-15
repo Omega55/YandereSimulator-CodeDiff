@@ -39,8 +39,9 @@ public class ResolutionScript : MonoBehaviour
 	private void Start()
 	{
 		this.Darkness.color = new Color(1f, 1f, 1f, 1f);
+		Cursor.visible = false;
 		Screen.fullScreen = false;
-		Screen.SetResolution(1280, 720, false);
+		Screen.SetResolution(Screen.width, Screen.height, false);
 		this.ResolutionLabel.text = Screen.width + " x " + Screen.height;
 		this.QualityLabel.text = (this.Qualities[QualitySettings.GetQualityLevel()] ?? "");
 		this.FullScreenLabel.text = "No";

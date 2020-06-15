@@ -549,10 +549,11 @@ public class MissionModeMenuScript : MonoBehaviour
 						this.Difficulty++;
 						this.PickNewCondition();
 					}
-					return;
 				}
+				this.UpdateDifficultyLabel();
+				return;
 			}
-			else if (Input.GetButtonDown("Y"))
+			if (Input.GetButtonDown("Y"))
 			{
 				this.UpdatePopulation();
 				return;
@@ -1061,6 +1062,7 @@ public class MissionModeMenuScript : MonoBehaviour
 
 	private void ChooseTarget()
 	{
+		Debug.Log("Calling the ChooseTarget() function.");
 		if (this.Phase != 5)
 		{
 			this.TargetID = UnityEngine.Random.Range(2, 90);

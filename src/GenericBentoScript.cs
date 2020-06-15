@@ -58,7 +58,11 @@ public class GenericBentoScript : MonoBehaviour
 		{
 			if (this.Prompt.Yandere.Inventory.LethalPoison)
 			{
-				this.Prompt.Yandere.Inventory.LethalPoison = false;
+				this.Prompt.Yandere.Inventory.LethalPoisons--;
+				if (this.Prompt.Yandere.Inventory.LethalPoisons == 0)
+				{
+					this.Prompt.Yandere.Inventory.LethalPoison = false;
+				}
 				this.Prompt.Yandere.PoisonType = 2;
 			}
 			else

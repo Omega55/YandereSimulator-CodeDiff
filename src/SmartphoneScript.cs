@@ -23,6 +23,10 @@ public class SmartphoneScript : MonoBehaviour
 	{
 		if (this.Prompt.Circle[0].fillAmount == 0f)
 		{
+			if (this.Prompt.Yandere.Dragging || this.Prompt.Yandere.Carrying)
+			{
+				this.Prompt.Yandere.EmptyHands();
+			}
 			this.Prompt.Yandere.CrushingPhone = true;
 			this.Prompt.Yandere.PhoneToCrush = this;
 			this.Prompt.Yandere.CanMove = false;

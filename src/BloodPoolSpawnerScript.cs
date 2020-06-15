@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class BloodPoolSpawnerScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public RagdollScript Ragdoll;
 
 	public GameObject LastBloodPool;
@@ -17,6 +19,8 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 	public Collider MyCollider;
 
 	public Collider GardenArea;
+
+	public Collider TreeArea;
 
 	public Collider NEStairs;
 
@@ -49,11 +53,12 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 		if (SceneManager.GetActiveScene().name == "SchoolScene")
 		{
 			this.PoolsSpawned = this.Ragdoll.Student.BloodPoolsSpawned;
-			this.GardenArea = GameObject.Find("GardenArea").GetComponent<Collider>();
-			this.NEStairs = GameObject.Find("NEStairs").GetComponent<Collider>();
-			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
-			this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
-			this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
+			this.GardenArea = this.StudentManager.GardenArea;
+			this.TreeArea = this.StudentManager.TreeArea;
+			this.NEStairs = this.StudentManager.NEStairs;
+			this.NWStairs = this.StudentManager.NWStairs;
+			this.SEStairs = this.StudentManager.SEStairs;
+			this.SWStairs = this.StudentManager.SWStairs;
 		}
 		this.BloodParent = GameObject.Find("BloodParent").transform;
 		this.Positions = new Vector3[5];
@@ -95,7 +100,7 @@ public class BloodPoolSpawnerScript : MonoBehaviour
 				Vector3 position = base.transform.position;
 				if (SceneManager.GetActiveScene().name == "SchoolScene")
 				{
-					this.CanSpawn = (!this.GardenArea.bounds.Contains(position) && !this.NEStairs.bounds.Contains(position) && !this.NWStairs.bounds.Contains(position) && !this.SEStairs.bounds.Contains(position) && !this.SWStairs.bounds.Contains(position));
+					this.CanSpawn = (!this.GardenArea.bounds.Contains(position) && !this.TreeArea.bounds.Contains(position) && !this.NEStairs.bounds.Contains(position) && !this.NWStairs.bounds.Contains(position) && !this.SEStairs.bounds.Contains(position) && !this.SWStairs.bounds.Contains(position));
 				}
 				if (this.CanSpawn && position.y < this.Height + 0.333333343f)
 				{

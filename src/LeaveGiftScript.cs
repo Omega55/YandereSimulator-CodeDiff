@@ -23,7 +23,6 @@ public class LeaveGiftScript : MonoBehaviour
 
 	private void Update()
 	{
-		Debug.Log(Vector3.Distance(this.Prompt.Yandere.transform.position, this.Prompt.Yandere.Senpai.position));
 		if (this.Prompt.InView)
 		{
 			if (Vector3.Distance(this.Prompt.Yandere.transform.position, this.Prompt.Yandere.Senpai.position) > 10f)

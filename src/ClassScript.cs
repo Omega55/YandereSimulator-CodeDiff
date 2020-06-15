@@ -69,14 +69,92 @@ public class ClassScript : MonoBehaviour
 
 	public bool Show;
 
+	public int Biology;
+
+	public int Chemistry;
+
+	public int Language;
+
+	public int Physical;
+
+	public int Psychology;
+
+	public int BiologyGrade;
+
+	public int ChemistryGrade;
+
+	public int LanguageGrade;
+
+	public int PhysicalGrade;
+
+	public int PsychologyGrade;
+
+	public int BiologyBonus;
+
+	public int ChemistryBonus;
+
+	public int LanguageBonus;
+
+	public int PhysicalBonus;
+
+	public int PsychologyBonus;
+
+	public int Seduction;
+
+	public int Numbness;
+
+	public int Social;
+
+	public int Stealth;
+
+	public int Speed;
+
+	public int Enlightenment;
+
+	public int SpeedBonus;
+
+	public int SocialBonus;
+
+	public int StealthBonus;
+
+	public int SeductionBonus;
+
+	public int NumbnessBonus;
+
+	public int EnlightenmentBonus;
+
 	private void Start()
 	{
 		this.GradeUpWindow.localScale = Vector3.zero;
-		this.Subject[1] = ClassGlobals.Biology;
-		this.Subject[2] = ClassGlobals.Chemistry;
-		this.Subject[3] = ClassGlobals.Language;
-		this.Subject[4] = ClassGlobals.Physical;
-		this.Subject[5] = ClassGlobals.Psychology;
+		this.Biology = ClassGlobals.Biology;
+		this.Chemistry = ClassGlobals.Chemistry;
+		this.Language = ClassGlobals.Language;
+		this.Physical = ClassGlobals.Physical;
+		this.Psychology = ClassGlobals.Psychology;
+		this.BiologyGrade = ClassGlobals.BiologyGrade;
+		this.ChemistryGrade = ClassGlobals.ChemistryGrade;
+		this.LanguageGrade = ClassGlobals.LanguageGrade;
+		this.PhysicalGrade = ClassGlobals.PhysicalGrade;
+		this.PsychologyGrade = ClassGlobals.PsychologyGrade;
+		this.BiologyBonus = ClassGlobals.BiologyBonus;
+		this.ChemistryBonus = ClassGlobals.ChemistryBonus;
+		this.LanguageBonus = ClassGlobals.LanguageBonus;
+		this.PhysicalBonus = ClassGlobals.PhysicalBonus;
+		this.PsychologyBonus = ClassGlobals.PsychologyBonus;
+		this.Seduction = PlayerGlobals.Seduction;
+		this.Numbness = PlayerGlobals.Numbness;
+		this.Enlightenment = PlayerGlobals.Enlightenment;
+		this.SpeedBonus = PlayerGlobals.SpeedBonus;
+		this.SocialBonus = PlayerGlobals.SocialBonus;
+		this.StealthBonus = PlayerGlobals.StealthBonus;
+		this.SeductionBonus = PlayerGlobals.SeductionBonus;
+		this.NumbnessBonus = PlayerGlobals.NumbnessBonus;
+		this.EnlightenmentBonus = PlayerGlobals.EnlightenmentBonus;
+		this.Subject[1] = this.Biology;
+		this.Subject[2] = this.Chemistry;
+		this.Subject[3] = this.Language;
+		this.Subject[4] = this.Physical;
+		this.Subject[5] = this.Psychology;
 		this.DescLabel.text = this.Desc[this.Selected];
 		this.UpdateSubjectLabels();
 		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
@@ -140,11 +218,11 @@ public class ClassScript : MonoBehaviour
 					this.Show = false;
 					this.PromptBar.ClearButtons();
 					this.PromptBar.Show = false;
-					ClassGlobals.Biology = this.Subject[1] + this.SubjectTemp[1];
-					ClassGlobals.Chemistry = this.Subject[2] + this.SubjectTemp[2];
-					ClassGlobals.Language = this.Subject[3] + this.SubjectTemp[3];
-					ClassGlobals.Physical = this.Subject[4] + this.SubjectTemp[4];
-					ClassGlobals.Psychology = this.Subject[5] + this.SubjectTemp[5];
+					this.Biology = this.Subject[1] + this.SubjectTemp[1];
+					this.Chemistry = this.Subject[2] + this.SubjectTemp[2];
+					this.Language = this.Subject[3] + this.SubjectTemp[3];
+					this.Physical = this.Subject[4] + this.SubjectTemp[4];
+					this.Psychology = this.Subject[5] + this.SubjectTemp[5];
 					for (int i = 0; i < 6; i++)
 					{
 						this.Subject[i] += this.SubjectTemp[i];
@@ -177,7 +255,7 @@ public class ClassScript : MonoBehaviour
 						this.CheckForGradeUp();
 						if (!this.GradeUp)
 						{
-							if (ClassGlobals.ChemistryGrade > 0 && this.Poison != null)
+							if (this.ChemistryGrade > 0 && this.Poison != null)
 							{
 								this.Poison.SetActive(true);
 							}
@@ -195,7 +273,7 @@ public class ClassScript : MonoBehaviour
 							}
 							if (!this.Portal.FadeOut)
 							{
-								this.Portal.Yandere.PhysicalGrade = ClassGlobals.PhysicalGrade;
+								this.Portal.Yandere.PhysicalGrade = this.PhysicalGrade;
 								this.PromptBar.Show = false;
 								this.Portal.Proceed = true;
 								base.gameObject.SetActive(false);
@@ -357,73 +435,73 @@ public class ClassScript : MonoBehaviour
 
 	private void CheckForGradeUp()
 	{
-		if (ClassGlobals.Biology >= 20 && ClassGlobals.BiologyGrade < 1)
+		if (this.Biology >= 20 && this.BiologyGrade < 1)
 		{
-			ClassGlobals.BiologyGrade = 1;
+			this.BiologyGrade = 1;
 			this.GradeUpSubject = 1;
 			this.GradeUp = true;
 			this.Grade = 1;
 			return;
 		}
-		if (ClassGlobals.Chemistry >= 20 && ClassGlobals.ChemistryGrade < 1)
+		if (this.Chemistry >= 20 && this.ChemistryGrade < 1)
 		{
-			ClassGlobals.ChemistryGrade = 1;
+			this.ChemistryGrade = 1;
 			this.GradeUpSubject = 2;
 			this.GradeUp = true;
 			this.Grade = 1;
 			return;
 		}
-		if (ClassGlobals.Language >= 20 && ClassGlobals.LanguageGrade < 1)
+		if (this.Language >= 20 && this.LanguageGrade < 1)
 		{
-			ClassGlobals.LanguageGrade = 1;
+			this.LanguageGrade = 1;
 			this.GradeUpSubject = 3;
 			this.GradeUp = true;
 			this.Grade = 1;
 			return;
 		}
-		if (ClassGlobals.Physical >= 20 && ClassGlobals.PhysicalGrade < 1)
+		if (this.Physical >= 20 && this.PhysicalGrade < 1)
 		{
-			ClassGlobals.PhysicalGrade = 1;
+			this.PhysicalGrade = 1;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 1;
 			return;
 		}
-		if (ClassGlobals.Physical >= 40 && ClassGlobals.PhysicalGrade < 2)
+		if (this.Physical >= 40 && this.PhysicalGrade < 2)
 		{
-			ClassGlobals.PhysicalGrade = 2;
+			this.PhysicalGrade = 2;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 2;
 			return;
 		}
-		if (ClassGlobals.Physical >= 60 && ClassGlobals.PhysicalGrade < 3)
+		if (this.Physical >= 60 && this.PhysicalGrade < 3)
 		{
-			ClassGlobals.PhysicalGrade = 3;
+			this.PhysicalGrade = 3;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 3;
 			return;
 		}
-		if (ClassGlobals.Physical >= 80 && ClassGlobals.PhysicalGrade < 4)
+		if (this.Physical >= 80 && this.PhysicalGrade < 4)
 		{
-			ClassGlobals.PhysicalGrade = 4;
+			this.PhysicalGrade = 4;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 4;
 			return;
 		}
-		if (ClassGlobals.Physical == 100 && ClassGlobals.PhysicalGrade < 5)
+		if (this.Physical == 100 && this.PhysicalGrade < 5)
 		{
-			ClassGlobals.PhysicalGrade = 5;
+			this.PhysicalGrade = 5;
 			this.GradeUpSubject = 4;
 			this.GradeUp = true;
 			this.Grade = 5;
 			return;
 		}
-		if (ClassGlobals.Psychology >= 20 && ClassGlobals.PsychologyGrade < 1)
+		if (this.Psychology >= 20 && this.PsychologyGrade < 1)
 		{
-			ClassGlobals.PsychologyGrade = 1;
+			this.PsychologyGrade = 1;
 			this.GradeUpSubject = 5;
 			this.GradeUp = true;
 			this.Grade = 1;
@@ -432,29 +510,29 @@ public class ClassScript : MonoBehaviour
 
 	private void GivePoints()
 	{
-		ClassGlobals.BiologyGrade = 0;
-		ClassGlobals.ChemistryGrade = 0;
-		ClassGlobals.LanguageGrade = 0;
-		ClassGlobals.PhysicalGrade = 0;
-		ClassGlobals.PsychologyGrade = 0;
-		ClassGlobals.Biology = 19;
-		ClassGlobals.Chemistry = 19;
-		ClassGlobals.Language = 19;
-		ClassGlobals.Physical = 19;
-		ClassGlobals.Psychology = 19;
-		this.Subject[1] = ClassGlobals.Biology;
-		this.Subject[2] = ClassGlobals.Chemistry;
-		this.Subject[3] = ClassGlobals.Language;
-		this.Subject[4] = ClassGlobals.Physical;
-		this.Subject[5] = ClassGlobals.Psychology;
+		this.BiologyGrade = 0;
+		this.ChemistryGrade = 0;
+		this.LanguageGrade = 0;
+		this.PhysicalGrade = 0;
+		this.PsychologyGrade = 0;
+		this.Biology = 19;
+		this.Chemistry = 19;
+		this.Language = 19;
+		this.Physical = 19;
+		this.Psychology = 19;
+		this.Subject[1] = this.Biology;
+		this.Subject[2] = this.Chemistry;
+		this.Subject[3] = this.Language;
+		this.Subject[4] = this.Physical;
+		this.Subject[5] = this.Psychology;
 		this.UpdateBars();
 	}
 
 	private void MaxPhysical()
 	{
-		ClassGlobals.PhysicalGrade = 0;
-		ClassGlobals.Physical = 99;
-		this.Subject[4] = ClassGlobals.Physical;
+		this.PhysicalGrade = 0;
+		this.Physical = 99;
+		this.Subject[4] = this.Physical;
 		this.UpdateBars();
 	}
 }

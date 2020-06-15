@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BodyHidingLockerScript : MonoBehaviour
 {
+	public StudentManagerScript StudentManager;
+
 	public RagdollScript Corpse;
 
 	public PromptScript Prompt;
@@ -16,6 +18,8 @@ public class BodyHidingLockerScript : MonoBehaviour
 	public float Speed;
 
 	public Transform Door;
+
+	public int StudentID;
 
 	public bool ABC;
 
@@ -75,6 +79,7 @@ public class BodyHidingLockerScript : MonoBehaviour
 					this.Corpse.Police.HiddenCorpses++;
 					this.Corpse.enabled = false;
 					this.Corpse.Hidden = true;
+					this.StudentID = this.Corpse.StudentID;
 					if (this.ABC)
 					{
 						this.Corpse.DestroyRigidbodies();
@@ -113,11 +118,22 @@ public class BodyHidingLockerScript : MonoBehaviour
 			this.Corpse.transform.parent = null;
 			this.Corpse.BloodSpawnerCollider.enabled = true;
 			this.Corpse.Prompt.MyCollider.enabled = true;
-			this.Corpse.BloodPoolSpawner.enabled = true;
-			this.Corpse.Police.HiddenCorpses--;
+			this.Corpse.BloodPoolSpawner.NearbyBlood = 0;
 			this.Corpse.EnableRigidbodies();
+			if (!this.Corpse.Cauterized)
+			{
+				this.Corpse.BloodPoolSpawner.enabled = true;
+			}
 			this.Corpse = null;
 			this.Rotation = -180f;
 		}
+	}
+
+	public void UpdateCorpse()
+	{
+		this.Corpse = this.StudentManager.Students[this.StudentID].Ragdoll;
+		this.Corpse.transform.parent = base.transform;
+		this.Prompt.Label[0].text = "     Remove Corpse";
+		this.Prompt.enabled = true;
 	}
 }

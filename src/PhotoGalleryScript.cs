@@ -10,8 +10,6 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public int PhotoID;
 
-	public StringScript String;
-
 	public InputManagerScript InputManager;
 
 	public PauseScreenScript PauseScreen;
@@ -20,11 +18,13 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	public InputDeviceScript InputDevice;
 
+	public HomeCursorScript HomeCursor;
+
 	public PromptBarScript PromptBar;
 
-	public HomeCursorScript Cursor;
-
 	public YandereScript Yandere;
+
+	public StringScript String;
 
 	public GameObject MovingPhotograph;
 
@@ -104,9 +104,9 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	private void Start()
 	{
-		if (this.Cursor != null)
+		if (this.HomeCursor != null)
 		{
-			this.Cursor.gameObject.SetActive(false);
+			this.HomeCursor.gameObject.SetActive(false);
 			base.enabled = false;
 		}
 		if (this.Corkboard)
@@ -193,11 +193,11 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			float num = -4788f;
 			float num2 = 4788f;
-			return (this.Cursor.transform.localPosition.x - num) / (num2 - num);
+			return (this.HomeCursor.transform.localPosition.x - num) / (num2 - num);
 		}
 		set
 		{
-			this.Cursor.transform.localPosition = new Vector3(-4788f + 2f * (4788f * Mathf.Clamp01(value)), this.Cursor.transform.localPosition.y, this.Cursor.transform.localPosition.z);
+			this.HomeCursor.transform.localPosition = new Vector3(-4788f + 2f * (4788f * Mathf.Clamp01(value)), this.HomeCursor.transform.localPosition.y, this.HomeCursor.transform.localPosition.z);
 		}
 	}
 
@@ -207,11 +207,11 @@ public class PhotoGalleryScript : MonoBehaviour
 		{
 			float num = -3122f;
 			float num2 = 3122f;
-			return (this.Cursor.transform.localPosition.y - num) / (num2 - num);
+			return (this.HomeCursor.transform.localPosition.y - num) / (num2 - num);
 		}
 		set
 		{
-			this.Cursor.transform.localPosition = new Vector3(this.Cursor.transform.localPosition.x, -3122f + 2f * (3122f * Mathf.Clamp01(value)), this.Cursor.transform.localPosition.z);
+			this.HomeCursor.transform.localPosition = new Vector3(this.HomeCursor.transform.localPosition.x, -3122f + 2f * (3122f * Mathf.Clamp01(value)), this.HomeCursor.transform.localPosition.z);
 		}
 	}
 
@@ -288,7 +288,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			if (Input.GetButtonDown("Y"))
 			{
 				this.CanAdjust = false;
-				this.Cursor.gameObject.SetActive(true);
+				this.HomeCursor.gameObject.SetActive(true);
 				this.Adjusting = true;
 				this.UpdateButtonPrompts();
 			}
@@ -362,7 +362,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			this.Viewing = false;
 			if (this.Corkboard)
 			{
-				this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+				this.HomeCursor.Highlight.transform.position = new Vector3(this.HomeCursor.Highlight.transform.position.x, 100f, this.HomeCursor.Highlight.transform.position.z);
 				this.CanAdjust = true;
 			}
 			else
@@ -382,6 +382,7 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	private void UpdateCorkboardPhoto()
 	{
+		Cursor.lockState = CursorLockMode.None;
 		if (Input.GetMouseButton(1))
 		{
 			this.MovingPhotoRotation += this.MouseDelta.x;
@@ -419,8 +420,8 @@ public class PhotoGalleryScript : MonoBehaviour
 		this.MovingPhotograph.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -this.MaxPhotoX, this.MaxPhotoX), Mathf.Clamp(vector.y + vector2.y, -this.MaxPhotoY, this.MaxPhotoY), this.MovingPhotograph.transform.localPosition.z);
 		if (Input.GetButtonDown("A"))
 		{
-			this.Cursor.transform.localPosition = this.MovingPhotograph.transform.localPosition;
-			this.Cursor.gameObject.SetActive(true);
+			this.HomeCursor.transform.localPosition = this.MovingPhotograph.transform.localPosition;
+			this.HomeCursor.gameObject.SetActive(true);
 			this.Moving = false;
 			this.UpdateButtonPrompts();
 			this.PhotoID++;
@@ -467,8 +468,8 @@ public class PhotoGalleryScript : MonoBehaviour
 			}
 			if (this.StringPhase == 1)
 			{
-				this.Cursor.transform.localPosition = transform.localPosition;
-				this.Cursor.gameObject.SetActive(true);
+				this.HomeCursor.transform.localPosition = transform.localPosition;
+				this.HomeCursor.gameObject.SetActive(true);
 				this.MovingString = false;
 				this.StringPhase = 0;
 				this.UpdateButtonPrompts();
@@ -478,14 +479,14 @@ public class PhotoGalleryScript : MonoBehaviour
 
 	private void UpdateCorkboardCursor()
 	{
-		Vector2 vector = new Vector2(this.Cursor.transform.localPosition.x, this.Cursor.transform.localPosition.y);
+		Vector2 vector = new Vector2(this.HomeCursor.transform.localPosition.x, this.HomeCursor.transform.localPosition.y);
 		Vector2 vector2 = new Vector2(this.MouseDelta.x * 8.66666f + Input.GetAxis("Horizontal") * 86.66666f * this.SpeedLimit, this.MouseDelta.y * 8.66666f + Input.GetAxis("Vertical") * 86.66666f * this.SpeedLimit);
-		this.Cursor.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -4788f, 4788f), Mathf.Clamp(vector.y + vector2.y, -3122f, 3122f), this.Cursor.transform.localPosition.z);
-		if (Input.GetButtonDown("A") && this.Cursor.Photograph != null)
+		this.HomeCursor.transform.localPosition = new Vector3(Mathf.Clamp(vector.x + vector2.x, -4788f, 4788f), Mathf.Clamp(vector.y + vector2.y, -3122f, 3122f), this.HomeCursor.transform.localPosition.z);
+		if (Input.GetButtonDown("A") && this.HomeCursor.Photograph != null)
 		{
-			this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-			this.MovingPhotograph = this.Cursor.Photograph;
-			this.Cursor.gameObject.SetActive(false);
+			this.HomeCursor.Highlight.transform.position = new Vector3(this.HomeCursor.Highlight.transform.position.x, 100f, this.HomeCursor.Highlight.transform.position.z);
+			this.MovingPhotograph = this.HomeCursor.Photograph;
+			this.HomeCursor.gameObject.SetActive(false);
 			this.Moving = true;
 			this.UpdateButtonPrompts();
 		}
@@ -496,7 +497,7 @@ public class PhotoGalleryScript : MonoBehaviour
 			gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
 			this.String = gameObject.GetComponent<StringScript>();
-			this.Cursor.gameObject.SetActive(false);
+			this.HomeCursor.gameObject.SetActive(false);
 			this.MovingString = true;
 			this.CorkboardStrings[this.Strings] = this.String.GetComponent<StringScript>();
 			this.CorkboardStrings[this.Strings].ArrayID = this.Strings;
@@ -505,35 +506,35 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		if (Input.GetButtonDown("B"))
 		{
-			if (this.Cursor.Photograph != null)
+			if (this.HomeCursor.Photograph != null)
 			{
-				this.Cursor.Photograph = null;
+				this.HomeCursor.Photograph = null;
 			}
-			this.Cursor.transform.localPosition = new Vector3(0f, 0f, this.Cursor.transform.localPosition.z);
-			this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
+			this.HomeCursor.transform.localPosition = new Vector3(0f, 0f, this.HomeCursor.transform.localPosition.z);
+			this.HomeCursor.Highlight.transform.position = new Vector3(this.HomeCursor.Highlight.transform.position.x, 100f, this.HomeCursor.Highlight.transform.position.z);
 			this.CanAdjust = true;
-			this.Cursor.gameObject.SetActive(false);
+			this.HomeCursor.gameObject.SetActive(false);
 			this.Adjusting = false;
 			this.UpdateButtonPrompts();
 		}
 		if (Input.GetButtonDown("X"))
 		{
-			if (this.Cursor.Photograph != null)
+			if (this.HomeCursor.Photograph != null)
 			{
-				this.Cursor.Highlight.transform.position = new Vector3(this.Cursor.Highlight.transform.position.x, 100f, this.Cursor.Highlight.transform.position.z);
-				this.Shuffle(this.Cursor.Photograph.GetComponent<HomeCorkboardPhotoScript>().ArrayID);
-				UnityEngine.Object.Destroy(this.Cursor.Photograph);
+				this.HomeCursor.Highlight.transform.position = new Vector3(this.HomeCursor.Highlight.transform.position.x, 100f, this.HomeCursor.Highlight.transform.position.z);
+				this.Shuffle(this.HomeCursor.Photograph.GetComponent<HomeCorkboardPhotoScript>().ArrayID);
+				UnityEngine.Object.Destroy(this.HomeCursor.Photograph);
 				this.Photos--;
-				this.Cursor.Photograph = null;
+				this.HomeCursor.Photograph = null;
 				this.UpdateButtonPrompts();
 			}
-			if (this.Cursor.Tack != null)
+			if (this.HomeCursor.Tack != null)
 			{
-				this.Cursor.CircleHighlight.transform.position = new Vector3(this.Cursor.CircleHighlight.transform.position.x, 100f, this.Cursor.CircleHighlight.transform.position.z);
-				this.ShuffleStrings(this.Cursor.Tack.transform.parent.GetComponent<StringScript>().ArrayID);
-				UnityEngine.Object.Destroy(this.Cursor.Tack.transform.parent.gameObject);
+				this.HomeCursor.CircleHighlight.transform.position = new Vector3(this.HomeCursor.CircleHighlight.transform.position.x, 100f, this.HomeCursor.CircleHighlight.transform.position.z);
+				this.ShuffleStrings(this.HomeCursor.Tack.transform.parent.GetComponent<StringScript>().ArrayID);
+				UnityEngine.Object.Destroy(this.HomeCursor.Tack.transform.parent.gameObject);
 				this.Strings--;
-				this.Cursor.Tack = null;
+				this.HomeCursor.Tack = null;
 				this.UpdateButtonPrompts();
 			}
 		}
@@ -699,14 +700,14 @@ public class PhotoGalleryScript : MonoBehaviour
 		}
 		else if (this.Adjusting)
 		{
-			if (this.Cursor.Photograph != null)
+			if (this.HomeCursor.Photograph != null)
 			{
 				this.PromptBar.Label[0].text = "Adjust";
 				this.PromptBar.Label[1].text = string.Empty;
 				this.PromptBar.Label[2].text = "Remove";
 				this.PromptBar.Label[3].text = string.Empty;
 			}
-			else if (this.Cursor.Tack != null)
+			else if (this.HomeCursor.Tack != null)
 			{
 				this.PromptBar.Label[2].text = "Remove";
 			}

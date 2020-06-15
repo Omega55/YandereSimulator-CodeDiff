@@ -399,6 +399,7 @@ public class StudentInfoScript : MonoBehaviour
 			{
 				if (this.StudentManager.Students[this.CurrentStudent].Routine && !this.StudentManager.Students[this.CurrentStudent].InEvent && !this.StudentManager.Students[this.CurrentStudent].TargetedForDistraction && this.StudentManager.Students[this.CurrentStudent].ClubActivityPhase < 16 && !this.StudentManager.Students[this.CurrentStudent].MyBento.Tampered)
 				{
+					this.StudentManager.Students[this.CurrentStudent].OriginalPersona = PersonaType.Heroic;
 					this.StudentManager.Students[this.CurrentStudent].Persona = PersonaType.Heroic;
 					this.StudentManager.Students[this.CurrentStudent].Club = ClubType.None;
 					this.StudentManager.Students[this.CurrentStudent].CameraReacting = false;

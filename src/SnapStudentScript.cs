@@ -64,6 +64,7 @@ public class SnapStudentScript : MonoBehaviour
 					this.Yandere.Static.Fade = 0f;
 					this.Yandere.HurryTimer = 0f;
 					this.Yandere.ChooseAttack();
+					this.Student.Pathfinding.enabled = false;
 					base.enabled = false;
 				}
 			}

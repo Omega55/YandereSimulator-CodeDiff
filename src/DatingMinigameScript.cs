@@ -836,10 +836,10 @@ public class DatingMinigameScript : MonoBehaviour
 		{
 			this.PantyIcon.SetActive(false);
 		}
-		if (PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0)
+		if (this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus > 0)
 		{
-			this.SeductionLabel.text = (PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus).ToString();
-			this.Multiplier += PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus;
+			this.SeductionLabel.text = (this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus).ToString();
+			this.Multiplier += this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus;
 			this.SeductionIcon.SetActive(true);
 		}
 		else

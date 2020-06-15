@@ -297,6 +297,8 @@ namespace YandereSimulator.Yancord
 				}
 				else if (Input.GetKeyDown(KeyCode.Q))
 				{
+					Debug.Log("Quitting!");
+					this.FadeOut = true;
 				}
 			}
 			else if (Input.GetKeyDown(KeyCode.E))
@@ -305,9 +307,10 @@ namespace YandereSimulator.Yancord
 				this.SpawnChatMessage();
 				this.Chatting = true;
 			}
-			else
+			else if (Input.GetKeyDown(KeyCode.Q))
 			{
-				Input.GetKeyDown(KeyCode.Q);
+				Debug.Log("Quitting!");
+				this.FadeOut = true;
 			}
 			if (Input.GetKeyDown(KeyCode.Space))
 			{

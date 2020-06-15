@@ -104,6 +104,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public bool EggsChecked;
 
+	public bool AtSchool;
+
 	public bool PressedA;
 
 	public bool PressedB;
@@ -122,11 +124,17 @@ public class PauseScreenScript : MonoBehaviour
 
 	public int Column = 2;
 
+	public string Reason;
+
 	private void Start()
 	{
 		if (SceneManager.GetActiveScene().name != "SchoolScene")
 		{
 			MissionModeGlobals.MultiMission = false;
+		}
+		else
+		{
+			this.AtSchool = true;
 		}
 		if (!MissionModeGlobals.MultiMission)
 		{
@@ -242,9 +250,13 @@ public class PauseScreenScript : MonoBehaviour
 							if (!this.Yandere.CanMove || this.Yandere.Dragging || (this.Police.Corpses - this.Police.HiddenCorpses > 0 && !this.Police.SuicideScene && !this.Police.PoisonScene))
 							{
 								uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
-								return;
 							}
-							uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 1f);
+							else
+							{
+								uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 1f);
+							}
+							this.CheckIfSavePossible();
+							this.UpdateSelection();
 							return;
 						}
 					}
@@ -331,7 +343,7 @@ public class PauseScreenScript : MonoBehaviour
 					}
 					else
 					{
-						base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(-774f, 50f, 0f), this.Speed);
+						base.transform.localPosition = Vector3.Lerp(base.transform.localPosition, new Vector3(-762.5f, 50f, 0f), this.Speed);
 					}
 					base.transform.localScale = Vector3.Lerp(base.transform.localScale, new Vector3(0.9133334f, 0.9133334f, 0.9133334f), this.Speed);
 					base.transform.localEulerAngles = new Vector3(base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, Mathf.Lerp(base.transform.localEulerAngles.z, 0f, this.Speed));
@@ -746,5 +758,33 @@ public class PauseScreenScript : MonoBehaviour
 		}
 		this.Selected = this.Row * 3 + this.Column;
 		this.SelectionLabel.text = this.SelectionNames[this.Selected];
+		if (this.AtSchool && this.Selected == 9 && this.PhoneIcons[9].color.a == 0.5f)
+		{
+			this.SelectionLabel.text = this.Reason;
+		}
+	}
+
+	private void CheckIfSavePossible()
+	{
+		this.PhoneIcons[9].color = new Color(1f, 1f, 1f, 1f);
+		if (this.AtSchool)
+		{
+			for (int i = 1; i < this.Yandere.StudentManager.Students.Length; i++)
+			{
+				if (this.Yandere.StudentManager.Students[i] != null && this.Yandere.StudentManager.Students[i].Alive)
+				{
+					if (this.Yandere.StudentManager.Students[i].Alarmed || this.Yandere.StudentManager.Students[i].Fleeing)
+					{
+						this.PhoneIcons[9].color = new Color(1f, 1f, 1f, 0.5f);
+						this.Reason = "You cannot save the game while a student is alarmed or fleeing.";
+					}
+					if (this.Yandere.PickUp != null)
+					{
+						this.PhoneIcons[9].color = new Color(1f, 1f, 1f, 0.5f);
+						this.Reason = "You cannot save the game while you are holding that object.";
+					}
+				}
+			}
+		}
 	}
 }

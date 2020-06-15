@@ -669,6 +669,8 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		else if (!PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID))
 		{
+			Debug.Log("Yandere.TargetStudent.TaskPhase is: " + this.Yandere.TargetStudent.TaskPhase + ".");
+			Debug.Log("TaskGlobals.GetTaskStatus of current student is: " + TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID));
 			bool flag = false;
 			if (this.Yandere.TargetStudent.StudentID != 8 && this.Yandere.TargetStudent.StudentID != 11 && this.Yandere.TargetStudent.StudentID != 25 && this.Yandere.TargetStudent.StudentID != 28 && this.Yandere.TargetStudent.StudentID != 30 && this.Yandere.TargetStudent.StudentID != 36 && this.Yandere.TargetStudent.StudentID != 37 && this.Yandere.TargetStudent.StudentID != 38 && this.Yandere.TargetStudent.StudentID != 52 && this.Yandere.TargetStudent.StudentID != 76 && this.Yandere.TargetStudent.StudentID != 77 && this.Yandere.TargetStudent.StudentID != 78 && this.Yandere.TargetStudent.StudentID != 79 && this.Yandere.TargetStudent.StudentID != 80 && this.Yandere.TargetStudent.StudentID != 81)
 			{
@@ -702,6 +704,13 @@ public class DialogueWheelScript : MonoBehaviour
 				else if (this.Yandere.TargetStudent.StudentID == 36)
 				{
 					if (TaskGlobals.GetTaskStatus(36) == 0 && (StudentGlobals.GetStudentDead(81) || StudentGlobals.GetStudentDead(82) || StudentGlobals.GetStudentDead(83) || StudentGlobals.GetStudentDead(84) || StudentGlobals.GetStudentDead(85)))
+					{
+						this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
+					}
+				}
+				else if (this.Yandere.TargetStudent.StudentID == 81)
+				{
+					if (TaskGlobals.GetTaskStatus(81) == 0 && StudentGlobals.GetStudentDead(5))
 					{
 						this.Shadow[5].color = new Color(0f, 0f, 0f, 0.75f);
 					}
@@ -770,7 +779,7 @@ public class DialogueWheelScript : MonoBehaviour
 			{
 				this.Shadow[6].color = new Color(0f, 0f, 0f, 0.75f);
 			}
-			if ((this.Yandere.TargetStudent.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 3) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4 || this.Yandere.Club == ClubType.Delinquent)
+			if ((this.Yandere.TargetStudent.Male && this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus > 3) || this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus > 4 || this.Yandere.Club == ClubType.Delinquent)
 			{
 				this.Shadow[6].color = new Color(0f, 0f, 0f, 0f);
 			}
@@ -838,6 +847,7 @@ public class DialogueWheelScript : MonoBehaviour
 		}
 		if (this.Yandere.Followers > 0)
 		{
+			Debug.Log("Can't do task because of follower.");
 			UISprite uisprite19 = this.FavorShadow[1];
 			uisprite19.color = new Color(uisprite19.color.r, uisprite19.color.g, uisprite19.color.b, 0.75f);
 		}

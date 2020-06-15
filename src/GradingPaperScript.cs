@@ -56,7 +56,7 @@ public class GradingPaperScript : MonoBehaviour
 				return;
 			}
 		}
-		else if (this.Character != null)
+		else if (this.Character != null && this.Teacher != null)
 		{
 			if (Vector3.Distance(this.Chair.position, this.Character.transform.position + this.Character.transform.forward * 0.1f) > 0.01f)
 			{

@@ -278,40 +278,47 @@ public class PromptScript : MonoBehaviour
 			this.ID = 0;
 			while (this.ID < 4)
 			{
-				if (this.ButtonActive[this.ID] && Vector3.Angle(this.Yandere.MainCamera.transform.forward, this.Yandere.MainCamera.transform.position - base.transform.position) > 90f)
+				if (this.ButtonActive[this.ID])
 				{
-					if (this.Local)
+					if (!this.Button[this.ID].gameObject.activeInHierarchy)
 					{
-						Vector2 vector2 = this.MainCamera.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
-						this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
-						this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
-						if (!this.SquareSet)
-						{
-							this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
-							this.SquareSet = true;
-						}
-						Vector2 vector3 = this.MainCamera.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
-						this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector3.x + this.OffsetX[this.ID], vector3.y, 1f));
-						this.RelativePosition = vector2.x;
+						this.Button[this.ID].gameObject.SetActive(true);
 					}
-					else
+					if (Vector3.Angle(this.Yandere.MainCamera.transform.forward, this.Yandere.MainCamera.transform.position - base.transform.position) > 90f)
 					{
-						vector = this.MainCamera.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
-						this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
-						this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
-						if (!this.SquareSet)
+						if (this.Local)
 						{
-							this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
-							this.SquareSet = true;
+							Vector2 vector2 = this.MainCamera.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
+							this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
+							this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
+							if (!this.SquareSet)
+							{
+								this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector2.x, vector2.y, 1f));
+								this.SquareSet = true;
+							}
+							Vector2 vector3 = this.MainCamera.WorldToScreenPoint(base.transform.position + base.transform.right * this.OffsetX[this.ID] + base.transform.up * this.OffsetY[this.ID] + base.transform.forward * this.OffsetZ[this.ID]);
+							this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector3.x + this.OffsetX[this.ID], vector3.y, 1f));
+							this.RelativePosition = vector2.x;
 						}
-						Vector2 vector4 = this.MainCamera.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
-						this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector4.x + this.OffsetX[this.ID], vector4.y, 1f));
-						this.RelativePosition = vector.x;
-					}
-					if (!this.HideButton[this.ID])
-					{
-						this.Square.enabled = true;
-						this.Square.color = new Color(this.Square.color.r, this.Square.color.g, this.Square.color.b, 1f);
+						else
+						{
+							vector = this.MainCamera.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
+							this.Button[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
+							this.Circle[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
+							if (!this.SquareSet)
+							{
+								this.Square.transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector.x, vector.y, 1f));
+								this.SquareSet = true;
+							}
+							Vector2 vector4 = this.MainCamera.WorldToScreenPoint(base.transform.position + new Vector3(this.OffsetX[this.ID], this.OffsetY[this.ID], this.OffsetZ[this.ID]));
+							this.Label[this.ID].transform.position = this.UICamera.ScreenToWorldPoint(new Vector3(vector4.x + this.OffsetX[this.ID], vector4.y, 1f));
+							this.RelativePosition = vector.x;
+						}
+						if (!this.HideButton[this.ID])
+						{
+							this.Square.enabled = true;
+							this.Square.color = new Color(this.Square.color.r, this.Square.color.g, this.Square.color.b, 1f);
+						}
 					}
 				}
 				this.ID++;
@@ -580,6 +587,10 @@ public class PromptScript : MonoBehaviour
 							uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0f);
 							uilabel.color = new Color(uilabel.color.r, uilabel.color.g, uilabel.color.b, 0f);
 						}
+					}
+					if (this.Button[this.ID] != null)
+					{
+						this.Button[this.ID].gameObject.SetActive(false);
 					}
 					this.ID++;
 				}

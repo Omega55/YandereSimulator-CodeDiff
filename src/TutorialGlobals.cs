@@ -24,6 +24,8 @@ public static class TutorialGlobals
 
 	private const string Str_IgnoreClass = "IgnoreClass";
 
+	private const string Str_IgnoreMoney = "IgnoreMoney";
+
 	private const string Str_IgnorePhoto = "IgnorePhoto";
 
 	private const string Str_IgnoreClub = "IgnoreClub";
@@ -166,6 +168,18 @@ public static class TutorialGlobals
 		}
 	}
 
+	public static bool IgnoreMoney
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_IgnoreMoney");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_IgnoreMoney", value);
+		}
+	}
+
 	public static bool IgnorePhoto
 	{
 		get
@@ -239,6 +253,7 @@ public static class TutorialGlobals
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_IgnoreWeapon");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_IgnoreBlood");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_IgnoreClass");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_IgnoreMoney");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_IgnorePhoto");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_IgnoreClub");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_IgnoreInfo");

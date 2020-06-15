@@ -1490,6 +1490,11 @@ public class CounselorScript : MonoBehaviour
 						StudentGlobals.SetStudentExpelled(78, true);
 						StudentGlobals.SetStudentExpelled(79, true);
 						StudentGlobals.SetStudentExpelled(80, true);
+						this.StudentManager.Students[76].gameObject.SetActive(false);
+						this.StudentManager.Students[77].gameObject.SetActive(false);
+						this.StudentManager.Students[78].gameObject.SetActive(false);
+						this.StudentManager.Students[79].gameObject.SetActive(false);
+						this.StudentManager.Students[80].gameObject.SetActive(false);
 						this.ExpelledDelinquents = true;
 					}
 					else if (this.Answer == 4)

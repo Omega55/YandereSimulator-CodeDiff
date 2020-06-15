@@ -27,6 +27,8 @@ public class TutorialWindowScript : MonoBehaviour
 
 	public bool ShowClassMessage;
 
+	public bool ShowMoneyMessage;
+
 	public bool ShowPhotoMessage;
 
 	public bool ShowClubMessage;
@@ -58,6 +60,8 @@ public class TutorialWindowScript : MonoBehaviour
 	public bool IgnoreBlood;
 
 	public bool IgnoreClass;
+
+	public bool IgnoreMoney;
 
 	public bool IgnorePhoto;
 
@@ -129,6 +133,10 @@ public class TutorialWindowScript : MonoBehaviour
 
 	public Texture ClassTexture;
 
+	public string MoneyString;
+
+	public Texture MoneyTexture;
+
 	public string PhotoString;
 
 	public Texture PhotoTexture;
@@ -172,6 +180,7 @@ public class TutorialWindowScript : MonoBehaviour
 		this.IgnoreWeapon = TutorialGlobals.IgnoreWeapon;
 		this.IgnoreBlood = TutorialGlobals.IgnoreBlood;
 		this.IgnoreClass = TutorialGlobals.IgnoreClass;
+		this.IgnoreMoney = TutorialGlobals.IgnoreMoney;
 		this.IgnorePhoto = TutorialGlobals.IgnorePhoto;
 		this.IgnoreClub = TutorialGlobals.IgnoreClub;
 		this.IgnoreInfo = TutorialGlobals.IgnoreInfo;
@@ -345,6 +354,16 @@ public class TutorialWindowScript : MonoBehaviour
 					this.TutorialLabel.text = this.ClassString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.ClassTexture;
+					this.SummonWindow();
+				}
+				if (!this.IgnoreMoney && this.ShowMoneyMessage && !this.Show)
+				{
+					TutorialGlobals.IgnoreMoney = true;
+					this.IgnoreMoney = true;
+					this.TitleLabel.text = "Getting Money";
+					this.TutorialLabel.text = this.MoneyString;
+					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
+					this.TutorialImage.mainTexture = this.MoneyTexture;
 					this.SummonWindow();
 				}
 				if (!this.IgnorePhoto)

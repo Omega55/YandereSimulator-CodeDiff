@@ -515,6 +515,8 @@ public class StudentScript : MonoBehaviour
 
 	public bool OriginallyTeacher;
 
+	public bool ReturningFromSave;
+
 	public bool DramaticReaction;
 
 	public bool EventInterrupted;
@@ -1066,6 +1068,8 @@ public class StudentScript : MonoBehaviour
 	public int WeaponWitnessed;
 
 	public int MurderReaction;
+
+	public int PhaseFromSave;
 
 	public int CleaningRole;
 
@@ -3305,7 +3309,23 @@ public class StudentScript : MonoBehaviour
 					this.SpeechLines.Stop();
 					this.GoAway = false;
 					this.ReadPhase = 0;
-					this.PatrolID = 0;
+					if (!this.ReturningFromSave)
+					{
+						Debug.Log("This student believes we are NOT returning from a save, so PatrolID has been set to 0.");
+						this.PatrolID = 0;
+					}
+					if (this.Phase == this.PhaseFromSave)
+					{
+						Debug.Log("This student has returned to the phase they were at when the game was saved.");
+						if (this.Destinations[this.Phase] == this.StudentManager.Patrols.List[this.StudentID].GetChild(0))
+						{
+							this.Destinations[this.Phase] = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
+							this.CurrentDestination = this.StudentManager.Patrols.List[this.StudentID].GetChild(this.PatrolID);
+							this.Pathfinding.target = this.CurrentDestination;
+							Debug.Log("Student's CurrentDestination location is: " + this.CurrentDestination.position);
+						}
+						this.ReturningFromSave = false;
+					}
 					if (this.Actions[this.Phase] == StudentActionType.Clean)
 					{
 						this.EquipCleaningItems();
@@ -3402,13 +3422,13 @@ public class StudentScript : MonoBehaviour
 					}
 					if (this.Character.transform.localPosition.y == -0.25f)
 					{
-						Debug.Log("We reached this code.");
+						Debug.Log("Swimming club special case was reached.");
 						this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.ID].GetChild(this.ClubActivityPhase - 2);
 						this.CurrentDestination = this.StudentManager.Clubs.List[this.ID].GetChild(this.ClubActivityPhase - 2);
 						this.Pathfinding.target = this.StudentManager.Clubs.List[this.ID].GetChild(this.ClubActivityPhase - 2);
 					}
 				}
-				if (!this.Teacher && this.Club != ClubType.Delinquent)
+				if (!this.Teacher && this.Club != ClubType.Delinquent && this.Club != ClubType.Sports)
 				{
 					if (this.Clock.Period == 2 || this.Clock.Period == 4)
 					{
@@ -4612,13 +4632,11 @@ public class StudentScript : MonoBehaviour
 													this.SciencePhase++;
 													if (this.SciencePhase == 1)
 													{
+														Debug.Log(this.Name + " should be going to a closet now.");
 														this.ClubTimer = 50f;
-														this.OriginalPosition = this.CurrentDestination.transform.position;
-														this.OriginalRotation = this.CurrentDestination.transform.rotation;
-														this.CurrentDestination.transform.position = this.StudentManager.SupplySpots[this.StudentID - 61].position;
-														this.Pathfinding.target.position = this.StudentManager.SupplySpots[this.StudentID - 61].position;
-														this.CurrentDestination.transform.rotation = this.StudentManager.SupplySpots[this.StudentID - 61].rotation;
-														this.Pathfinding.target.rotation = this.StudentManager.SupplySpots[this.StudentID - 61].rotation;
+														this.Destinations[this.Phase] = this.StudentManager.SupplySpots[this.StudentID - 61];
+														this.CurrentDestination = this.StudentManager.SupplySpots[this.StudentID - 61];
+														this.Pathfinding.target = this.StudentManager.SupplySpots[this.StudentID - 61];
 														foreach (GameObject gameObject3 in this.ScienceProps)
 														{
 															if (gameObject3 != null)
@@ -4628,12 +4646,12 @@ public class StudentScript : MonoBehaviour
 														}
 														return;
 													}
+													Debug.Log(this.Name + " should be going to their original clubroom position now.");
 													this.SciencePhase = 0;
 													this.ClubTimer = 0f;
-													this.CurrentDestination.transform.position = this.OriginalPosition;
-													this.Pathfinding.target.position = this.OriginalPosition;
-													this.CurrentDestination.transform.rotation = this.OriginalRotation;
-													this.Pathfinding.target.rotation = this.OriginalRotation;
+													this.Destinations[this.Phase] = this.StudentManager.Clubs.List[this.StudentID];
+													this.CurrentDestination = this.StudentManager.Clubs.List[this.StudentID];
+													this.Pathfinding.target = this.StudentManager.Clubs.List[this.StudentID];
 													return;
 												}
 											}
@@ -6533,6 +6551,7 @@ public class StudentScript : MonoBehaviour
 										}
 										else if (this.Won)
 										{
+											Debug.Log("The code got here.");
 											this.CharacterAnimation.CrossFade(this.StruggleLostAnim);
 										}
 									}
@@ -6555,6 +6574,9 @@ public class StudentScript : MonoBehaviour
 										}
 										if (this.CharacterAnimation["unmasking_00"].time >= 0.66666f && this.Yandere.Mask.transform.parent != this.LeftHand)
 										{
+											this.Yandere.CanMove = true;
+											this.Yandere.EmptyHands();
+											this.Yandere.CanMove = false;
 											this.Yandere.Mask.transform.parent = this.LeftHand;
 											this.Yandere.Mask.transform.localPosition = new Vector3(-0.1f, -0.05f, 0f);
 											this.Yandere.Mask.transform.localEulerAngles = new Vector3(-90f, 90f, 0f);
@@ -7045,7 +7067,7 @@ public class StudentScript : MonoBehaviour
 								}
 								else if (!this.Yandere.Dumping && !this.Yandere.Attacking)
 								{
-									if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus == 0)
+									if (this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus == 0)
 									{
 										Debug.Log("A teacher is taking down Yandere-chan.");
 										if (this.Yandere.Aiming)
@@ -7936,6 +7958,7 @@ public class StudentScript : MonoBehaviour
 										this.Broken.HairPhysics[0].enabled = true;
 										this.Broken.HairPhysics[1].enabled = true;
 										this.Broken.enabled = false;
+										this.Hunting = false;
 									}
 								}
 								else if (this.MurderSuicidePhase == 9)
@@ -9118,7 +9141,7 @@ public class StudentScript : MonoBehaviour
 			{
 				flag2 = false;
 			}
-			if (this.WitnessedMurder || this.CheckingNote || this.Shoving || this.Struggling || !flag2 || this.Drownable || this.Fighting)
+			if (this.WitnessedMurder || this.CheckingNote || this.Shoving || this.Slave || this.Struggling || !flag2 || this.Drownable || this.Fighting)
 			{
 				this.Alarm -= Time.deltaTime * 100f * (1f / this.Paranoia);
 				return;
@@ -9436,7 +9459,12 @@ public class StudentScript : MonoBehaviour
 										{
 											this.StudentManager.TutorialWindow.ShowTeacherMessage = true;
 										}
-										this.Alarm += Time.deltaTime * (100f / this.DistanceToPlayer) * this.Paranoia * this.Perception;
+										int num = 1;
+										if (this.Yandere.Armed && this.Yandere.EquippedWeapon.Suspicious && (this.Yandere.EquippedWeapon.Type == WeaponType.Bat || this.Yandere.EquippedWeapon.Type == WeaponType.Katana || this.Yandere.EquippedWeapon.Type == WeaponType.Saw || this.Yandere.EquippedWeapon.Type == WeaponType.Weight))
+										{
+											num = 5;
+										}
+										this.Alarm += Time.deltaTime * (100f / this.DistanceToPlayer) * this.Paranoia * this.Perception * (float)num;
 										if (this.StudentID == 1 && this.Yandere.TimeSkipping)
 										{
 											this.Clock.EndTimeSkip();
@@ -10181,10 +10209,10 @@ public class StudentScript : MonoBehaviour
 								{
 									this.Subtitle.UpdateLabel(SubtitleType.Greeting, 0, 3f);
 								}
-								if (this.Club != ClubType.Council && this.Club != ClubType.Delinquent && ((this.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 0) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4))
+								if (this.Club != ClubType.Council && this.Club != ClubType.Delinquent && ((this.Male && this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus > 0) || this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus > 4))
 								{
 									ParticleSystem.EmissionModule emission = this.Hearts.emission;
-									emission.rateOverTime = (float)(PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus);
+									emission.rateOverTime = (float)(this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus);
 									emission.enabled = true;
 									this.Hearts.Play();
 								}
@@ -10285,7 +10313,7 @@ public class StudentScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling && !this.Chasing && this.DistanceToPlayer < 1.4f && this.SeenByYandere()))
+		if (this.Prompt.Circle[2].fillAmount == 0f || (this.Yandere.Sanity < 33.33333f && this.Yandere.CanMove && !this.Prompt.HideButton[2] && this.Prompt.InSight && this.Club != ClubType.Council && !this.Struggling && !this.Chasing && this.DistanceToPlayer < 1.4f && this.SeenByYandere() && this.StudentID > 1))
 		{
 			Debug.Log(this.Name + " was attacked because the player pressed the X button, or because Yandere-chan had low sanity.");
 			float f = Vector3.Angle(-base.transform.forward, this.Yandere.transform.position - base.transform.position);
@@ -10300,7 +10328,7 @@ public class StudentScript : MonoBehaviour
 				if (this.ClubActivityPhase < 16)
 				{
 					bool flag6 = false;
-					if (this.Club == ClubType.Delinquent && !this.Injured && !this.Yandere.AttackManager.Stealth && !this.RespectEarned)
+					if (this.Club == ClubType.Delinquent && !this.Injured && !this.Yandere.AttackManager.Stealth && !this.RespectEarned && !this.SolvingPuzzle)
 					{
 						Debug.Log(this.Name + " knows that Yandere-chan is tyring to attack him.");
 						flag6 = true;
@@ -12096,7 +12124,7 @@ public class StudentScript : MonoBehaviour
 
 	public void CalculateReputationPenalty()
 	{
-		if ((this.Male && PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 2) || PlayerGlobals.Seduction + PlayerGlobals.SeductionBonus > 4)
+		if ((this.Male && this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus > 2) || this.Yandere.Class.Seduction + this.Yandere.Class.SeductionBonus > 4)
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
@@ -12116,7 +12144,7 @@ public class StudentScript : MonoBehaviour
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
-		if (PlayerGlobals.SocialBonus > 0)
+		if (this.Yandere.Class.SocialBonus > 0)
 		{
 			this.RepDeduction += this.RepLoss * 0.2f;
 		}
@@ -12283,7 +12311,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Teacher)
 		{
-			if (ClassGlobals.PhysicalGrade + ClassGlobals.PhysicalBonus > 0 && this.Yandere.EquippedWeapon.Type == WeaponType.Knife)
+			if (this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus > 0 && this.Yandere.EquippedWeapon.Type == WeaponType.Knife)
 			{
 				Debug.Log(this.Name + " has called the ''BeginStruggle'' function.");
 				this.Pathfinding.target = this.Yandere.transform;
@@ -13377,7 +13405,6 @@ public class StudentScript : MonoBehaviour
 			this.StudentManager.CombatMinigame.Stop();
 		}
 		this.Yandere.EmptyHands();
-		this.Yandere.MyController.enabled = false;
 		this.Yandere.RPGCamera.enabled = false;
 		this.MyController.radius = 0f;
 		this.TargetDistance = 100f;
@@ -13445,6 +13472,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else if (scheduleBlock2.destination == "Patrol")
 			{
+				Debug.Log("While initially forming list of destinations, Student is setting destination to 0.");
 				this.Destinations[this.ID] = this.StudentManager.Patrols.List[this.StudentID].GetChild(0);
 				if ((this.OriginalClub == ClubType.Gardening || this.OriginalClub == ClubType.Occult) && this.Club == ClubType.None)
 				{
@@ -14817,7 +14845,7 @@ public class StudentScript : MonoBehaviour
 
 	public void UpdatePerception()
 	{
-		if (this.Yandere.Club == ClubType.Occult || PlayerGlobals.StealthBonus > 0)
+		if (this.Yandere.Club == ClubType.Occult || this.Yandere.Class.StealthBonus > 0)
 		{
 			this.Perception = 0.5f;
 		}

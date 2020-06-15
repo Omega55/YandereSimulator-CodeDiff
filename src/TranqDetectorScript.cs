@@ -73,7 +73,7 @@ public class TranqDetectorScript : MonoBehaviour
 					this.KidnappingLabel.text = "Kidnapping Checklist";
 					this.FollowerIcon.spriteName = "Yes";
 				}
-				this.BiologyIcon.spriteName = ((ClassGlobals.BiologyGrade + ClassGlobals.BiologyBonus != 0) ? "Yes" : "No");
+				this.BiologyIcon.spriteName = ((this.Yandere.Class.BiologyGrade + this.Yandere.Class.BiologyBonus != 0) ? "Yes" : "No");
 				if (!this.Yandere.Armed)
 				{
 					this.SyringeIcon.spriteName = "No";

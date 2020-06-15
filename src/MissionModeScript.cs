@@ -1042,12 +1042,6 @@ public class MissionModeScript : MonoBehaviour
 						this.Destination = 3;
 						this.FadeOut = true;
 					}
-					else if (Input.GetButtonDown("Y"))
-					{
-						this.PromptBar.Show = false;
-						this.Destination = 4;
-						this.FadeOut = true;
-					}
 				}
 				else
 				{
