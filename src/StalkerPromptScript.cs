@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StalkerPromptScript : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class StalkerPromptScript : MonoBehaviour
 	public AudioSource MyAudio;
 
 	public UISprite MySprite;
+
+	public Renderer Darkness;
 
 	public Transform CatCage;
 
@@ -90,6 +93,14 @@ public class StalkerPromptScript : MonoBehaviour
 				}
 				else if (this.ID == 4)
 				{
+					this.CatCage.gameObject.SetActive(true);
+					this.ServedPurpose = true;
+					this.OpenDoor = true;
+					this.MyAudio.Play();
+				}
+				else if (this.ID == 5)
+				{
+					this.Yandere.CanMove = false;
 					this.ServedPurpose = true;
 					this.OpenDoor = true;
 					this.MyAudio.Play();
@@ -105,6 +116,15 @@ public class StalkerPromptScript : MonoBehaviour
 			this.Speed += Time.deltaTime * 0.1f;
 			this.Rotation = Mathf.Lerp(this.Rotation, this.TargetRotation, Time.deltaTime * this.Speed);
 			this.Door.transform.localEulerAngles = new Vector3(this.Door.transform.localEulerAngles.x, this.Rotation, this.Door.transform.localEulerAngles.z);
+			if (this.ID == 5)
+			{
+				this.Darkness.material.color = new Color(0f, 0f, 0f, this.Darkness.material.color.a + Time.deltaTime * 0.33333f);
+				if (this.Darkness.material.color.a >= 1f)
+				{
+					EventGlobals.OsanaConversation = true;
+					SceneManager.LoadScene("PhoneScene");
+				}
+			}
 		}
 		this.MySprite.color = new Color(1f, 1f, 1f, this.Alpha);
 	}

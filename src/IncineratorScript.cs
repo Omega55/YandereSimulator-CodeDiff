@@ -230,6 +230,7 @@ public class IncineratorScript : MonoBehaviour
 			this.Smoke.Play();
 			this.Prompt.Hide();
 			this.Prompt.enabled = false;
+			Debug.Log("Incinerating " + this.BloodyClothing + " bloody clothing.");
 			this.Yandere.Police.IncineratedWeapons += this.MurderWeapons;
 			this.Yandere.Police.BloodyClothing -= this.BloodyClothing;
 			this.Yandere.Police.BloodyWeapons -= this.MurderWeapons;

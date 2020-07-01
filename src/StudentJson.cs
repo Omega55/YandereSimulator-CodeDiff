@@ -11,6 +11,9 @@ public class StudentJson : JsonData
 	private string name;
 
 	[SerializeField]
+	private string realname;
+
+	[SerializeField]
 	private int gender;
 
 	[SerializeField]
@@ -85,6 +88,7 @@ public class StudentJson : JsonData
 			}
 			StudentJson studentJson = array[num];
 			studentJson.name = TFUtils.LoadString(dictionary, "Name");
+			studentJson.realname = TFUtils.LoadString(dictionary, "RealName");
 			studentJson.gender = TFUtils.LoadInt(dictionary, "Gender");
 			studentJson.classID = TFUtils.LoadInt(dictionary, "Class");
 			studentJson.seat = TFUtils.LoadInt(dictionary, "Seat");
@@ -100,9 +104,10 @@ public class StudentJson : JsonData
 			studentJson.stockings = TFUtils.LoadString(dictionary, "Stockings");
 			studentJson.accessory = TFUtils.LoadString(dictionary, "Accessory");
 			studentJson.info = TFUtils.LoadString(dictionary, "Info");
-			if (GameGlobals.LoveSick && studentJson.name == "Mai Waifu")
+			if (GameGlobals.LoveSick)
 			{
-				studentJson.name = "Mai Wakabayashi";
+				studentJson.name = studentJson.realname;
+				studentJson.realname = "";
 			}
 			if (OptionGlobals.HighPopulation && studentJson.name == "Unknown")
 			{
@@ -137,6 +142,18 @@ public class StudentJson : JsonData
 		set
 		{
 			this.name = value;
+		}
+	}
+
+	public string RealName
+	{
+		get
+		{
+			return this.realname;
+		}
+		set
+		{
+			this.realname = value;
 		}
 	}
 

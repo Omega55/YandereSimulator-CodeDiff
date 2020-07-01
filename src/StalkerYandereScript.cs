@@ -248,12 +248,12 @@ public class StalkerYandereScript : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (this.RightArm != null)
-		{
-			this.RightArm.localEulerAngles = new Vector3(this.RightArm.localEulerAngles.x, this.RightArm.localEulerAngles.y + 15f, this.RightArm.localEulerAngles.z);
-		}
 		if (this.Object != null)
 		{
+			if (this.RightArm != null)
+			{
+				this.RightArm.localEulerAngles = new Vector3(this.RightArm.localEulerAngles.x, this.RightArm.localEulerAngles.y + 15f, this.RightArm.localEulerAngles.z);
+			}
 			this.Object.eulerAngles = new Vector3(0f, this.Object.eulerAngles.y, 0f);
 		}
 	}

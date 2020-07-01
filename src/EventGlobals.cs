@@ -4,6 +4,8 @@ public static class EventGlobals
 {
 	private const string Str_BefriendConversation = "BefriendConversation";
 
+	private const string Str_StalkerConversation = "StalkerConversation";
+
 	private const string Str_KidnapConversation = "KidnapConversation";
 
 	private const string Str_OsanaConversation = "OsanaConversation";
@@ -27,6 +29,18 @@ public static class EventGlobals
 		set
 		{
 			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_BefriendConversation", value);
+		}
+	}
+
+	public static bool StalkerConversation
+	{
+		get
+		{
+			return GlobalsHelper.GetBool("Profile_" + GameGlobals.Profile + "_StalkerConversation");
+		}
+		set
+		{
+			GlobalsHelper.SetBool("Profile_" + GameGlobals.Profile + "_StalkerConversation", value);
 		}
 	}
 
@@ -117,6 +131,7 @@ public static class EventGlobals
 	public static void DeleteAll()
 	{
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_BefriendConversation");
+		Globals.Delete("Profile_" + GameGlobals.Profile + "_StalkerConversation");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_KidnapConversation");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_OsanaConversation");
 		Globals.Delete("Profile_" + GameGlobals.Profile + "_OsanaEvent1");

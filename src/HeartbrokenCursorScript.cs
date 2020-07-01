@@ -74,6 +74,8 @@ public class HeartbrokenCursorScript : MonoBehaviour
 
 	public GameObject[] Background;
 
+	public GameObject[] CrackMeshes;
+
 	public GameObject[] Cracks;
 
 	public AudioClip[] CracksTier1;
@@ -175,6 +177,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 						this.StudentManager.Yandere.ShoulderCamera.enabled = false;
 						if (this.CracksSpawned == 0)
 						{
+							GameObjectUtils.SetLayerRecursively(this.StudentManager.Yandere.gameObject, 5);
 							this.Cracks[1].transform.parent.position = this.StudentManager.Yandere.Head.position;
 							this.Cracks[1].transform.parent.position = Vector3.MoveTowards(this.Cracks[1].transform.parent.position, this.Heartbroken.transform.parent.position, -1f);
 							VibrateScript[] vibrations = this.Vibrations;
@@ -297,6 +300,7 @@ public class HeartbrokenCursorScript : MonoBehaviour
 				this.SnapTimer += Time.deltaTime;
 				if (this.SnapTimer > 10f)
 				{
+					GameObjectUtils.SetLayerRecursively(this.StudentManager.Yandere.gameObject, 13);
 					this.StudentManager.Yandere.CharacterAnimation["f02_sadEyebrows_00"].weight = 0f;
 					this.HeartbrokenCamera.cullingMask = this.StudentManager.Yandere.MainCamera.cullingMask;
 					this.HeartbrokenCamera.clearFlags = this.StudentManager.Yandere.MainCamera.clearFlags;

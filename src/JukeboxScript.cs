@@ -153,16 +153,22 @@ public class JukeboxScript : MonoBehaviour
 
 	public AudioClip[] NinthNo;
 
+	public AudioClip[] TenthFull;
+
+	public AudioClip[] TenthHalf;
+
+	public AudioClip[] TenthNo;
+
 	public void Start()
 	{
 		if (this.BGM == 0)
 		{
-			this.BGM = UnityEngine.Random.Range(0, 10);
+			this.BGM = UnityEngine.Random.Range(0, 11);
 		}
 		else
 		{
 			this.BGM++;
-			if (this.BGM > 9)
+			if (this.BGM > 10)
 			{
 				this.BGM = 1;
 			}
@@ -220,6 +226,12 @@ public class JukeboxScript : MonoBehaviour
 			this.FullSanities = this.NinthFull;
 			this.HalfSanities = this.NinthHalf;
 			this.NoSanities = this.NinthNo;
+		}
+		else if (this.BGM == 10)
+		{
+			this.FullSanities = this.TenthFull;
+			this.HalfSanities = this.TenthHalf;
+			this.NoSanities = this.TenthNo;
 		}
 		if (!SchoolGlobals.SchoolAtmosphereSet)
 		{

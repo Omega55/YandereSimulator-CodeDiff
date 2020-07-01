@@ -197,6 +197,8 @@ public class PhoneEventScript : MonoBehaviour
 						this.EventStudent.Pathfinding.canMove = true;
 						this.EventStudent.Pathfinding.speed = 4f;
 						this.EventSubtitle.text = string.Empty;
+						this.EventStudent.Hurry = true;
+						Debug.Log(this.EventStudent.Name + " has been given a pathfinding speed of 4.");
 						this.Timer = 0f;
 						this.EventPhase++;
 					}
@@ -289,6 +291,11 @@ public class PhoneEventScript : MonoBehaviour
 					}
 				}
 			}
+			else
+			{
+				this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.RunAnim);
+				this.EventStudent.Pathfinding.speed = 4f;
+			}
 			if ((this.EventStudent.Pathfinding.canMove || this.EventPhase > 3) && this.EventFriend != null && this.EventPhase > 3)
 			{
 				if (this.EventFriend.CurrentDestination != this.SpyLocation)
@@ -374,6 +381,7 @@ public class PhoneEventScript : MonoBehaviour
 			this.EventSubtitle.text = string.Empty;
 			this.StudentManager.UpdateStudents(0);
 		}
+		this.EventStudent.Hurry = false;
 		this.Yandere.Eavesdropping = false;
 		this.Jukebox.Dip = 1f;
 		this.EventActive = false;

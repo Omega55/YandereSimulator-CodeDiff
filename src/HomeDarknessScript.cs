@@ -35,7 +35,6 @@ public class HomeDarknessScript : MonoBehaviour
 
 	private void Update()
 	{
-		Debug.Log("While walking around the home, InputDevice.Type is: " + this.InputDevice.Type);
 		if (this.FadeOut)
 		{
 			this.Sprite.color = new Color(this.Sprite.color.r, this.Sprite.color.g, this.Sprite.color.b, this.Sprite.color.a + Time.deltaTime * (this.FadeSlow ? 0.2f : 1f));

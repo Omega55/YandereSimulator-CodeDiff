@@ -376,7 +376,6 @@ public class CosmeticScript : MonoBehaviour
 
 	public void Start()
 	{
-		bool kidnapped = this.Kidnapped;
 		if (this.RightShoe != null)
 		{
 			this.RightShoe.SetActive(false);

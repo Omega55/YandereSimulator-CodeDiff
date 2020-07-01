@@ -45,6 +45,8 @@ public class StudentInfoScript : MonoBehaviour
 
 	public UILabel ReputationLabel;
 
+	public UILabel RealNameLabel;
+
 	public UILabel StrengthLabel;
 
 	public UILabel PersonaLabel;
@@ -134,6 +136,16 @@ public class StudentInfoScript : MonoBehaviour
 	public void UpdateInfo(int ID)
 	{
 		StudentJson studentJson = this.JSON.Students[ID];
+		if (studentJson.RealName == "")
+		{
+			this.NameLabel.transform.localPosition = new Vector3(-228f, 195f, 0f);
+			this.RealNameLabel.text = "";
+		}
+		else
+		{
+			this.NameLabel.transform.localPosition = new Vector3(-228f, 210f, 0f);
+			this.RealNameLabel.text = "Real Name: " + studentJson.RealName;
+		}
 		this.NameLabel.text = studentJson.Name;
 		string text = string.Concat(studentJson.Class);
 		text = text.Insert(1, "-");

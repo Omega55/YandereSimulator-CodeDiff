@@ -28,6 +28,8 @@ public class PauseScreenScript : MonoBehaviour
 
 	public PromptBarScript PromptBar;
 
+	public TaskListScript Tutorials;
+
 	public PassTimeScript PassTime;
 
 	public SettingsScript Settings;
@@ -150,8 +152,9 @@ public class PauseScreenScript : MonoBehaviour
 		this.PhotoGallery.gameObject.SetActive(false);
 		this.SaveLoadMenu.gameObject.SetActive(false);
 		this.ServiceMenu.gameObject.SetActive(false);
-		this.FavorMenu.gameObject.SetActive(false);
 		this.AudioMenu.gameObject.SetActive(false);
+		this.FavorMenu.gameObject.SetActive(false);
+		this.Tutorials.gameObject.SetActive(false);
 		this.PassTime.gameObject.SetActive(false);
 		this.Settings.gameObject.SetActive(false);
 		this.TaskList.gameObject.SetActive(false);
@@ -555,6 +558,18 @@ public class PauseScreenScript : MonoBehaviour
 										this.PhoneIcons[this.Selected].transform.localScale = new Vector3(1f, 1f, 1f);
 										this.MissionMode.ChangeMusic();
 									}
+								}
+								else if (this.Selected == 11)
+								{
+									this.Tutorials.gameObject.SetActive(true);
+									this.MainMenu.SetActive(false);
+									this.Sideways = true;
+									this.PromptBar.ClearButtons();
+									this.PromptBar.Label[1].text = "Back";
+									this.PromptBar.Label[4].text = "Choose";
+									this.PromptBar.UpdateButtons();
+									this.Tutorials.UpdateTaskList();
+									base.StartCoroutine(this.Tutorials.UpdateTaskInfo());
 								}
 								else if (this.Selected == 12)
 								{

@@ -66,6 +66,8 @@ public class BucketScript : MonoBehaviour
 
 	public bool Bleached;
 
+	public bool Dippable;
+
 	public bool Gasoline;
 
 	public bool Dropped;
@@ -136,7 +138,20 @@ public class BucketScript : MonoBehaviour
 		}
 		if (this.Yandere.PickUp != null)
 		{
-			if (this.Yandere.PickUp.JerryCan)
+			if (this.Yandere.Mop != null)
+			{
+				if (!this.Yandere.Chased && this.Yandere.Chasers == 0 && this.Full && !this.Gasoline && this.Bleached && this.Bloodiness < 100f)
+				{
+					this.Prompt.Label[3].text = "     Dip";
+					this.Dippable = true;
+				}
+				else
+				{
+					this.Prompt.Label[3].text = "     Carry";
+					this.Dippable = false;
+				}
+			}
+			else if (this.Yandere.PickUp.JerryCan)
 			{
 				if (!this.Full)
 				{
@@ -168,16 +183,28 @@ public class BucketScript : MonoBehaviour
 				}
 			}
 		}
-		else if (this.Yandere.Equipped > 0 && this.Yandere.EquippedWeapon != null)
+		else
 		{
-			if (!this.Full)
+			if (this.Dippable)
 			{
-				if (this.Yandere.EquippedWeapon.WeaponID == 12)
+				this.Prompt.Label[3].text = "     Carry";
+				this.Dippable = false;
+			}
+			if (this.Yandere.Equipped > 0 && this.Yandere.EquippedWeapon != null)
+			{
+				if (!this.Full)
 				{
-					if (this.Dumbbells < 5)
+					if (this.Yandere.EquippedWeapon.WeaponID == 12)
 					{
-						this.Prompt.Label[0].text = "     Place Dumbbell";
-						this.Prompt.HideButton[0] = false;
+						if (this.Dumbbells < 5)
+						{
+							this.Prompt.Label[0].text = "     Place Dumbbell";
+							this.Prompt.HideButton[0] = false;
+						}
+						else
+						{
+							this.Prompt.HideButton[0] = true;
+						}
 					}
 					else
 					{
@@ -189,19 +216,20 @@ public class BucketScript : MonoBehaviour
 					this.Prompt.HideButton[0] = true;
 				}
 			}
-			else
+			else if (this.Dumbbells == 0)
 			{
 				this.Prompt.HideButton[0] = true;
 			}
+			else
+			{
+				this.Prompt.Label[0].text = "     Remove Dumbbell";
+				this.Prompt.HideButton[0] = false;
+			}
 		}
-		else if (this.Dumbbells == 0)
+		if (this.Yandere.Mop != null && this.Prompt.Circle[3].fillAmount == 0f)
 		{
-			this.Prompt.HideButton[0] = true;
-		}
-		else
-		{
-			this.Prompt.Label[0].text = "     Remove Dumbbell";
-			this.Prompt.HideButton[0] = false;
+			this.Prompt.Circle[3].fillAmount = 1f;
+			this.Yandere.Mop.Dip();
 		}
 		if (this.Dumbbells > 0)
 		{

@@ -161,6 +161,10 @@ public class TutorialWindowScript : MonoBehaviour
 
 	public float Timer;
 
+	public bool ForcingTutorial;
+
+	public int ForceID;
+
 	private void Start()
 	{
 		base.transform.localScale = new Vector3(0f, 0f, 0f);
@@ -206,6 +210,10 @@ public class TutorialWindowScript : MonoBehaviour
 				}
 				else if (Input.GetButtonDown("A"))
 				{
+					if (this.ForcingTutorial)
+					{
+						this.ShowTutorial();
+					}
 					this.Yandere.RPGCamera.enabled = true;
 					this.Yandere.Blur.enabled = false;
 					Time.timeScale = 1f;
@@ -227,82 +235,103 @@ public class TutorialWindowScript : MonoBehaviour
 				}
 			}
 		}
-		if (this.Yandere.CanMove && !this.Yandere.Egg && !this.Yandere.Aiming && !this.Yandere.PauseScreen.Show && !this.Yandere.CinematicCamera.activeInHierarchy)
+		if (this.ForcingTutorial || (this.Yandere.CanMove && !this.Yandere.Egg && !this.Yandere.Aiming && !this.Yandere.PauseScreen.Show && !this.Yandere.CinematicCamera.activeInHierarchy))
 		{
 			this.Timer += Time.deltaTime;
 			if (this.Timer > 5f)
 			{
-				if (!this.IgnoreClothing && this.ShowClothingMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreClothing) && this.ShowClothingMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreClothing = true;
-					this.IgnoreClothing = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreClothing = true;
+						this.IgnoreClothing = true;
+					}
 					this.TitleLabel.text = "No Spare Clothing";
 					this.TutorialLabel.text = this.ClothingString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.ClothingTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreCouncil && this.ShowCouncilMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreCouncil) && this.ShowCouncilMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreCouncil = true;
-					this.IgnoreCouncil = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreCouncil = true;
+						this.IgnoreCouncil = true;
+					}
 					this.TitleLabel.text = "Student Council";
 					this.TutorialLabel.text = this.CouncilString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.CouncilTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreTeacher && this.ShowTeacherMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreTeacher) && this.ShowTeacherMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreTeacher = true;
-					this.IgnoreTeacher = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreTeacher = true;
+						this.IgnoreTeacher = true;
+					}
 					this.TitleLabel.text = "Teachers";
 					this.TutorialLabel.text = this.TeacherString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.TeacherTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreLocker && this.ShowLockerMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreLocker) && this.ShowLockerMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreLocker = true;
-					this.IgnoreLocker = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreLocker = true;
+						this.IgnoreLocker = true;
+					}
 					this.TitleLabel.text = "Notes In Lockers";
 					this.TutorialLabel.text = this.LockerString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.LockerTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnorePolice && this.ShowPoliceMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnorePolice) && this.ShowPoliceMessage && !this.Show)
 				{
-					TutorialGlobals.IgnorePolice = true;
-					this.IgnorePolice = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnorePolice = true;
+						this.IgnorePolice = true;
+					}
 					this.TitleLabel.text = "Police";
 					this.TutorialLabel.text = this.PoliceString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.PoliceTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreSanity && this.ShowSanityMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreSanity) && this.ShowSanityMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreSanity = true;
-					this.IgnoreSanity = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreSanity = true;
+						this.IgnoreSanity = true;
+					}
 					this.TitleLabel.text = "Restoring Sanity";
 					this.TutorialLabel.text = this.SanityString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.SanityTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreSenpai && this.ShowSenpaiMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreSenpai) && this.ShowSenpaiMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreSenpai = true;
-					this.IgnoreSenpai = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreSenpai = true;
+						this.IgnoreSenpai = true;
+					}
 					this.TitleLabel.text = "Your Senpai";
 					this.TutorialLabel.text = this.SenpaiString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.SenpaiTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreVision)
+				if (this.ForcingTutorial || !this.IgnoreVision)
 				{
 					if (this.Yandere.StudentManager.WestBathroomArea.bounds.Contains(this.Yandere.transform.position) || this.Yandere.StudentManager.EastBathroomArea.bounds.Contains(this.Yandere.transform.position))
 					{
@@ -310,8 +339,11 @@ public class TutorialWindowScript : MonoBehaviour
 					}
 					if (this.ShowVisionMessage && !this.Show)
 					{
-						TutorialGlobals.IgnoreVision = true;
-						this.IgnoreVision = true;
+						if (!this.ForcingTutorial)
+						{
+							TutorialGlobals.IgnoreVision = true;
+							this.IgnoreVision = true;
+						}
 						this.TitleLabel.text = "Yandere Vision";
 						this.TutorialLabel.text = this.VisionString;
 						this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
@@ -319,7 +351,7 @@ public class TutorialWindowScript : MonoBehaviour
 						this.SummonWindow();
 					}
 				}
-				if (!this.IgnoreWeapon)
+				if (this.ForcingTutorial || !this.IgnoreWeapon)
 				{
 					if (this.Yandere.Armed)
 					{
@@ -327,8 +359,11 @@ public class TutorialWindowScript : MonoBehaviour
 					}
 					if (this.ShowWeaponMessage && !this.Show)
 					{
-						TutorialGlobals.IgnoreWeapon = true;
-						this.IgnoreWeapon = true;
+						if (!this.ForcingTutorial)
+						{
+							TutorialGlobals.IgnoreWeapon = true;
+							this.IgnoreWeapon = true;
+						}
 						this.TitleLabel.text = "Weapons";
 						this.TutorialLabel.text = this.WeaponString;
 						this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
@@ -336,37 +371,46 @@ public class TutorialWindowScript : MonoBehaviour
 						this.SummonWindow();
 					}
 				}
-				if (!this.IgnoreBlood && this.ShowBloodMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreBlood) && this.ShowBloodMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreBlood = true;
-					this.IgnoreBlood = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreBlood = true;
+						this.IgnoreBlood = true;
+					}
 					this.TitleLabel.text = "Bloody Clothing";
 					this.TutorialLabel.text = this.BloodString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.BloodTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreClass && this.ShowClassMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreClass) && this.ShowClassMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreClass = true;
-					this.IgnoreClass = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreClass = true;
+						this.IgnoreClass = true;
+					}
 					this.TitleLabel.text = "Attending Class";
 					this.TutorialLabel.text = this.ClassString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.ClassTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreMoney && this.ShowMoneyMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreMoney) && this.ShowMoneyMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreMoney = true;
-					this.IgnoreMoney = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreMoney = true;
+						this.IgnoreMoney = true;
+					}
 					this.TitleLabel.text = "Getting Money";
 					this.TutorialLabel.text = this.MoneyString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.MoneyTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnorePhoto)
+				if (this.ForcingTutorial || !this.IgnorePhoto)
 				{
 					if (this.Yandere.transform.position.z > -50f)
 					{
@@ -374,8 +418,11 @@ public class TutorialWindowScript : MonoBehaviour
 					}
 					if (this.ShowPhotoMessage && !this.Show)
 					{
-						TutorialGlobals.IgnorePhoto = true;
-						this.IgnorePhoto = true;
+						if (!this.ForcingTutorial)
+						{
+							TutorialGlobals.IgnorePhoto = true;
+							this.IgnorePhoto = true;
+						}
 						this.TitleLabel.text = "Taking Photographs";
 						this.TutorialLabel.text = this.PhotoString;
 						this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
@@ -383,40 +430,52 @@ public class TutorialWindowScript : MonoBehaviour
 						this.SummonWindow();
 					}
 				}
-				if (!this.IgnoreClub && this.ShowClubMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreClub) && this.ShowClubMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreClub = true;
-					this.IgnoreClub = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreClub = true;
+						this.IgnoreClub = true;
+					}
 					this.TitleLabel.text = "Joining Clubs";
 					this.TutorialLabel.text = this.ClubString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.ClubTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreInfo && this.ShowInfoMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreInfo) && this.ShowInfoMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreInfo = true;
-					this.IgnoreInfo = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreInfo = true;
+						this.IgnoreInfo = true;
+					}
 					this.TitleLabel.text = "Info-chan's Services";
 					this.TutorialLabel.text = this.InfoString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.InfoTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnorePool && this.ShowPoolMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnorePool) && this.ShowPoolMessage && !this.Show)
 				{
-					TutorialGlobals.IgnorePool = true;
-					this.IgnorePool = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnorePool = true;
+						this.IgnorePool = true;
+					}
 					this.TitleLabel.text = "Cleaning Blood";
 					this.TutorialLabel.text = this.PoolString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
 					this.TutorialImage.mainTexture = this.PoolTexture;
 					this.SummonWindow();
 				}
-				if (!this.IgnoreRep && this.ShowRepMessage && !this.Show)
+				if ((this.ForcingTutorial || !this.IgnoreRep) && this.ShowRepMessage && !this.Show)
 				{
-					TutorialGlobals.IgnoreRep = true;
-					this.IgnoreRep = true;
+					if (!this.ForcingTutorial)
+					{
+						TutorialGlobals.IgnoreRep = true;
+						this.IgnoreRep = true;
+					}
 					this.TitleLabel.text = "Reputation";
 					this.TutorialLabel.text = this.RepString;
 					this.TutorialLabel.text = this.TutorialLabel.text.Replace('@', '\n');
@@ -436,5 +495,91 @@ public class TutorialWindowScript : MonoBehaviour
 		Time.timeScale = 0f;
 		this.Show = true;
 		this.Timer = 0f;
+	}
+
+	public void ShowTutorial()
+	{
+		if (!this.ForcingTutorial)
+		{
+			this.ForcingTutorial = true;
+			this.Timer = 6f;
+		}
+		else
+		{
+			this.ForcingTutorial = false;
+			this.Timer = 0f;
+		}
+		switch (this.ForceID)
+		{
+		case 1:
+			this.ShowClothingMessage = this.ForcingTutorial;
+			this.IgnoreClothing = false;
+			break;
+		case 2:
+			this.ShowCouncilMessage = this.ForcingTutorial;
+			this.IgnoreCouncil = false;
+			break;
+		case 3:
+			this.ShowTeacherMessage = this.ForcingTutorial;
+			this.IgnoreTeacher = false;
+			break;
+		case 4:
+			this.ShowLockerMessage = this.ForcingTutorial;
+			this.IgnoreLocker = false;
+			break;
+		case 5:
+			this.ShowPoliceMessage = this.ForcingTutorial;
+			this.IgnorePolice = false;
+			break;
+		case 6:
+			this.ShowSenpaiMessage = this.ForcingTutorial;
+			this.IgnoreSenpai = false;
+			break;
+		case 7:
+			this.ShowVisionMessage = this.ForcingTutorial;
+			this.IgnoreVision = false;
+			break;
+		case 8:
+			this.ShowWeaponMessage = this.ForcingTutorial;
+			this.IgnoreWeapon = false;
+			break;
+		case 9:
+			this.ShowSanityMessage = this.ForcingTutorial;
+			this.IgnoreSanity = false;
+			break;
+		case 10:
+			this.ShowBloodMessage = this.ForcingTutorial;
+			this.IgnoreBlood = false;
+			break;
+		case 11:
+			this.ShowClassMessage = this.ForcingTutorial;
+			this.IgnoreClass = false;
+			break;
+		case 12:
+			this.ShowPhotoMessage = this.ForcingTutorial;
+			this.IgnorePhoto = false;
+			break;
+		case 13:
+			this.ShowClubMessage = this.ForcingTutorial;
+			this.IgnoreClub = false;
+			break;
+		case 14:
+			this.ShowInfoMessage = this.ForcingTutorial;
+			this.IgnoreInfo = false;
+			break;
+		case 15:
+			this.ShowPoolMessage = this.ForcingTutorial;
+			this.IgnorePool = false;
+			break;
+		case 16:
+			this.ShowRepMessage = this.ForcingTutorial;
+			this.IgnoreRep = false;
+			break;
+		case 17:
+			this.ShowMoneyMessage = this.ForcingTutorial;
+			this.IgnoreMoney = false;
+			break;
+		}
+		this.Update();
 	}
 }

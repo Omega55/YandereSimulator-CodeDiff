@@ -1947,7 +1947,7 @@ public class YandereScript : MonoBehaviour
 			{
 				this.CharacterAnimation["f02_mopCarry_00"].weight = Mathf.Lerp(this.CharacterAnimation["f02_mopCarry_00"].weight, 1f, Time.deltaTime * 10f);
 			}
-			if (this.Noticed && !this.Attacking && !this.Collapse)
+			if (this.Noticed && !this.Attacking && !this.Struggling && !this.Collapse)
 			{
 				if (this.ShoulderCamera.NoticedTimer < 1f)
 				{
@@ -2500,6 +2500,7 @@ public class YandereScript : MonoBehaviour
 										this.MyAudio.volume = 1f;
 										this.LaughTimer = 0.5f;
 										this.Laughing = true;
+										this.Mopping = false;
 										this.CanMove = false;
 										this.Teeth.SetActive(false);
 									}

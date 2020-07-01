@@ -72,7 +72,7 @@ public class FamilyVoiceScript : MonoBehaviour
 	{
 		if (!this.GameOver)
 		{
-			if (this.Yandere.transform.position.y > base.transform.position.y - 1f)
+			if (this.Yandere.transform.position.y > base.transform.position.y - 1f && this.Yandere.transform.position.y < base.transform.position.y + 1f)
 			{
 				this.Distance = Vector3.Distance(this.Yandere.transform.position, base.transform.position);
 				if (this.Distance < this.MinimumDistance)

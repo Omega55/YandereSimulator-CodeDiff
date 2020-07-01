@@ -231,6 +231,7 @@ public class OfferHelpScript : MonoBehaviour
 			else if (this.EventStudentID == 30)
 			{
 				SchemeGlobals.HelpingKokona = true;
+				Debug.Log("SchemeGlobals.HelpingKokona is now true.");
 			}
 			this.Student.CurrentDestination = this.Student.Destinations[this.Student.Phase];
 			this.Student.Pathfinding.target = this.Student.Destinations[this.Student.Phase];

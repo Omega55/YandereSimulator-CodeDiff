@@ -84,11 +84,7 @@ public class MopScript : MonoBehaviour
 									this.Prompt.Label[0].text = "     Dip";
 									if (Input.GetButtonDown("A"))
 									{
-										this.Yandere.YandereVision = false;
-										this.Yandere.CanMove = false;
-										this.Yandere.Dipping = true;
-										this.Prompt.Hide();
-										this.Prompt.enabled = false;
+										this.Dip();
 									}
 								}
 								else
@@ -147,5 +143,14 @@ public class MopScript : MonoBehaviour
 			this.Bleached = false;
 		}
 		this.Blood.material.color = new Color(this.Blood.material.color.r, this.Blood.material.color.g, this.Blood.material.color.b, this.Bloodiness / 100f * 0.9f);
+	}
+
+	public void Dip()
+	{
+		this.Yandere.YandereVision = false;
+		this.Yandere.CanMove = false;
+		this.Yandere.Dipping = true;
+		this.Prompt.Hide();
+		this.Prompt.enabled = false;
 	}
 }

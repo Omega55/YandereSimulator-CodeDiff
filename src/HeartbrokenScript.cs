@@ -406,7 +406,7 @@ public class HeartbrokenScript : MonoBehaviour
 			}
 		}
 		this.GrowID = 0;
-		while (this.GrowID < 4)
+		while (this.GrowID < 5)
 		{
 			UILabel uilabel4 = this.Options[this.GrowID];
 			uilabel4.transform.localScale = Vector3.Lerp(uilabel4.transform.localScale, (this.Cursor.Selected - 1 != this.GrowID) ? new Vector3(0.5f, 0.5f, 0.5f) : new Vector3(1f, 1f, 1f), Time.deltaTime * 10f);

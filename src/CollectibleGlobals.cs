@@ -75,6 +75,16 @@ public static class CollectibleGlobals
 		}), value);
 	}
 
+	public static int[] KeysOfHeadmasterTapeCollected()
+	{
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_HeadmasterTapeCollected_");
+	}
+
+	public static int[] KeysOfHeadmasterTapeListened()
+	{
+		return KeysHelper.GetIntegerKeys("Profile_" + GameGlobals.Profile + "_HeadmasterTapeListened_");
+	}
+
 	public static bool GetBasementTapeCollected(int tapeID)
 	{
 		return GlobalsHelper.GetBool(string.Concat(new object[]
@@ -333,6 +343,8 @@ public static class CollectibleGlobals
 
 	public static void DeleteAll()
 	{
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_HeadmasterTapeCollected_", CollectibleGlobals.KeysOfHeadmasterTapeCollected());
+		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_HeadmasterTapeListened_", CollectibleGlobals.KeysOfHeadmasterTapeListened());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_BasementTapeCollected_", CollectibleGlobals.KeysOfBasementTapeCollected());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_BasementTapeListened_", CollectibleGlobals.KeysOfBasementTapeListened());
 		Globals.DeleteCollection("Profile_" + GameGlobals.Profile + "_MangaCollected_", CollectibleGlobals.KeysOfMangaCollected());

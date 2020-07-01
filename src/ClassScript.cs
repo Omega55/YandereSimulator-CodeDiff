@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ClassScript : MonoBehaviour
 {
@@ -125,7 +126,6 @@ public class ClassScript : MonoBehaviour
 
 	private void Start()
 	{
-		this.GradeUpWindow.localScale = Vector3.zero;
 		this.Biology = ClassGlobals.Biology;
 		this.Chemistry = ClassGlobals.Chemistry;
 		this.Language = ClassGlobals.Language;
@@ -150,6 +150,12 @@ public class ClassScript : MonoBehaviour
 		this.SeductionBonus = PlayerGlobals.SeductionBonus;
 		this.NumbnessBonus = PlayerGlobals.NumbnessBonus;
 		this.EnlightenmentBonus = PlayerGlobals.EnlightenmentBonus;
+		if (SceneManager.GetActiveScene().name != "SchoolScene")
+		{
+			base.enabled = false;
+			return;
+		}
+		this.GradeUpWindow.localScale = Vector3.zero;
 		this.Subject[1] = this.Biology;
 		this.Subject[2] = this.Chemistry;
 		this.Subject[3] = this.Language;

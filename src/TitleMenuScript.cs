@@ -165,6 +165,7 @@ public class TitleMenuScript : MonoBehaviour
 
 	private void Update()
 	{
+		Cursor.visible = false;
 		if (this.LoveSick)
 		{
 			this.Timer += Time.deltaTime * 0.001f;

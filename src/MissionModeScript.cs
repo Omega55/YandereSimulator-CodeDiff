@@ -340,7 +340,6 @@ public class MissionModeScript : MonoBehaviour
 			ClassGlobals.LanguageGrade = 1;
 			ClassGlobals.PhysicalGrade = 1;
 			ClassGlobals.PsychologyGrade = 1;
-			this.Yandere.StudentManager.TutorialWindow.gameObject.SetActive(false);
 			OptionGlobals.TutorialsOff = true;
 			SchoolGlobals.SchoolAtmosphereSet = true;
 			SchoolGlobals.SchoolAtmosphere = 1f - (float)this.Difficulty * 0.1f;

@@ -64,8 +64,6 @@ public class FavorMenuScript : MonoBehaviour
 			}
 			if (Input.GetButtonDown("X"))
 			{
-				TutorialGlobals.IgnoreClothing = true;
-				this.TutorialWindow.IgnoreClothing = true;
 				this.TutorialWindow.TitleLabel.text = "Info Points";
 				this.TutorialWindow.TutorialLabel.text = this.TutorialWindow.PointsString;
 				this.TutorialWindow.TutorialLabel.text = this.TutorialWindow.TutorialLabel.text.Replace('@', '\n');
