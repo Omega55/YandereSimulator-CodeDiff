@@ -176,6 +176,8 @@ public class PauseScreenScript : MonoBehaviour
 			uisprite.color = new Color(uisprite.color.r, uisprite.color.g, uisprite.color.b, 0.5f);
 			UISprite uisprite2 = this.PhoneIcons[9];
 			uisprite2.color = new Color(uisprite2.color.r, uisprite2.color.g, uisprite2.color.b, 0.5f);
+			UISprite uisprite3 = this.PhoneIcons[11];
+			uisprite3.color = new Color(uisprite3.color.r, uisprite3.color.g, uisprite3.color.b, 0.5f);
 			if (this.NewMissionModeWindow != null)
 			{
 				this.NewMissionModeWindow.SetActive(false);
@@ -183,12 +185,12 @@ public class PauseScreenScript : MonoBehaviour
 		}
 		if (MissionModeGlobals.MissionMode)
 		{
-			UISprite uisprite3 = this.PhoneIcons[7];
-			uisprite3.color = new Color(uisprite3.color.r, uisprite3.color.g, uisprite3.color.b, 0.5f);
-			UISprite uisprite4 = this.PhoneIcons[9];
+			UISprite uisprite4 = this.PhoneIcons[7];
 			uisprite4.color = new Color(uisprite4.color.r, uisprite4.color.g, uisprite4.color.b, 0.5f);
-			UISprite uisprite5 = this.PhoneIcons[10];
-			uisprite5.color = new Color(uisprite5.color.r, uisprite5.color.g, uisprite5.color.b, 1f);
+			UISprite uisprite5 = this.PhoneIcons[9];
+			uisprite5.color = new Color(uisprite5.color.r, uisprite5.color.g, uisprite5.color.b, 0.5f);
+			UISprite uisprite6 = this.PhoneIcons[10];
+			uisprite6.color = new Color(uisprite6.color.r, uisprite6.color.g, uisprite6.color.b, 1f);
 		}
 		this.UpdateSelection();
 		this.CorrectingTime = false;

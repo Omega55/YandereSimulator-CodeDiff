@@ -299,8 +299,24 @@ public class AmbientEventScript : MonoBehaviour
 			this.EventStudent[i].CharacterAnimation.cullingType = AnimationCullingType.BasedOnRenderers;
 			this.EventStudent[i].CharacterAnimation.Stop(this.EventStudent[i].SocialSitAnim);
 			this.EventStudent[1].MyController.radius = 0.1f;
-			this.EventStudent[i].CurrentDestination = this.EventStudent[i].Destinations[this.EventStudent[i].Phase];
-			this.EventStudent[i].Pathfinding.target = this.EventStudent[i].Destinations[this.EventStudent[i].Phase];
+			if (this.EventStudent[i].Meeting && this.EventStudent[i].Clock.HourTime > this.EventStudent[i].MeetTime)
+			{
+				this.EventStudent[i].CurrentDestination = this.EventStudent[i].MeetSpot;
+				this.EventStudent[i].Pathfinding.target = this.EventStudent[i].MeetSpot;
+				this.EventStudent[i].DistanceToDestination = Vector3.Distance(base.transform.position, this.EventStudent[i].CurrentDestination.position);
+				this.EventStudent[i].Pathfinding.canSearch = true;
+				this.EventStudent[i].Pathfinding.canMove = true;
+				this.EventStudent[i].Pathfinding.speed = 4f;
+				this.EventStudent[i].SpeechLines.Stop();
+				this.EventStudent[i].EmptyHands();
+				this.EventStudent[i].Meeting = true;
+				this.EventStudent[i].MeetTime = 0f;
+			}
+			else
+			{
+				this.EventStudent[i].CurrentDestination = this.EventStudent[i].Destinations[this.EventStudent[i].Phase];
+				this.EventStudent[i].Pathfinding.target = this.EventStudent[i].Destinations[this.EventStudent[i].Phase];
+			}
 			this.EventStudent[i].InEvent = false;
 			this.EventStudent[i].Private = false;
 		}

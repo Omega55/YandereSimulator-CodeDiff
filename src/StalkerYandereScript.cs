@@ -12,6 +12,8 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public Transform CameraTarget;
 
+	public Transform ObjectTarget;
+
 	public Transform RightHand;
 
 	public Transform EntryPOV;
@@ -254,7 +256,7 @@ public class StalkerYandereScript : MonoBehaviour
 			{
 				this.RightArm.localEulerAngles = new Vector3(this.RightArm.localEulerAngles.x, this.RightArm.localEulerAngles.y + 15f, this.RightArm.localEulerAngles.z);
 			}
-			this.Object.eulerAngles = new Vector3(0f, this.Object.eulerAngles.y, 0f);
+			this.Object.LookAt(this.ObjectTarget);
 		}
 	}
 

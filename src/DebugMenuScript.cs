@@ -292,6 +292,10 @@ public class DebugMenuScript : MonoBehaviour
 					else if (Input.GetKeyDown(KeyCode.Alpha0))
 					{
 						this.Yandere.transform.position = this.TeleportSpot[11].position;
+						if (this.Yandere.Followers > 0)
+						{
+							this.Yandere.Follower.transform.position = this.Yandere.transform.position;
+						}
 						this.Window.SetActive(false);
 						Physics.SyncTransforms();
 					}

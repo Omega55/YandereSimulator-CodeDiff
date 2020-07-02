@@ -84,29 +84,28 @@ public class TaskListScript : MonoBehaviour
 			this.UpdateTaskList();
 			base.StartCoroutine(this.UpdateTaskInfo());
 		}
-		if (this.Tutorials && !this.TutorialWindow.Hide && !this.TutorialWindow.Show)
+		if (this.Tutorials)
 		{
-			if (Input.GetButtonDown("A"))
+			if (!this.TutorialWindow.Hide && !this.TutorialWindow.Show)
 			{
-				OptionGlobals.TutorialsOff = false;
-				this.TutorialWindow.ForceID = this.ListPosition + this.ID;
-				this.TutorialWindow.ShowTutorial();
-				this.TutorialWindow.enabled = true;
-				this.TutorialWindow.SummonWindow();
+				if (Input.GetButtonDown("A"))
+				{
+					OptionGlobals.TutorialsOff = false;
+					this.TutorialWindow.ForceID = this.ListPosition + this.ID;
+					this.TutorialWindow.ShowTutorial();
+					this.TutorialWindow.enabled = true;
+					this.TutorialWindow.SummonWindow();
+				}
+				if (Input.GetButtonDown("B"))
+				{
+					this.Exit();
+					return;
+				}
 			}
-			if (Input.GetButtonDown("B"))
-			{
-				this.PauseScreen.PromptBar.ClearButtons();
-				this.PauseScreen.PromptBar.Label[0].text = "Accept";
-				this.PauseScreen.PromptBar.Label[1].text = "Back";
-				this.PauseScreen.PromptBar.Label[4].text = "Choose";
-				this.PauseScreen.PromptBar.Label[5].text = "Choose";
-				this.PauseScreen.PromptBar.UpdateButtons();
-				this.PauseScreen.Sideways = false;
-				this.PauseScreen.PressedB = true;
-				this.MainMenu.SetActive(true);
-				base.gameObject.SetActive(false);
-			}
+		}
+		else if (Input.GetButtonDown("B"))
+		{
+			this.Exit();
 		}
 	}
 
@@ -175,5 +174,19 @@ public class TaskListScript : MonoBehaviour
 			www = null;
 		}
 		yield break;
+	}
+
+	public void Exit()
+	{
+		this.PauseScreen.PromptBar.ClearButtons();
+		this.PauseScreen.PromptBar.Label[0].text = "Accept";
+		this.PauseScreen.PromptBar.Label[1].text = "Back";
+		this.PauseScreen.PromptBar.Label[4].text = "Choose";
+		this.PauseScreen.PromptBar.Label[5].text = "Choose";
+		this.PauseScreen.PromptBar.UpdateButtons();
+		this.PauseScreen.Sideways = false;
+		this.PauseScreen.PressedB = true;
+		this.MainMenu.SetActive(true);
+		base.gameObject.SetActive(false);
 	}
 }

@@ -71,7 +71,7 @@ public class TrashCanScript : MonoBehaviour
 			{
 				this.Item.transform.localPosition = new Vector3(0f, 0.29f, 0f);
 				this.Item.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
-				if (this.Item.transform.parent != base.transform)
+				if (this.Item.transform.parent != this.TrashPosition)
 				{
 					this.Item = null;
 					this.Weapon = false;

@@ -3188,6 +3188,7 @@ public class StudentScript : MonoBehaviour
 						this.SprintAnim = this.OriginalSprintAnim;
 						this.WalkAnim = this.OriginalWalkAnim;
 					}
+					this.Pushable = false;
 					this.Headache = false;
 					this.Sedated = false;
 					this.Hurry = false;

@@ -412,7 +412,7 @@ public class TutorialWindowScript : MonoBehaviour
 				}
 				if (this.ForcingTutorial || !this.IgnorePhoto)
 				{
-					if (this.Yandere.transform.position.z > -50f)
+					if (!this.ForcingTutorial && this.Yandere.transform.position.z > -50f)
 					{
 						this.ShowPhotoMessage = true;
 					}

@@ -182,6 +182,11 @@ public class BucketScript : MonoBehaviour
 					this.Prompt.HideButton[0] = true;
 				}
 			}
+			else if (this.Dippable)
+			{
+				this.Prompt.Label[3].text = "     Carry";
+				this.Dippable = false;
+			}
 		}
 		else
 		{
