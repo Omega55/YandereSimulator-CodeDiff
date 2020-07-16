@@ -5,8 +5,6 @@ public class RivalDataScript : MonoBehaviour
 {
 	public AudioClip OsanaIntro;
 
-	public AudioClip OsanaTea;
-
 	public AudioClip OsanaBefriend;
 
 	public AudioClip OsanaBetray;
@@ -19,7 +17,11 @@ public class RivalDataScript : MonoBehaviour
 
 	public float[] OsanaBefriendTimes;
 
+	public float[] OsanaBefriendCameraIDs;
+
 	public string[] OsanaBetrayLines;
 
 	public float[] OsanaBetrayTimes;
+
+	public float[] OsanaBetrayCameraIDs;
 }

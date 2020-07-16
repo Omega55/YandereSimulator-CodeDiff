@@ -41,6 +41,7 @@ public class StalkerIntroScript : MonoBehaviour
 		this.UpdateDOF(3f);
 		this.DOF = 4f;
 		this.Alpha = 1f;
+		this.Yandere.Start();
 	}
 
 	private void Update()

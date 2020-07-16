@@ -2711,6 +2711,10 @@ public class StudentScript : MonoBehaviour
 				{
 					return SubtitleType.Task38Line;
 				}
+				if (this.StudentID == 46)
+				{
+					return SubtitleType.Task46Line;
+				}
 				if (this.StudentID == 52)
 				{
 					return SubtitleType.Task52Line;
@@ -3580,26 +3584,49 @@ public class StudentScript : MonoBehaviour
 							this.Obstacle.enabled = false;
 						}
 					}
-					if (!this.InEvent && this.Pathfinding.speed > 0f)
+					if (!this.InEvent)
 					{
-						if (this.Pathfinding.speed == 1f)
+						if (this.Pathfinding.speed > 0f)
 						{
-							if (!this.CharacterAnimation.IsPlaying(this.WalkAnim))
+							if (this.Pathfinding.speed == 1f)
 							{
-								if (this.Persona == PersonaType.PhoneAddict && this.Actions[this.Phase] == StudentActionType.Clean)
+								if (!this.CharacterAnimation.IsPlaying(this.WalkAnim))
 								{
-									this.CharacterAnimation.CrossFade(this.OriginalWalkAnim);
-								}
-								else
-								{
-									this.CharacterAnimation.CrossFade(this.WalkAnim);
+									if (this.Persona == PersonaType.PhoneAddict && this.Actions[this.Phase] == StudentActionType.Clean)
+									{
+										this.CharacterAnimation.CrossFade(this.OriginalWalkAnim);
+									}
+									else
+									{
+										this.CharacterAnimation.CrossFade(this.WalkAnim);
+									}
 								}
 							}
+							else if (!this.Dying)
+							{
+								this.CharacterAnimation.CrossFade(this.SprintAnim);
+							}
 						}
-						else if (!this.Dying)
+					}
+					else if (this.StudentID == 10 && this.InEvent && this.CurrentAction != StudentActionType.Follow)
+					{
+						if (!this.Hurry)
+						{
+							this.Pathfinding.speed = 1f;
+						}
+						else
+						{
+							this.Pathfinding.speed = 4f;
+						}
+						if (this.Pathfinding.speed == 1f)
+						{
+							this.CharacterAnimation.CrossFade(this.WalkAnim);
+						}
+						else
 						{
 							this.CharacterAnimation.CrossFade(this.SprintAnim);
 						}
+						this.CheckForEndRaibaruEvent();
 					}
 					if (this.Club == ClubType.Occult && this.Actions[this.Phase] != StudentActionType.ClubAction)
 					{
@@ -3630,6 +3657,16 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
+				if (this.StudentID == 10 && this.InEvent && this.CurrentAction != StudentActionType.Follow)
+				{
+					this.SpeechLines.Play();
+					this.CharacterAnimation.CrossFade(this.RandomAnim);
+					if (this.CharacterAnimation[this.RandomAnim].time >= this.CharacterAnimation[this.RandomAnim].length)
+					{
+						this.PickRandomAnim();
+					}
+					this.CheckForEndRaibaruEvent();
+				}
 				if (this.CurrentDestination != null)
 				{
 					bool flag = false;
@@ -6316,6 +6353,10 @@ public class StudentScript : MonoBehaviour
 						{
 							this.Pathfinding.canSearch = false;
 							this.Pathfinding.canMove = false;
+							if (this.StudentID == 10)
+							{
+								Debug.Log("here now.");
+							}
 							if (!this.Halt)
 							{
 								if (this.StudentID > 1)
@@ -6856,6 +6897,10 @@ public class StudentScript : MonoBehaviour
 										else
 										{
 											this.CharacterAnimation.CrossFade(this.GuardAnim);
+											if (this.BloodPool == null && this.StudentManager.Police.BloodParent.childCount > 0 && !this.InvestigatingPossibleLimb)
+											{
+												this.UpdateVisibleBlood();
+											}
 											this.ReportTimer += Time.deltaTime;
 											if (this.ReportTimer > 5f)
 											{
@@ -9067,22 +9112,34 @@ public class StudentScript : MonoBehaviour
 	private void UpdateVisibleLimbs()
 	{
 		this.ID = 0;
-		while (this.ID < this.StudentManager.Limbs.Length && this.BloodPool == null)
+		while (this.ID < this.StudentManager.Limbs.Length)
 		{
-			Collider collider = this.StudentManager.Limbs[this.ID];
-			if (collider != null && this.CanSeeObject(collider.gameObject, collider.transform.position))
+			Debug.Log(this.Name + " is checking the list of all limbs.");
+			if (!(this.BloodPool == null))
 			{
-				this.BloodPool = collider.transform;
-				this.WitnessedLimb = true;
-				if (this.Club != ClubType.Delinquent && this.StudentManager.BloodReporter == null && !this.Police.Called && !this.LostTeacherTrust)
+				break;
+			}
+			Debug.Log(this.Name + " doesn't have a limb yet.");
+			Collider collider = this.StudentManager.Limbs[this.ID];
+			if (collider != null)
+			{
+				Debug.Log(this.Name + " is checking to see if they are close enough to a limb to identify it.");
+				Debug.DrawLine(this.Eyes.position, collider.transform.position, Color.red);
+				if (this.CanSeeObject(collider.gameObject, collider.transform.position))
 				{
-					this.StudentManager.BloodLocation.position = this.BloodPool.position;
-					this.StudentManager.BloodLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.BloodLocation.position.y, base.transform.position.z));
-					this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward * -1f);
-					this.StudentManager.LowerBloodPosition();
-					this.StudentManager.BloodReporter = this;
-					this.ReportingBlood = true;
-					this.DetermineBloodLocation();
+					Debug.Log(this.Name + " student has seen a limb.");
+					this.BloodPool = collider.transform;
+					this.WitnessedLimb = true;
+					if (this.Club != ClubType.Delinquent && this.StudentManager.BloodReporter == null && !this.Police.Called && !this.LostTeacherTrust)
+					{
+						this.StudentManager.BloodLocation.position = this.BloodPool.position;
+						this.StudentManager.BloodLocation.LookAt(new Vector3(base.transform.position.x, this.StudentManager.BloodLocation.position.y, base.transform.position.z));
+						this.StudentManager.BloodLocation.Translate(this.StudentManager.BloodLocation.forward * -1f);
+						this.StudentManager.LowerBloodPosition();
+						this.StudentManager.BloodReporter = this;
+						this.ReportingBlood = true;
+						this.DetermineBloodLocation();
+					}
 				}
 			}
 			this.ID++;
@@ -10098,7 +10155,7 @@ public class StudentScript : MonoBehaviour
 					this.Subtitle.UpdateLabel(SubtitleType.ClassApology, 0, 3f);
 					this.Prompt.Circle[0].fillAmount = 1f;
 				}
-				else if (this.InEvent || !this.CanTalk || this.GoAway || this.Fleeing || (this.Meeting && !this.Drownable) || this.Wet || this.TurnOffRadio || this.InvestigatingBloodPool || (this.MyPlate != null && this.MyPlate.parent == this.RightHand) || flag2 || this.ReturningMisplacedWeapon || this.FollowTarget != null || this.Actions[this.Phase] == StudentActionType.Bully || this.Actions[this.Phase] == StudentActionType.Graffiti)
+				else if (this.InEvent || !this.CanTalk || this.GoAway || this.Fleeing || (this.Meeting && !this.Drownable) || this.Wet || this.TurnOffRadio || this.InvestigatingBloodPool || (this.MyPlate != null && this.MyPlate.parent == this.RightHand) || flag2 || this.ReturningMisplacedWeapon || (this.FollowTarget != null && TaskGlobals.GetTaskStatus(46) != 1) || this.Actions[this.Phase] == StudentActionType.Bully || this.Actions[this.Phase] == StudentActionType.Graffiti)
 				{
 					this.Subtitle.UpdateLabel(SubtitleType.EventApology, 1, 3f);
 					this.Prompt.Circle[0].fillAmount = 1f;
@@ -10191,6 +10248,12 @@ public class StudentScript : MonoBehaviour
 							else if (this.Prompt.Label[0].text == "     Ask For Help")
 							{
 								this.Yandere.Interaction = YandereInteractionType.AskingForHelp;
+								this.Yandere.TalkTimer = 5f;
+								this.Interaction = StudentInteractionType.Idle;
+							}
+							else if (this.StudentID == 10)
+							{
+								this.Yandere.Interaction = YandereInteractionType.TaskInquiry;
 								this.Yandere.TalkTimer = 5f;
 								this.Interaction = StudentInteractionType.Idle;
 							}
@@ -12332,7 +12395,7 @@ public class StudentScript : MonoBehaviour
 		}
 		if (this.Teacher)
 		{
-			if (this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus > 0 && this.Yandere.EquippedWeapon.Type == WeaponType.Knife)
+			if ((this.Yandere.Class.PhysicalGrade + this.Yandere.Class.PhysicalBonus > 0 && this.Yandere.EquippedWeapon.Type == WeaponType.Knife) || (this.Yandere.Club == ClubType.MartialArts && this.Yandere.EquippedWeapon.Type == WeaponType.Knife))
 			{
 				Debug.Log(this.Name + " has called the ''BeginStruggle'' function.");
 				this.Pathfinding.target = this.Yandere.transform;
@@ -12346,6 +12409,7 @@ public class StudentScript : MonoBehaviour
 			}
 			else
 			{
+				Debug.Log(this.Name + " just countered Yandere-chan.");
 				this.Yandere.HeartRate.gameObject.SetActive(false);
 				this.Yandere.ShoulderCamera.Counter = true;
 				this.Yandere.ShoulderCamera.OverShoulder = false;
@@ -16625,5 +16689,19 @@ public class StudentScript : MonoBehaviour
 		this.WitnessedBloodPool = false;
 		this.WitnessedSomething = false;
 		this.WitnessedWeapon = false;
+	}
+
+	private void CheckForEndRaibaruEvent()
+	{
+		if (this.StudentManager.Students[46] == null || this.StudentManager.Students[46].Phase > this.Phase)
+		{
+			this.Destinations[this.Phase] = this.FollowTarget.transform;
+			this.Pathfinding.target = this.FollowTarget.transform;
+			this.CurrentDestination = this.FollowTarget.transform;
+			this.Actions[this.Phase] = StudentActionType.Follow;
+			this.CurrentAction = StudentActionType.Follow;
+			this.SpeechLines.Stop();
+			this.InEvent = false;
+		}
 	}
 }

@@ -12,6 +12,8 @@ public class StalkerPromptScript : MonoBehaviour
 
 	public GameObject StairBlocker;
 
+	public GameObject CatPrompt;
+
 	public GameObject FrontDoor;
 
 	public GameObject Father;
@@ -60,6 +62,7 @@ public class StalkerPromptScript : MonoBehaviour
 				if (this.ID == 1)
 				{
 					this.Yandere.MyAnimation.CrossFade("f02_climbTrellis_00");
+					this.CatPrompt.SetActive(true);
 					this.Yandere.Climbing = true;
 					this.Yandere.CanMove = false;
 					UnityEngine.Object.Destroy(base.gameObject);
@@ -67,6 +70,7 @@ public class StalkerPromptScript : MonoBehaviour
 				}
 				else if (this.ID == 2)
 				{
+					this.CatPrompt.SetActive(true);
 					this.Stalker.enabled = true;
 					this.ServedPurpose = true;
 					this.OpenDoor = true;
@@ -100,6 +104,7 @@ public class StalkerPromptScript : MonoBehaviour
 				}
 				else if (this.ID == 5)
 				{
+					this.Yandere.MyAnimation.CrossFade(this.Yandere.IdleAnim);
 					this.Yandere.CanMove = false;
 					this.ServedPurpose = true;
 					this.OpenDoor = true;

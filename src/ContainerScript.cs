@@ -65,7 +65,7 @@ public class ContainerScript : MonoBehaviour
 				this.Weapon.transform.localPosition = Vector3.zero;
 				this.Weapon.transform.localEulerAngles = Vector3.zero;
 				this.Weapon.gameObject.GetComponent<Rigidbody>().useGravity = false;
-				this.Weapon.MyCollider.enabled = false;
+				this.Weapon.MyCollider.isTrigger = true;
 				this.Weapon.Prompt.Hide();
 				this.Weapon.Prompt.enabled = false;
 			}
@@ -77,7 +77,7 @@ public class ContainerScript : MonoBehaviour
 				this.BodyPart.transform.localPosition = Vector3.zero;
 				this.BodyPart.transform.localEulerAngles = Vector3.zero;
 				this.BodyPart.gameObject.GetComponent<Rigidbody>().useGravity = false;
-				this.BodyPart.MyCollider.enabled = false;
+				this.BodyPart.MyCollider.isTrigger = true;
 				this.BodyParts[this.BodyPart.GetComponent<BodyPartScript>().Type] = this.BodyPart;
 			}
 			this.Contents++;
@@ -161,6 +161,19 @@ public class ContainerScript : MonoBehaviour
 
 	public void UpdatePrompts()
 	{
+		if (this.Weapon != null)
+		{
+			this.Weapon.MyCollider.enabled = this.Open;
+		}
+		this.ID = 0;
+		while (this.ID < this.BodyParts.Length)
+		{
+			if (this.BodyParts[this.ID] != null)
+			{
+				this.BodyParts[this.ID].MyCollider.enabled = this.Open;
+			}
+			this.ID++;
+		}
 		if (!this.Open)
 		{
 			if (this.Prompt.Label[0] != null)

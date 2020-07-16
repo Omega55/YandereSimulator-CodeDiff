@@ -1556,6 +1556,16 @@ public class EndOfDayScript : MonoBehaviour
 		{
 			SchoolGlobals.ReactedToGameLeader = true;
 		}
+		if (TaskGlobals.GetTaskStatus(46) == 1)
+		{
+			TaskGlobals.SetTaskStatus(46, 0);
+		}
+		if (this.StudentManager.Students[46] != null && this.StudentManager.Students[46].TaskPhase == 5)
+		{
+			TaskGlobals.SetTaskStatus(46, 3);
+			PlayerGlobals.SetStudentFriend(46, true);
+			this.NewFriends++;
+		}
 		if (this.NewFriends > 0)
 		{
 			PlayerGlobals.Friends += this.NewFriends;

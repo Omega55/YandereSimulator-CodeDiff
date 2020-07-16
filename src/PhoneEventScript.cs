@@ -99,7 +99,7 @@ public class PhoneEventScript : MonoBehaviour
 					if (this.EventStudentID == 11)
 					{
 						this.EventFriend = this.StudentManager.Students[this.EventFriendID];
-						if (this.EventFriend != null)
+						if (this.EventFriend != null && this.EventFriend.CurrentAction == StudentActionType.Follow)
 						{
 							this.EventFriend.CharacterAnimation.CrossFade(this.EventFriend.IdleAnim);
 							this.EventFriend.Pathfinding.canSearch = false;
@@ -296,7 +296,7 @@ public class PhoneEventScript : MonoBehaviour
 				this.EventStudent.Character.GetComponent<Animation>().CrossFade(this.EventStudent.RunAnim);
 				this.EventStudent.Pathfinding.speed = 4f;
 			}
-			if ((this.EventStudent.Pathfinding.canMove || this.EventPhase > 3) && this.EventFriend != null && this.EventPhase > 3)
+			if ((this.EventStudent.Pathfinding.canMove || this.EventPhase > 3) && this.EventFriend != null && this.EventFriend.CurrentAction == StudentActionType.Follow && this.EventPhase > 3)
 			{
 				if (this.EventFriend.CurrentDestination != this.SpyLocation)
 				{
@@ -347,7 +347,7 @@ public class PhoneEventScript : MonoBehaviour
 			{
 				UnityEngine.Object.Destroy(this.VoiceClip);
 			}
-			if (this.EventFriend != null)
+			if (this.EventFriend != null && this.EventFriend.CurrentAction == StudentActionType.Follow)
 			{
 				Debug.Log("Osana's friend is exiting the phone event.");
 				this.EventFriend.CurrentDestination = this.EventFriend.Destinations[this.EventFriend.Phase];

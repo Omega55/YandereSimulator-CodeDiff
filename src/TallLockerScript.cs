@@ -260,7 +260,6 @@ public class TallLockerScript : MonoBehaviour
 						this.Yandere.ChangeSchoolwear();
 						if (this.Yandere.Bloodiness > 0f)
 						{
-							this.Yandere.Police.BloodyClothing++;
 							PickUpScript component;
 							if (this.RemovingClubAttire)
 							{

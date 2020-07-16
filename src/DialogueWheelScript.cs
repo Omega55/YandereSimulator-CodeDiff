@@ -613,6 +613,10 @@ public class DialogueWheelScript : MonoBehaviour
 		{
 			this.TaskDialogueWindow.SetActive(true);
 		}
+		if (this.Yandere.TargetStudent.StudentID == 10 && TaskGlobals.GetTaskStatus(46) == 1)
+		{
+			this.TaskDialogueWindow.SetActive(true);
+		}
 		this.TaskIcon.spriteName = (PlayerGlobals.GetStudentFriend(this.Yandere.TargetStudent.StudentID) ? "Heart" : "Task");
 		this.Impatience.fillAmount = 0f;
 		for (int i = 1; i < 7; i++)
@@ -682,6 +686,7 @@ public class DialogueWheelScript : MonoBehaviour
 			}
 			else
 			{
+				this.TaskManager.UpdateTaskStatus();
 				if ((this.Yandere.TargetStudent.TaskPhase > 0 && this.Yandere.TargetStudent.TaskPhase < 5) || (TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) > 0 && TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) < 5 && TaskGlobals.GetTaskStatus(this.Yandere.TargetStudent.StudentID) != 2) || this.Yandere.TargetStudent.TaskPhase == 100)
 				{
 					Debug.Log("Hiding task button.");
@@ -816,7 +821,7 @@ public class DialogueWheelScript : MonoBehaviour
 		{
 			this.ClubShadow[5].color = new Color(0f, 0f, 0f, 0.75f);
 		}
-		if ((this.Yandere.TargetStudent.StudentID != 46 && this.Yandere.TargetStudent.StudentID != 51) || this.Yandere.Police.Show)
+		if ((this.Yandere.TargetStudent.StudentID != 46 && this.Yandere.TargetStudent.StudentID != 51) || this.Yandere.Police.Show || this.Clock.Period == 3 || this.Clock.Period == 5)
 		{
 			UISprite uisprite17 = this.ClubShadow[6];
 			uisprite17.color = new Color(uisprite17.color.r, uisprite17.color.g, uisprite17.color.b, 0.75f);

@@ -32,7 +32,13 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public Transform CutsceneCamera;
 
+	public Transform AyanoHead;
+
 	public Transform TeaCamera;
+
+	public Transform AyanoEyes;
+
+	public Transform OsanaEyes;
 
 	public UIPanel EliminationPanel;
 
@@ -60,9 +66,15 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public AudioSource MyAudio;
 
+	public AudioSource BGM;
+
+	public GameObject WarningLabel;
+
 	public GameObject TeaSteam;
 
 	public GameObject CatStuff;
+
+	public GameObject OfferTea;
 
 	public GameObject Prologue;
 
@@ -76,9 +88,13 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public Transform LeftEye;
 
+	public float CutsceneLimit = 167f;
+
 	public float ShakeStrength;
 
 	public float AnimOffset;
+
+	public float ExitTimer;
 
 	public float EyeShrink;
 
@@ -94,11 +110,21 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public bool DecisionMade;
 
+	public bool FollowCamera;
+
+	public bool BlurVision;
+
 	public bool DruggedTea;
+
+	public bool Fall;
+
+	public float[] CameraIDs;
 
 	public string[] Lines;
 
 	public float[] Times;
+
+	public float BlurSpeed = 1f;
 
 	public int Branch = 1;
 
@@ -110,8 +136,16 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 
 	public int ZTRID;
 
+	public Renderer PonytailRenderer;
+
+	public Texture BlondePony;
+
 	private void Start()
 	{
+		if (this.BlondePony != null && GameGlobals.BlondeHair)
+		{
+			this.PonytailRenderer.material.mainTexture = this.BlondePony;
+		}
 		this.YandereCosmetic.SetFemaleUniform();
 		this.YandereCosmetic.RightWristband.SetActive(false);
 		this.YandereCosmetic.LeftWristband.SetActive(false);
@@ -250,6 +284,10 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 				this.Vignette.enabled = true;
 				this.Prologue.SetActive(false);
 				this.Phase++;
+				if (!this.OsanaCutscene)
+				{
+					this.BGM.Play();
+				}
 			}
 		}
 		else if (this.Phase == 3)
@@ -276,6 +314,10 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		else if (this.Phase == 4)
 		{
 			this.Timer += Time.deltaTime;
+			if (this.Timer > 1f && this.OsanaCutscene && !this.BGM.isPlaying)
+			{
+				this.BGM.Play();
+			}
 			if (this.Timer > 10f)
 			{
 				base.transform.parent = this.FriendshipCamera;
@@ -307,31 +349,105 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			}
 			if (this.ID < this.Times.Length)
 			{
-				if (this.MyAudio.time > this.Times[this.ID])
+				Debug.Log(this.MyAudio.time);
+				if (this.MyAudio.time > this.Times[this.ID] || !this.MyAudio.isPlaying)
 				{
 					if (this.OsanaCutscene)
 					{
-						this.Yandere.GetComponent<Animation>()["FriendshipYandere"].time = this.MyAudio.time + this.AnimOffset;
-						this.Rival.GetComponent<Animation>()["FriendshipRival"].time = this.MyAudio.time + this.AnimOffset;
+						if (this.Branch == 1)
+						{
+							this.Yandere.GetComponent<Animation>()["FriendshipYandere"].time = this.MyAudio.time + this.AnimOffset;
+							this.Rival.GetComponent<Animation>()["FriendshipRival"].time = this.MyAudio.time + this.AnimOffset;
+						}
+						else
+						{
+							this.Yandere.GetComponent<Animation>()["FriendshipYandere"].time = this.MyAudio.time + 66f;
+							this.Rival.GetComponent<Animation>()["FriendshipRival"].time = this.MyAudio.time + 66f;
+							if (this.Branch == 3)
+							{
+								this.Rival.GetComponent<Animation>()["FriendshipRival"].time = this.MyAudio.time + 67f;
+							}
+						}
+						if (this.ID > 1 && this.Branch > 1)
+						{
+							if (this.CameraIDs[this.ID] == 0f)
+							{
+								this.FriendshipCamera.gameObject.GetComponent<Animation>()["FriendshipCameraFlat"].speed = 1f;
+							}
+							else if (this.CameraIDs[this.ID] == 1000f)
+							{
+								this.Rival.GetComponent<Animation>()["FriendshipRival"].speed = 1f;
+								base.transform.parent = this.OsanaEyes;
+								base.transform.localPosition = new Vector3(0f, 0f, 0f);
+								base.transform.LookAt(this.AyanoEyes);
+								this.Vignette.enabled = true;
+								this.FollowCamera = true;
+								this.BlurVision = true;
+							}
+							else if (this.CameraIDs[this.ID] == 1001f)
+							{
+								if (this.FollowCamera)
+								{
+									this.Yandere.GetComponent<Animation>().Play("f02_evilWitness_00");
+									this.Yandere.GetComponent<Animation>()["f02_evilWitness_00"].time = 2f;
+									this.Yandere.GetComponent<Animation>()["f02_evilWitness_00"].speed = 0.25f;
+								}
+								base.transform.parent = this.AyanoEyes;
+								base.transform.localPosition = new Vector3(0f, 0f, 0.5f);
+								base.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
+								this.FollowCamera = false;
+							}
+							else if (this.CameraIDs[this.ID] == 1002f)
+							{
+								this.Panel.alpha = 1f;
+								this.BlurSpeed = 10f;
+								this.Fall = true;
+							}
+							else
+							{
+								this.FriendshipCamera.gameObject.GetComponent<Animation>()["FriendshipCameraFlat"].time = this.CameraIDs[this.ID];
+								this.FriendshipCamera.gameObject.GetComponent<Animation>()["FriendshipCameraFlat"].speed = 0f;
+							}
+						}
 					}
 					this.Subtitle.text = this.Lines[this.ID];
 					this.ID++;
+					if (this.ID == 3)
+					{
+						this.OfferTea.SetActive(false);
+					}
 				}
-				else if (this.OsanaCutscene && this.Branch == 1)
+			}
+			else if (this.OsanaCutscene && this.Branch == 1)
+			{
+				this.Subtitle.text = "Here's your tea.";
+				this.OfferTea.SetActive(true);
+				this.Yandere.SetActive(true);
+				if (!this.DruggedTea)
 				{
-					if (!this.DruggedTea)
-					{
-						this.Lines = this.RivalData.OsanaBefriendLines;
-						this.Times = this.RivalData.OsanaBefriendTimes;
-						this.MyAudio.clip = this.RivalData.OsanaBefriend;
-						this.MyAudio.Play();
-						this.Branch = 2;
-					}
-					else
-					{
-						this.Branch = 3;
-					}
+					Debug.Log("Transitioning into Befriend branch NOW.");
+					this.CameraIDs = this.RivalData.OsanaBefriendCameraIDs;
+					this.Lines = this.RivalData.OsanaBefriendLines;
+					this.Times = this.RivalData.OsanaBefriendTimes;
+					this.MyAudio.clip = this.RivalData.OsanaBefriend;
+					this.MyAudio.time = 0f;
+					this.MyAudio.Play();
+					this.CutsceneLimit = 172f;
+					this.Branch = 2;
 				}
+				else
+				{
+					Debug.Log("Transitioning into Betray branch NOW.");
+					this.CameraIDs = this.RivalData.OsanaBetrayCameraIDs;
+					this.Lines = this.RivalData.OsanaBetrayLines;
+					this.Times = this.RivalData.OsanaBetrayTimes;
+					this.MyAudio.clip = this.RivalData.OsanaBetray;
+					this.MyAudio.time = 0f;
+					this.MyAudio.Play();
+					this.CutsceneLimit = 110f;
+					this.Branch = 3;
+				}
+				this.ID = 1;
 			}
 			if (this.OsanaCutscene)
 			{
@@ -405,15 +521,18 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 					this.IncreaseYandereEffects();
 				}
 			}
-			else if (this.DecisionMade || this.MyAudio.time > 60f)
+			else if (this.Branch == 1)
 			{
-				this.DecreaseYandereEffects();
+				if (this.DecisionMade || this.MyAudio.time > 60f)
+				{
+					this.DecreaseYandereEffects();
+				}
+				else if (this.MyAudio.time > 43f)
+				{
+					this.IncreaseYandereEffects();
+				}
 			}
-			else if (this.MyAudio.time > 43f)
-			{
-				this.IncreaseYandereEffects();
-			}
-			if (this.Timer > 167f)
+			if (this.Timer > this.CutsceneLimit)
 			{
 				Animation component = this.Yandere.GetComponent<Animation>();
 				component["FriendshipYandere"].speed = -0.2f;
@@ -437,17 +556,28 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		{
 			if (!this.MyAudio.isPlaying)
 			{
-				StudentGlobals.SetStudentKidnapped(81, false);
-				StudentGlobals.SetStudentBroken(81, true);
-				StudentGlobals.SetStudentKidnapped(30, true);
-				StudentGlobals.SetStudentSanity(30, 100f);
-				SchoolGlobals.KidnapVictim = 30;
+				if (!this.OsanaCutscene)
+				{
+					StudentGlobals.SetStudentKidnapped(81, false);
+					StudentGlobals.SetStudentBroken(81, true);
+					StudentGlobals.SetStudentKidnapped(30, true);
+					StudentGlobals.SetStudentSanity(30, 100f);
+					SchoolGlobals.KidnapVictim = 30;
+					SceneManager.LoadScene("CalendarScene");
+				}
+				else
+				{
+					StudentGlobals.SetStudentKidnapped(11, true);
+					StudentGlobals.SetStudentSanity(11, 100f);
+					SchoolGlobals.KidnapVictim = 11;
+					SceneManager.LoadScene("GenocideScene");
+				}
 				HomeGlobals.StartInBasement = true;
-				SceneManager.LoadScene("CalendarScene");
 			}
 		}
 		else if (this.Phase == 10)
 		{
+			this.BGM.volume = 0f;
 			this.SubDarkness.color = new Color(this.SubDarkness.color.r, this.SubDarkness.color.g, this.SubDarkness.color.b, Mathf.MoveTowards(this.SubDarkness.color.a, 1f, Time.deltaTime * 0.2f));
 			if (this.SubDarkness.color.a == 1f)
 			{
@@ -466,6 +596,28 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			Time.timeScale += 1f;
 		}
 		this.MyAudio.pitch = Time.timeScale;
+		if (this.BlurVision)
+		{
+			this.BGM.pitch -= Time.deltaTime * 0.05f;
+			this.Vignette.intensity += Time.deltaTime * this.BlurSpeed;
+			this.Vignette.blur += Time.deltaTime * this.BlurSpeed;
+			this.Vignette.chromaticAberration += Time.deltaTime * this.BlurSpeed;
+			if (this.Fall)
+			{
+				this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, Mathf.MoveTowards(this.Darkness.color.a, 1f, Time.deltaTime));
+				base.transform.localPosition -= new Vector3(0f, Time.deltaTime * 0.5f, 0f);
+				base.transform.localEulerAngles += new Vector3(Time.deltaTime * 180f, Time.deltaTime * 180f, Time.deltaTime * 180f);
+				this.BGM.volume -= Time.deltaTime;
+				if (this.Darkness.color.a == 1f)
+				{
+					this.ExitTimer += Time.deltaTime;
+					if (this.ExitTimer > 3f)
+					{
+						this.Phase = 7;
+					}
+				}
+			}
+		}
 	}
 
 	private void LateUpdate()
@@ -474,9 +626,16 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 		{
 			if (base.transform.parent != null)
 			{
-				if (this.FriendshipCamera.position.z > 2.4f)
+				if (this.OsanaCutscene)
 				{
-					base.transform.localPosition = new Vector3(-1.4f + this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f));
+					if (this.FriendshipCamera.position.z > 2.4f)
+					{
+						base.transform.localPosition = new Vector3(-1.4f + this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f));
+					}
+					else if (this.Branch != 3)
+					{
+						base.transform.localPosition = new Vector3(-0.65f + this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f), this.ShakeStrength * UnityEngine.Random.Range(-1f, 1f));
+					}
 				}
 				else
 				{
@@ -488,6 +647,10 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 			this.RightEye.localPosition = new Vector3(this.RightEye.localPosition.x, this.RightEye.localPosition.y, this.RightEyeOrigin.z + this.EyeShrink * 0.01f);
 			this.LeftEye.localScale = new Vector3(1f - this.EyeShrink * 0.5f, 1f - this.EyeShrink * 0.5f, this.LeftEye.localScale.z);
 			this.RightEye.localScale = new Vector3(1f - this.EyeShrink * 0.5f, 1f - this.EyeShrink * 0.5f, this.RightEye.localScale.z);
+		}
+		if (this.FollowCamera)
+		{
+			this.AyanoHead.transform.LookAt(base.transform.position);
 		}
 	}
 
@@ -525,6 +688,7 @@ public class LivingRoomCutsceneScript : MonoBehaviour
 					this.MyAudio.volume = 1f;
 					this.MyAudio.Play();
 					this.Jukebox.gameObject.SetActive(false);
+					this.BGM.gameObject.SetActive(false);
 					this.Subtitle.text = "Wait, what are you doing?! That's not funny! Stop! Let me go! ...n...NO!!!";
 					this.SubDarknessBG.color = new Color(this.SubDarknessBG.color.r, this.SubDarknessBG.color.g, this.SubDarknessBG.color.b, 1f);
 					this.Phase++;

@@ -377,7 +377,8 @@ public class ConvoManagerScript : MonoBehaviour
 			this.SM.Students[47].GetNewAnimation = false;
 			this.SM.Students[49].GetNewAnimation = false;
 			this.Cycles++;
-			if (this.Cycles == 5)
+			Debug.Log("Incrementing cycle.");
+			if (this.Cycles == 10)
 			{
 				this.SM.UpdateMartialArts();
 				this.Cycles = 0;

@@ -155,6 +155,18 @@ public class TaskManagerScript : MonoBehaviour
 		{
 			this.StudentManager.Students[38].TaskPhase = 5;
 		}
+		if (TaskGlobals.GetTaskStatus(46) == 1 && this.StudentManager.Students[46] != null)
+		{
+			if (this.StudentManager.Students[46].TaskPhase == 0)
+			{
+				this.StudentManager.Students[46].TaskPhase = 4;
+			}
+			if (this.StudentManager.Students[10] != null && Vector3.Distance(this.StudentManager.Students[46].transform.position, this.StudentManager.Students[10].transform.position) < 2f)
+			{
+				Debug.Log("Budo's task should be ready to turn in!");
+				this.StudentManager.Students[46].TaskPhase = 5;
+			}
+		}
 		if (ClubGlobals.GetClubClosed(ClubType.LightMusic) || this.StudentManager.Students[51] == null)
 		{
 			if (this.StudentManager.Students[52] != null)

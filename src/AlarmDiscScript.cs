@@ -125,6 +125,7 @@ public class AlarmDiscScript : MonoBehaviour
 								StudentActionType currentAction = this.Student.CurrentAction;
 							}
 							Debug.Log("An alarm disc has come into contact with: " + this.Student.Name);
+							Debug.Log("Originator is: " + this.Originator);
 							if ((!this.Student.TurnOffRadio && this.Student.Alive && !this.Student.Pushed && !this.Student.Dying && !this.Student.Alarmed && !this.Student.Guarding && !this.Student.Wet && !this.Student.Slave && !this.Student.CheckingNote && !this.Student.WitnessedMurder && !this.Student.WitnessedCorpse && !this.StudentIsBusy && !this.Student.FocusOnYandere && !this.Student.Fleeing && !this.Student.Shoving && !this.Student.SentHome && this.Student.ClubActivityPhase < 16 && !this.Student.Vomiting && !this.Student.Lethal && !this.Student.Headache && !this.Student.Sedated && !this.Student.SenpaiWitnessingRivalDie) || (this.Student.Persona == PersonaType.Protective && this.Originator.StudentID == 11))
 							{
 								Debug.Log("Nothing is stopping " + this.Student.Name + " from reacting.");

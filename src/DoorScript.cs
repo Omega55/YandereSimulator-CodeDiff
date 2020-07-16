@@ -375,7 +375,7 @@ public class DoorScript : MonoBehaviour
 				this.CanSetBucket = false;
 			}
 		}
-		if (this.BucketSet && this.Bucket.Gasoline && this.StudentManager.Students[this.StudentManager.RivalID] != null && this.StudentManager.Students[this.StudentManager.RivalID].Follower != null && Vector3.Distance(base.transform.position, this.StudentManager.Students[this.StudentManager.RivalID].transform.position) < 5f)
+		if (this.BucketSet && this.Bucket.Gasoline && this.StudentManager.Students[this.StudentManager.RivalID] != null && this.StudentManager.Students[this.StudentManager.RivalID].Follower != null && this.StudentManager.Students[this.StudentManager.RivalID].Follower.CurrentAction == StudentActionType.Follow && Vector3.Distance(base.transform.position, this.StudentManager.Students[this.StudentManager.RivalID].transform.position) < 10f)
 		{
 			this.Yandere.Subtitle.UpdateLabel(SubtitleType.GasWarning, 1, 5f);
 			this.StudentManager.Students[this.StudentManager.RivalID].GasWarned = true;
@@ -409,6 +409,7 @@ public class DoorScript : MonoBehaviour
 			this.Prompt.Label[1].text = "     Set Trap";
 			this.Prompt.enabled = true;
 			this.BucketSet = false;
+			this.Bucket = null;
 		}
 	}
 

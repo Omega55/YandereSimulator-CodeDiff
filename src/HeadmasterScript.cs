@@ -378,6 +378,7 @@ public class HeadmasterScript : MonoBehaviour
 		this.StudentManager.StopMoving();
 		this.Yandere.EmptyHands();
 		this.Yandere.CanMove = false;
+		this.Yandere.Stance.Current = StanceType.Standing;
 		this.MyAudio.Play();
 		this.Shooting = true;
 	}

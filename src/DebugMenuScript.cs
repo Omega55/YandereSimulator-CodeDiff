@@ -421,7 +421,6 @@ public class DebugMenuScript : MonoBehaviour
 					}
 					else if (Input.GetKeyDown(KeyCode.O))
 					{
-						this.StudentManager.LockDownOccultClub();
 						this.Yandere.Inventory.RivalPhone = true;
 						this.Window.SetActive(false);
 					}

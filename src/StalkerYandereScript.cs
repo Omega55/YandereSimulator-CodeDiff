@@ -24,9 +24,11 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public Transform Hips;
 
-	public RPG_Camera RPGCamera;
+	public Renderer PonytailRenderer;
 
 	public Animation MyAnimation;
+
+	public RPG_Camera RPGCamera;
 
 	public AudioSource Jukebox;
 
@@ -66,10 +68,16 @@ public class StalkerYandereScript : MonoBehaviour
 
 	public int Frame;
 
-	private void Start()
+	public Texture BlondePony;
+
+	public void Start()
 	{
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+		if (this.BlondePony != null && GameGlobals.BlondeHair)
+		{
+			this.PonytailRenderer.material.mainTexture = this.BlondePony;
+		}
 	}
 
 	private void Update()

@@ -224,7 +224,7 @@ public class AmbientEventScript : MonoBehaviour
 							}
 							this.EventSubtitle.transform.localScale = new Vector3(this.Scale, this.Scale, this.Scale);
 						}
-						else
+						else if (num < 11f)
 						{
 							this.EventSubtitle.transform.localScale = Vector3.zero;
 							this.EventSubtitle.text = string.Empty;

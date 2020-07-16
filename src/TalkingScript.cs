@@ -1145,10 +1145,19 @@ public class TalkingScript : MonoBehaviour
 			}
 			else if (this.S.Interaction == StudentInteractionType.TaskInquiry)
 			{
+				Debug.Log(this.S.Name + " is currently being told to respond to a Task Inquiry.");
 				if (this.S.TalkTimer == 10f)
 				{
-					this.S.CharacterAnimation.CrossFade("f02_embar_00");
-					this.S.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, this.S.StudentID - 80, 10f);
+					if (this.S.Club == ClubType.Bully)
+					{
+						this.S.CharacterAnimation.CrossFade("f02_embar_00");
+						this.S.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, this.S.StudentID - 80, 10f);
+					}
+					else if (this.S.StudentID == 10)
+					{
+						this.S.CharacterAnimation.CrossFade("f02_nod_00");
+						this.S.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, 7, 10f);
+					}
 				}
 				else if (Input.GetButtonDown("A"))
 				{
@@ -1161,7 +1170,21 @@ public class TalkingScript : MonoBehaviour
 				this.S.TalkTimer -= Time.deltaTime;
 				if (this.S.TalkTimer <= 0f)
 				{
-					this.S.StudentManager.TaskManager.GirlsQuestioned[this.S.StudentID - 80] = true;
+					if (this.S.Club == ClubType.Bully)
+					{
+						this.S.StudentManager.TaskManager.GirlsQuestioned[this.S.StudentID - 80] = true;
+					}
+					else if (this.S.StudentID == 10)
+					{
+						this.S.Destinations[this.S.Phase] = this.S.StudentManager.RaibaruMentorSpot;
+						this.S.Pathfinding.target = this.S.StudentManager.RaibaruMentorSpot;
+						this.S.CurrentDestination = this.S.StudentManager.RaibaruMentorSpot;
+						this.S.Actions[this.S.Phase] = StudentActionType.Socializing;
+						this.S.CurrentAction = StudentActionType.Socializing;
+						this.S.Pathfinding.speed = 4f;
+						this.S.InEvent = true;
+						this.S.Hurry = true;
+					}
 					this.S.DialogueWheel.End();
 				}
 			}

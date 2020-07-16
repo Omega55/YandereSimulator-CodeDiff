@@ -132,6 +132,7 @@ public class StatsScript : MonoBehaviour
 
 	public void UpdateStats()
 	{
+		Debug.Log("The Stats script just checked the Class script for info and updated the bars accordingly.");
 		this.Grade = this.Class.BiologyGrade;
 		this.BarID = 1;
 		while (this.BarID < 6)

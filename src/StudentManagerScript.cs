@@ -171,6 +171,8 @@ public class StudentManagerScript : MonoBehaviour
 
 	public Transform AltFemaleVomitSpot;
 
+	public Transform RaibaruMentorSpot;
+
 	public ListScript SearchPatrols;
 
 	public ListScript CleaningSpots;
@@ -889,6 +891,7 @@ public class StudentManagerScript : MonoBehaviour
 			this.NWStairs = GameObject.Find("NWStairs").GetComponent<Collider>();
 			this.SEStairs = GameObject.Find("SEStairs").GetComponent<Collider>();
 			this.SWStairs = GameObject.Find("SWStairs").GetComponent<Collider>();
+			this.Yandere.Class.GetStats();
 		}
 	}
 
@@ -1004,6 +1007,7 @@ public class StudentManagerScript : MonoBehaviour
 					}
 					this.ID++;
 				}
+				this.ClubManager.ActivateClubBenefit();
 			}
 			if ((double)this.Clock.HourTime > 16.9)
 			{
@@ -2973,6 +2977,14 @@ public class StudentManagerScript : MonoBehaviour
 				this.Students[this.ID].SpeechLines.Stop();
 			}
 			this.ID++;
+		}
+		this.RaibaruMentorSpot.position = this.Clubs.List[46].position + this.Clubs.List[46].forward * 0.5f + this.Clubs.List[46].right * 0.5f;
+		this.RaibaruMentorSpot.rotation = this.Clubs.List[46].rotation;
+		if (this.Students[10] != null && this.Students[10].CurrentAction != StudentActionType.Follow && this.Students[10].DistanceToDestination < 1f)
+		{
+			this.Students[10].Pathfinding.speed = 1f;
+			this.Students[10].SpeechLines.Stop();
+			this.Students[10].Hurry = false;
 		}
 	}
 

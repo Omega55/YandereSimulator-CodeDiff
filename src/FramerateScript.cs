@@ -11,7 +11,9 @@ public class FramerateScript : MonoBehaviour
 
 	private float timeleft;
 
-	public float FPS;
+	public float FpsAverage;
+
+	public float FpsCurrent;
 
 	public UILabel FPSLabel;
 
@@ -22,20 +24,19 @@ public class FramerateScript : MonoBehaviour
 
 	private void Update()
 	{
-		this.timeleft -= Time.deltaTime;
-		this.accum += Time.timeScale / Time.deltaTime;
+		this.FpsCurrent = 1f / Time.unscaledDeltaTime;
+		this.timeleft -= Time.unscaledDeltaTime;
+		this.accum += this.FpsCurrent;
 		this.frames++;
 		if (this.timeleft <= 0f)
 		{
-			this.FPS = this.accum / (float)this.frames;
-			int num = Mathf.Clamp((int)this.FPS, 0, Application.targetFrameRate);
-			if (num > 0)
-			{
-				this.FPSLabel.text = "FPS: " + num.ToString();
-			}
+			this.FpsAverage = this.accum / (float)this.frames;
 			this.timeleft = this.updateInterval;
 			this.accum = 0f;
 			this.frames = 0;
+			int num = Mathf.Clamp((int)this.FpsAverage, 0, Application.targetFrameRate);
+			Mathf.Clamp((int)this.FpsCurrent, 0, Application.targetFrameRate);
+			this.FPSLabel.text = "FPS: " + num;
 		}
 	}
 }

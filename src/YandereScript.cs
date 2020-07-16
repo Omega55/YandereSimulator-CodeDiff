@@ -5053,10 +5053,17 @@ public class YandereScript : MonoBehaviour
 				}
 				if (this.Interaction == YandereInteractionType.TaskInquiry)
 				{
-					if (this.TalkTimer == 3f)
+					if (this.TalkTimer == 3f || this.TalkTimer == 5f)
 					{
 						this.CharacterAnimation.CrossFade("f02_greet_01");
-						this.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, 0, 5f);
+						if (this.TargetStudent.Club == ClubType.Bully)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, 0, 5f);
+						}
+						else if (this.TargetStudent.StudentID == 10)
+						{
+							this.Subtitle.UpdateLabel(SubtitleType.TaskInquiry, 6, 5f);
+						}
 					}
 					else
 					{
@@ -5070,6 +5077,7 @@ public class YandereScript : MonoBehaviour
 						}
 						if (this.TalkTimer <= 0f)
 						{
+							Debug.Log("Telling student to respond to task inquiry.");
 							this.TargetStudent.Interaction = StudentInteractionType.TaskInquiry;
 							this.TargetStudent.TalkTimer = 10f;
 							this.Interaction = YandereInteractionType.Idle;

@@ -139,6 +139,9 @@ public class HomeYandereScript : MonoBehaviour
 			if (GameGlobals.BlondeHair)
 			{
 				this.PonytailRenderer.material.mainTexture = this.BlondePony;
+				this.PigtailR.material.mainTexture = this.BlondePony;
+				this.PigtailL.material.mainTexture = this.BlondePony;
+				this.Drills.material.mainTexture = this.BlondePony;
 			}
 		}
 		Time.timeScale = 1f;

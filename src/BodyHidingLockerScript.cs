@@ -124,6 +124,10 @@ public class BodyHidingLockerScript : MonoBehaviour
 			{
 				this.Corpse.BloodPoolSpawner.enabled = true;
 			}
+			for (int i = 0; i < this.Corpse.Student.FireEmitters.Length; i++)
+			{
+				this.Corpse.Student.FireEmitters[i].gameObject.SetActive(false);
+			}
 			this.Corpse = null;
 			this.Rotation = -180f;
 		}

@@ -231,7 +231,7 @@ public class BucketScript : MonoBehaviour
 				this.Prompt.HideButton[0] = false;
 			}
 		}
-		if (this.Yandere.Mop != null && this.Prompt.Circle[3].fillAmount == 0f)
+		if (this.Yandere.Mop != null && this.Dippable && this.Prompt.Circle[3].fillAmount == 0f)
 		{
 			this.Prompt.Circle[3].fillAmount = 1f;
 			this.Yandere.Mop.Dip();

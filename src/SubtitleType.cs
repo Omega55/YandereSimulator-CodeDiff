@@ -207,6 +207,7 @@ public enum SubtitleType
 	Task36Line,
 	Task37Line,
 	Task38Line,
+	Task46Line,
 	Task52Line,
 	Task76Line,
 	Task77Line,

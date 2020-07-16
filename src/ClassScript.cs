@@ -126,6 +126,27 @@ public class ClassScript : MonoBehaviour
 
 	private void Start()
 	{
+		this.GetStats();
+		if (SceneManager.GetActiveScene().name != "SchoolScene")
+		{
+			base.enabled = false;
+			return;
+		}
+		this.GradeUpWindow.localScale = Vector3.zero;
+		this.Subject[1] = this.Biology;
+		this.Subject[2] = this.Chemistry;
+		this.Subject[3] = this.Language;
+		this.Subject[4] = this.Physical;
+		this.Subject[5] = this.Psychology;
+		this.DescLabel.text = this.Desc[this.Selected];
+		this.UpdateSubjectLabels();
+		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
+		this.UpdateBars();
+	}
+
+	public void GetStats()
+	{
+		Debug.Log("The Class script just grabbed all the stats.");
 		this.Biology = ClassGlobals.Biology;
 		this.Chemistry = ClassGlobals.Chemistry;
 		this.Language = ClassGlobals.Language;
@@ -150,21 +171,6 @@ public class ClassScript : MonoBehaviour
 		this.SeductionBonus = PlayerGlobals.SeductionBonus;
 		this.NumbnessBonus = PlayerGlobals.NumbnessBonus;
 		this.EnlightenmentBonus = PlayerGlobals.EnlightenmentBonus;
-		if (SceneManager.GetActiveScene().name != "SchoolScene")
-		{
-			base.enabled = false;
-			return;
-		}
-		this.GradeUpWindow.localScale = Vector3.zero;
-		this.Subject[1] = this.Biology;
-		this.Subject[2] = this.Chemistry;
-		this.Subject[3] = this.Language;
-		this.Subject[4] = this.Physical;
-		this.Subject[5] = this.Psychology;
-		this.DescLabel.text = this.Desc[this.Selected];
-		this.UpdateSubjectLabels();
-		this.Darkness.color = new Color(this.Darkness.color.r, this.Darkness.color.g, this.Darkness.color.b, 1f);
-		this.UpdateBars();
 	}
 
 	private void Update()
